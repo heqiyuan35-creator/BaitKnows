@@ -200,7 +200,7 @@ export const ALL_FISH_DATA: FishData[] = [
   },
   {
     id: 'mandarin_fish_river', name: '河鳜', nameEn: 'River Mandarin Fish',
-    icon: $r('app.media.Fish'), iconActive: $r('app.media.Fish'),
+    icon: $r('app.media.Chinese_perch'), iconActive: $r('app.media.Chinese_perch'),
     waterTypes: ['river'],
     habit: { feedingType: 'carnivore', waterLayer: 'middle', activityTime: 'dawn_dusk',
       preferredTemp: '18-26°C', activeSeasons: ['春季', '秋季'],
@@ -220,7 +220,7 @@ export const ALL_FISH_DATA: FishData[] = [
   },
   {
     id: 'mandarin_fish', name: '鳜鱼', nameEn: 'Mandarin Fish',
-    icon: $r('app.media.Fish'), iconActive: $r('app.media.Fish'),
+    icon: $r('app.media.Chinese_perch'), iconActive: $r('app.media.Chinese_perch'),
     waterTypes: ['reservoir', 'lake'],
     habit: { feedingType: 'carnivore', waterLayer: 'middle', activityTime: 'dawn_dusk',
       preferredTemp: '18-25°C', activeSeasons: ['春季', '秋季'],
@@ -229,7 +229,7 @@ export const ALL_FISH_DATA: FishData[] = [
   },
   {
     id: 'wuchang_fish', name: '武昌鱼', nameEn: 'Wuchang Fish',
-    icon: $r('app.media.Fish'), iconActive: $r('app.media.Fish'),
+    icon: $r('app.media.Wuchang_Fish'), iconActive: $r('app.media.Wuchang_Fish'),
     waterTypes: ['reservoir', 'lake'],
     habit: { feedingType: 'herbivore', waterLayer: 'middle', activityTime: 'day',
       preferredTemp: '18-28°C', activeSeasons: ['春季', '夏季', '秋季'],
@@ -238,7 +238,7 @@ export const ALL_FISH_DATA: FishData[] = [
   },
   {
     id: 'giant_carp', name: '巨鲤', nameEn: 'Giant Carp',
-    icon: $r('app.media.Fish'), iconActive: $r('app.media.Fish'),
+    icon: $r('app.media.Giant_Carp'), iconActive: $r('app.media.Giant_Carp'),
     waterTypes: ['reservoir'],
     habit: { feedingType: 'omnivore', waterLayer: 'bottom', activityTime: 'dawn_dusk',
       preferredTemp: '18-26°C', activeSeasons: ['春季', '秋季'],
@@ -247,7 +247,7 @@ export const ALL_FISH_DATA: FishData[] = [
   },
   {
     id: 'yellow_cheek', name: '黄尾鲴', nameEn: 'Yellow Cheek Carp',
-    icon: $r('app.media.Fish'), iconActive: $r('app.media.Fish'),
+    icon: $r('app.media.Yellowtail_Catfish'), iconActive: $r('app.media.Yellowtail_Catfish'),
     waterTypes: ['reservoir'],
     habit: { feedingType: 'omnivore', waterLayer: 'bottom', activityTime: 'day',
       preferredTemp: '16-26°C', activeSeasons: ['春季', '夏季', '秋季'],
@@ -256,7 +256,7 @@ export const ALL_FISH_DATA: FishData[] = [
   },
   {
     id: 'catla', name: '鲮鱼', nameEn: 'Catla',
-    icon: $r('app.media.Fish'), iconActive: $r('app.media.Fish'),
+    icon: $r('app.media.Liza_fish'), iconActive: $r('app.media.Liza_fish'),
     waterTypes: ['reservoir'],
     habit: { feedingType: 'omnivore', waterLayer: 'bottom', activityTime: 'day',
       preferredTemp: '22-30°C', activeSeasons: ['夏季', '秋季'],
@@ -265,7 +265,7 @@ export const ALL_FISH_DATA: FishData[] = [
   },
   {
     id: 'bass', name: '大口黑鲈', nameEn: 'Largemouth Bass',
-    icon: $r('app.media.Fish'), iconActive: $r('app.media.Fish'),
+    icon: $r('app.media.Largemouth_Bass'), iconActive: $r('app.media.Largemouth_Bass'),
     waterTypes: ['reservoir', 'lake'],
     habit: { feedingType: 'carnivore', waterLayer: 'all', activityTime: 'dawn_dusk',
       preferredTemp: '18-28°C', activeSeasons: ['春季', '夏季', '秋季'],
@@ -285,7 +285,7 @@ export const ALL_FISH_DATA: FishData[] = [
   },
   {
     id: 'pike', name: '狗鱼', nameEn: 'Pike',
-    icon: $r('app.media.Fish'), iconActive: $r('app.media.Fish'),
+    icon: $r('app.media.Northern_pike'), iconActive: $r('app.media.Northern_pike'),
     waterTypes: ['lake'],
     habit: { feedingType: 'carnivore', waterLayer: 'middle', activityTime: 'day',
       preferredTemp: '12-22°C', activeSeasons: ['春季', '秋季', '冬季'],
@@ -294,7 +294,7 @@ export const ALL_FISH_DATA: FishData[] = [
   },
   {
     id: 'perch', name: '鲈鱼', nameEn: 'Perch',
-    icon: $r('app.media.Fish'), iconActive: $r('app.media.Fish'),
+    icon: $r('app.media.Perch'), iconActive: $r('app.media.Perch'),
     waterTypes: ['lake'],
     habit: { feedingType: 'carnivore', waterLayer: 'middle', activityTime: 'day',
       preferredTemp: '15-25°C', activeSeasons: ['春季', '秋季'],
@@ -303,7 +303,7 @@ export const ALL_FISH_DATA: FishData[] = [
   },
   {
     id: 'whitebait', name: '银鱼', nameEn: 'Whitebait',
-    icon: $r('app.media.Fish'), iconActive: $r('app.media.Fish'),
+    icon: $r('app.media.Whitebait'), iconActive: $r('app.media.Whitebait'),
     waterTypes: ['lake'],
     habit: { feedingType: 'carnivore', waterLayer: 'surface', activityTime: 'day',
       preferredTemp: '15-22°C', activeSeasons: ['春季', '秋季'],
@@ -312,7 +312,7 @@ export const ALL_FISH_DATA: FishData[] = [
   },
   {
     id: 'redfin_culter', name: '红鳍鲌', nameEn: 'Redfin Culter',
-    icon: $r('app.media.Fish'), iconActive: $r('app.media.Fish'),
+    icon: $r('app.media.Redfin_culter'), iconActive: $r('app.media.Redfin_culter'),
     waterTypes: ['lake', 'river'],
     habit: { feedingType: 'carnivore', waterLayer: 'surface', activityTime: 'day',
       preferredTemp: '18-28°C', activeSeasons: ['夏季', '秋季'],
@@ -339,7 +339,7 @@ export const ALL_FISH_DATA: FishData[] = [
   },
   {
     id: 'crab', name: '河蟹', nameEn: 'River Crab',
-    icon: $r('app.media.Fish'), iconActive: $r('app.media.Fish'),
+    icon: $r('app.media.river_shrimp'), iconActive: $r('app.media.river_shrimp'),
     waterTypes: ['lake'],
     habit: { feedingType: 'omnivore', waterLayer: 'bottom', activityTime: 'night',
       preferredTemp: '18-25°C', activeSeasons: ['秋季'],
@@ -348,7 +348,7 @@ export const ALL_FISH_DATA: FishData[] = [
   },
   {
     id: 'shrimp', name: '河虾', nameEn: 'River Shrimp',
-    icon: $r('app.media.Fish'), iconActive: $r('app.media.Fish'),
+    icon: $r('app.media.river_shrimp'), iconActive: $r('app.media.river_shrimp'),
     waterTypes: ['lake', 'river'],
     habit: { feedingType: 'omnivore', waterLayer: 'bottom', activityTime: 'night',
       preferredTemp: '18-28°C', activeSeasons: ['夏季', '秋季'],
