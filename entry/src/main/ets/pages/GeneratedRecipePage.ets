@@ -648,17 +648,43 @@ struct GeneratedRecipePage {
       input.season = this.recipe.conditions.season || getCurrentSeason();
 
       // 随机变化参数以获得不同配方
-      const densities: Array<'sparse' | 'medium' | 'dense'> = ['sparse', 'medium', 'dense'];
-      const activities: Array<'poor' | 'normal' | 'good'> = ['poor', 'normal', 'good'];
-      const methods: Array<'rub' | 'pull' | 'scatter' | 'wrap'> = ['rub', 'pull', 'scatter', 'wrap'];
-      const modes: Array<'conservative' | 'balanced' | 'aggressive'> = ['conservative', 'balanced', 'aggressive'];
+      const randomDensity = Math.floor(Math.random() * 3);
+      if (randomDensity === 0) {
+        input.fishDensity = 'low';
+      } else if (randomDensity === 1) {
+        input.fishDensity = 'medium';
+      } else {
+        input.fishDensity = 'high';
+      }
 
-      // 随机选择不同的参数组合
-      const randomIndex = Math.floor(Math.random() * 3);
-      input.fishDensity = densities[randomIndex];
-      input.fishActivity = activities[Math.floor(Math.random() * 3)];
-      input.fishingMethod = methods[Math.floor(Math.random() * 4)];
-      input.mode = modes[Math.floor(Math.random() * 3)];
+      const randomActivity = Math.floor(Math.random() * 3);
+      if (randomActivity === 0) {
+        input.fishActivity = 'poor';
+      } else if (randomActivity === 1) {
+        input.fishActivity = 'normal';
+      } else {
+        input.fishActivity = 'good';
+      }
+
+      const randomMethod = Math.floor(Math.random() * 4);
+      if (randomMethod === 0) {
+        input.fishingMethod = 'rub';
+      } else if (randomMethod === 1) {
+        input.fishingMethod = 'pull';
+      } else if (randomMethod === 2) {
+        input.fishingMethod = 'scatter';
+      } else {
+        input.fishingMethod = 'wrap';
+      }
+
+      const randomMode = Math.floor(Math.random() * 3);
+      if (randomMode === 0) {
+        input.mode = 'conservative';
+      } else if (randomMode === 1) {
+        input.mode = 'balanced';
+      } else {
+        input.mode = 'aggressive';
+      }
 
       // 温度也可以小幅波动
       input.temperature = temperature + Math.floor(Math.random() * 6) - 3;
