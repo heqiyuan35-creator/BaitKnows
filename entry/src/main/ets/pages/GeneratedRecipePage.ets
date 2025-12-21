@@ -650,9 +650,17 @@ struct GeneratedRecipePage {
       input.fishActivity = 'normal';
       input.fishingMethod = 'rub';
       // 随机切换模式以获得不同配方
-      const modes: Array<'balanced' | 'attract' | 'retain'> = ['balanced', 'attract', 'retain'];
-      const currentModeIndex = modes.indexOf(this.recipe.mode as 'balanced' | 'attract' | 'retain');
-      input.mode = modes[(currentModeIndex + 1) % modes.length];
+      const modes: string[] = ['conservative', 'balanced', 'aggressive'];
+      const currentMode = this.recipe.mode || 'balanced';
+      const currentModeIndex = modes.indexOf(currentMode);
+      const nextMode = modes[(currentModeIndex + 1) % modes.length];
+      if (nextMode === 'conservative') {
+        input.mode = 'conservative';
+      } else if (nextMode === 'aggressive') {
+        input.mode = 'aggressive';
+      } else {
+        input.mode = 'balanced';
+      }
 
       // 生成新配方
       const newRecipe = generateRecipe(input);
