@@ -540,11 +540,16 @@ export class SmartRecipeEngine {
   private generateStateProfile(weights: StateWeights): StateProfile {
     const profile = new StateProfile();
 
-    // 转换为1-5星级
-    profile.atomization = this.toStarRating(weights.atomization);
-    profile.viscosity = this.toStarRating(weights.viscosity);
-    profile.hookHolding = Math.min(5, Math.max(1, Math.round(weights.viscosity / 20)));
-    profile.weight = this.toStarRating(weights.weight);
+    // 转换为1-5星级，增加随机变化
+    const randomOffset = (): number => {
+      // 随机 -1, 0, 或 +1
+      return Math.floor(Math.random() * 3) - 1;
+    };
+
+    profile.atomization = Math.min(5, Math.max(1, this.toStarRating(weights.atomization) + randomOffset()));
+    profile.viscosity = Math.min(5, Math.max(1, this.toStarRating(weights.viscosity) + randomOffset()));
+    profile.hookHolding = Math.min(5, Math.max(1, Math.round(weights.viscosity / 20) + randomOffset()));
+    profile.weight = Math.min(5, Math.max(1, this.toStarRating(weights.weight) + randomOffset()));
 
     return profile;
   }

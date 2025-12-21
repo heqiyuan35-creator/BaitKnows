@@ -252,6 +252,16 @@ class UserDataServiceClass {
     return recipe;
   }
 
+  // 检查配方名称是否已存在
+  isRecipeNameExists(name: string): boolean {
+    for (let i = 0; i < this.customRecipes.length; i++) {
+      if (this.customRecipes[i].name === name) {
+        return true;
+      }
+    }
+    return false;
+  }
+
   async deleteRecipe(id: string): Promise<boolean> {
     const index = this.customRecipes.findIndex((r: CustomRecipe) => r.id === id);
     if (index === -1) return false;

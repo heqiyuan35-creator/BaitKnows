@@ -11,6 +11,17 @@ import { fetchWeather } from '../services/WeatherService';
 import { promptAction } from '@kit.ArkUI';
 import { userDataService, CustomRecipeIngredient } from '../services/UserDataService';
 
+// 步骤信息类
+class StepInfo {
+  title: string = '';
+  desc: string = '';
+
+  constructor(title: string = '', desc: string = '') {
+    this.title = title;
+    this.desc = desc;
+  }
+}
+
 @Entry
 @Component
 struct GeneratedRecipePage {
@@ -19,6 +30,9 @@ struct GeneratedRecipePage {
   @State isLoaded: boolean = false;
   @State currentTab: number = 0;
   @State isSaved: boolean = false;
+  @State showNameDialog: boolean = false;
+  @State customRecipeName: string = '';
+  @State nameError: string = '';
 
   private tabTitles: string[] = ['概览', '配料', '步骤'];
   private originalInput: GenerateRecipeInput | null = null;
@@ -165,45 +179,125 @@ struct GeneratedRecipePage {
   }
 
   build() {
-    Column() {
-      this.HeaderBar()
+    Stack() {
+      Column() {
+        this.HeaderBar()
 
-      if (!this.isLoaded) {
-        Column() {
-          LoadingProgress().width(40).height(40)
-          Text('加载中...').fontSize(14).fontColor(ThemeColors.TEXT_SECONDARY).margin({ top: 12 })
-        }.width('100%').layoutWeight(1).justifyContent(FlexAlign.Center)
-      } else {
-        Scroll() {
-          Column({ space: 0 }) {
-            // 配方头部信息
-            this.RecipeHeader()
+        if (!this.isLoaded) {
+          Column() {
+            LoadingProgress().width(40).height(40)
+            Text('加载中...').fontSize(14).fontColor(ThemeColors.TEXT_SECONDARY).margin({ top: 12 })
+          }.width('100%').layoutWeight(1).justifyContent(FlexAlign.Center)
+        } else {
+          Scroll() {
+            Column({ space: 0 }) {
+              // 配方头部信息
+              this.RecipeHeader()
 
-            // Tab导航
-            this.TabNavigation()
+              // Tab导航
+              this.TabNavigation()
 
-            // Tab内容
-            if (this.currentTab === 0) {
-              this.OverviewContent()
-            } else if (this.currentTab === 1) {
-              this.IngredientsContent()
-            } else {
-              this.StepsContent()
+              // Tab内容
+              if (this.currentTab === 0) {
+                this.OverviewContent()
+              } else if (this.currentTab === 1) {
+                this.IngredientsContent()
+              } else {
+                this.StepsContent()
+              }
+
+              // 底部操作按钮
+              this.ActionButtons()
             }
-
-            // 底部操作按钮
-            this.ActionButtons()
+            .width('100%')
+            .padding({ bottom: 40 })
           }
-          .width('100%')
-          .padding({ bottom: 40 })
+          .layoutWeight(1)
+          .scrollBar(BarState.Off)
         }
-        .layoutWeight(1)
-        .scrollBar(BarState.Off)
+      }
+      .width('100%')
+      .height('100%')
+      .backgroundColor('#FFFBF5')
+
+      // 命名对话框
+      if (this.showNameDialog) {
+        this.NameDialog()
       }
     }
     .width('100%')
     .height('100%')
-    .backgroundColor('#FFFBF5')
+  }
+
+  @Builder NameDialog() {
+    Column() {
+      // 遮罩层
+      Column()
+        .width('100%')
+        .height('100%')
+        .backgroundColor('#00000066')
+        .onClick(() => {
+          this.showNameDialog = false;
+          this.nameError = '';
+        })
+    }
+    .width('100%')
+    .height('100%')
+    .position({ x: 0, y: 0 })
+
+    Column({ space: 16 }) {
+      Text('保存配方').fontSize(18).fontWeight(FontWeight.Medium).fontColor(ThemeColors.TEXT_PRIMARY)
+
+      Column({ space: 8 }) {
+        Text('配方名称').fontSize(14).fontColor(ThemeColors.TEXT_SECONDARY).alignSelf(ItemAlign.Start)
+        TextInput({ text: this.customRecipeName, placeholder: '请输入配方名称' })
+          .fontSize(15)
+          .height(44)
+          .backgroundColor('#F5F5F5')
+          .borderRadius(8)
+          .padding({ left: 12, right: 12 })
+          .onChange((value: string) => {
+            this.customRecipeName = value;
+            this.nameError = '';
+          })
+
+        if (this.nameError.length > 0) {
+          Text(this.nameError).fontSize(12).fontColor('#F44336').alignSelf(ItemAlign.Start)
+        }
+      }
+      .width('100%')
+
+      Row({ space: 12 }) {
+        Button('取消')
+          .fontSize(14)
+          .fontColor(ThemeColors.TEXT_PRIMARY)
+          .backgroundColor('#F5F5F5')
+          .borderRadius(20)
+          .layoutWeight(1)
+          .height(40)
+          .onClick(() => {
+            this.showNameDialog = false;
+            this.nameError = '';
+          })
+
+        Button('保存')
+          .fontSize(14)
+          .fontColor(Color.White)
+          .backgroundColor(ThemeColors.PRIMARY)
+          .borderRadius(20)
+          .layoutWeight(1)
+          .height(40)
+          .onClick(() => {
+            this.confirmSaveRecipe();
+          })
+      }
+      .width('100%')
+    }
+    .width('85%')
+    .padding(20)
+    .backgroundColor(Color.White)
+    .borderRadius(16)
+    .position({ x: '7.5%', y: '35%' })
   }
 
   @Builder HeaderBar() {
@@ -505,26 +599,79 @@ struct GeneratedRecipePage {
     Column({ space: 16 }) {
       Text('使用步骤').fontSize(16).fontWeight(FontWeight.Medium).fontColor(ThemeColors.TEXT_PRIMARY)
 
-      // 步骤1：准备
-      this.StepItem(1, '准备材料', `按配方比例准备好所有原料，总量${this.recipe.totalWeight}g`)
-
-      // 步骤2：混合
-      this.StepItem(2, '混合干料', '将所有干料倒入盆中，充分搅拌均匀')
-
-      // 步骤3：加水
-      this.StepItem(3, '加水开饵', `按${this.recipe.usage.waterRatio}比例加水，快速搅拌`)
-
-      // 步骤4：静置
-      this.StepItem(4, '静置醒饵', `静置${this.recipe.usage.restTime}，让饵料充分吸水`)
-
-      // 步骤5：打揉
-      this.StepItem(5, '打揉成型', '根据需要适当打揉，调整软硬度')
+      // 动态生成步骤
+      ForEach(this.generateDynamicSteps(), (step: StepInfo, index: number) => {
+        this.StepItem(index + 1, step.title, step.desc)
+      })
     }
     .width('100%')
     .padding(16)
     .backgroundColor(Color.White)
     .borderRadius(12)
     .alignItems(HorizontalAlign.Start)
+  }
+
+  // 动态生成步骤
+  private generateDynamicSteps(): StepInfo[] {
+    const steps: StepInfo[] = [];
+    const sp = this.recipe.stateProfile;
+    const usage = this.recipe.usage;
+
+    // 步骤1：准备材料 - 根据原料数量调整
+    const ingCount = this.recipe.ingredients.length;
+    let prepDesc = `按配方比例准备好所有原料，总量${this.recipe.totalWeight}g`;
+    if (ingCount > 5) {
+      prepDesc += '，建议分类摆放便于操作';
+    }
+    steps.push(new StepInfo('准备材料', prepDesc));
+
+    // 步骤2：混合干料 - 根据原料特性调整
+    let mixDesc = '将所有干料倒入盆中，充分搅拌均匀';
+    const hasAdditive = this.recipe.ingredients.some((ing: RecipeIngredient) => ing.category === 'additive');
+    if (hasAdditive) {
+      mixDesc = '先将主饵和辅饵混合均匀，再加入添加剂搅拌';
+    }
+    steps.push(new StepInfo('混合干料', mixDesc));
+
+    // 步骤3：加水开饵 - 根据雾化和粘度调整
+    let waterDesc = `按${usage.waterRatio}比例加水，`;
+    if (sp.atomization >= 4) {
+      waterDesc += '快速搅拌，让饵料充分吸水雾化';
+    } else if (sp.viscosity >= 4) {
+      waterDesc += '慢慢搅拌，避免过度打揉';
+    } else {
+      waterDesc += '快速搅拌均匀';
+    }
+    steps.push(new StepInfo('加水开饵', waterDesc));
+
+    // 步骤4：静置醒饵 - 根据粘度调整
+    let restDesc = `静置${usage.restTime}，让饵料充分吸水`;
+    if (sp.viscosity >= 4) {
+      restDesc += '，期间可轻轻翻动一次';
+    } else if (sp.atomization >= 4) {
+      restDesc += '，不要过度搅动';
+    }
+    steps.push(new StepInfo('静置醒饵', restDesc));
+
+    // 步骤5：打揉成型 - 根据状态特性调整
+    let shapeDesc = '';
+    if (sp.hookHolding >= 4) {
+      shapeDesc = '适当打揉增加粘性，确保附钩性';
+    } else if (sp.atomization >= 4) {
+      shapeDesc = '轻轻收拢成团即可，保持雾化效果';
+    } else if (sp.weight >= 4) {
+      shapeDesc = '打揉紧实，增加比重快速到底';
+    } else {
+      shapeDesc = '根据需要适当打揉，调整软硬度';
+    }
+    steps.push(new StepInfo('打揉成型', shapeDesc));
+
+    // 额外步骤：根据特殊情况添加
+    if (sp.atomization >= 4 && sp.viscosity <= 2) {
+      steps.push(new StepInfo('状态调整', '如雾化过快，可适当加入拉丝粉调整'));
+    }
+
+    return steps;
   }
 
   @Builder StepItem(num: number, title: string, desc: string) {
@@ -618,7 +765,7 @@ struct GeneratedRecipePage {
         .height(48)
         .onClick(() => {
           if (!this.isSaved) {
-            this.saveRecipeToUserData();
+            this.showSaveDialog();
           }
         })
     }
@@ -675,11 +822,37 @@ struct GeneratedRecipePage {
     }
   }
 
-  // 保存配方到用户数据
-  private async saveRecipeToUserData(): Promise<void> {
-    try {
-      await userDataService.load();
+  // 显示保存对话框
+  private async showSaveDialog(): Promise<void> {
+    await userDataService.load();
+    this.customRecipeName = this.recipe.name;
+    this.nameError = '';
+    this.showNameDialog = true;
+  }
 
+  // 确认保存配方
+  private async confirmSaveRecipe(): Promise<void> {
+    const name = this.customRecipeName.trim();
+
+    // 验证名称
+    if (name.length === 0) {
+      this.nameError = '请输入配方名称';
+      return;
+    }
+
+    if (name.length > 20) {
+      this.nameError = '名称不能超过20个字符';
+      return;
+    }
+
+    // 检查重名
+    if (userDataService.isRecipeNameExists(name)) {
+      this.nameError = '该名称已存在，请换一个';
+      return;
+    }
+
+    // 保存配方
+    try {
       // 转换配料格式
       const ingredients: CustomRecipeIngredient[] = [];
       for (let i = 0; i < this.recipe.ingredients.length; i++) {
@@ -691,21 +864,19 @@ struct GeneratedRecipePage {
         ingredients.push(customIng);
       }
 
-      // 构建步骤
-      const steps: string[] = [
-        `按配方比例准备好所有原料，总量${this.recipe.totalWeight}g`,
-        '将所有干料倒入盆中，充分搅拌均匀',
-        `按${this.recipe.usage.waterRatio}比例加水，快速搅拌`,
-        `静置${this.recipe.usage.restTime}，让饵料充分吸水`,
-        '根据需要适当打揉，调整软硬度'
-      ];
+      // 构建动态步骤
+      const dynamicSteps = this.generateDynamicSteps();
+      const steps: string[] = [];
+      for (let i = 0; i < dynamicSteps.length; i++) {
+        steps.push(`${dynamicSteps[i].title}：${dynamicSteps[i].desc}`);
+      }
 
       // 构建技巧
       const tips = `${this.recipe.usage.firstCast || '前几竿可适当加大饵团，快速诱鱼'}；${this.recipe.usage.nestSuggestion || '可配合散炮打窝，效果更佳'}`;
 
       // 保存配方
       await userDataService.addRecipe(
-        this.recipe.name,
+        name,
         [this.recipe.conditions.targetFishId],
         this.recipe.conditions.waterType,
         this.recipe.conditions.season,
@@ -719,11 +890,17 @@ struct GeneratedRecipePage {
 
       this.isSaved = true;
       this.isFavorite = true;
+      this.showNameDialog = false;
       promptAction.showToast({ message: '配方已保存', duration: 1500 });
     } catch (err) {
       console.error('Save recipe failed:', err);
-      promptAction.showToast({ message: '保存失败，请重试', duration: 1500 });
+      this.nameError = '保存失败，请重试';
     }
+  }
+
+  // 保存配方到用户数据 (旧方法保留兼容)
+  private async saveRecipeToUserData(): Promise<void> {
+    this.showSaveDialog();
   }
 
   // ========== 辅助方法 ==========
