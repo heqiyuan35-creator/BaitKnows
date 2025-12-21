@@ -1,0 +1,17 @@
+{
+  "src": [
+    "pages/WelcomePage",
+    "pages/MainTabPage",
+    "pages/RecipeDetailPage",
+    "pages/AddRecordPage",
+    "pages/GeneratedRecipePage",
+    "pages/FavoritePage",
+    "pages/SettingsPage",
+    "pages/MapPage",
+    "pages/RouteDetailPage",
+    "pages/TestMap",
+    "pages/SmartGeneratorPage",
+    "pages/RecordDetailPage",
+    "pages/GeneratorHistoryPage"
+  ]
+}
