@@ -12,6 +12,9 @@
     "pages/TestMap",
     "pages/SmartGeneratorPage",
     "pages/RecordDetailPage",
-    "pages/GeneratorHistoryPage"
+    "pages/GeneratorHistoryPage",
+    "pages/RecipeCreatePage",
+    "pages/IngredientAddPage",
+    "pages/FishAddPage"
   ]
 }

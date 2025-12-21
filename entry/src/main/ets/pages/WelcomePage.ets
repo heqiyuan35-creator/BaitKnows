@@ -13,6 +13,9 @@ import { MinePage } from './MinePage';
 import { storageService } from '../services/StorageService';
 import { userService } from '../services/UserService';
 import { fishingRecordService } from '../services/FishingRecordService';
+import { userDataService } from '../services/UserDataService';
+import { AddMenuSheet, AddMenuItem, ADD_MENU_ITEMS } from '../components/AddMenuSheet';
+import { router } from '@kit.ArkUI';
 
 @Entry
 @Component
@@ -26,6 +29,8 @@ struct WelcomePage {
   @State logoScale: number = 0.5;
   @State textOpacity: number = 0;
   @State loadingOpacity: number = 0;
+  // 加号菜单状态
+  @State showAddMenu: boolean = false;
 
   private backgrounds: Resource[] = [
     $r('app.media.Welcomebackground1'),
@@ -52,6 +57,7 @@ struct WelcomePage {
     // 预加载用户数据和记录数据
     await userService.load();
     await fishingRecordService.load();
+    await userDataService.load();
   }
 
   private startEntranceAnimation(): void {
@@ -119,10 +125,26 @@ struct WelcomePage {
       .backgroundColor(ThemeColors.PRIMARY)
       .borderRadius(22)
       .justifyContent(FlexAlign.Center)
+      .onClick(() => {
+        this.showAddMenu = true;
+      })
     }
     .width('100%')
     .height('100%')
     .justifyContent(FlexAlign.Center)
+  }
+
+  // 关闭加号菜单
+  private closeAddMenu(): void {
+    this.showAddMenu = false;
+  }
+
+  // 处理菜单项点击
+  private onMenuItemClick(item: AddMenuItem): void {
+    this.showAddMenu = false;
+    router.pushUrl({ url: item.route }).catch((err: Error) => {
+      console.error(`跳转失败: ${err.message}`);
+    });
   }
 
   @Builder
@@ -193,44 +215,57 @@ struct WelcomePage {
 
   @Builder
   MainContent() {
-    Column() {
-      Tabs({ barPosition: BarPosition.End, index: this.currentIndex }) {
-        TabContent() {
-          HomePage()
-        }
-        .tabBar(this.TabBarBuilder('首页', $r('app.media.home'), $r('app.media.homes'), 0))
+    Stack() {
+      Column() {
+        Tabs({ barPosition: BarPosition.End, index: this.currentIndex }) {
+          TabContent() {
+            HomePage()
+          }
+          .tabBar(this.TabBarBuilder('首页', $r('app.media.home'), $r('app.media.homes'), 0))
 
-        TabContent() {
-          RecipeBrowserPage()
-        }
-        .tabBar(this.TabBarBuilder('配方', $r('app.media.Recipe'), $r('app.media.Recipes'), 1))
+          TabContent() {
+            RecipeBrowserPage()
+          }
+          .tabBar(this.TabBarBuilder('配方', $r('app.media.Recipe'), $r('app.media.Recipes'), 1))
 
-        TabContent() {
-          GeneratorPage()
-        }
-        .tabBar(this.CenterTabBuilder())
+          TabContent() {
+            GeneratorPage()
+          }
+          .tabBar(this.CenterTabBuilder())
 
-        TabContent() {
-          FishingRecordPage()
-        }
-        .tabBar(this.TabBarBuilder('记录', $r('app.media.time'), $r('app.media.times'), 3))
+          TabContent() {
+            FishingRecordPage()
+          }
+          .tabBar(this.TabBarBuilder('记录', $r('app.media.time'), $r('app.media.times'), 3))
 
-        TabContent() {
-          MinePage()
+          TabContent() {
+            MinePage()
+          }
+          .tabBar(this.TabBarBuilder('我的', $r('app.media.mine'), $r('app.media.mines'), 4))
         }
-        .tabBar(this.TabBarBuilder('我的', $r('app.media.mine'), $r('app.media.mines'), 4))
+        .barHeight(56)
+        .barBackgroundColor(ThemeColors.BG_SECONDARY)
+        .onChange((index: number) => {
+          this.currentIndex = index;
+        })
+        .layoutWeight(1)
       }
-      .barHeight(56)
-      .barBackgroundColor(ThemeColors.BG_SECONDARY)
-      .onChange((index: number) => {
-        this.currentIndex = index;
-      })
-      .layoutWeight(1)
+      .width('100%')
+      .height('100%')
+      .backgroundColor(ThemeColors.BG_PRIMARY)
+      .padding({ bottom: 34 })
+
+      // 加号菜单弹出层
+      if (this.showAddMenu) {
+        AddMenuSheet({
+          visible: this.showAddMenu,
+          onClose: (): void => this.closeAddMenu(),
+          onItemClick: (item: AddMenuItem): void => this.onMenuItemClick(item)
+        })
+      }
     }
     .width('100%')
     .height('100%')
-    .backgroundColor(ThemeColors.BG_PRIMARY)
-    .padding({ bottom: 34 })
   }
 
   build() {
