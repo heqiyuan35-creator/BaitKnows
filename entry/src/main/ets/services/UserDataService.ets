@@ -5,57 +5,131 @@
 import { storageService } from './StorageService';
 
 // 用户自定义原料
-export interface CustomIngredient {
-  id: string;
-  name: string;
-  category: string;
-  description: string;
-  targetFish: string[];
-  usage: string;
-  createdAt: number;
+export class CustomIngredient {
+  id: string = '';
+  name: string = '';
+  category: string = '';
+  description: string = '';
+  targetFish: string[] = [];
+  usage: string = '';
+  createdAt: number = 0;
 }
 
 // 用户自定义鱼种
-export interface CustomFish {
-  id: string;
-  name: string;
-  nameEn: string;
-  waterTypes: string[];
-  feedingType: string;
-  waterLayer: string;
-  activityTime: string;
-  preferredTemp: string;
-  favoriteFood: string[];
-  description: string;
-  createdAt: number;
+export class CustomFish {
+  id: string = '';
+  name: string = '';
+  nameEn: string = '';
+  waterTypes: string[] = [];
+  feedingType: string = '';
+  waterLayer: string = '';
+  activityTime: string = '';
+  preferredTemp: string = '';
+  favoriteFood: string[] = [];
+  description: string = '';
+  createdAt: number = 0;
 }
 
 // 用户自定义配方原料项
-export interface CustomRecipeIngredient {
-  ingredientId: string;
-  name: string;
-  ratio: number;
+export class CustomRecipeIngredient {
+  ingredientId: string = '';
+  name: string = '';
+  ratio: number = 1;
 }
 
 // 用户自定义配方
-export interface CustomRecipe {
-  id: string;
-  name: string;
-  targetFish: string[];
-  waterType: string;
-  season: string;
-  ingredients: CustomRecipeIngredient[];
-  steps: string[];
-  tips: string;
-  createdAt: number;
+export class CustomRecipe {
+  id: string = '';
+  name: string = '';
+  targetFish: string[] = [];
+  waterType: string = '';
+  season: string = '';
+  ingredients: CustomRecipeIngredient[] = [];
+  steps: string[] = [];
+  tips: string = '';
+  createdAt: number = 0;
+}
+
+// 统计信息接口
+export class UserDataStats {
+  ingredients: number = 0;
+  fish: number = 0;
+  recipes: number = 0;
 }
 
 // 存储键
-const STORAGE_KEYS = {
-  CUSTOM_INGREDIENTS: 'user_custom_ingredients',
-  CUSTOM_FISH: 'user_custom_fish',
-  CUSTOM_RECIPES: 'user_custom_recipes'
-};
+const STORAGE_KEY_INGREDIENTS = 'user_custom_ingredients';
+const STORAGE_KEY_FISH = 'user_custom_fish';
+const STORAGE_KEY_RECIPES = 'user_custom_recipes';
+
+// 创建原料的辅助函数
+function createIngredient(
+  name: string,
+  category: string,
+  description: string,
+  targetFish: string[],
+  usage: string
+): CustomIngredient {
+  const ing = new CustomIngredient();
+  ing.id = `user_ing_${Date.now()}`;
+  ing.name = name;
+  ing.category = category;
+  ing.description = description;
+  ing.targetFish = targetFish;
+  ing.usage = usage;
+  ing.createdAt = Date.now();
+  return ing;
+}
+
+// 创建鱼种的辅助函数
+function createFish(
+  name: string,
+  nameEn: string,
+  waterTypes: string[],
+  feedingType: string,
+  waterLayer: string,
+  activityTime: string,
+  preferredTemp: string,
+  favoriteFood: string[],
+  description: string
+): CustomFish {
+  const fish = new CustomFish();
+  fish.id = `user_fish_${Date.now()}`;
+  fish.name = name;
+  fish.nameEn = nameEn;
+  fish.waterTypes = waterTypes;
+  fish.feedingType = feedingType;
+  fish.waterLayer = waterLayer;
+  fish.activityTime = activityTime;
+  fish.preferredTemp = preferredTemp;
+  fish.favoriteFood = favoriteFood;
+  fish.description = description;
+  fish.createdAt = Date.now();
+  return fish;
+}
+
+// 创建配方的辅助函数
+function createRecipe(
+  name: string,
+  targetFish: string[],
+  waterType: string,
+  season: string,
+  ingredients: CustomRecipeIngredient[],
+  steps: string[],
+  tips: string
+): CustomRecipe {
+  const recipe = new CustomRecipe();
+  recipe.id = `user_recipe_${Date.now()}`;
+  recipe.name = name;
+  recipe.targetFish = targetFish;
+  recipe.waterType = waterType;
+  recipe.season = season;
+  recipe.ingredients = ingredients;
+  recipe.steps = steps;
+  recipe.tips = tips;
+  recipe.createdAt = Date.now();
+  return recipe;
+}
 
 class UserDataServiceClass {
   private static instance: UserDataServiceClass;
@@ -78,163 +152,126 @@ class UserDataServiceClass {
     if (this.isLoaded) return;
 
     this.customIngredients = await storageService.load<CustomIngredient[]>(
-      STORAGE_KEYS.CUSTOM_INGREDIENTS, []
+      STORAGE_KEY_INGREDIENTS, []
     );
     this.customFish = await storageService.load<CustomFish[]>(
-      STORAGE_KEYS.CUSTOM_FISH, []
+      STORAGE_KEY_FISH, []
     );
     this.customRecipes = await storageService.load<CustomRecipe[]>(
-      STORAGE_KEYS.CUSTOM_RECIPES, []
+      STORAGE_KEY_RECIPES, []
     );
 
     this.isLoaded = true;
-    console.info('[UserDataService] loaded:', {
-      ingredients: this.customIngredients.length,
-      fish: this.customFish.length,
-      recipes: this.customRecipes.length
-    });
+    console.info('[UserDataService] loaded');
   }
 
   // ==================== 原料管理 ====================
 
-  // 获取所有自定义原料
   getCustomIngredients(): CustomIngredient[] {
-    return [...this.customIngredients];
+    return this.customIngredients.slice();
   }
 
-  // 添加自定义原料
-  async addIngredient(data: Omit<CustomIngredient, 'id' | 'createdAt'>): Promise<CustomIngredient> {
-    const ingredient: CustomIngredient = {
-      ...data,
-      id: `user_ing_${Date.now()}`,
-      createdAt: Date.now()
-    };
-
+  async addIngredient(
+    name: string,
+    category: string,
+    description: string,
+    targetFish: string[],
+    usage: string
+  ): Promise<CustomIngredient> {
+    const ingredient = createIngredient(name, category, description, targetFish, usage);
     this.customIngredients.push(ingredient);
     await this.saveIngredients();
     return ingredient;
   }
 
-  // 删除自定义原料
   async deleteIngredient(id: string): Promise<boolean> {
     const index = this.customIngredients.findIndex((i: CustomIngredient) => i.id === id);
     if (index === -1) return false;
-
     this.customIngredients.splice(index, 1);
     await this.saveIngredients();
     return true;
   }
 
-  // 更新自定义原料
-  async updateIngredient(id: string, data: Partial<CustomIngredient>): Promise<boolean> {
-    const index = this.customIngredients.findIndex((i: CustomIngredient) => i.id === id);
-    if (index === -1) return false;
-
-    this.customIngredients[index] = { ...this.customIngredients[index], ...data };
-    await this.saveIngredients();
-    return true;
-  }
-
   private async saveIngredients(): Promise<void> {
-    await storageService.save(STORAGE_KEYS.CUSTOM_INGREDIENTS, this.customIngredients);
+    await storageService.save(STORAGE_KEY_INGREDIENTS, this.customIngredients);
   }
 
   // ==================== 鱼种管理 ====================
 
-  // 获取所有自定义鱼种
   getCustomFish(): CustomFish[] {
-    return [...this.customFish];
+    return this.customFish.slice();
   }
 
-  // 添加自定义鱼种
-  async addFish(data: Omit<CustomFish, 'id' | 'createdAt'>): Promise<CustomFish> {
-    const fish: CustomFish = {
-      ...data,
-      id: `user_fish_${Date.now()}`,
-      createdAt: Date.now()
-    };
-
+  async addFish(
+    name: string,
+    nameEn: string,
+    waterTypes: string[],
+    feedingType: string,
+    waterLayer: string,
+    activityTime: string,
+    preferredTemp: string,
+    favoriteFood: string[],
+    description: string
+  ): Promise<CustomFish> {
+    const fish = createFish(name, nameEn, waterTypes, feedingType, waterLayer, activityTime, preferredTemp, favoriteFood, description);
     this.customFish.push(fish);
     await this.saveFish();
     return fish;
   }
 
-  // 删除自定义鱼种
   async deleteFish(id: string): Promise<boolean> {
     const index = this.customFish.findIndex((f: CustomFish) => f.id === id);
     if (index === -1) return false;
-
     this.customFish.splice(index, 1);
     await this.saveFish();
     return true;
   }
 
-  // 更新自定义鱼种
-  async updateFish(id: string, data: Partial<CustomFish>): Promise<boolean> {
-    const index = this.customFish.findIndex((f: CustomFish) => f.id === id);
-    if (index === -1) return false;
-
-    this.customFish[index] = { ...this.customFish[index], ...data };
-    await this.saveFish();
-    return true;
-  }
-
   private async saveFish(): Promise<void> {
-    await storageService.save(STORAGE_KEYS.CUSTOM_FISH, this.customFish);
+    await storageService.save(STORAGE_KEY_FISH, this.customFish);
   }
 
   // ==================== 配方管理 ====================
 
-  // 获取所有自定义配方
   getCustomRecipes(): CustomRecipe[] {
-    return [...this.customRecipes];
+    return this.customRecipes.slice();
   }
 
-  // 添加自定义配方
-  async addRecipe(data: Omit<CustomRecipe, 'id' | 'createdAt'>): Promise<CustomRecipe> {
-    const recipe: CustomRecipe = {
-      ...data,
-      id: `user_recipe_${Date.now()}`,
-      createdAt: Date.now()
-    };
-
+  async addRecipe(
+    name: string,
+    targetFish: string[],
+    waterType: string,
+    season: string,
+    ingredients: CustomRecipeIngredient[],
+    steps: string[],
+    tips: string
+  ): Promise<CustomRecipe> {
+    const recipe = createRecipe(name, targetFish, waterType, season, ingredients, steps, tips);
     this.customRecipes.push(recipe);
     await this.saveRecipes();
     return recipe;
   }
 
-  // 删除自定义配方
   async deleteRecipe(id: string): Promise<boolean> {
     const index = this.customRecipes.findIndex((r: CustomRecipe) => r.id === id);
     if (index === -1) return false;
-
     this.customRecipes.splice(index, 1);
     await this.saveRecipes();
     return true;
   }
 
-  // 更新自定义配方
-  async updateRecipe(id: string, data: Partial<CustomRecipe>): Promise<boolean> {
-    const index = this.customRecipes.findIndex((r: CustomRecipe) => r.id === id);
-    if (index === -1) return false;
-
-    this.customRecipes[index] = { ...this.customRecipes[index], ...data };
-    await this.saveRecipes();
-    return true;
-  }
-
   private async saveRecipes(): Promise<void> {
-    await storageService.save(STORAGE_KEYS.CUSTOM_RECIPES, this.customRecipes);
+    await storageService.save(STORAGE_KEY_RECIPES, this.customRecipes);
   }
 
   // ==================== 统计信息 ====================
 
-  getStats(): { ingredients: number; fish: number; recipes: number } {
-    return {
-      ingredients: this.customIngredients.length,
-      fish: this.customFish.length,
-      recipes: this.customRecipes.length
-    };
+  getStats(): UserDataStats {
+    const stats = new UserDataStats();
+    stats.ingredients = this.customIngredients.length;
+    stats.fish = this.customFish.length;
+    stats.recipes = this.customRecipes.length;
+    return stats;
   }
 }
 

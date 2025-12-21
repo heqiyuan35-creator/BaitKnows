@@ -7,11 +7,20 @@ import { ThemeColors } from '../theme/ThemeColors';
 import { ThemeConstants } from '../theme/ThemeConstants';
 import { userDataService } from '../services/UserDataService';
 
-// 原料分类
-interface IngredientCategory {
-  id: string;
-  name: string;
-  icon: string;
+// 原料分类类
+class IngredientCategory {
+  id: string = '';
+  name: string = '';
+  icon: string = '';
+}
+
+// 创建分类辅助函数
+function makeCategory(id: string, name: string, icon: string): IngredientCategory {
+  const cat = new IngredientCategory();
+  cat.id = id;
+  cat.name = name;
+  cat.icon = icon;
+  return cat;
 }
 
 @Entry
@@ -24,15 +33,15 @@ struct IngredientAddPage {
   @State usage: string = '';
 
   private categories: IngredientCategory[] = [
-    { id: 'base', name: '基础饵', icon: '🌾' },
-    { id: 'protein', name: '蛋白饵', icon: '🦐' },
-    { id: 'additive', name: '添加剂', icon: '💧' },
-    { id: 'state', name: '状态饵', icon: '🧊' },
-    { id: 'binder', name: '粘合剂', icon: '🍯' },
-    { id: 'natural', name: '天然饵', icon: '🌿' },
-    { id: 'pellet', name: '颗粒饵', icon: '⚪' },
-    { id: 'live', name: '活饵', icon: '🪱' },
-    { id: 'folk', name: '民间偏方', icon: '🧪' }
+    makeCategory('base', '基础饵', '🌾'),
+    makeCategory('protein', '蛋白饵', '🦐'),
+    makeCategory('additive', '添加剂', '💧'),
+    makeCategory('state', '状态饵', '🧊'),
+    makeCategory('binder', '粘合剂', '🍯'),
+    makeCategory('natural', '天然饵', '🌿'),
+    makeCategory('pellet', '颗粒饵', '⚪'),
+    makeCategory('live', '活饵', '🪱'),
+    makeCategory('folk', '民间偏方', '🧪')
   ];
 
   build() {
@@ -44,65 +53,19 @@ struct IngredientAddPage {
       Scroll() {
         Column({ space: 20 }) {
           // 原料名称
-          this.FormSection('原料名称 *', () => {
-            TextInput({ placeholder: '请输入原料名称', text: this.ingredientName })
-              .width('100%')
-              .height(48)
-              .fontSize(ThemeConstants.FONT_SIZE_BASE)
-              .backgroundColor(ThemeColors.BG_CARD)
-              .borderRadius(ThemeConstants.RADIUS_SM)
-              .padding({ left: 12, right: 12 })
-              .onChange((value: string) => {
-                this.ingredientName = value;
-              })
-          })
+          this.NameSection()
 
           // 原料分类
-          this.FormSection('原料分类 *', () => {
-            this.CategorySelector()
-          })
+          this.CategorySection()
 
           // 原料描述
-          this.FormSection('原料描述', () => {
-            TextArea({ placeholder: '描述原料的特点、来源等', text: this.description })
-              .width('100%')
-              .height(100)
-              .fontSize(ThemeConstants.FONT_SIZE_BASE)
-              .backgroundColor(ThemeColors.BG_CARD)
-              .borderRadius(ThemeConstants.RADIUS_SM)
-              .padding(12)
-              .onChange((value: string) => {
-                this.description = value;
-              })
-          })
+          this.DescriptionSection()
 
           // 适用鱼种
-          this.FormSection('适用鱼种', () => {
-            TextInput({ placeholder: '如：鲫鱼、鲤鱼（多个用顿号分隔）', text: this.targetFish })
-              .width('100%')
-              .height(48)
-              .fontSize(ThemeConstants.FONT_SIZE_BASE)
-              .backgroundColor(ThemeColors.BG_CARD)
-              .borderRadius(ThemeConstants.RADIUS_SM)
-              .padding({ left: 12, right: 12 })
-              .onChange((value: string) => {
-                this.targetFish = value;
-              })
-          })
+          this.TargetFishSection()
 
           // 使用方法
-          this.FormSection('使用方法', () => {
-            TextArea({ placeholder: '描述如何使用这种原料', text: this.usage })
-              .width('100%')
-              .height(80)
-              .fontSize(ThemeConstants.FONT_SIZE_BASE)
-              .backgroundColor(ThemeColors.BG_CARD)
-              .borderRadius(ThemeConstants.RADIUS_SM)
-              .padding(12)
-              .onChange((value: string) => {
-                this.usage = value;
-              })
-          })
+          this.UsageSection()
 
           // 保存按钮
           Button('保存原料')
@@ -151,14 +114,106 @@ struct IngredientAddPage {
   }
 
   @Builder
-  FormSection(title: string, content: () => void) {
+  NameSection() {
     Column({ space: 8 }) {
-      Text(title)
+      Text('原料名称 *')
         .fontSize(ThemeConstants.FONT_SIZE_SM)
         .fontColor(ThemeColors.TEXT_SECONDARY)
         .fontWeight(FontWeight.Medium)
 
-      content()
+      TextInput({ placeholder: '请输入原料名称', text: this.ingredientName })
+        .width('100%')
+        .height(48)
+        .fontSize(ThemeConstants.FONT_SIZE_BASE)
+        .backgroundColor(ThemeColors.BG_CARD)
+        .borderRadius(ThemeConstants.RADIUS_SM)
+        .padding({ left: 12, right: 12 })
+        .onChange((value: string) => {
+          this.ingredientName = value;
+        })
+    }
+    .width('100%')
+    .alignItems(HorizontalAlign.Start)
+  }
+
+  @Builder
+  CategorySection() {
+    Column({ space: 8 }) {
+      Text('原料分类 *')
+        .fontSize(ThemeConstants.FONT_SIZE_SM)
+        .fontColor(ThemeColors.TEXT_SECONDARY)
+        .fontWeight(FontWeight.Medium)
+
+      this.CategorySelector()
+    }
+    .width('100%')
+    .alignItems(HorizontalAlign.Start)
+  }
+
+  @Builder
+  DescriptionSection() {
+    Column({ space: 8 }) {
+      Text('原料描述')
+        .fontSize(ThemeConstants.FONT_SIZE_SM)
+        .fontColor(ThemeColors.TEXT_SECONDARY)
+        .fontWeight(FontWeight.Medium)
+
+      TextArea({ placeholder: '描述原料的特点、来源等', text: this.description })
+        .width('100%')
+        .height(100)
+        .fontSize(ThemeConstants.FONT_SIZE_BASE)
+        .backgroundColor(ThemeColors.BG_CARD)
+        .borderRadius(ThemeConstants.RADIUS_SM)
+        .padding(12)
+        .onChange((value: string) => {
+          this.description = value;
+        })
+    }
+    .width('100%')
+    .alignItems(HorizontalAlign.Start)
+  }
+
+  @Builder
+  TargetFishSection() {
+    Column({ space: 8 }) {
+      Text('适用鱼种')
+        .fontSize(ThemeConstants.FONT_SIZE_SM)
+        .fontColor(ThemeColors.TEXT_SECONDARY)
+        .fontWeight(FontWeight.Medium)
+
+      TextInput({ placeholder: '如：鲫鱼、鲤鱼（多个用顿号分隔）', text: this.targetFish })
+        .width('100%')
+        .height(48)
+        .fontSize(ThemeConstants.FONT_SIZE_BASE)
+        .backgroundColor(ThemeColors.BG_CARD)
+        .borderRadius(ThemeConstants.RADIUS_SM)
+        .padding({ left: 12, right: 12 })
+        .onChange((value: string) => {
+          this.targetFish = value;
+        })
+    }
+    .width('100%')
+    .alignItems(HorizontalAlign.Start)
+  }
+
+  @Builder
+  UsageSection() {
+    Column({ space: 8 }) {
+      Text('使用方法')
+        .fontSize(ThemeConstants.FONT_SIZE_SM)
+        .fontColor(ThemeColors.TEXT_SECONDARY)
+        .fontWeight(FontWeight.Medium)
+
+      TextArea({ placeholder: '描述如何使用这种原料', text: this.usage })
+        .width('100%')
+        .height(80)
+        .fontSize(ThemeConstants.FONT_SIZE_BASE)
+        .backgroundColor(ThemeColors.BG_CARD)
+        .borderRadius(ThemeConstants.RADIUS_SM)
+        .padding(12)
+        .onChange((value: string) => {
+          this.usage = value;
+        })
     }
     .width('100%')
     .alignItems(HorizontalAlign.Start)
@@ -224,19 +279,23 @@ struct IngredientAddPage {
     }
 
     // 解析目标鱼种
-    const fishList = this.targetFish
-      .split(/[、,，]/)
-      .map((s: string) => s.trim())
-      .filter((s: string) => s.length > 0);
+    const fishList: string[] = [];
+    const parts = this.targetFish.split(/[、,，]/);
+    for (let i = 0; i < parts.length; i++) {
+      const s = parts[i].trim();
+      if (s.length > 0) {
+        fishList.push(s);
+      }
+    }
 
     // 保存到 UserDataService
-    await userDataService.addIngredient({
-      name: this.ingredientName.trim(),
-      category: this.selectedCategory,
-      description: this.description.trim(),
-      targetFish: fishList,
-      usage: this.usage.trim()
-    });
+    await userDataService.addIngredient(
+      this.ingredientName.trim(),
+      this.selectedCategory,
+      this.description.trim(),
+      fishList,
+      this.usage.trim()
+    );
 
     console.info('原料保存成功:', this.ingredientName);
     router.back();

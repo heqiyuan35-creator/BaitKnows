@@ -6,14 +6,28 @@ import { router } from '@kit.ArkUI';
 import { ThemeColors } from '../theme/ThemeColors';
 import { ThemeConstants } from '../theme/ThemeConstants';
 import { ALL_FISH_DATA, FishData } from '../data/FishData';
-import { ALL_INGREDIENTS, Ingredient } from '../data/IngredientDatabase';
+import { getAllIngredients, Ingredient } from '../data/IngredientDatabase';
 import { userDataService, CustomRecipeIngredient } from '../services/UserDataService';
 
 // 配方原料项
-interface RecipeIngredientItem {
-  ingredientId: string;
-  name: string;
-  ratio: number;  // 比例 1-10
+class RecipeIngredientItem {
+  ingredientId: string = '';
+  name: string = '';
+  ratio: number = 1;
+}
+
+// 选项类
+class SelectOption {
+  id: string = '';
+  name: string = '';
+}
+
+// 创建选项辅助函数
+function makeOption(id: string, name: string): SelectOption {
+  const opt = new SelectOption();
+  opt.id = id;
+  opt.name = name;
+  return opt;
 }
 
 @Entry
@@ -29,18 +43,18 @@ struct RecipeCreatePage {
   @State showFishPicker: boolean = false;
   @State showIngredientPicker: boolean = false;
 
-  private waterTypes: Array<{ id: string; name: string }> = [
-    { id: 'pond', name: '池塘' },
-    { id: 'river', name: '河流' },
-    { id: 'reservoir', name: '水库' },
-    { id: 'lake', name: '湖泊' }
+  private waterTypes: SelectOption[] = [
+    makeOption('pond', '池塘'),
+    makeOption('river', '河流'),
+    makeOption('reservoir', '水库'),
+    makeOption('lake', '湖泊')
   ];
 
-  private seasons: Array<{ id: string; name: string }> = [
-    { id: 'spring', name: '春季' },
-    { id: 'summer', name: '夏季' },
-    { id: 'autumn', name: '秋季' },
-    { id: 'winter', name: '冬季' }
+  private seasons: SelectOption[] = [
+    makeOption('spring', '春季'),
+    makeOption('summer', '夏季'),
+    makeOption('autumn', '秋季'),
+    makeOption('winter', '冬季')
   ];
 
   build() {
@@ -52,39 +66,25 @@ struct RecipeCreatePage {
       Scroll() {
         Column({ space: 16 }) {
           // 配方名称
-          this.FormSection('配方名称', () => {
-            this.InputField()
-          })
+          this.FormSection('配方名称')
 
           // 目标鱼种
-          this.FormSection('目标鱼种', () => {
-            this.FishSelector()
-          })
+          this.FishSelectorSection()
 
           // 适合水域
-          this.FormSection('适合水域', () => {
-            this.WaterTypeSelector()
-          })
+          this.WaterTypeSection()
 
           // 适合季节
-          this.FormSection('适合季节', () => {
-            this.SeasonSelector()
-          })
+          this.SeasonSection()
 
           // 原料配比
-          this.FormSection('原料配比', () => {
-            this.IngredientList()
-          })
+          this.IngredientSection()
 
           // 制作步骤
-          this.FormSection('制作步骤', () => {
-            this.StepsList()
-          })
+          this.StepsSection()
 
           // 使用技巧
-          this.FormSection('使用技巧', () => {
-            this.TipsInput()
-          })
+          this.TipsSection()
 
           // 保存按钮
           Button('保存配方')
@@ -143,224 +143,273 @@ struct RecipeCreatePage {
   }
 
   @Builder
-  FormSection(title: string, content: () => void) {
+  FormSection(title: string) {
     Column({ space: 8 }) {
       Text(title)
         .fontSize(ThemeConstants.FONT_SIZE_SM)
         .fontColor(ThemeColors.TEXT_SECONDARY)
         .fontWeight(FontWeight.Medium)
 
-      content()
+      TextInput({ placeholder: '请输入配方名称', text: this.recipeName })
+        .width('100%')
+        .height(44)
+        .fontSize(ThemeConstants.FONT_SIZE_BASE)
+        .backgroundColor(ThemeColors.BG_CARD)
+        .borderRadius(ThemeConstants.RADIUS_SM)
+        .padding({ left: 12, right: 12 })
+        .onChange((value: string) => {
+          this.recipeName = value;
+        })
     }
     .width('100%')
     .alignItems(HorizontalAlign.Start)
   }
 
   @Builder
-  InputField() {
-    TextInput({ placeholder: '请输入配方名称', text: this.recipeName })
-      .width('100%')
-      .height(44)
-      .fontSize(ThemeConstants.FONT_SIZE_BASE)
-      .backgroundColor(ThemeColors.BG_CARD)
-      .borderRadius(ThemeConstants.RADIUS_SM)
-      .padding({ left: 12, right: 12 })
-      .onChange((value: string) => {
-        this.recipeName = value;
-      })
-  }
-
-  @Builder
-  FishSelector() {
-    Row() {
-      if (this.selectedFishIds.length === 0) {
-        Text('点击选择目标鱼种')
-          .fontSize(ThemeConstants.FONT_SIZE_BASE)
-          .fontColor(ThemeColors.TEXT_HINT)
-      } else {
-        Text(this.getSelectedFishNames())
-          .fontSize(ThemeConstants.FONT_SIZE_BASE)
-          .fontColor(ThemeColors.TEXT_PRIMARY)
-          .maxLines(2)
-          .textOverflow({ overflow: TextOverflow.Ellipsis })
-      }
-      Blank()
-      Text('>')
-        .fontSize(16)
-        .fontColor(ThemeColors.TEXT_MUTED)
-    }
-    .width('100%')
-    .height(44)
-    .padding({ left: 12, right: 12 })
-    .backgroundColor(ThemeColors.BG_CARD)
-    .borderRadius(ThemeConstants.RADIUS_SM)
-    .onClick(() => {
-      this.showFishPicker = true;
-    })
-  }
-
-  @Builder
-  WaterTypeSelector() {
-    Row({ space: 8 }) {
-      ForEach(this.waterTypes, (item: { id: string; name: string }) => {
-        Text(item.name)
-          .fontSize(ThemeConstants.FONT_SIZE_SM)
-          .fontColor(this.selectedWaterType === item.id ? ThemeColors.PRIMARY : ThemeColors.TEXT_SECONDARY)
-          .padding({ left: 16, right: 16, top: 8, bottom: 8 })
-          .backgroundColor(this.selectedWaterType === item.id ? 'rgba(232, 168, 73, 0.15)' : ThemeColors.BG_CARD)
-          .borderRadius(ThemeConstants.RADIUS_FULL)
-          .border({
-            width: 1,
-            color: this.selectedWaterType === item.id ? ThemeColors.PRIMARY : Color.Transparent
-          })
-          .onClick(() => {
-            this.selectedWaterType = item.id;
-          })
-      })
-    }
-    .width('100%')
-  }
-
-  @Builder
-  SeasonSelector() {
-    Row({ space: 8 }) {
-      ForEach(this.seasons, (item: { id: string; name: string }) => {
-        Text(item.name)
-          .fontSize(ThemeConstants.FONT_SIZE_SM)
-          .fontColor(this.selectedSeason === item.id ? ThemeColors.PRIMARY : ThemeColors.TEXT_SECONDARY)
-          .padding({ left: 16, right: 16, top: 8, bottom: 8 })
-          .backgroundColor(this.selectedSeason === item.id ? 'rgba(232, 168, 73, 0.15)' : ThemeColors.BG_CARD)
-          .borderRadius(ThemeConstants.RADIUS_FULL)
-          .border({
-            width: 1,
-            color: this.selectedSeason === item.id ? ThemeColors.PRIMARY : Color.Transparent
-          })
-          .onClick(() => {
-            this.selectedSeason = item.id;
-          })
-      })
-    }
-    .width('100%')
-  }
-
-  @Builder
-  IngredientList() {
+  FishSelectorSection() {
     Column({ space: 8 }) {
-      ForEach(this.ingredients, (item: RecipeIngredientItem, index: number) => {
-        Row() {
-          Text(item.name)
+      Text('目标鱼种')
+        .fontSize(ThemeConstants.FONT_SIZE_SM)
+        .fontColor(ThemeColors.TEXT_SECONDARY)
+        .fontWeight(FontWeight.Medium)
+
+      Row() {
+        if (this.selectedFishIds.length === 0) {
+          Text('点击选择目标鱼种')
+            .fontSize(ThemeConstants.FONT_SIZE_BASE)
+            .fontColor(ThemeColors.TEXT_HINT)
+        } else {
+          Text(this.getSelectedFishNames())
             .fontSize(ThemeConstants.FONT_SIZE_BASE)
             .fontColor(ThemeColors.TEXT_PRIMARY)
-            .layoutWeight(1)
-
-          Text(`${item.ratio}份`)
-            .fontSize(ThemeConstants.FONT_SIZE_SM)
-            .fontColor(ThemeColors.TEXT_SECONDARY)
-            .margin({ right: 12 })
-
-          Text('×')
-            .fontSize(16)
-            .fontColor(ThemeColors.ERROR)
-            .onClick(() => {
-              this.ingredients.splice(index, 1);
-              this.ingredients = [...this.ingredients];
-            })
+            .maxLines(2)
+            .textOverflow({ overflow: TextOverflow.Ellipsis })
         }
-        .width('100%')
-        .height(44)
-        .padding({ left: 12, right: 12 })
-        .backgroundColor(ThemeColors.BG_CARD)
-        .borderRadius(ThemeConstants.RADIUS_SM)
-      })
-
-      // 添加原料按钮
-      Row() {
-        Text('+ 添加原料')
-          .fontSize(ThemeConstants.FONT_SIZE_BASE)
-          .fontColor(ThemeColors.PRIMARY)
+        Blank()
+        Text('>')
+          .fontSize(16)
+          .fontColor(ThemeColors.TEXT_MUTED)
       }
       .width('100%')
       .height(44)
-      .justifyContent(FlexAlign.Center)
+      .padding({ left: 12, right: 12 })
       .backgroundColor(ThemeColors.BG_CARD)
       .borderRadius(ThemeConstants.RADIUS_SM)
-      .border({ width: 1, color: ThemeColors.PRIMARY, style: BorderStyle.Dashed })
       .onClick(() => {
-        this.showIngredientPicker = true;
+        this.showFishPicker = true;
       })
     }
     .width('100%')
+    .alignItems(HorizontalAlign.Start)
   }
 
   @Builder
-  StepsList() {
+  WaterTypeSection() {
     Column({ space: 8 }) {
-      ForEach(this.steps, (step: string, index: number) => {
-        Row() {
-          Text(`${index + 1}.`)
-            .fontSize(ThemeConstants.FONT_SIZE_BASE)
-            .fontColor(ThemeColors.PRIMARY)
-            .fontWeight(FontWeight.Bold)
-            .margin({ right: 8 })
+      Text('适合水域')
+        .fontSize(ThemeConstants.FONT_SIZE_SM)
+        .fontColor(ThemeColors.TEXT_SECONDARY)
+        .fontWeight(FontWeight.Medium)
 
-          TextInput({ placeholder: '输入步骤内容', text: step })
-            .layoutWeight(1)
-            .height(40)
-            .fontSize(ThemeConstants.FONT_SIZE_BASE)
-            .backgroundColor(Color.Transparent)
-            .onChange((value: string) => {
-              this.steps[index] = value;
+      Row({ space: 8 }) {
+        ForEach(this.waterTypes, (item: SelectOption) => {
+          Text(item.name)
+            .fontSize(ThemeConstants.FONT_SIZE_SM)
+            .fontColor(this.selectedWaterType === item.id ? ThemeColors.PRIMARY : ThemeColors.TEXT_SECONDARY)
+            .padding({ left: 16, right: 16, top: 8, bottom: 8 })
+            .backgroundColor(this.selectedWaterType === item.id ? 'rgba(232, 168, 73, 0.15)' : ThemeColors.BG_CARD)
+            .borderRadius(ThemeConstants.RADIUS_FULL)
+            .border({
+              width: 1,
+              color: this.selectedWaterType === item.id ? ThemeColors.PRIMARY : Color.Transparent
             })
+            .onClick(() => {
+              this.selectedWaterType = item.id;
+            })
+        })
+      }
+      .width('100%')
+    }
+    .width('100%')
+    .alignItems(HorizontalAlign.Start)
+  }
 
-          if (this.steps.length > 1) {
+  @Builder
+  SeasonSection() {
+    Column({ space: 8 }) {
+      Text('适合季节')
+        .fontSize(ThemeConstants.FONT_SIZE_SM)
+        .fontColor(ThemeColors.TEXT_SECONDARY)
+        .fontWeight(FontWeight.Medium)
+
+      Row({ space: 8 }) {
+        ForEach(this.seasons, (item: SelectOption) => {
+          Text(item.name)
+            .fontSize(ThemeConstants.FONT_SIZE_SM)
+            .fontColor(this.selectedSeason === item.id ? ThemeColors.PRIMARY : ThemeColors.TEXT_SECONDARY)
+            .padding({ left: 16, right: 16, top: 8, bottom: 8 })
+            .backgroundColor(this.selectedSeason === item.id ? 'rgba(232, 168, 73, 0.15)' : ThemeColors.BG_CARD)
+            .borderRadius(ThemeConstants.RADIUS_FULL)
+            .border({
+              width: 1,
+              color: this.selectedSeason === item.id ? ThemeColors.PRIMARY : Color.Transparent
+            })
+            .onClick(() => {
+              this.selectedSeason = item.id;
+            })
+        })
+      }
+      .width('100%')
+    }
+    .width('100%')
+    .alignItems(HorizontalAlign.Start)
+  }
+
+  @Builder
+  IngredientSection() {
+    Column({ space: 8 }) {
+      Text('原料配比')
+        .fontSize(ThemeConstants.FONT_SIZE_SM)
+        .fontColor(ThemeColors.TEXT_SECONDARY)
+        .fontWeight(FontWeight.Medium)
+
+      Column({ space: 8 }) {
+        ForEach(this.ingredients, (item: RecipeIngredientItem, index: number) => {
+          Row() {
+            Text(item.name)
+              .fontSize(ThemeConstants.FONT_SIZE_BASE)
+              .fontColor(ThemeColors.TEXT_PRIMARY)
+              .layoutWeight(1)
+
+            Text(`${item.ratio}份`)
+              .fontSize(ThemeConstants.FONT_SIZE_SM)
+              .fontColor(ThemeColors.TEXT_SECONDARY)
+              .margin({ right: 12 })
+
             Text('×')
               .fontSize(16)
               .fontColor(ThemeColors.ERROR)
-              .margin({ left: 8 })
               .onClick(() => {
-                this.steps.splice(index, 1);
-                this.steps = [...this.steps];
+                this.ingredients.splice(index, 1);
+                this.ingredients = this.ingredients.slice();
               })
           }
+          .width('100%')
+          .height(44)
+          .padding({ left: 12, right: 12 })
+          .backgroundColor(ThemeColors.BG_CARD)
+          .borderRadius(ThemeConstants.RADIUS_SM)
+        })
+
+        // 添加原料按钮
+        Row() {
+          Text('+ 添加原料')
+            .fontSize(ThemeConstants.FONT_SIZE_BASE)
+            .fontColor(ThemeColors.PRIMARY)
         }
         .width('100%')
-        .padding({ left: 12, right: 12 })
+        .height(44)
+        .justifyContent(FlexAlign.Center)
         .backgroundColor(ThemeColors.BG_CARD)
         .borderRadius(ThemeConstants.RADIUS_SM)
-      })
-
-      // 添加步骤按钮
-      Row() {
-        Text('+ 添加步骤')
-          .fontSize(ThemeConstants.FONT_SIZE_BASE)
-          .fontColor(ThemeColors.PRIMARY)
+        .border({ width: 1, color: ThemeColors.PRIMARY, style: BorderStyle.Dashed })
+        .onClick(() => {
+          this.showIngredientPicker = true;
+        })
       }
       .width('100%')
-      .height(44)
-      .justifyContent(FlexAlign.Center)
-      .backgroundColor(ThemeColors.BG_CARD)
-      .borderRadius(ThemeConstants.RADIUS_SM)
-      .border({ width: 1, color: ThemeColors.PRIMARY, style: BorderStyle.Dashed })
-      .onClick(() => {
-        this.steps.push('');
-        this.steps = [...this.steps];
-      })
     }
     .width('100%')
+    .alignItems(HorizontalAlign.Start)
   }
 
   @Builder
-  TipsInput() {
-    TextArea({ placeholder: '输入使用技巧和注意事项', text: this.tips })
+  StepsSection() {
+    Column({ space: 8 }) {
+      Text('制作步骤')
+        .fontSize(ThemeConstants.FONT_SIZE_SM)
+        .fontColor(ThemeColors.TEXT_SECONDARY)
+        .fontWeight(FontWeight.Medium)
+
+      Column({ space: 8 }) {
+        ForEach(this.steps, (step: string, index: number) => {
+          Row() {
+            Text(`${index + 1}.`)
+              .fontSize(ThemeConstants.FONT_SIZE_BASE)
+              .fontColor(ThemeColors.PRIMARY)
+              .fontWeight(FontWeight.Bold)
+              .margin({ right: 8 })
+
+            TextInput({ placeholder: '输入步骤内容', text: step })
+              .layoutWeight(1)
+              .height(40)
+              .fontSize(ThemeConstants.FONT_SIZE_BASE)
+              .backgroundColor(Color.Transparent)
+              .onChange((value: string) => {
+                this.steps[index] = value;
+              })
+
+            if (this.steps.length > 1) {
+              Text('×')
+                .fontSize(16)
+                .fontColor(ThemeColors.ERROR)
+                .margin({ left: 8 })
+                .onClick(() => {
+                  this.steps.splice(index, 1);
+                  this.steps = this.steps.slice();
+                })
+            }
+          }
+          .width('100%')
+          .padding({ left: 12, right: 12 })
+          .backgroundColor(ThemeColors.BG_CARD)
+          .borderRadius(ThemeConstants.RADIUS_SM)
+        })
+
+        // 添加步骤按钮
+        Row() {
+          Text('+ 添加步骤')
+            .fontSize(ThemeConstants.FONT_SIZE_BASE)
+            .fontColor(ThemeColors.PRIMARY)
+        }
+        .width('100%')
+        .height(44)
+        .justifyContent(FlexAlign.Center)
+        .backgroundColor(ThemeColors.BG_CARD)
+        .borderRadius(ThemeConstants.RADIUS_SM)
+        .border({ width: 1, color: ThemeColors.PRIMARY, style: BorderStyle.Dashed })
+        .onClick(() => {
+          this.steps.push('');
+          this.steps = this.steps.slice();
+        })
+      }
       .width('100%')
-      .height(100)
-      .fontSize(ThemeConstants.FONT_SIZE_BASE)
-      .backgroundColor(ThemeColors.BG_CARD)
-      .borderRadius(ThemeConstants.RADIUS_SM)
-      .padding(12)
-      .onChange((value: string) => {
-        this.tips = value;
-      })
+    }
+    .width('100%')
+    .alignItems(HorizontalAlign.Start)
+  }
+
+  @Builder
+  TipsSection() {
+    Column({ space: 8 }) {
+      Text('使用技巧')
+        .fontSize(ThemeConstants.FONT_SIZE_SM)
+        .fontColor(ThemeColors.TEXT_SECONDARY)
+        .fontWeight(FontWeight.Medium)
+
+      TextArea({ placeholder: '输入使用技巧和注意事项', text: this.tips })
+        .width('100%')
+        .height(100)
+        .fontSize(ThemeConstants.FONT_SIZE_BASE)
+        .backgroundColor(ThemeColors.BG_CARD)
+        .borderRadius(ThemeConstants.RADIUS_SM)
+        .padding(12)
+        .onChange((value: string) => {
+          this.tips = value;
+        })
+    }
+    .width('100%')
+    .alignItems(HorizontalAlign.Start)
   }
 
   @Builder
@@ -418,7 +467,7 @@ struct RecipeCreatePage {
                         this.selectedFishIds.splice(idx, 1);
                       }
                     }
-                    this.selectedFishIds = [...this.selectedFishIds];
+                    this.selectedFishIds = this.selectedFishIds.slice();
                   })
               }
               .width('100%')
@@ -471,7 +520,7 @@ struct RecipeCreatePage {
 
         Scroll() {
           Column({ space: 8 }) {
-            ForEach(ALL_INGREDIENTS.slice(0, 30), (ing: Ingredient) => {
+            ForEach(getAllIngredients().slice(0, 30), (ing: Ingredient) => {
               Row() {
                 Text(ing.name)
                   .fontSize(16)
@@ -482,13 +531,12 @@ struct RecipeCreatePage {
                   .fontSize(20)
                   .fontColor(ThemeColors.PRIMARY)
                   .onClick(() => {
-                    const newItem: RecipeIngredientItem = {
-                      ingredientId: ing.id,
-                      name: ing.name,
-                      ratio: 1
-                    };
+                    const newItem = new RecipeIngredientItem();
+                    newItem.ingredientId = ing.id;
+                    newItem.name = ing.name;
+                    newItem.ratio = 1;
                     this.ingredients.push(newItem);
-                    this.ingredients = [...this.ingredients];
+                    this.ingredients = this.ingredients.slice();
                     this.showIngredientPicker = false;
                   })
               }
@@ -537,25 +585,29 @@ struct RecipeCreatePage {
     }
 
     // 转换原料格式
-    const recipeIngredients: CustomRecipeIngredient[] = this.ingredients.map((item: RecipeIngredientItem) => ({
-      ingredientId: item.ingredientId,
-      name: item.name,
-      ratio: item.ratio
-    }));
+    const recipeIngredients: CustomRecipeIngredient[] = [];
+    for (let i = 0; i < this.ingredients.length; i++) {
+      const item = this.ingredients[i];
+      const ri = new CustomRecipeIngredient();
+      ri.ingredientId = item.ingredientId;
+      ri.name = item.name;
+      ri.ratio = item.ratio;
+      recipeIngredients.push(ri);
+    }
 
     // 过滤空步骤
     const validSteps = this.steps.filter((s: string) => s.trim().length > 0);
 
     // 保存到 UserDataService
-    await userDataService.addRecipe({
-      name: this.recipeName.trim(),
-      targetFish: [...this.selectedFishIds],
-      waterType: this.selectedWaterType,
-      season: this.selectedSeason,
-      ingredients: recipeIngredients,
-      steps: validSteps,
-      tips: this.tips.trim()
-    });
+    await userDataService.addRecipe(
+      this.recipeName.trim(),
+      this.selectedFishIds.slice(),
+      this.selectedWaterType,
+      this.selectedSeason,
+      recipeIngredients,
+      validSteps,
+      this.tips.trim()
+    );
 
     console.info('配方保存成功:', this.recipeName);
     router.back();
