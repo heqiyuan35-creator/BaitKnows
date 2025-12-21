@@ -6,7 +6,7 @@ import { router } from '@kit.ArkUI';
 import { ThemeColors } from '../theme/ThemeColors';
 import { GeneratedRecipe, RecipeIngredient, GenerateReason, GenerateRecipeInput } from '../common/types/RecipeTypes';
 import { generatorHistoryService } from '../services/GeneratorHistoryService';
-import { generateRecipe, getCurrentSeason } from '../services/RecipeGeneratorService';
+import { generateSmartRecipe, getNextRecipeVariant, getSmartRecipeEngine, recordRecipeSave } from '../services/engine/SmartRecipeEngine';
 import { fetchWeather } from '../services/WeatherService';
 import { promptAction } from '@kit.ArkUI';
 import { userDataService, CustomRecipeIngredient } from '../services/UserDataService';
@@ -71,14 +71,14 @@ struct GeneratedRecipePage {
       input.targetFishId = fishId || 'crucian';
       input.waterType = (waterType as 'river' | 'pond' | 'reservoir' | 'wild_pond') || 'pond';
       input.temperature = temperature;
-      input.season = getCurrentSeason();
+      input.season = getSmartRecipeEngine().getCurrentSeason();
       input.fishDensity = 'medium';
       input.fishActivity = 'normal';
       input.fishingMethod = 'rub';
       input.mode = 'balanced';
 
-      // 生成配方
-      const recipe = generateRecipe(input);
+      // 使用智能配方引擎生成配方
+      const recipe = generateSmartRecipe(input);
       this.recipe = recipe;
       this.isLoaded = true;
 
@@ -626,78 +626,49 @@ struct GeneratedRecipePage {
     .padding({ left: 20, right: 20, top: 24 })
   }
 
-  // 换一换：重新生成配方
+  // 换一换：使用智能变体管理器获取不同配方
   private async regenerateRecipe(): Promise<void> {
     try {
-      // 获取当前天气温度
-      let temperature = this.recipe.conditions.temperature || 20;
-      try {
-        const weather = await fetchWeather();
-        if (weather.isValid) {
-          temperature = Math.round(weather.temperature);
+      // 使用智能配方引擎的变体功能
+      const newRecipe = getNextRecipeVariant();
+
+      if (newRecipe !== null) {
+        this.recipe = newRecipe;
+        this.isSaved = false;
+
+        // 保存到历史
+        this.saveToHistory();
+
+        promptAction.showToast({ message: '已为您换一个配方', duration: 1500 });
+      } else {
+        // 如果变体管理器返回null，重新生成
+        let temperature = this.recipe.conditions.temperature || 20;
+        try {
+          const weather = await fetchWeather();
+          if (weather.isValid) {
+            temperature = Math.round(weather.temperature);
+          }
+        } catch (e) {
+          console.error('Fetch weather failed:', e);
         }
-      } catch (e) {
-        console.error('Fetch weather failed:', e);
+
+        const input = new GenerateRecipeInput();
+        input.targetFishId = this.recipe.conditions.targetFishId || 'crucian';
+        input.waterType = this.recipe.conditions.waterType || 'pond';
+        input.temperature = temperature;
+        input.season = this.recipe.conditions.season || getSmartRecipeEngine().getCurrentSeason();
+        input.fishDensity = this.recipe.conditions.fishDensity || 'medium';
+        input.fishActivity = this.recipe.conditions.fishActivity || 'normal';
+        input.fishingMethod = this.recipe.conditions.fishingMethod || 'rub';
+        input.mode = this.recipe.conditions.mode || 'balanced';
+
+        const recipe = generateSmartRecipe(input);
+        this.recipe = recipe;
+        this.isSaved = false;
+
+        this.saveToHistory();
+        promptAction.showToast({ message: '已为您换一个配方', duration: 1500 });
       }
-
-      // 构建输入参数
-      const input = new GenerateRecipeInput();
-      input.targetFishId = this.recipe.conditions.targetFishId || 'crucian';
-      input.waterType = this.recipe.conditions.waterType || 'pond';
-      input.temperature = temperature;
-      input.season = this.recipe.conditions.season || getCurrentSeason();
-
-      // 随机变化参数以获得不同配方
-      const randomDensity = Math.floor(Math.random() * 3);
-      if (randomDensity === 0) {
-        input.fishDensity = 'low';
-      } else if (randomDensity === 1) {
-        input.fishDensity = 'medium';
-      } else {
-        input.fishDensity = 'high';
-      }
-
-      const randomActivity = Math.floor(Math.random() * 3);
-      if (randomActivity === 0) {
-        input.fishActivity = 'poor';
-      } else if (randomActivity === 1) {
-        input.fishActivity = 'normal';
-      } else {
-        input.fishActivity = 'good';
-      }
-
-      const randomMethod = Math.floor(Math.random() * 4);
-      if (randomMethod === 0) {
-        input.fishingMethod = 'rub';
-      } else if (randomMethod === 1) {
-        input.fishingMethod = 'pull';
-      } else if (randomMethod === 2) {
-        input.fishingMethod = 'scatter';
-      } else {
-        input.fishingMethod = 'wrap';
-      }
-
-      const randomMode = Math.floor(Math.random() * 3);
-      if (randomMode === 0) {
-        input.mode = 'conservative';
-      } else if (randomMode === 1) {
-        input.mode = 'balanced';
-      } else {
-        input.mode = 'aggressive';
-      }
-
-      // 温度也可以小幅波动
-      input.temperature = temperature + Math.floor(Math.random() * 6) - 3;
-
-      // 生成新配方
-      const newRecipe = generateRecipe(input);
-      this.recipe = newRecipe;
-      this.isSaved = false;
-
-      // 保存到历史
-      this.saveToHistory();
-
-      promptAction.showToast({ message: '已为您换一个配方', duration: 1500 });
     } catch (err) {
       console.error('Regenerate recipe failed:', err);
       promptAction.showToast({ message: '生成失败，请重试', duration: 1500 });
@@ -742,6 +713,9 @@ struct GeneratedRecipePage {
         steps,
         tips
       );
+
+      // 记录到偏好学习器
+      recordRecipeSave(this.recipe);
 
       this.isSaved = true;
       this.isFavorite = true;
