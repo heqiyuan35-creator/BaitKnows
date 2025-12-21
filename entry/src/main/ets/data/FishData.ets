@@ -339,7 +339,7 @@ export const ALL_FISH_DATA: FishData[] = [
   },
   {
     id: 'crab', name: '河蟹', nameEn: 'River Crab',
-    icon: $r('app.media.river_shrimp'), iconActive: $r('app.media.river_shrimp'),
+    icon: $r('app.media.river_crab'), iconActive: $r('app.media.river_crab'),
     waterTypes: ['lake'],
     habit: { feedingType: 'omnivore', waterLayer: 'bottom', activityTime: 'night',
       preferredTemp: '18-25°C', activeSeasons: ['秋季'],
