@@ -9,6 +9,7 @@ import { generatorHistoryService } from '../services/GeneratorHistoryService';
 import { generateRecipe, getCurrentSeason } from '../services/RecipeGeneratorService';
 import { fetchWeather } from '../services/WeatherService';
 import { promptAction } from '@kit.ArkUI';
+import { userDataService, CustomRecipeIngredient } from '../services/UserDataService';
 
 @Entry
 @Component
@@ -17,8 +18,10 @@ struct GeneratedRecipePage {
   @State isFavorite: boolean = false;
   @State isLoaded: boolean = false;
   @State currentTab: number = 0;
+  @State isSaved: boolean = false;
 
   private tabTitles: string[] = ['概览', '配料', '步骤'];
+  private originalInput: GenerateRecipeInput | null = null;
 
   aboutToAppear(): void {
     try {
@@ -595,7 +598,7 @@ struct GeneratedRecipePage {
 
   @Builder ActionButtons() {
     Row({ space: 12 }) {
-      Button('精细调整')
+      Button('换一换')
         .fontSize(14)
         .fontColor(ThemeColors.TEXT_PRIMARY)
         .backgroundColor('#F5F5F5')
@@ -603,21 +606,115 @@ struct GeneratedRecipePage {
         .layoutWeight(1)
         .height(48)
         .onClick(() => {
-          // 跳转到鱼饵生成器页面进行更精细的参数调整
-          router.pushUrl({ url: 'pages/SmartGeneratorPage' });
+          this.regenerateRecipe();
         })
 
-      Button('保存配方')
+      Button(this.isSaved ? '已保存' : '保存配方')
         .fontSize(14)
         .fontColor(Color.White)
-        .backgroundColor(ThemeColors.PRIMARY)
+        .backgroundColor(this.isSaved ? '#AAAAAA' : ThemeColors.PRIMARY)
         .borderRadius(24)
         .layoutWeight(1)
         .height(48)
-        .onClick(() => { this.isFavorite = true; })
+        .onClick(() => {
+          if (!this.isSaved) {
+            this.saveRecipeToUserData();
+          }
+        })
     }
     .width('100%')
     .padding({ left: 20, right: 20, top: 24 })
+  }
+
+  // 换一换：重新生成配方
+  private async regenerateRecipe(): Promise<void> {
+    try {
+      // 获取当前天气温度
+      let temperature = this.recipe.conditions.temperature || 20;
+      try {
+        const weather = await fetchWeather();
+        if (weather.isValid) {
+          temperature = Math.round(weather.temperature);
+        }
+      } catch (e) {
+        console.error('Fetch weather failed:', e);
+      }
+
+      // 构建输入参数
+      const input = new GenerateRecipeInput();
+      input.targetFishId = this.recipe.conditions.targetFishId || 'crucian';
+      input.waterType = this.recipe.conditions.waterType || 'pond';
+      input.temperature = temperature;
+      input.season = this.recipe.conditions.season || getCurrentSeason();
+      input.fishDensity = 'medium';
+      input.fishActivity = 'normal';
+      input.fishingMethod = 'rub';
+      // 随机切换模式以获得不同配方
+      const modes: Array<'balanced' | 'attract' | 'retain'> = ['balanced', 'attract', 'retain'];
+      const currentModeIndex = modes.indexOf(this.recipe.mode as 'balanced' | 'attract' | 'retain');
+      input.mode = modes[(currentModeIndex + 1) % modes.length];
+
+      // 生成新配方
+      const newRecipe = generateRecipe(input);
+      this.recipe = newRecipe;
+      this.isSaved = false;
+
+      // 保存到历史
+      this.saveToHistory();
+
+      promptAction.showToast({ message: '已为您换一个配方', duration: 1500 });
+    } catch (err) {
+      console.error('Regenerate recipe failed:', err);
+      promptAction.showToast({ message: '生成失败，请重试', duration: 1500 });
+    }
+  }
+
+  // 保存配方到用户数据
+  private async saveRecipeToUserData(): Promise<void> {
+    try {
+      await userDataService.load();
+
+      // 转换配料格式
+      const ingredients: CustomRecipeIngredient[] = [];
+      for (let i = 0; i < this.recipe.ingredients.length; i++) {
+        const ing = this.recipe.ingredients[i];
+        const customIng = new CustomRecipeIngredient();
+        customIng.ingredientId = ing.id;
+        customIng.name = ing.name;
+        customIng.ratio = ing.percentage;
+        ingredients.push(customIng);
+      }
+
+      // 构建步骤
+      const steps: string[] = [
+        `按配方比例准备好所有原料，总量${this.recipe.totalWeight}g`,
+        '将所有干料倒入盆中，充分搅拌均匀',
+        `按${this.recipe.usage.waterRatio}比例加水，快速搅拌`,
+        `静置${this.recipe.usage.restTime}，让饵料充分吸水`,
+        '根据需要适当打揉，调整软硬度'
+      ];
+
+      // 构建技巧
+      const tips = `${this.recipe.usage.firstCast || '前几竿可适当加大饵团，快速诱鱼'}；${this.recipe.usage.nestSuggestion || '可配合散炮打窝，效果更佳'}`;
+
+      // 保存配方
+      await userDataService.addRecipe(
+        this.recipe.name,
+        [this.recipe.conditions.targetFishId],
+        this.recipe.conditions.waterType,
+        this.recipe.conditions.season,
+        ingredients,
+        steps,
+        tips
+      );
+
+      this.isSaved = true;
+      this.isFavorite = true;
+      promptAction.showToast({ message: '配方已保存', duration: 1500 });
+    } catch (err) {
+      console.error('Save recipe failed:', err);
+      promptAction.showToast({ message: '保存失败，请重试', duration: 1500 });
+    }
   }
 
   // ========== 辅助方法 ==========
