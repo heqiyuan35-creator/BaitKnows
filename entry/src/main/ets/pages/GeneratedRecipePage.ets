@@ -646,21 +646,22 @@ struct GeneratedRecipePage {
       input.waterType = this.recipe.conditions.waterType || 'pond';
       input.temperature = temperature;
       input.season = this.recipe.conditions.season || getCurrentSeason();
-      input.fishDensity = 'medium';
-      input.fishActivity = 'normal';
-      input.fishingMethod = 'rub';
-      // 随机切换模式以获得不同配方
-      const modes: string[] = ['conservative', 'balanced', 'aggressive'];
-      const currentMode = this.recipe.mode || 'balanced';
-      const currentModeIndex = modes.indexOf(currentMode);
-      const nextMode = modes[(currentModeIndex + 1) % modes.length];
-      if (nextMode === 'conservative') {
-        input.mode = 'conservative';
-      } else if (nextMode === 'aggressive') {
-        input.mode = 'aggressive';
-      } else {
-        input.mode = 'balanced';
-      }
+
+      // 随机变化参数以获得不同配方
+      const densities: Array<'sparse' | 'medium' | 'dense'> = ['sparse', 'medium', 'dense'];
+      const activities: Array<'poor' | 'normal' | 'good'> = ['poor', 'normal', 'good'];
+      const methods: Array<'rub' | 'pull' | 'scatter' | 'wrap'> = ['rub', 'pull', 'scatter', 'wrap'];
+      const modes: Array<'conservative' | 'balanced' | 'aggressive'> = ['conservative', 'balanced', 'aggressive'];
+
+      // 随机选择不同的参数组合
+      const randomIndex = Math.floor(Math.random() * 3);
+      input.fishDensity = densities[randomIndex];
+      input.fishActivity = activities[Math.floor(Math.random() * 3)];
+      input.fishingMethod = methods[Math.floor(Math.random() * 4)];
+      input.mode = modes[Math.floor(Math.random() * 3)];
+
+      // 温度也可以小幅波动
+      input.temperature = temperature + Math.floor(Math.random() * 6) - 3;
 
       // 生成新配方
       const newRecipe = generateRecipe(input);
