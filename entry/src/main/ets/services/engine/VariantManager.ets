@@ -89,6 +89,25 @@ export class VariantConfig {
   constructor() {}
 }
 
+// 配比调整模式
+export class RatioPattern {
+  main: number = 0;
+  aux: number = 0;
+  state: number = 0;
+  additive: number = 0;
+
+  constructor() {}
+
+  static create(main: number, aux: number, state: number = 0, additive: number = 0): RatioPattern {
+    const p = new RatioPattern();
+    p.main = main;
+    p.aux = aux;
+    p.state = state;
+    p.additive = additive;
+    return p;
+  }
+}
+
 // 变体管理器
 export class VariantManager {
   private static instance: VariantManager | null = null;
@@ -241,11 +260,11 @@ export class VariantManager {
    */
   private applyRatioAdjustStrategy(variant: RecipeVariant, baseRecipe: GeneratedRecipe, index: number): void {
     // 调整主饵和辅饵的比例
-    const adjustmentPatterns = [
-      { main: 5, aux: -5 },   // 增加主饵
-      { main: -5, aux: 5 },   // 增加辅饵
-      { main: 0, aux: -5, state: 5 },  // 增加状态饵
-      { main: -3, aux: -2, additive: 5 }  // 增加添加剂
+    const adjustmentPatterns: RatioPattern[] = [
+      RatioPattern.create(5, -5, 0, 0),      // 增加主饵
+      RatioPattern.create(-5, 5, 0, 0),      // 增加辅饵
+      RatioPattern.create(0, -5, 5, 0),      // 增加状态饵
+      RatioPattern.create(-3, -2, 0, 5)      // 增加添加剂
     ];
 
     const pattern = adjustmentPatterns[index % adjustmentPatterns.length];
@@ -254,10 +273,14 @@ export class VariantManager {
       const ing = baseRecipe.ingredients[i];
       let adjustment = 0;
 
-      if (ing.category === 'main' && pattern.main !== undefined) {
+      if (ing.category === 'main') {
         adjustment = pattern.main;
-      } else if (ing.category === 'auxiliary' && pattern.aux !== undefined) {
+      } else if (ing.category === 'auxiliary') {
         adjustment = pattern.aux;
+      } else if (ing.category === 'state') {
+        adjustment = pattern.state;
+      } else if (ing.category === 'additive') {
+        adjustment = pattern.additive;
       }
 
       if (adjustment !== 0) {

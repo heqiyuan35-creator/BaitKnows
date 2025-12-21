@@ -48,6 +48,72 @@ export class RecipeFeedback {
   }
 }
 
+// 反馈序列化类 (用于JSON存储)
+export class FeedbackSerializable {
+  recipeId: string = '';
+  rating: string = 'normal';
+  note: string = '';
+  createTime: number = 0;
+
+  constructor() {}
+
+  static create(recipeId: string, rating: string, note: string, createTime: number): FeedbackSerializable {
+    const f = new FeedbackSerializable();
+    f.recipeId = recipeId;
+    f.rating = rating;
+    f.note = note;
+    f.createTime = createTime;
+    return f;
+  }
+}
+
+// 原料使用条目 (用于排序)
+export class IngredientUsageEntry {
+  id: string = '';
+  count: number = 0;
+
+  constructor() {}
+
+  static create(id: string, count: number): IngredientUsageEntry {
+    const e = new IngredientUsageEntry();
+    e.id = id;
+    e.count = count;
+    return e;
+  }
+}
+
+// 味型分数条目 (用于排序)
+export class FlavorScoreEntry {
+  flavor: string = '';
+  score: number = 0;
+
+  constructor() {}
+
+  static create(flavor: string, score: number): FlavorScoreEntry {
+    const e = new FlavorScoreEntry();
+    e.flavor = flavor;
+    e.score = score;
+    return e;
+  }
+}
+
+// 偏好统计数据
+export class PreferenceStatistics {
+  generated: number = 0;
+  saved: number = 0;
+  feedbackCount: number = 0;
+
+  constructor() {}
+
+  static create(generated: number, saved: number, feedbackCount: number): PreferenceStatistics {
+    const s = new PreferenceStatistics();
+    s.generated = generated;
+    s.saved = saved;
+    s.feedbackCount = feedbackCount;
+    return s;
+  }
+}
+
 // 偏好学习器
 export class PreferenceLearner {
   private static instance: PreferenceLearner | null = null;
@@ -153,15 +219,10 @@ export class PreferenceLearner {
 
       // 保存反馈历史 (只保留最近50条)
       const recentFeedback = this.preference.feedbackHistory.slice(-50);
-      const feedbackArr: Array<Record<string, Object>> = [];
+      const feedbackArr: Array<FeedbackSerializable> = [];
       for (let i = 0; i < recentFeedback.length; i++) {
         const fb = recentFeedback[i];
-        feedbackArr.push({
-          recipeId: fb.recipeId,
-          rating: fb.rating,
-          note: fb.note,
-          createTime: fb.createTime
-        });
+        feedbackArr.push(FeedbackSerializable.create(fb.recipeId, fb.rating, fb.note, fb.createTime));
       }
       await this.store.put('feedbackHistory', JSON.stringify(feedbackArr));
 
@@ -309,9 +370,9 @@ export class PreferenceLearner {
    * 获取常用原料列表
    */
   getFrequentIngredients(limit: number = 10): string[] {
-    const entries: Array<{ id: string, count: number }> = [];
+    const entries: Array<IngredientUsageEntry> = [];
     this.preference.ingredientUsage.forEach((count, id) => {
-      entries.push({ id, count });
+      entries.push(IngredientUsageEntry.create(id, count));
     });
 
     // 按使用次数排序
@@ -329,9 +390,9 @@ export class PreferenceLearner {
    * 获取偏好的味型
    */
   getPreferredFlavors(): string[] {
-    const entries: Array<{ flavor: string, score: number }> = [];
+    const entries: Array<FlavorScoreEntry> = [];
     this.preference.flavorPreference.forEach((score, flavor) => {
-      entries.push({ flavor, score });
+      entries.push(FlavorScoreEntry.create(flavor, score));
     });
 
     entries.sort((a, b) => b.score - a.score);
@@ -394,12 +455,12 @@ export class PreferenceLearner {
   /**
    * 获取统计数据
    */
-  getStatistics(): { generated: number, saved: number, feedbackCount: number } {
-    return {
-      generated: this.preference.totalRecipesGenerated,
-      saved: this.preference.totalRecipesSaved,
-      feedbackCount: this.preference.feedbackHistory.length
-    };
+  getStatistics(): PreferenceStatistics {
+    return PreferenceStatistics.create(
+      this.preference.totalRecipesGenerated,
+      this.preference.totalRecipesSaved,
+      this.preference.feedbackHistory.length
+    );
   }
 
   /**
