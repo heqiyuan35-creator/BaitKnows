@@ -315,8 +315,7 @@ struct FishAddPage {
 
   @Builder
   WaterTypeSelector() {
-    // 使用 Flex 替代 Row + flexWrap
-    Flex({ wrap: FlexWrap.Wrap, space: { main: LengthMetrics.vp(8), cross: LengthMetrics.vp(8) } }) {
+    Row({ space: 8 }) {
       ForEach(this.waterTypes, (item: SelectOption) => {
         Row() {
           Checkbox()
@@ -351,7 +350,7 @@ struct FishAddPage {
 
   @Builder
   FeedingTypeSelector() {
-    Flex({ wrap: FlexWrap.Wrap, space: { main: LengthMetrics.vp(8), cross: LengthMetrics.vp(8) } }) {
+    Row({ space: 8 }) {
       ForEach(this.feedingTypes, (item: SelectOption) => {
         Text(item.name)
           .fontSize(ThemeConstants.FONT_SIZE_SM)
@@ -373,7 +372,7 @@ struct FishAddPage {
 
   @Builder
   WaterLayerSelector() {
-    Flex({ wrap: FlexWrap.Wrap, space: { main: LengthMetrics.vp(8), cross: LengthMetrics.vp(8) } }) {
+    Row({ space: 8 }) {
       ForEach(this.waterLayers, (item: SelectOption) => {
         Text(item.name)
           .fontSize(ThemeConstants.FONT_SIZE_SM)
@@ -395,7 +394,7 @@ struct FishAddPage {
 
   @Builder
   ActivityTimeSelector() {
-    Flex({ wrap: FlexWrap.Wrap, space: { main: LengthMetrics.vp(8), cross: LengthMetrics.vp(8) } }) {
+    Row({ space: 8 }) {
       ForEach(this.activityTimes, (item: SelectOption) => {
         Text(item.name)
           .fontSize(ThemeConstants.FONT_SIZE_SM)
