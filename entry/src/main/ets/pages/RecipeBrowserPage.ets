@@ -6,7 +6,7 @@ import { ThemeColors } from '../theme/ThemeColors';
 import { ThemeConstants } from '../theme/ThemeConstants';
 import { Router } from '../router/Router';
 import { ALL_FISH_DATA, FishData, getFishByWaterType } from '../data/FishData';
-import { userDataService, CustomRecipe } from '../services/UserDataService';
+import { userDataService, CustomRecipe, CustomFish } from '../services/UserDataService';
 
 // 水域Tab类
 class WaterTab {
@@ -23,12 +23,14 @@ class WaterTab {
 class FishFilter {
   id: string = '';
   name: string = '';
-  icon: Resource = $r('app.media.Fishs');
+  icon: Resource | string = $r('app.media.Fishs');
+  isCustom: boolean = false;  // 是否为用户自定义鱼种
 
-  constructor(id: string = '', name: string = '', icon: Resource = $r('app.media.Fishs')) {
+  constructor(id: string = '', name: string = '', icon: Resource | string = $r('app.media.Fishs'), isCustom: boolean = false) {
     this.id = id;
     this.name = name;
     this.icon = icon;
+    this.isCustom = isCustom;
   }
 }
 
@@ -86,37 +88,62 @@ export struct RecipeBrowserPage {
   ];
 
   aboutToAppear(): void {
-    this.loadAllData();
+    this.loadAllData(false);
+  }
+
+  // 页面显示时刷新数据（从其他页面返回时）
+  onPageShow(): void {
+    this.loadAllData(true);
   }
 
   // 加载所有数据
-  private async loadAllData(): Promise<void> {
-    await userDataService.load();
+  private async loadAllData(forceReload: boolean = false): Promise<void> {
+    await userDataService.load(forceReload);
     this.loadRecipes();
     this.updateFishFilters();
   }
 
-  // 更新当前水域可用的鱼种（使用统一数据源）
+  // 更新当前水域可用的鱼种（使用统一数据源 + 用户自定义鱼种）
   private updateFishFilters(): void {
     const waterType = this.waterTabs[this.currentWaterTab].type;
 
-    // 从统一数据源获取该水域的鱼种
+    // 从统一数据源获取该水域的系统鱼种
     const fishList = getFishByWaterType(waterType);
 
     // 构建鱼种筛选列表
-    const filters: FishFilter[] = [new FishFilter('all', '全部', $r('app.media.Fishs'))];
+    const filters: FishFilter[] = [new FishFilter('all', '全部', $r('app.media.Fishs'), false)];
 
+    // 添加系统鱼种
     fishList.forEach((fish: FishData) => {
-      filters.push(new FishFilter(fish.id, fish.name, fish.icon));
+      filters.push(new FishFilter(fish.id, fish.name, fish.icon, false));
+    });
+
+    // 添加用户自定义鱼种（筛选出适合当前水域的）
+    const customFishList = userDataService.getCustomFish();
+    customFishList.forEach((fish: CustomFish) => {
+      if (fish.waterTypes.includes(waterType)) {
+        // 用户自定义鱼种使用图片路径或默认图标
+        const iconPath = fish.icon || '';
+        filters.push(new FishFilter(fish.id, fish.name, iconPath || $r('app.media.fishImage'), true));
+      }
     });
 
     this.fishFilters = filters;
   }
 
-  // 根据鱼种ID获取中文名
+  // 根据鱼种ID获取中文名（支持系统鱼种和用户自定义鱼种）
   private getFishName(fishId: string): string {
+    // 先从系统鱼种查找
     const fish = ALL_FISH_DATA.find((f: FishData) => f.id === fishId);
-    return fish ? fish.name : fishId;
+    if (fish) {
+      return fish.name;
+    }
+    // 再从用户自定义鱼种查找
+    const customFish = userDataService.getCustomFish().find((f: CustomFish) => f.id === fishId);
+    if (customFish) {
+      return customFish.name;
+    }
+    return fishId;
   }
 
   private loadRecipes(): void {
@@ -255,6 +282,8 @@ export struct RecipeBrowserPage {
         waterType = 'river';
       } else if (ur.waterType === 'reservoir') {
         waterType = 'reservoir';
+      } else if (ur.waterType === 'lake') {
+        waterType = 'lake';
       } else if (ur.waterType === 'pond') {
         waterType = 'pond';
       }
@@ -302,6 +331,11 @@ export struct RecipeBrowserPage {
         if (!recipe.targetFish.includes(targetFishName)) return false;
       }
       return true;
+    });
+
+    // 更新收藏状态
+    this.recipes.forEach((recipe: RecipeCard) => {
+      recipe.isFavorite = userDataService.isFavorite(recipe.id) || recipe.isUserRecipe;
     });
   }
 

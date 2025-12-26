@@ -5,34 +5,101 @@
 import { router } from '@kit.ArkUI';
 import { ThemeColors } from '../theme/ThemeColors';
 import { ThemeConstants } from '../theme/ThemeConstants';
-import { userDataService } from '../services/UserDataService';
+import { userDataService, CustomFish } from '../services/UserDataService';
+import { ALL_FISH_DATA, FishData } from '../data/FishData';
 
 // 原料分类类
-class IngredientCategory {
+class IngredientCategoryItem {
   id: string = '';
   name: string = '';
   icon: string = '';
 }
 
+// 子分类类
+class SubCategoryItem {
+  id: string = '';
+  name: string = '';
+}
+
+// 季节选项
+class SeasonItem {
+  id: string = '';
+  name: string = '';
+}
+
 // 创建分类辅助函数
-function makeCategory(id: string, name: string, icon: string): IngredientCategory {
-  const cat = new IngredientCategory();
+function makeCategory(id: string, name: string, icon: string): IngredientCategoryItem {
+  const cat = new IngredientCategoryItem();
   cat.id = id;
   cat.name = name;
   cat.icon = icon;
   return cat;
 }
 
+function makeSubCategory(id: string, name: string): SubCategoryItem {
+  const sub = new SubCategoryItem();
+  sub.id = id;
+  sub.name = name;
+  return sub;
+}
+
+function makeSeason(id: string, name: string): SeasonItem {
+  const s = new SeasonItem();
+  s.id = id;
+  s.name = name;
+  return s;
+}
+
+// 扩展数据类
+class PhysicalData {
+  atomization: number = 5;
+  viscosity: number = 5;
+  weight: number = 5;
+}
+
+class DosageData {
+  min: number = 10;
+  max: number = 50;
+  unit: string = 'g';
+}
+
+class ExtendedIngredientData {
+  subCategory: string = '';
+  seasons: string[] = [];
+  physical: PhysicalData = new PhysicalData();
+  dosage: DosageData = new DosageData();
+}
+
 @Entry
 @Component
 struct IngredientAddPage {
+  // 基本信息
   @State ingredientName: string = '';
   @State selectedCategory: string = 'base';
+  @State selectedSubCategory: string = 'grain';
   @State description: string = '';
-  @State targetFish: string = '';
-  @State usage: string = '';
 
-  private categories: IngredientCategory[] = [
+  // 适用信息
+  @State selectedFishIds: string[] = [];
+  @State selectedSeasons: string[] = ['spring', 'summer', 'autumn', 'winter'];
+
+  // 物理特性
+  @State atomization: number = 5;
+  @State viscosity: number = 5;
+  @State weight: number = 5;
+
+  // 用量范围
+  @State dosageMin: number = 10;
+  @State dosageMax: number = 50;
+  @State dosageUnit: string = 'g';
+
+  // 弹窗状态
+  @State showFishPicker: boolean = false;
+  @State showToast: boolean = false;
+  @State toastMessage: string = '';
+  @State isSaving: boolean = false;
+
+  private categories: IngredientCategoryItem[] = [
     makeCategory('base', '基础饵', '🌾'),
     makeCategory('protein', '蛋白饵', '🦐'),
     makeCategory('additive', '添加剂', '💧'),
@@ -44,28 +111,58 @@ struct IngredientAddPage {
     makeCategory('folk', '民间偏方', '🧪')
   ];
 
+  private subCategories: Record<string, SubCategoryItem[]> = {
+    'base': [makeSubCategory('grain', '谷物'), makeSubCategory('tuber', '薯类'), makeSubCategory('bean', '豆类')],
+    'protein': [makeSubCategory('aquatic', '水产'), makeSubCategory('insect', '昆虫'), makeSubCategory('animal', '动物')],
+    'additive': [makeSubCategory('essence', '香精'), makeSubCategory('attractant', '诱食剂'), makeSubCategory('acid', '酸类'), makeSubCategory('condiment', '调味料'), makeSubCategory('oil', '油类')],
+    'state': [makeSubCategory('atomizer', '雾化类'), makeSubCategory('weight', '增重类')],
+    'binder': [makeSubCategory('grain', '谷物淀粉'), makeSubCategory('tuber', '薯类淀粉')],
+    'natural': [makeSubCategory('plant', '植物'), makeSubCategory('seed', '种子')],
+    'pellet': [makeSubCategory('other', '颗粒')],
+    'live': [makeSubCategory('worm', '蠕虫'), makeSubCategory('baitfish', '饵鱼')],
+    'folk': [makeSubCategory('medicine', '药材'), makeSubCategory('beverage', '饮品'), makeSubCategory('fermented', '发酵物'), makeSubCategory('other', '其他')]
+  };
+
+  private seasons: SeasonItem[] = [
+    makeSeason('spring', '春季'),
+    makeSeason('summer', '夏季'),
+    makeSeason('autumn', '秋季'),
+    makeSeason('winter', '冬季')
+  ];
+
+  async aboutToAppear(): Promise<void> {
+    await userDataService.load();
+  }
+
   build() {
     Column() {
-      // 顶部导航栏
       this.NavBar()
 
-      // 表单内容
       Scroll() {
-        Column({ space: 20 }) {
+        Column({ space: 16 }) {
           // 原料名称
           this.NameSection()
 
           // 原料分类
           this.CategorySection()
 
-          // 原料描述
-          this.DescriptionSection()
+          // 子分类
+          this.SubCategorySection()
 
           // 适用鱼种
           this.TargetFishSection()
 
-          // 使用方法
-          this.UsageSection()
+          // 适用季节
+          this.SeasonSection()
+
+          // 物理特性
+          this.PhysicalSection()
+
+          // 用量范围
+          this.DosageSection()
+
+          // 原料描述/备注
+          this.DescriptionSection()
 
           // 保存按钮
           Button('保存原料')
@@ -73,15 +170,36 @@ struct IngredientAddPage {
             .height(48)
             .fontSize(16)
             .fontWeight(FontWeight.Medium)
-            .backgroundColor(ThemeColors.PRIMARY)
+            .backgroundColor(this.isSaving ? ThemeColors.TEXT_MUTED : ThemeColors.PRIMARY)
             .fontColor(ThemeColors.TEXT_PRIMARY)
             .margin({ top: 16, bottom: 32 })
+            .enabled(!this.isSaving)
             .onClick(() => this.saveIngredient())
         }
         .padding(16)
       }
       .layoutWeight(1)
       .scrollBar(BarState.Off)
+
+      // 鱼种选择弹窗
+      if (this.showFishPicker) {
+        this.FishPickerDialog()
+      }
+
+      // Toast 提示
+      if (this.showToast) {
+        Column() {
+          Text(this.toastMessage)
+            .fontSize(14)
+            .fontColor(Color.White)
+            .padding({ left: 16, right: 16, top: 10, bottom: 10 })
+            .backgroundColor('rgba(0, 0, 0, 0.7)')
+            .borderRadius(20)
+        }
+        .width('100%')
+        .position({ x: 0, y: '40%' })
+        .justifyContent(FlexAlign.Center)
+      }
     }
     .width('100%')
     .height('100%')
@@ -110,6 +228,7 @@ struct IngredientAddPage {
     .width('100%')
     .height(56)
     .padding({ left: 8, right: 16 })
+    .margin({ top: 44 })
     .backgroundColor(ThemeColors.BG_SECONDARY)
   }
 
@@ -144,113 +263,35 @@ struct IngredientAddPage {
         .fontColor(ThemeColors.TEXT_SECONDARY)
         .fontWeight(FontWeight.Medium)
 
-      this.CategorySelector()
-    }
-    .width('100%')
-    .alignItems(HorizontalAlign.Start)
-  }
-
-  @Builder
-  DescriptionSection() {
-    Column({ space: 8 }) {
-      Text('原料描述')
-        .fontSize(ThemeConstants.FONT_SIZE_SM)
-        .fontColor(ThemeColors.TEXT_SECONDARY)
-        .fontWeight(FontWeight.Medium)
-
-      TextArea({ placeholder: '描述原料的特点、来源等', text: this.description })
+      Column({ space: 8 }) {
+        Row({ space: 8 }) {
+          ForEach(this.categories.slice(0, 3), (cat: IngredientCategoryItem) => {
+            this.CategoryItem(cat)
+          })
+        }
         .width('100%')
-        .height(100)
-        .fontSize(ThemeConstants.FONT_SIZE_BASE)
-        .backgroundColor(ThemeColors.BG_CARD)
-        .borderRadius(ThemeConstants.RADIUS_SM)
-        .padding(12)
-        .onChange((value: string) => {
-          this.description = value;
-        })
-    }
-    .width('100%')
-    .alignItems(HorizontalAlign.Start)
-  }
 
-  @Builder
-  TargetFishSection() {
-    Column({ space: 8 }) {
-      Text('适用鱼种')
-        .fontSize(ThemeConstants.FONT_SIZE_SM)
-        .fontColor(ThemeColors.TEXT_SECONDARY)
-        .fontWeight(FontWeight.Medium)
-
-      TextInput({ placeholder: '如：鲫鱼、鲤鱼（多个用顿号分隔）', text: this.targetFish })
+        Row({ space: 8 }) {
+          ForEach(this.categories.slice(3, 6), (cat: IngredientCategoryItem) => {
+            this.CategoryItem(cat)
+          })
+        }
         .width('100%')
-        .height(48)
-        .fontSize(ThemeConstants.FONT_SIZE_BASE)
-        .backgroundColor(ThemeColors.BG_CARD)
-        .borderRadius(ThemeConstants.RADIUS_SM)
-        .padding({ left: 12, right: 12 })
-        .onChange((value: string) => {
-          this.targetFish = value;
-        })
-    }
-    .width('100%')
-    .alignItems(HorizontalAlign.Start)
-  }
 
-  @Builder
-  UsageSection() {
-    Column({ space: 8 }) {
-      Text('使用方法')
-        .fontSize(ThemeConstants.FONT_SIZE_SM)
-        .fontColor(ThemeColors.TEXT_SECONDARY)
-        .fontWeight(FontWeight.Medium)
-
-      TextArea({ placeholder: '描述如何使用这种原料', text: this.usage })
+        Row({ space: 8 }) {
+          ForEach(this.categories.slice(6, 9), (cat: IngredientCategoryItem) => {
+            this.CategoryItem(cat)
+          })
+        }
         .width('100%')
-        .height(80)
-        .fontSize(ThemeConstants.FONT_SIZE_BASE)
-        .backgroundColor(ThemeColors.BG_CARD)
-        .borderRadius(ThemeConstants.RADIUS_SM)
-        .padding(12)
-        .onChange((value: string) => {
-          this.usage = value;
-        })
+      }
     }
     .width('100%')
     .alignItems(HorizontalAlign.Start)
   }
 
   @Builder
-  CategorySelector() {
-    Column({ space: 8 }) {
-      // 第一行 3个
-      Row({ space: 8 }) {
-        ForEach(this.categories.slice(0, 3), (cat: IngredientCategory) => {
-          this.CategoryItem(cat)
-        })
-      }
-      .width('100%')
-
-      // 第二行 3个
-      Row({ space: 8 }) {
-        ForEach(this.categories.slice(3, 6), (cat: IngredientCategory) => {
-          this.CategoryItem(cat)
-        })
-      }
-      .width('100%')
-
-      // 第三行 3个
-      Row({ space: 8 }) {
-        ForEach(this.categories.slice(6, 9), (cat: IngredientCategory) => {
-          this.CategoryItem(cat)
-        })
-      }
-      .width('100%')
-    }
-    .width('100%')
-  }
-
-  @Builder
-  CategoryItem(cat: IngredientCategory) {
+  CategoryItem(cat: IngredientCategoryItem) {
     Column({ space: 4 }) {
       Text(cat.icon)
         .fontSize(24)
@@ -269,35 +310,505 @@ struct IngredientAddPage {
     })
     .onClick(() => {
       this.selectedCategory = cat.id;
+      // 重置子分类
+      const subs = this.subCategories[cat.id];
+      if (subs && subs.length > 0) {
+        this.selectedSubCategory = subs[0].id;
+      }
     })
   }
 
+  // 获取当前分类的子分类
+  private getCurrentSubCategories(): SubCategoryItem[] {
+    return this.subCategories[this.selectedCategory] || [];
+  }
+
+  @Builder
+  SubCategorySection() {
+    Column({ space: 8 }) {
+      Text('子分类')
+        .fontSize(ThemeConstants.FONT_SIZE_SM)
+        .fontColor(ThemeColors.TEXT_SECONDARY)
+        .fontWeight(FontWeight.Medium)
+
+      Flex({ wrap: FlexWrap.Wrap }) {
+        ForEach(this.getCurrentSubCategories(), (sub: SubCategoryItem) => {
+          Text(sub.name)
+            .fontSize(ThemeConstants.FONT_SIZE_SM)
+            .fontColor(this.selectedSubCategory === sub.id ? ThemeColors.PRIMARY : ThemeColors.TEXT_SECONDARY)
+            .padding({ left: 12, right: 12, top: 6, bottom: 6 })
+            .margin({ right: 8, bottom: 8 })
+            .backgroundColor(this.selectedSubCategory === sub.id ? 'rgba(232, 168, 73, 0.15)' : ThemeColors.BG_CARD)
+            .borderRadius(ThemeConstants.RADIUS_FULL)
+            .border({
+              width: 1,
+              color: this.selectedSubCategory === sub.id ? ThemeColors.PRIMARY : Color.Transparent
+            })
+            .onClick(() => {
+              this.selectedSubCategory = sub.id;
+            })
+        })
+      }
+      .width('100%')
+    }
+    .width('100%')
+    .alignItems(HorizontalAlign.Start)
+  }
+
+  @Builder
+  TargetFishSection() {
+    Column({ space: 8 }) {
+      Text('适用鱼种 *')
+        .fontSize(ThemeConstants.FONT_SIZE_SM)
+        .fontColor(ThemeColors.TEXT_SECONDARY)
+        .fontWeight(FontWeight.Medium)
+
+      Row() {
+        if (this.selectedFishIds.length === 0) {
+          Text('点击选择适用鱼种')
+            .fontSize(ThemeConstants.FONT_SIZE_BASE)
+            .fontColor(ThemeColors.TEXT_HINT)
+        } else {
+          Text(this.getSelectedFishNames())
+            .fontSize(ThemeConstants.FONT_SIZE_BASE)
+            .fontColor(ThemeColors.TEXT_PRIMARY)
+            .maxLines(2)
+            .textOverflow({ overflow: TextOverflow.Ellipsis })
+        }
+        Blank()
+        Text('>')
+          .fontSize(16)
+          .fontColor(ThemeColors.TEXT_MUTED)
+      }
+      .width('100%')
+      .height(48)
+      .padding({ left: 12, right: 12 })
+      .backgroundColor(ThemeColors.BG_CARD)
+      .borderRadius(ThemeConstants.RADIUS_SM)
+      .onClick(() => {
+        this.showFishPicker = true;
+      })
+    }
+    .width('100%')
+    .alignItems(HorizontalAlign.Start)
+  }
+
+  @Builder
+  SeasonSection() {
+    Column({ space: 8 }) {
+      Text('适用季节')
+        .fontSize(ThemeConstants.FONT_SIZE_SM)
+        .fontColor(ThemeColors.TEXT_SECONDARY)
+        .fontWeight(FontWeight.Medium)
+
+      Row({ space: 8 }) {
+        ForEach(this.seasons, (season: SeasonItem) => {
+          Text(season.name)
+            .fontSize(ThemeConstants.FONT_SIZE_SM)
+            .fontColor(this.selectedSeasons.includes(season.id) ? ThemeColors.PRIMARY : ThemeColors.TEXT_SECONDARY)
+            .padding({ left: 12, right: 12, top: 6, bottom: 6 })
+            .backgroundColor(this.selectedSeasons.includes(season.id) ? 'rgba(232, 168, 73, 0.15)' : ThemeColors.BG_CARD)
+            .borderRadius(ThemeConstants.RADIUS_FULL)
+            .border({
+              width: 1,
+              color: this.selectedSeasons.includes(season.id) ? ThemeColors.PRIMARY : Color.Transparent
+            })
+            .onClick(() => {
+              if (this.selectedSeasons.includes(season.id)) {
+                // 至少保留一个季节
+                if (this.selectedSeasons.length > 1) {
+                  const idx = this.selectedSeasons.indexOf(season.id);
+                  this.selectedSeasons.splice(idx, 1);
+                  this.selectedSeasons = this.selectedSeasons.slice();
+                }
+              } else {
+                this.selectedSeasons.push(season.id);
+                this.selectedSeasons = this.selectedSeasons.slice();
+              }
+            })
+        })
+      }
+      .width('100%')
+    }
+    .width('100%')
+    .alignItems(HorizontalAlign.Start)
+  }
+
+  @Builder
+  PhysicalSection() {
+    Column({ space: 12 }) {
+      Text('物理特性')
+        .fontSize(ThemeConstants.FONT_SIZE_SM)
+        .fontColor(ThemeColors.TEXT_SECONDARY)
+        .fontWeight(FontWeight.Medium)
+
+      // 雾化性
+      Column({ space: 4 }) {
+        Row() {
+          Text('雾化性')
+            .fontSize(ThemeConstants.FONT_SIZE_SM)
+            .fontColor(ThemeColors.TEXT_PRIMARY)
+          Blank()
+          Text(this.getPhysicalLabel(this.atomization))
+            .fontSize(ThemeConstants.FONT_SIZE_SM)
+            .fontColor(ThemeColors.PRIMARY)
+        }
+        .width('100%')
+
+        Slider({ value: this.atomization, min: 1, max: 10, step: 1, style: SliderStyle.OutSet })
+          .width('100%')
+          .blockColor(ThemeColors.PRIMARY)
+          .trackColor(ThemeColors.BG_TERTIARY)
+          .selectedColor(ThemeColors.PRIMARY)
+          .onChange((value: number) => { this.atomization = Math.round(value); })
+      }
+      .width('100%')
+
+      // 粘度
+      Column({ space: 4 }) {
+        Row() {
+          Text('粘度')
+            .fontSize(ThemeConstants.FONT_SIZE_SM)
+            .fontColor(ThemeColors.TEXT_PRIMARY)
+          Blank()
+          Text(this.getPhysicalLabel(this.viscosity))
+            .fontSize(ThemeConstants.FONT_SIZE_SM)
+            .fontColor(ThemeColors.PRIMARY)
+        }
+        .width('100%')
+
+        Slider({ value: this.viscosity, min: 1, max: 10, step: 1, style: SliderStyle.OutSet })
+          .width('100%')
+          .blockColor(ThemeColors.PRIMARY)
+          .trackColor(ThemeColors.BG_TERTIARY)
+          .selectedColor(ThemeColors.PRIMARY)
+          .onChange((value: number) => { this.viscosity = Math.round(value); })
+      }
+      .width('100%')
+
+      // 比重
+      Column({ space: 4 }) {
+        Row() {
+          Text('比重')
+            .fontSize(ThemeConstants.FONT_SIZE_SM)
+            .fontColor(ThemeColors.TEXT_PRIMARY)
+          Blank()
+          Text(this.getPhysicalLabel(this.weight))
+            .fontSize(ThemeConstants.FONT_SIZE_SM)
+            .fontColor(ThemeColors.PRIMARY)
+        }
+        .width('100%')
+
+        Slider({ value: this.weight, min: 1, max: 10, step: 1, style: SliderStyle.OutSet })
+          .width('100%')
+          .blockColor(ThemeColors.PRIMARY)
+          .trackColor(ThemeColors.BG_TERTIARY)
+          .selectedColor(ThemeColors.PRIMARY)
+          .onChange((value: number) => { this.weight = Math.round(value); })
+      }
+      .width('100%')
+    }
+    .width('100%')
+    .padding(12)
+    .backgroundColor(ThemeColors.BG_CARD)
+    .borderRadius(ThemeConstants.RADIUS_SM)
+    .alignItems(HorizontalAlign.Start)
+  }
+
+  private getPhysicalLabel(value: number): string {
+    if (value <= 2) return '很低';
+    if (value <= 4) return '较低';
+    if (value <= 6) return '中等';
+    if (value <= 8) return '较高';
+    return '很高';
+  }
+
+  @Builder
+  DosageSection() {
+    Column({ space: 8 }) {
+      Text('建议用量')
+        .fontSize(ThemeConstants.FONT_SIZE_SM)
+        .fontColor(ThemeColors.TEXT_SECONDARY)
+        .fontWeight(FontWeight.Medium)
+
+      Row({ space: 8 }) {
+        TextInput({ placeholder: '最小', text: this.dosageMin.toString() })
+          .width(80)
+          .height(40)
+          .fontSize(ThemeConstants.FONT_SIZE_SM)
+          .backgroundColor(ThemeColors.BG_CARD)
+          .borderRadius(ThemeConstants.RADIUS_SM)
+          .textAlign(TextAlign.Center)
+          .type(InputType.Number)
+          .onChange((value: string) => {
+            const num = parseInt(value);
+            if (!isNaN(num) && num >= 0) this.dosageMin = num;
+          })
+
+        Text('~')
+          .fontSize(ThemeConstants.FONT_SIZE_BASE)
+          .fontColor(ThemeColors.TEXT_SECONDARY)
+
+        TextInput({ placeholder: '最大', text: this.dosageMax.toString() })
+          .width(80)
+          .height(40)
+          .fontSize(ThemeConstants.FONT_SIZE_SM)
+          .backgroundColor(ThemeColors.BG_CARD)
+          .borderRadius(ThemeConstants.RADIUS_SM)
+          .textAlign(TextAlign.Center)
+          .type(InputType.Number)
+          .onChange((value: string) => {
+            const num = parseInt(value);
+            if (!isNaN(num) && num >= 0) this.dosageMax = num;
+          })
+
+        Text('克')
+          .fontSize(ThemeConstants.FONT_SIZE_BASE)
+          .fontColor(ThemeColors.TEXT_SECONDARY)
+      }
+      .width('100%')
+    }
+    .width('100%')
+    .alignItems(HorizontalAlign.Start)
+  }
+
+  @Builder
+  DescriptionSection() {
+    Column({ space: 8 }) {
+      Text('备注说明')
+        .fontSize(ThemeConstants.FONT_SIZE_SM)
+        .fontColor(ThemeColors.TEXT_SECONDARY)
+        .fontWeight(FontWeight.Medium)
+
+      TextArea({ placeholder: '描述原料的特点、使用技巧等', text: this.description })
+        .width('100%')
+        .height(80)
+        .fontSize(ThemeConstants.FONT_SIZE_BASE)
+        .backgroundColor(ThemeColors.BG_CARD)
+        .borderRadius(ThemeConstants.RADIUS_SM)
+        .padding(12)
+        .onChange((value: string) => {
+          this.description = value;
+        })
+    }
+    .width('100%')
+    .alignItems(HorizontalAlign.Start)
+  }
+
+  @Builder
+  FishPickerDialog() {
+    Stack() {
+      Column()
+        .width('100%')
+        .height('100%')
+        .backgroundColor('rgba(0,0,0,0.5)')
+        .onClick(() => { this.showFishPicker = false; })
+
+      Column() {
+        Row() {
+          Text('选择适用鱼种')
+            .fontSize(18)
+            .fontWeight(FontWeight.Bold)
+            .fontColor(ThemeColors.TEXT_PRIMARY)
+          Blank()
+          Text('完成')
+            .fontSize(16)
+            .fontColor(ThemeColors.PRIMARY)
+            .onClick(() => { this.showFishPicker = false; })
+        }
+        .width('100%')
+        .padding({ bottom: 12 })
+
+        Scroll() {
+          Column({ space: 8 }) {
+            // 系统鱼种
+            ForEach(ALL_FISH_DATA, (fish: FishData) => {
+              Row() {
+                Image(fish.icon)
+                  .width(32)
+                  .height(32)
+                  .borderRadius(16)
+                  .margin({ right: 12 })
+
+                Text(fish.name)
+                  .fontSize(16)
+                  .fontColor(ThemeColors.TEXT_PRIMARY)
+                  .layoutWeight(1)
+
+                Checkbox()
+                  .select(this.selectedFishIds.includes(fish.id))
+                  .selectedColor(ThemeColors.PRIMARY)
+                  .onChange((checked: boolean) => {
+                    if (checked) {
+                      this.selectedFishIds.push(fish.id);
+                    } else {
+                      const idx = this.selectedFishIds.indexOf(fish.id);
+                      if (idx > -1) this.selectedFishIds.splice(idx, 1);
+                    }
+                    this.selectedFishIds = this.selectedFishIds.slice();
+                  })
+              }
+              .width('100%')
+              .padding(10)
+              .backgroundColor(ThemeColors.BG_TERTIARY)
+              .borderRadius(8)
+            })
+
+            // 用户自定义鱼种
+            ForEach(userDataService.getCustomFish(), (fish: CustomFish) => {
+              Row() {
+                Image(fish.icon || $r('app.media.fishImage'))
+                  .width(32)
+                  .height(32)
+                  .borderRadius(16)
+                  .margin({ right: 12 })
+
+                Row({ space: 4 }) {
+                  Text(fish.name)
+                    .fontSize(16)
+                    .fontColor(ThemeColors.TEXT_PRIMARY)
+
+                  Text('自定义')
+                    .fontSize(10)
+                    .fontColor(ThemeColors.PRIMARY)
+                    .padding({ left: 4, right: 4, top: 2, bottom: 2 })
+                    .backgroundColor('rgba(232, 168, 73, 0.15)')
+                    .borderRadius(4)
+                }
+                .layoutWeight(1)
+
+                Checkbox()
+                  .select(this.selectedFishIds.includes(fish.id))
+                  .selectedColor(ThemeColors.PRIMARY)
+                  .onChange((checked: boolean) => {
+                    if (checked) {
+                      this.selectedFishIds.push(fish.id);
+                    } else {
+                      const idx = this.selectedFishIds.indexOf(fish.id);
+                      if (idx > -1) this.selectedFishIds.splice(idx, 1);
+                    }
+                    this.selectedFishIds = this.selectedFishIds.slice();
+                  })
+              }
+              .width('100%')
+              .padding(10)
+              .backgroundColor(ThemeColors.BG_TERTIARY)
+              .borderRadius(8)
+            })
+          }
+        }
+        .height(400)
+        .scrollBar(BarState.Auto)
+      }
+      .width('90%')
+      .padding(20)
+      .backgroundColor(ThemeColors.BG_PRIMARY)
+      .borderRadius(16)
+    }
+    .width('100%')
+    .height('100%')
+    .position({ x: 0, y: 0 })
+  }
+
+  private getSelectedFishNames(): string {
+    return this.selectedFishIds
+      .map((id: string) => {
+        // 先从系统鱼种查找
+        const fish = ALL_FISH_DATA.find((f: FishData) => f.id === id);
+        if (fish) {
+          return fish.name;
+        }
+        // 再从用户自定义鱼种查找
+        const customFish = userDataService.getCustomFish().find((f: CustomFish) => f.id === id);
+        if (customFish) {
+          return customFish.name;
+        }
+        return '';
+      })
+      .filter((name: string) => name !== '')
+      .join('、');
+  }
+
+  private showToastMessage(message: string): void {
+    this.toastMessage = message;
+    this.showToast = true;
+    setTimeout(() => { this.showToast = false; }, 2000);
+  }
+
+
   private async saveIngredient(): Promise<void> {
-    if (!this.ingredientName.trim()) {
-      console.info('请输入原料名称');
+    if (this.isSaving) return;
+
+    // 验证名称
+    const trimmedName = this.ingredientName.trim();
+    if (!trimmedName) {
+      this.showToastMessage('请输入原料名称');
       return;
     }
 
-    // 解析目标鱼种
-    const fishList: string[] = [];
-    const parts = this.targetFish.split(/[、,，]/);
-    for (let i = 0; i < parts.length; i++) {
-      const s = parts[i].trim();
-      if (s.length > 0) {
-        fishList.push(s);
-      }
+    if (trimmedName.length < 2) {
+      this.showToastMessage('原料名称至少2个字符');
+      return;
     }
 
-    // 保存到 UserDataService
-    await userDataService.addIngredient(
-      this.ingredientName.trim(),
-      this.selectedCategory,
-      this.description.trim(),
-      fishList,
-      this.usage.trim()
-    );
+    if (trimmedName.length > 20) {
+      this.showToastMessage('原料名称不能超过20个字符');
+      return;
+    }
 
-    console.info('原料保存成功:', this.ingredientName);
-    router.back();
+    // 验证鱼种
+    if (this.selectedFishIds.length === 0) {
+      this.showToastMessage('请选择适用鱼种');
+      return;
+    }
+
+    // 验证用量
+    if (this.dosageMin > this.dosageMax) {
+      this.showToastMessage('最小用量不能大于最大用量');
+      return;
+    }
+
+    this.isSaving = true;
+
+    try {
+      // 构建扩展数据
+      const physical = new PhysicalData();
+      physical.atomization = this.atomization;
+      physical.viscosity = this.viscosity;
+      physical.weight = this.weight;
+
+      const dosage = new DosageData();
+      dosage.min = this.dosageMin;
+      dosage.max = this.dosageMax;
+      dosage.unit = this.dosageUnit;
+
+      const extData = new ExtendedIngredientData();
+      extData.subCategory = this.selectedSubCategory;
+      extData.seasons = this.selectedSeasons.slice();
+      extData.physical = physical;
+      extData.dosage = dosage;
+
+      const extendedData: string = JSON.stringify(extData);
+
+      // 保存到 UserDataService
+      await userDataService.addIngredient(
+        trimmedName,
+        this.selectedCategory,
+        this.description.trim(),
+        this.selectedFishIds.slice(),
+        extendedData  // 将扩展数据存入 usage 字段
+      );
+
+      this.showToastMessage('原料保存成功');
+
+      setTimeout(() => {
+        router.back();
+      }, 800);
+
+    } catch (error) {
+      console.error('保存原料失败:', error);
+      this.showToastMessage('保存失败，请重试');
+      this.isSaving = false;
+    }
   }
 }

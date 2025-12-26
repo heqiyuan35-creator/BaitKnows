@@ -6,19 +6,9 @@ import { ThemeConstants } from '../theme/ThemeConstants';
 import { Router } from '../router/Router';
 import { AppConstants } from '../common/constants/AppConstants';
 
-// 设置项接口
-interface SettingItem {
-  title: string;
-  subtitle: string;
-  type: string;
-  value: boolean | string;
-}
-
 @Entry
 @Component
 struct SettingsPage {
-  @State notificationEnabled: boolean = true;
-  @State autoSaveEnabled: boolean = true;
   @State cacheSize: string = '12.5 MB';
 
   build() {
@@ -27,12 +17,6 @@ struct SettingsPage {
 
       Scroll() {
         Column({ space: ThemeConstants.SPACE_MD }) {
-          // 通用设置
-          this.SettingSection('通用设置', [
-            { title: '消息通知', subtitle: '接收钓鱼天气提醒', type: 'switch', value: this.notificationEnabled },
-            { title: '自动保存', subtitle: '自动保存配方修改', type: 'switch', value: this.autoSaveEnabled }
-          ])
-
           // 数据管理
           this.DataSection()
 
@@ -72,62 +56,6 @@ struct SettingsPage {
     .width('100%')
     .height(56)
     .padding({ left: 16, right: 16, top: 40 })
-  }
-
-  @Builder
-  SettingSection(title: string, items: SettingItem[]) {
-    Column({ space: 1 }) {
-      Text(title)
-        .fontSize(ThemeConstants.FONT_SIZE_SM)
-        .fontColor(ThemeColors.TEXT_SECONDARY)
-        .width('100%')
-        .margin({ bottom: 8 })
-
-      Column({ space: 1 }) {
-        ForEach(items, (item: SettingItem, index: number) => {
-          this.SettingItemRow(item, index === 0, index === items.length - 1)
-        })
-      }
-      .borderRadius(ThemeConstants.RADIUS_MD)
-      .clip(true)
-    }
-  }
-
-  @Builder
-  SettingItemRow(item: SettingItem, isFirst: boolean, isLast: boolean) {
-    Row() {
-      Column({ space: 2 }) {
-        Text(item.title)
-          .fontSize(ThemeConstants.FONT_SIZE_MD)
-          .fontColor(ThemeColors.TEXT_PRIMARY)
-        Text(item.subtitle)
-          .fontSize(ThemeConstants.FONT_SIZE_XS)
-          .fontColor(ThemeColors.TEXT_SECONDARY)
-      }
-      .alignItems(HorizontalAlign.Start)
-
-      Blank()
-
-      if (item.type === 'switch') {
-        Toggle({ type: ToggleType.Switch, isOn: item.value as boolean })
-          .selectedColor(ThemeColors.PRIMARY)
-          .onChange((isOn: boolean) => {
-            if (item.title === '消息通知') {
-              this.notificationEnabled = isOn;
-            } else if (item.title === '自动保存') {
-              this.autoSaveEnabled = isOn;
-            }
-          })
-      } else {
-        Text('>')
-          .fontSize(ThemeConstants.FONT_SIZE_MD)
-          .fontColor(ThemeColors.TEXT_MUTED)
-      }
-    }
-    .width('100%')
-    .height(64)
-    .padding({ left: ThemeConstants.SPACE_MD, right: ThemeConstants.SPACE_MD })
-    .backgroundColor(ThemeColors.BG_CARD)
   }
 
 

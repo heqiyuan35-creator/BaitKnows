@@ -2,6 +2,7 @@
   "src": [
     "pages/WelcomePage",
     "pages/MainTabPage",
+    "pages/FishingRecordPage",
     "pages/RecipeDetailPage",
     "pages/AddRecordPage",
     "pages/GeneratedRecipePage",
@@ -15,6 +16,11 @@
     "pages/GeneratorHistoryPage",
     "pages/RecipeCreatePage",
     "pages/IngredientAddPage",
-    "pages/FishAddPage"
+    "pages/FishAddPage",
+    "pages/PreciseMatchPage",
+    "pages/PreciseResultPage",
+    "pages/VictorySharePage",
+    "pages/AgreementPage",
+    "pages/RecordAnalysisPage"
   ]
 }

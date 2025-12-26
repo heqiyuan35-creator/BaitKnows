@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="echarts.js"></script>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { background: transparent; }
+    #chart { width: 100%; height: 100%; }
+  </style>
+</head>
+<body>
+  <div id="chart"></div>
+  <script>
+    const chart = echarts.init(document.getElementById('chart'));
+    
+    // 默认配置
+    const defaultOption = {
+      radar: {
+        indicator: [
+          { name: '诱鱼性', max: 100 },
+          { name: '适口性', max: 100 },
+          { name: '状态', max: 100 },
+          { name: '留鱼性', max: 100 },
+          { name: '性价比', max: 100 }
+        ],
+        radius: '60%',
+        center: ['50%', '50%'],
+        axisName: {
+          color: '#666',
+          fontSize: 12
+        },
+        splitArea: {
+          areaStyle: {
+            color: ['rgba(230, 162, 60, 0.05)', 'rgba(230, 162, 60, 0.1)']
+          }
+        },
+        axisLine: {
+          lineStyle: { color: 'rgba(230, 162, 60, 0.3)' }
+        },
+        splitLine: {
+          lineStyle: { color: 'rgba(230, 162, 60, 0.3)' }
+        }
+      },
+      series: [{
+        type: 'radar',
+        data: [{
+          value: [80, 85, 75, 70, 80],
+          name: '配方评分',
+          areaStyle: {
+            color: 'rgba(230, 162, 60, 0.3)'
+          },
+          lineStyle: {
+            color: '#E6A23C',
+            width: 2
+          },
+          itemStyle: {
+            color: '#E6A23C'
+          }
+        }]
+      }]
+    };
+    
+    chart.setOption(defaultOption);
+    
+    // 更新数据的函数，供ArkTS调用
+    function updateData(scores) {
+      try {
+        const data = typeof scores === 'string' ? JSON.parse(scores) : scores;
+        chart.setOption({
+          series: [{
+            data: [{
+              value: [
+                data.attraction || 0,
+                data.palatability || 0,
+                data.state || 0,
+                data.retention || 0,
+                data.costEffective || 0
+              ]
+            }]
+          }]
+        });
+      } catch (e) {
+        console.error('Update radar data error:', e);
+      }
+    }
+    
+    // 窗口大小变化时重绘
+    window.addEventListener('resize', function() {
+      chart.resize();
+    });
+  </script>
+</body>
+</html>

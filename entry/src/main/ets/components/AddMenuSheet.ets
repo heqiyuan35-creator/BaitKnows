@@ -8,7 +8,8 @@ import { ThemeConstants } from '../theme/ThemeConstants';
 // 菜单项数据接口
 export interface AddMenuItem {
   id: string;
-  icon: string;
+  icon: Resource;
+  iconBg: string;
   title: string;
   description: string;
   route: string;
@@ -18,28 +19,32 @@ export interface AddMenuItem {
 export const ADD_MENU_ITEMS: AddMenuItem[] = [
   {
     id: 'precise_match',
-    icon: '🎯',
+    icon: $r('app.media.Precise'),
+    iconBg: '#FFEBEE',
     title: '精确匹配',
     description: '根据条件精准推荐',
-    route: 'pages/SmartGeneratorPage'
+    route: 'pages/PreciseMatchPage'
   },
   {
     id: 'personal_creation',
-    icon: '✏️',
+    icon: $r('app.media.Creation'),
+    iconBg: '#E8F5E9',
     title: '个人创作',
     description: '创建自定义配方',
     route: 'pages/RecipeCreatePage'
   },
   {
     id: 'ingredient_add',
-    icon: '🧪',
+    icon: $r('app.media.Raw_material'),
+    iconBg: '#E0F7FA',
     title: '原料新增',
     description: '添加自定义原料',
     route: 'pages/IngredientAddPage'
   },
   {
     id: 'fish_add',
-    icon: '🐟',
+    icon: $r('app.media.FishLei'),
+    iconBg: '#FFF3E0',
     title: '鱼类新增',
     description: '添加自定义鱼种',
     route: 'pages/FishAddPage'
@@ -52,7 +57,7 @@ export struct AddMenuSheet {
   onClose?: () => void;
   onItemClick?: (item: AddMenuItem) => void;
 
-  @State private sheetOffset: number = 300;  // 初始偏移量（隐藏状态）
+  @State private sheetOffset: number = 380;  // 初始偏移量（隐藏状态）
 
   aboutToAppear(): void {
     if (this.visible) {
@@ -85,7 +90,7 @@ export struct AddMenuSheet {
       duration: 200,
       curve: Curve.EaseIn
     }, () => {
-      this.sheetOffset = 300;
+      this.sheetOffset = 380;
     });
   }
 
@@ -133,7 +138,7 @@ export struct AddMenuSheet {
             .fontSize(ThemeConstants.FONT_SIZE_LG)
             .fontWeight(FontWeight.Bold)
             .fontColor(ThemeColors.TEXT_PRIMARY)
-            .margin({ bottom: 16 })
+            .margin({ bottom: 20 })
 
           // 2x2 网格布局
           Column({ space: 12 }) {
@@ -152,13 +157,14 @@ export struct AddMenuSheet {
             .width('100%')
           }
           .width('100%')
-          .padding({ left: 16, right: 16, bottom: 32 })
+          .padding({ left: 16, right: 16, bottom: 28 })
         }
         .width('100%')
-        .backgroundColor(ThemeColors.BG_CARD)
-        .borderRadius({ topLeft: 20, topRight: 20 })
+        .backgroundColor(ThemeColors.BG_PRIMARY)
+        .borderRadius({ topLeft: 24, topRight: 24 })
         .position({ x: 0, y: '100%' })
-        .translate({ y: -300 + this.sheetOffset })
+        .translate({ y: -380 + this.sheetOffset })
+        .shadow({ radius: 20, color: 'rgba(0,0,0,0.15)', offsetY: -4 })
         .gesture(
           PanGesture({ direction: PanDirection.Down })
             .onActionEnd(() => {
@@ -177,9 +183,18 @@ export struct AddMenuSheet {
   @Builder
   MenuItemCard(item: AddMenuItem) {
     Column({ space: 8 }) {
-      // 图标
-      Text(item.icon)
-        .fontSize(32)
+      // 图标容器
+      Row() {
+        Image(item.icon)
+          .width(32)
+          .height(32)
+          .objectFit(ImageFit.Contain)
+      }
+      .width(56)
+      .height(56)
+      .backgroundColor(item.iconBg)
+      .borderRadius(12)
+      .justifyContent(FlexAlign.Center)
 
       // 标题
       Text(item.title)
@@ -194,7 +209,7 @@ export struct AddMenuSheet {
     }
     .layoutWeight(1)
     .padding(16)
-    .backgroundColor(ThemeColors.BG_TERTIARY)
+    .backgroundColor(ThemeColors.BG_CARD)
     .borderRadius(ThemeConstants.RADIUS_MD)
     .alignItems(HorizontalAlign.Center)
     .onClick(() => this.handleItemClick(item))

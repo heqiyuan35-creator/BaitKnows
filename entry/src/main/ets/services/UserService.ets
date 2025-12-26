@@ -189,6 +189,16 @@ class UserServiceClass {
     this._profile.activeDays = activeDates.size;
     await this.updateLevel();
   }
+
+  /**
+   * 重置用户数据
+   */
+  async resetProfile(): Promise<void> {
+    this._profile = new UserProfile();
+    this._isLoaded = false;  // 重置加载标志，允许重新加载
+    await this.save();
+    console.info('[UserService] User profile reset');
+  }
 }
 
 export const userService = new UserServiceClass();

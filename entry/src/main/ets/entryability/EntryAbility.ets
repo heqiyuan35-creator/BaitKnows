@@ -6,6 +6,10 @@ import { hilog } from '@kit.PerformanceAnalysisKit';
 import { window } from '@kit.ArkUI';
 import { storageService } from '../services/StorageService';
 import { LocationService } from '../services/LocationService';
+import { MapsInitializer } from '@amap/amap_lbs_map3d';
+import { ServiceSettings } from '@amap/amap_lbs_search';
+import { AMapPrivacyShowStatus, AMapPrivacyInfoStatus, AMapPrivacyAgreeStatus } from '@amap/amap_lbs_common';
+import { AMapConstants } from '../common/AMapConstants';
 
 const DOMAIN = 0x0000;
 const TAG = 'BaitKnows';
@@ -13,6 +17,9 @@ const TAG = 'BaitKnows';
 export default class EntryAbility extends UIAbility {
   async onCreate(want: Want, launchParam: AbilityConstant.LaunchParam): Promise<void> {
     hilog.info(DOMAIN, TAG, 'Ability onCreate');
+
+    // 初始化高德地图SDK
+    this.initAMapSDK();
 
     // 初始化存储服务
     try {
@@ -28,6 +35,34 @@ export default class EntryAbility extends UIAbility {
       hilog.info(DOMAIN, TAG, 'LocationService initialized');
     } catch (err) {
       hilog.error(DOMAIN, TAG, 'Failed to init LocationService: %{public}s', JSON.stringify(err));
+    }
+  }
+
+  /**
+   * 初始化高德地图SDK
+   */
+  private initAMapSDK(): void {
+    try {
+      // 1. 设置隐私政策合规（必须在初始化之前调用）
+      ServiceSettings.updatePrivacyShow(
+        AMapPrivacyShowStatus.DidShow,
+        AMapPrivacyInfoStatus.DidContain,
+        this.context
+      );
+      ServiceSettings.updatePrivacyAgree(AMapPrivacyAgreeStatus.DidAgree, this.context);
+
+      // 2. 设置API Key
+      MapsInitializer.setApiKey(AMapConstants.AMAP_API_KEY);
+
+      // 3. 启用3D地形图（需要在MapView创建之前调用）
+      MapsInitializer.setTerrainEnable(true);
+
+      // 4. 开启调试模式（发布时建议关闭）
+      MapsInitializer.setDebugMode(true);
+
+      hilog.info(DOMAIN, TAG, 'AMap SDK initialized with 3D terrain enabled');
+    } catch (error) {
+      hilog.error(DOMAIN, TAG, 'AMap SDK init failed: %{public}s', JSON.stringify(error));
     }
   }
 

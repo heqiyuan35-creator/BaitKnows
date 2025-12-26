@@ -7,7 +7,6 @@ import { ThemeConstants } from '../theme/ThemeConstants';
 import { AppConstants } from '../common/constants/AppConstants';
 import { HomePage } from './HomePage';
 import { RecipeBrowserPage } from './RecipeBrowserPage';
-import { GeneratorPage } from './GeneratorPage';
 import { FishingRecordPage } from './FishingRecordPage';
 import { MinePage } from './MinePage';
 import { storageService } from '../services/StorageService';
@@ -29,6 +28,10 @@ struct WelcomePage {
   @State logoScale: number = 0.5;
   @State textOpacity: number = 0;
   @State loadingOpacity: number = 0;
+  // 记录页刷新触发器
+  @State recordRefreshTrigger: number = 0;
+  // 我的页刷新触发器
+  @State mineRefreshTrigger: number = 0;
   // 加号菜单状态
   @State showAddMenu: boolean = false;
 
@@ -51,6 +54,15 @@ struct WelcomePage {
     setTimeout(() => {
       this.showWelcome = false;
     }, 2500);
+  }
+
+  // 页面显示时刷新当前Tab数据（从其他页面返回时）
+  onPageShow(): void {
+    if (!this.showWelcome) {
+      // 刷新记录页和我的页数据
+      this.recordRefreshTrigger++;
+      this.mineRefreshTrigger++;
+    }
   }
 
   private async initServices(): Promise<void> {
@@ -109,6 +121,7 @@ struct WelcomePage {
     .width('100%')
     .height('100%')
     .justifyContent(FlexAlign.Center)
+    .padding({ bottom: 8 })
   }
 
   @Builder
@@ -132,6 +145,7 @@ struct WelcomePage {
     .width('100%')
     .height('100%')
     .justifyContent(FlexAlign.Center)
+    .padding({ bottom: 8 })
   }
 
   // 关闭加号菜单
@@ -217,7 +231,7 @@ struct WelcomePage {
   MainContent() {
     Stack() {
       Column() {
-        Tabs({ barPosition: BarPosition.End, index: this.currentIndex }) {
+        Tabs({ barPosition: BarPosition.End, index: $$this.currentIndex }) {
           TabContent() {
             HomePage()
           }
@@ -229,24 +243,46 @@ struct WelcomePage {
           .tabBar(this.TabBarBuilder('配方', $r('app.media.Recipe'), $r('app.media.Recipes'), 1))
 
           TabContent() {
-            GeneratorPage()
+            // 中间Tab占位，点击加号按钮弹出菜单
+            Column() {
+              Text('点击下方 + 按钮')
+                .fontSize(14)
+                .fontColor(ThemeColors.TEXT_MUTED)
+            }
+            .width('100%')
+            .height('100%')
+            .justifyContent(FlexAlign.Center)
+            .backgroundColor(ThemeColors.BG_PRIMARY)
           }
           .tabBar(this.CenterTabBuilder())
 
           TabContent() {
-            FishingRecordPage()
+            FishingRecordPage({ refreshTrigger: this.recordRefreshTrigger })
           }
           .tabBar(this.TabBarBuilder('记录', $r('app.media.time'), $r('app.media.times'), 3))
 
           TabContent() {
-            MinePage()
+            MinePage({ refreshTrigger: this.mineRefreshTrigger })
           }
           .tabBar(this.TabBarBuilder('我的', $r('app.media.mine'), $r('app.media.mines'), 4))
         }
         .barHeight(56)
         .barBackgroundColor(ThemeColors.BG_SECONDARY)
         .onChange((index: number) => {
+          // 中间Tab（index=2）不切换，只弹出菜单
+          if (index === 2) {
+            this.showAddMenu = true;
+            return;
+          }
           this.currentIndex = index;
+          // 切换到记录Tab时触发刷新
+          if (index === 3) {
+            this.recordRefreshTrigger++;
+          }
+          // 切换到我的Tab时触发刷新
+          if (index === 4) {
+            this.mineRefreshTrigger++;
+          }
         })
         .layoutWeight(1)
       }

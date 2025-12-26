@@ -6,8 +6,10 @@ import { ThemeColors } from '../theme/ThemeColors';
 import { GenerateRecipeInput, RecipeSeason, RecipeWaterType, FishDensity, FishActivity, FishingMethod, GenerateMode } from '../common/types/RecipeTypes';
 import { generateRecipe, getCurrentSeason } from '../services/RecipeGeneratorService';
 import { fetchWeather } from '../services/WeatherService';
+import { ALL_FISH_DATA, FishData } from '../data/FishData';
+import { userDataService, CustomFish } from '../services/UserDataService';
 
-interface FishItem { id: string; name: string; normalImage: Resource; selectedImage: Resource; }
+interface FishItem { id: string; name: string; normalImage: Resource | string; selectedImage: Resource | string; isCustom?: boolean; }
 interface WaterItem { type: RecipeWaterType; name: string; normalImage: Resource; selectedImage: Resource; }
 interface SeasonItem { type: RecipeSeason; name: string; normalImage: Resource; selectedImage: Resource; }
 
@@ -25,14 +27,7 @@ struct SmartGeneratorPage {
   @State mode: GenerateMode = 'balanced';
   @State isLoading: boolean = false;
   @State lastRecord: string = '香辣玉米';
-
-  private fishList: FishItem[] = [
-    { id: 'carp', name: '鲤鱼', normalImage: $r('app.media.Carp'), selectedImage: $r('app.media.Carp') },
-    { id: 'crucian', name: '鲫鱼', normalImage: $r('app.media.Crucian_carp'), selectedImage: $r('app.media.Crucian_carp') },
-    { id: 'grass', name: '草鱼', normalImage: $r('app.media.Grass_carp'), selectedImage: $r('app.media.Grass_carp') },
-    { id: 'catfish', name: '鲶鱼', normalImage: $r('app.media.Catfish'), selectedImage: $r('app.media.Catfish') },
-    { id: 'black', name: '青鱼', normalImage: $r('app.media.Black_carp'), selectedImage: $r('app.media.Black_carp') }
-  ];
+  @State fishList: FishItem[] = [];
 
   private waterList: WaterItem[] = [
     { type: 'river', name: '河流', normalImage: $r('app.media.River'), selectedImage: $r('app.media.Rivers') },
@@ -50,7 +45,47 @@ struct SmartGeneratorPage {
 
   aboutToAppear(): void {
     this.selectedSeason = getCurrentSeason();
+    this.updateFishList();
     this.loadWeather();
+  }
+
+  // 根据水域类型更新鱼种列表（包含系统鱼种和用户自定义鱼种）
+  private updateFishList(): void {
+    // 映射水域类型到 FishData 中的 waterTypes
+    let waterTypeKey = this.selectedWater;
+    if (this.selectedWater === 'wild_pond') {
+      waterTypeKey = 'lake' as RecipeWaterType;  // wild_pond 对应 lake
+    }
+
+    // 系统鱼种
+    const filteredFish = ALL_FISH_DATA.filter((fish: FishData) => fish.waterTypes.includes(waterTypeKey));
+    this.fishList = filteredFish.map((fish: FishData): FishItem => ({
+      id: fish.id,
+      name: fish.name,
+      normalImage: fish.icon,
+      selectedImage: fish.iconActive,
+      isCustom: false
+    }));
+
+    // 用户自定义鱼种
+    const customFishList = userDataService.getCustomFish().filter((fish: CustomFish) =>
+      fish.waterTypes.includes(waterTypeKey)
+    );
+    customFishList.forEach((fish: CustomFish) => {
+      this.fishList.push({
+        id: fish.id,
+        name: fish.name,
+        normalImage: fish.icon || $r('app.media.fishImage'),
+        selectedImage: fish.icon || $r('app.media.fishImage'),
+        isCustom: true
+      });
+    });
+
+    // 如果当前选中的鱼不在新列表中，选择第一个
+    const currentFishExists = this.fishList.some((f: FishItem) => f.id === this.selectedFish);
+    if (!currentFishExists && this.fishList.length > 0) {
+      this.selectedFish = this.fishList[0].id;
+    }
   }
 
   async loadWeather(): Promise<void> {
@@ -173,13 +208,17 @@ struct SmartGeneratorPage {
                 .fontSize(13)
                 .fontColor(this.selectedFish === fish.id ? ThemeColors.PRIMARY : '#666')
             }
-            .onClick(() => { this.selectedFish = fish.id; })
+            .onClick(() => { this.selectFish(fish.id); })
           })
         }
       }
       .scrollable(ScrollDirection.Horizontal)
       .scrollBar(BarState.Off)
     }.width('100%').alignItems(HorizontalAlign.Start)
+  }
+
+  private selectFish(fishId: string): void {
+    this.selectedFish = fishId;
   }
 
 
@@ -204,10 +243,15 @@ struct SmartGeneratorPage {
             color: this.selectedWater === water.type ? ThemeColors.PRIMARY : '#E5E5E5'
           })
           .margin({ right: 10, bottom: 10 })
-          .onClick(() => { this.selectedWater = water.type; })
+          .onClick(() => { this.selectWater(water.type); })
         })
       }
     }.width('100%').alignItems(HorizontalAlign.Start)
+  }
+
+  private selectWater(waterType: RecipeWaterType): void {
+    this.selectedWater = waterType;
+    this.updateFishList();
   }
 
   @Builder SeasonWeatherSection() {

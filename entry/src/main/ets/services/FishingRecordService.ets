@@ -188,6 +188,91 @@ class FishingRecordServiceClass {
   filterByDateRange(startDate: number, endDate: number): FishingRecord[] {
     return this._records.filter(r => r.date >= startDate && r.date <= endDate);
   }
+
+  /**
+   * 按钓点搜索
+   */
+  searchByLocation(keyword: string): FishingRecord[] {
+    if (!keyword || !keyword.trim()) {
+      return this._records;
+    }
+    const lowerKeyword = keyword.toLowerCase().trim();
+    return this._records.filter(r =>
+      r.location && r.location.toLowerCase().includes(lowerKeyword)
+    );
+  }
+
+  /**
+   * 获取所有钓点列表（去重）
+   */
+  getAllLocations(): string[] {
+    const locations = new Set<string>();
+    for (const record of this._records) {
+      if (record.location && record.location.trim()) {
+        locations.add(record.location.trim());
+      }
+    }
+    return Array.from(locations).sort();
+  }
+
+  /**
+   * 获取所有鱼种列表（去重）
+   */
+  getAllFishNames(): string[] {
+    const fishNames = new Set<string>();
+    for (const record of this._records) {
+      if (record.fishName && record.fishName.trim()) {
+        fishNames.add(record.fishName.trim());
+      }
+    }
+    return Array.from(fishNames).sort();
+  }
+
+  /**
+   * 组合筛选（鱼种 + 日期范围 + 钓点）
+   */
+  filterRecords(fishName?: string, startDate?: number, endDate?: number, location?: string): FishingRecord[] {
+    let result = this._records;
+
+    if (fishName && fishName.trim()) {
+      result = result.filter(r => r.fishName === fishName);
+    }
+
+    if (startDate && startDate > 0) {
+      result = result.filter(r => r.date >= startDate);
+    }
+
+    if (endDate && endDate > 0) {
+      result = result.filter(r => r.date <= endDate);
+    }
+
+    if (location && location.trim()) {
+      const lowerLocation = location.toLowerCase().trim();
+      result = result.filter(r =>
+        r.location && r.location.toLowerCase().includes(lowerLocation)
+      );
+    }
+
+    return result;
+  }
+
+  /**
+   * 强制重新加载数据
+   */
+  async reload(): Promise<FishingRecord[]> {
+    this._isLoaded = false;
+    return this.load();
+  }
+
+  /**
+   * 清除所有记录
+   */
+  async clearAllRecords(): Promise<void> {
+    this._records = [];
+    this._isLoaded = false;  // 重置加载标志
+    await this.save();
+    console.info('[FishingRecordService] All records cleared');
+  }
 }
 
 // 统计数据类

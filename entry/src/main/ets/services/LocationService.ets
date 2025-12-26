@@ -10,6 +10,7 @@ export interface LocationInfo {
   longitude: number;
   accuracy?: number;
   isValid: boolean;
+  errorMsg?: string;
 }
 
 class LocationServiceClass {
@@ -22,6 +23,7 @@ class LocationServiceClass {
   };
   private _hasPermission: boolean = false;
   private _isLocating: boolean = false;
+  private _context: common.UIAbilityContext | null = null;
 
   private constructor() {}
 
@@ -47,7 +49,29 @@ class LocationServiceClass {
   // 初始化定位（在 EntryAbility 中调用）
   async init(context: common.UIAbilityContext): Promise<void> {
     console.info(this.TAG, 'Initializing location service...');
+    this._context = context;
+    
+    // 先检查定位服务是否开启
+    const isEnabled = await this.checkLocationEnabled();
+    if (!isEnabled) {
+      console.warn(this.TAG, 'Location service is disabled');
+      this._currentLocation.errorMsg = '定位服务未开启';
+      // 使用默认位置，但标记为有效以便地图能显示
+      this._currentLocation.isValid = true;
+      return;
+    }
+    
     await this.checkAndRequestPermission(context);
+  }
+
+  // 检查定位服务是否开启
+  private async checkLocationEnabled(): Promise<boolean> {
+    try {
+      return geoLocationManager.isLocationEnabled();
+    } catch (error) {
+      console.error(this.TAG, `Check location enabled failed: ${error}`);
+      return false;
+    }
   }
 
   // 检查并请求权限
@@ -61,6 +85,8 @@ class LocationServiceClass {
       const tokenId = bundleInfo.appInfo.accessTokenId;
       const grantStatus = await atManager.checkAccessToken(tokenId, permission);
 
+      console.info(this.TAG, `Permission status: ${grantStatus}`);
+
       if (grantStatus === abilityAccessCtrl.GrantStatus.PERMISSION_GRANTED) {
         this._hasPermission = true;
         await this.fetchCurrentLocation();
@@ -69,6 +95,9 @@ class LocationServiceClass {
       }
     } catch (error) {
       console.error(this.TAG, `Permission check failed: ${error}`);
+      // 权限检查失败，使用默认位置
+      this._currentLocation.isValid = true;
+      this._currentLocation.errorMsg = '权限检查失败';
     }
   }
 
@@ -82,6 +111,9 @@ class LocationServiceClass {
     try {
       const atManager = abilityAccessCtrl.createAtManager();
       const result = await atManager.requestPermissionsFromUser(context, permissions);
+      
+      console.info(this.TAG, `Permission request result: ${JSON.stringify(result.authResults)}`);
+      
       const allGranted = result.authResults.every(status => status === 0);
 
       if (allGranted) {
@@ -90,9 +122,15 @@ class LocationServiceClass {
       } else {
         this._hasPermission = false;
         console.warn(this.TAG, 'Location permission denied');
+        // 权限被拒绝，使用默认位置
+        this._currentLocation.isValid = true;
+        this._currentLocation.errorMsg = '定位权限被拒绝';
       }
     } catch (error) {
       console.error(this.TAG, `Request permission failed: ${error}`);
+      // 请求权限失败，使用默认位置
+      this._currentLocation.isValid = true;
+      this._currentLocation.errorMsg = '请求权限失败';
     }
   }
 
@@ -103,15 +141,28 @@ class LocationServiceClass {
     }
 
     this._isLocating = true;
+    console.info(this.TAG, 'Fetching current location...');
 
     try {
+      // 先检查定位服务
+      const isEnabled = geoLocationManager.isLocationEnabled();
+      if (!isEnabled) {
+        console.warn(this.TAG, 'Location service is disabled');
+        this._currentLocation.isValid = true;  // 使用默认位置
+        this._currentLocation.errorMsg = '定位服务未开启';
+        return this._currentLocation;
+      }
+
       const request: geoLocationManager.CurrentLocationRequest = {
         priority: geoLocationManager.LocationRequestPriority.FIRST_FIX,
         scenario: geoLocationManager.LocationRequestScenario.UNSET,
-        maxAccuracy: 100
+        maxAccuracy: 100,
+        timeoutMs: 10000  // 10秒超时
       };
 
+      console.info(this.TAG, 'Calling getCurrentLocation...');
       const location = await geoLocationManager.getCurrentLocation(request);
+      
       this._currentLocation = {
         latitude: location.latitude,
         longitude: location.longitude,
@@ -120,13 +171,27 @@ class LocationServiceClass {
       };
       console.info(this.TAG, `Location updated: ${location.latitude}, ${location.longitude}`);
     } catch (error) {
-      console.error(this.TAG, `Get location failed: ${error}`);
-      this._currentLocation.isValid = false;
+      const err = error as Error;
+      console.error(this.TAG, `Get location failed: ${err.message || error}`);
+      
+      // 定位失败，使用默认位置但标记为有效
+      this._currentLocation.isValid = true;
+      this._currentLocation.errorMsg = `定位失败: ${err.message || '未知错误'}`;
     } finally {
       this._isLocating = false;
     }
 
     return this._currentLocation;
+  }
+
+  // 手动刷新位置（供页面调用）
+  async refreshLocation(): Promise<LocationInfo> {
+    // 如果没有权限，尝试重新请求
+    if (!this._hasPermission && this._context) {
+      await this.requestPermissions(this._context);
+    }
+    
+    return this.fetchCurrentLocation();
   }
 }
 

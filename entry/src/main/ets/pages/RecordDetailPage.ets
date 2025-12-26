@@ -38,10 +38,10 @@ struct RecordDetailPage {
     { name: '鲫鱼', icon: $r('app.media.Crucian_carp') },
     { name: '青鱼', icon: $r('app.media.Black_carp') },
     { name: '鲶鱼', icon: $r('app.media.Catfish') },
-    { name: '鲢鱼', icon: $r('app.media.Fish') },
-    { name: '鳙鱼', icon: $r('app.media.Fish') },
-    { name: '黑鱼', icon: $r('app.media.Fish') },
-    { name: '鲈鱼', icon: $r('app.media.Fish') },
+    { name: '鲢鱼', icon: $r('app.media.Silvercarp') },
+    { name: '鳙鱼', icon: $r('app.media.Bigheadcarp') },
+    { name: '黑鱼', icon: $r('app.media.Snakehead_fish') },
+    { name: '鲈鱼', icon: $r('app.media.Perch') },
     { name: '其他', icon: $r('app.media.Fish') }
   ];
 
@@ -97,6 +97,14 @@ struct RecordDetailPage {
     return icons[weather] || '🌤️';
   }
 
+  // 截断鱼种名称，最多显示2种鱼
+  private formatFishName(name: string): string {
+    if (!name) return '未知鱼种';
+    const fishList = name.split('、');
+    if (fishList.length <= 2) return name;
+    return fishList.slice(0, 2).join('、') + '等';
+  }
+
   private async saveChanges(): Promise<void> {
     this.record.location = this.editLocation;
     this.record.fishName = this.editFishName;
@@ -117,12 +125,22 @@ struct RecordDetailPage {
   }
 
   private async deleteRecord(): Promise<void> {
-    const success = await fishingRecordService.deleteRecord(this.record.id);
-    if (success) {
-      promptAction.showToast({ message: '删除成功' });
-      Router.back();
-    } else {
-      promptAction.showToast({ message: '删除失败' });
+    try {
+      const recordId = this.record.id;
+      if (!recordId) {
+        promptAction.showToast({ message: '记录ID无效' });
+        return;
+      }
+      const success = await fishingRecordService.deleteRecord(recordId);
+      if (success) {
+        promptAction.showToast({ message: '删除成功' });
+        Router.back();
+      } else {
+        promptAction.showToast({ message: '删除失败，请重试' });
+      }
+    } catch (error) {
+      console.error('[RecordDetailPage] Delete error:', error);
+      promptAction.showToast({ message: '删除出错，请重试' });
     }
   }
 
@@ -151,51 +169,59 @@ struct RecordDetailPage {
 
   @Builder
   HeaderBar() {
-    Row() {
-      Image($r('app.media.Left'))
-        .width(24)
-        .height(24)
-        .fillColor(ThemeColors.TEXT_PRIMARY)
-        .onClick(() => {
-          if (this.isEdit) {
-            this.isEdit = false;
-            this.initEditData();
-          } else {
-            Router.back();
+    Column() {
+      // 状态栏占位
+      Row()
+        .width('100%')
+        .height(36)
+
+      Row() {
+        Image($r('app.media.Left'))
+          .width(24)
+          .height(24)
+          .fillColor(ThemeColors.TEXT_PRIMARY)
+          .onClick(() => {
+            if (this.isEdit) {
+              this.isEdit = false;
+              this.initEditData();
+            } else {
+              Router.back();
+            }
+          })
+
+        Blank()
+
+        Text(this.isEdit ? '编辑记录' : '记录详情')
+          .fontSize(ThemeConstants.FONT_SIZE_LG)
+          .fontWeight(FontWeight.Medium)
+          .fontColor(ThemeColors.TEXT_PRIMARY)
+
+        Blank()
+
+        if (!this.isEdit) {
+          Row({ space: 16 }) {
+            Text('编辑')
+              .fontSize(ThemeConstants.FONT_SIZE_SM)
+              .fontColor(ThemeColors.PRIMARY)
+              .onClick(() => { this.isEdit = true; })
+
+            Text('删除')
+              .fontSize(ThemeConstants.FONT_SIZE_SM)
+              .fontColor('#FF4444')
+              .onClick(() => { this.showDeleteDialog = true; })
           }
-        })
-
-      Blank()
-
-      Text(this.isEdit ? '编辑记录' : '记录详情')
-        .fontSize(ThemeConstants.FONT_SIZE_LG)
-        .fontWeight(FontWeight.Medium)
-        .fontColor(ThemeColors.TEXT_PRIMARY)
-
-      Blank()
-
-      if (!this.isEdit) {
-        Row({ space: 16 }) {
-          Text('编辑')
+        } else {
+          Text('保存')
             .fontSize(ThemeConstants.FONT_SIZE_SM)
             .fontColor(ThemeColors.PRIMARY)
-            .onClick(() => { this.isEdit = true; })
-
-          Text('删除')
-            .fontSize(ThemeConstants.FONT_SIZE_SM)
-            .fontColor('#FF4444')
-            .onClick(() => { this.showDeleteDialog = true; })
+            .onClick(() => { this.saveChanges(); })
         }
-      } else {
-        Text('保存')
-          .fontSize(ThemeConstants.FONT_SIZE_SM)
-          .fontColor(ThemeColors.PRIMARY)
-          .onClick(() => { this.saveChanges(); })
       }
+      .width('100%')
+      .height(48)
+      .padding({ left: 16, right: 16 })
     }
     .width('100%')
-    .height(56)
-    .padding({ left: 16, right: 16, top: 40 })
   }
 
   @Builder
@@ -250,16 +276,22 @@ struct RecordDetailPage {
               Row({ space: 8 }) {
                 Text('🐟')
                   .fontSize(24)
-                Text(this.record.fishName || '未知鱼种')
+                  .flexShrink(0)
+                Text(this.formatFishName(this.record.fishName))
                   .fontSize(ThemeConstants.FONT_SIZE_XL)
                   .fontWeight(FontWeight.Bold)
                   .fontColor(ThemeColors.TEXT_PRIMARY)
+                  .maxLines(1)
+                  .textOverflow({ overflow: TextOverflow.Ellipsis })
               }
+              .constraintSize({ maxWidth: '60%' })
+
               Text(`共 ${this.record.count} 尾`)
                 .fontSize(ThemeConstants.FONT_SIZE_SM)
                 .fontColor(ThemeColors.TEXT_SECONDARY)
             }
             .alignItems(HorizontalAlign.Start)
+            .flexShrink(1)
 
             Blank()
 
@@ -276,6 +308,7 @@ struct RecordDetailPage {
               }
             }
             .alignItems(HorizontalAlign.End)
+            .flexShrink(0)
           }
           .width('100%')
         }
@@ -290,12 +323,44 @@ struct RecordDetailPage {
         Column({ space: 1 }) {
           this.InfoRow('📍 钓点', this.record.location || '未填写')
           this.InfoRow('🏆 最大单尾', `${this.record.maxSingle} kg`)
-          this.InfoRow('🧪 使用配方', this.record.recipeName || '未填写')
+          this.RecipeInfoRow()
         }
         .margin({ left: ThemeConstants.SPACE_MD, right: ThemeConstants.SPACE_MD })
         .borderRadius(ThemeConstants.RADIUS_MD)
         .clip(true)
         .shadow({ radius: 8, color: 'rgba(0,0,0,0.05)', offsetY: 2 })
+
+        // 渔获图片
+        if (this.record.photos && this.record.photos.length > 0) {
+          Column({ space: 8 }) {
+            Row({ space: 6 }) {
+              Text('📷')
+                .fontSize(16)
+              Text('渔获图片')
+                .fontSize(ThemeConstants.FONT_SIZE_MD)
+                .fontWeight(FontWeight.Medium)
+                .fontColor(ThemeColors.TEXT_PRIMARY)
+            }
+            .width('100%')
+
+            Row({ space: 8 }) {
+              ForEach(this.record.photos, (photo: string, index: number) => {
+                Image(photo)
+                  .width(100)
+                  .height(100)
+                  .objectFit(ImageFit.Cover)
+                  .borderRadius(ThemeConstants.RADIUS_SM)
+              }, (photo: string, index: number) => `photo_${index}`)
+            }
+            .width('100%')
+          }
+          .width('100%')
+          .padding(ThemeConstants.SPACE_MD)
+          .backgroundColor(ThemeColors.BG_CARD)
+          .borderRadius(ThemeConstants.RADIUS_MD)
+          .margin({ left: ThemeConstants.SPACE_MD, right: ThemeConstants.SPACE_MD })
+          .shadow({ radius: 8, color: 'rgba(0,0,0,0.05)', offsetY: 2 })
+        }
 
         // 备注
         if (this.record.notes) {
@@ -340,6 +405,37 @@ struct RecordDetailPage {
       Text(value)
         .fontSize(ThemeConstants.FONT_SIZE_BASE)
         .fontColor(ThemeColors.TEXT_PRIMARY)
+    }
+    .width('100%')
+    .height(52)
+    .padding({ left: ThemeConstants.SPACE_MD, right: ThemeConstants.SPACE_MD })
+    .backgroundColor(ThemeColors.BG_CARD)
+  }
+
+  @Builder
+  RecipeInfoRow() {
+    Row() {
+      Text('🧪 使用配方')
+        .fontSize(ThemeConstants.FONT_SIZE_BASE)
+        .fontColor(ThemeColors.TEXT_SECONDARY)
+      Blank()
+      if (this.record.recipeName && this.record.recipeId) {
+        Row({ space: 4 }) {
+          Text(this.record.recipeName)
+            .fontSize(ThemeConstants.FONT_SIZE_BASE)
+            .fontColor(ThemeColors.PRIMARY)
+          Text('>')
+            .fontSize(ThemeConstants.FONT_SIZE_SM)
+            .fontColor(ThemeColors.PRIMARY)
+        }
+        .onClick(() => {
+          Router.goToRecipeDetail(this.record.recipeId);
+        })
+      } else {
+        Text(this.record.recipeName || '未填写')
+          .fontSize(ThemeConstants.FONT_SIZE_BASE)
+          .fontColor(ThemeColors.TEXT_PRIMARY)
+      }
     }
     .width('100%')
     .height(52)

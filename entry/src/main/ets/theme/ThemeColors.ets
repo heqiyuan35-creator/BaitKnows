@@ -22,6 +22,7 @@ export class ThemeColors {
 
   // 功能色
   static readonly SUCCESS: string = '#52C41A';
+  static readonly SUCCESS_LIGHT: string = '#F6FFED';
   static readonly WARNING: string = '#FAAD14';
   static readonly ERROR: string = '#FF4D4F';
   static readonly INFO: string = '#1890FF';

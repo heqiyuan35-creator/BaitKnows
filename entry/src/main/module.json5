@@ -42,7 +42,28 @@
         "usedScene": {
           "when": "always"
         }
+      },
+      {
+        "name": "ohos.permission.MICROPHONE",
+        "reason": "$string:mic_permission_reason",
+        "usedScene": {
+          "abilities": [
+            "EntryAbility"
+          ],
+          "when": "inuse"
+        }
       }
+      // TODO: 权限申请通过后启用
+      // {
+      //   "name": "ohos.permission.WRITE_IMAGEVIDEO",
+      //   "reason": "$string:write_image_permission_reason",
+      //   "usedScene": {
+      //     "abilities": [
+      //       "EntryAbility"
+      //     ],
+      //     "when": "inuse"
+      //   }
+      // }
     ],
     "abilities": [
       {

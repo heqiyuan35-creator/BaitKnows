@@ -1,46 +1,91 @@
 /**
- * 饵知道 - 渔获记录页面
- * 统计数据、记录列表
+ * 饵知道 - 渔获记录列表页
+ * 展示统计数据和渔获记录列表
  */
 import { ThemeColors } from '../theme/ThemeColors';
 import { ThemeConstants } from '../theme/ThemeConstants';
 import { Router } from '../router/Router';
 import { FishingRecord } from '../common/types/UserTypes';
 import { fishingRecordService, RecordStatistics } from '../services/FishingRecordService';
-import { AppConstants } from '../common/constants/AppConstants';
+import { StatCard } from '../components/StatCard';
+import { EmptyState } from '../components/EmptyState';
 
+// 按月份分组的记录
+interface MonthGroup {
+  month: string;
+  records: FishingRecord[];
+}
+
+@Entry
 @Component
 export struct FishingRecordPage {
-  @State stats: RecordStatistics = new RecordStatistics();
+  // 刷新触发器，当值变化时重新加载数据（作为子组件时使用）
+  @Prop @Watch('onRefreshTriggerChange') refreshTrigger: number = 0;
   @State records: FishingRecord[] = [];
+  @State statistics: RecordStatistics = new RecordStatistics();
   @State isLoading: boolean = true;
-  @State isRefreshing: boolean = false;
+  @State groupedRecords: MonthGroup[] = [];
 
   aboutToAppear(): void {
-    this.loadData();
+    // 每次组件出现时强制重新加载数据
+    this.loadData(true);
   }
 
-  private async loadData(): Promise<void> {
+  // 监听刷新触发器变化
+  onRefreshTriggerChange(): void {
+    this.loadData(true);
+  }
+
+  onPageShow(): void {
+    // 页面显示时也刷新（作为独立页面时）
+    this.loadData(true);
+  }
+
+  private async loadData(forceReload: boolean = false): Promise<void> {
     this.isLoading = true;
-    await fishingRecordService.load();
-    this.records = fishingRecordService.getRecentRecords(20);
-    this.stats = fishingRecordService.getStatistics();
+    try {
+      if (forceReload) {
+        await fishingRecordService.reload();
+      } else {
+        await fishingRecordService.load();
+      }
+      this.records = fishingRecordService.records;
+      this.statistics = fishingRecordService.getStatistics();
+      this.groupRecordsByMonth();
+    } catch (error) {
+      console.error('加载记录失败:', error);
+    }
     this.isLoading = false;
   }
 
-  private async refreshData(): Promise<void> {
-    this.isRefreshing = true;
-    await fishingRecordService.load();
-    this.records = fishingRecordService.getRecentRecords(20);
-    this.stats = fishingRecordService.getStatistics();
-    this.isRefreshing = false;
+  // 按月份分组记录
+  private groupRecordsByMonth(): void {
+    const groups: Map<string, FishingRecord[]> = new Map();
+
+    for (const record of this.records) {
+      const date = new Date(record.date);
+      const monthKey = `${date.getFullYear()}年${date.getMonth() + 1}月`;
+
+      if (!groups.has(monthKey)) {
+        groups.set(monthKey, []);
+      }
+      groups.get(monthKey)?.push(record);
+    }
+
+    this.groupedRecords = [];
+    groups.forEach((records, month) => {
+      const group: MonthGroup = { month: month, records: records };
+      this.groupedRecords.push(group);
+    });
   }
 
   private formatDate(timestamp: number): string {
     const date = new Date(timestamp);
     const month = date.getMonth() + 1;
     const day = date.getDate();
-    return `${month}月${day}日`;
+    const weekDays = ['周日', '周一', '周二', '周三', '周四', '周五', '周六'];
+    const weekDay = weekDays[date.getDay()];
+    return `${month}月${day}日 ${weekDay}`;
   }
 
   private getWeatherIcon(weather: string): string {
@@ -54,59 +99,56 @@ export struct FishingRecordPage {
     return icons[weather] || '🌤️';
   }
 
+  // 截断鱼种名称，最多显示2种鱼
+  private formatFishName(name: string): string {
+    if (!name) return '未知鱼种';
+    const fishList = name.split('、');
+    if (fishList.length <= 2) return name;
+    return fishList.slice(0, 2).join('、') + '等';
+  }
+
   build() {
     Column() {
-      // 顶部标题栏
-      this.HeaderBar()
-
       if (this.isLoading) {
-        Column() {
-          LoadingProgress().width(40).height(40).color(ThemeColors.PRIMARY)
-        }
-        .width('100%')
-        .layoutWeight(1)
-        .justifyContent(FlexAlign.Center)
+        this.LoadingView()
       } else {
-        Refresh({ refreshing: $$this.isRefreshing }) {
-          Scroll() {
-            Column({ space: ThemeConstants.SPACE_MD }) {
-              // 统计卡片
-              this.StatsCards()
-
-              // 最近记录标题
-              Row() {
-                Text('最近记录')
-                  .fontSize(ThemeConstants.FONT_SIZE_MD)
-                  .fontWeight(FontWeight.Medium)
-                  .fontColor(ThemeColors.TEXT_PRIMARY)
-                Blank()
-                if (this.records.length > 0) {
-                  Text(`共 ${this.stats.totalTrips} 条`)
-                    .fontSize(ThemeConstants.FONT_SIZE_SM)
-                    .fontColor(ThemeColors.TEXT_SECONDARY)
-                }
-              }
+        // 内容区域
+        Scroll() {
+          Column({ space: ThemeConstants.SPACE_MD }) {
+            // 状态栏占位
+            Row()
               .width('100%')
-              .padding({ left: ThemeConstants.SPACE_MD, right: ThemeConstants.SPACE_MD })
+              .height(36)
 
-              // 记录列表
-              if (this.records.length === 0) {
-                this.EmptyView()
-              } else {
-                ForEach(this.records, (record: FishingRecord) => {
-                  this.RecordCard(record)
-                })
-              }
+            // 顶部标题栏
+            this.HeaderBar()
+
+            // 统计卡片区域
+            this.StatisticsSection()
+
+            // 渔获分析入口卡片
+            Column() {
+              this.AnalysisEntryCard()
             }
-            .padding({ bottom: 100 })
+            .padding({ left: ThemeConstants.SPACE_MD, right: ThemeConstants.SPACE_MD })
+
+            // 记录列表
+            if (this.records.length === 0) {
+              this.EmptyView()
+            } else {
+              this.RecordListSection()
+            }
           }
-          .scrollBar(BarState.Off)
+          .padding({ top: 8, bottom: 100 })
+          .alignItems(HorizontalAlign.Start)
         }
-        .onRefreshing(() => {
-          this.refreshData();
-        })
         .layoutWeight(1)
+        .scrollBar(BarState.Off)
+        .align(Alignment.Top)
       }
+
+      // 底部添加按钮
+      this.AddButton()
     }
     .width('100%')
     .height('100%')
@@ -122,153 +164,281 @@ export struct FishingRecordPage {
         .fontColor(ThemeColors.TEXT_PRIMARY)
     }
     .width('100%')
-    .height(56)
-    .padding({ left: 16, right: 16 })
-    .margin({ top: 44 })
-    .justifyContent(FlexAlign.Center)
-  }
-
-  @Builder
-  StatsCards() {
-    Row({ space: ThemeConstants.SPACE_SM }) {
-      this.StatItem('总渔获', `${this.stats.totalWeight}`, 'kg', ThemeColors.PRIMARY)
-      this.StatItem('最大单尾', `${this.stats.maxSingle}`, 'kg', ThemeColors.TEXT_PRIMARY)
-      this.StatItem('本月出钓', `${this.stats.monthTrips}`, '次', ThemeColors.TEXT_PRIMARY)
-    }
-    .width('100%')
+    .height(48)
     .padding({ left: ThemeConstants.SPACE_MD, right: ThemeConstants.SPACE_MD })
   }
 
   @Builder
-  StatItem(label: string, value: string, unit: string, valueColor: string) {
-    Column({ space: 4 }) {
-      Row() {
-        Text(value)
-          .fontSize(ThemeConstants.FONT_SIZE_2XL)
-          .fontWeight(FontWeight.Bold)
-          .fontColor(valueColor)
-        Text(unit)
-          .fontSize(ThemeConstants.FONT_SIZE_XS)
-          .fontColor(ThemeColors.TEXT_MUTED)
-          .margin({ left: 2, top: 8 })
-      }
-      Text(label)
-        .fontSize(ThemeConstants.FONT_SIZE_XS)
+  LoadingView() {
+    Column() {
+      LoadingProgress()
+        .width(48)
+        .height(48)
+        .color(ThemeColors.PRIMARY)
+      Text('加载中...')
+        .fontSize(ThemeConstants.FONT_SIZE_SM)
         .fontColor(ThemeColors.TEXT_SECONDARY)
+        .margin({ top: 12 })
     }
+    .width('100%')
     .layoutWeight(1)
-    .padding({ top: 14, bottom: 14 })
+    .justifyContent(FlexAlign.Center)
+  }
+
+  @Builder
+  AnalysisEntryCard() {
+    Row() {
+      // 左侧图标和文字
+      Row({ space: 12 }) {
+        Column() {
+          Text('📊')
+            .fontSize(28)
+        }
+        .width(52)
+        .height(52)
+        .linearGradient({
+          direction: GradientDirection.RightBottom,
+          colors: [['#FFE4B5', 0], ['#FFD700', 1]]
+        })
+        .borderRadius(14)
+        .justifyContent(FlexAlign.Center)
+
+        Column({ space: 4 }) {
+          Text('渔获分析')
+            .fontSize(ThemeConstants.FONT_SIZE_MD)
+            .fontWeight(FontWeight.Bold)
+            .fontColor(ThemeColors.TEXT_PRIMARY)
+          Text('查看成就、画像、趣味数据')
+            .fontSize(ThemeConstants.FONT_SIZE_XS)
+            .fontColor(ThemeColors.TEXT_SECONDARY)
+        }
+        .alignItems(HorizontalAlign.Start)
+      }
+
+      Blank()
+
+      // 右侧箭头
+      Row() {
+        Text('→')
+          .fontSize(18)
+          .fontColor(ThemeColors.PRIMARY)
+      }
+      .width(36)
+      .height(36)
+      .backgroundColor('rgba(232, 168, 73, 0.15)')
+      .borderRadius(18)
+      .justifyContent(FlexAlign.Center)
+    }
+    .width('100%')
+    .padding(ThemeConstants.SPACE_MD)
     .backgroundColor(ThemeColors.BG_CARD)
-    .borderRadius(ThemeConstants.RADIUS_SM)
-    .shadow({ radius: 6, color: 'rgba(0,0,0,0.04)', offsetY: 2 })
+    .borderRadius(ThemeConstants.RADIUS_MD)
+    .shadow({ radius: 8, color: 'rgba(232, 168, 73, 0.15)', offsetY: 4 })
+    .onClick(() => {
+      Router.push('pages/RecordAnalysisPage');
+    })
+  }
+
+  @Builder
+  StatisticsSection() {
+    Column({ space: ThemeConstants.SPACE_SM }) {
+      // 第一行：总渔获、最大单尾
+      Row({ space: ThemeConstants.SPACE_SM }) {
+        StatCard({
+          label: '总渔获',
+          value: this.statistics.totalWeight.toFixed(1),
+          unit: 'kg',
+          valueColor: ThemeColors.PRIMARY
+        })
+
+        StatCard({
+          label: '最大单尾',
+          value: this.statistics.maxSingle.toFixed(1),
+          unit: 'kg',
+          valueColor: ThemeColors.SUCCESS
+        })
+      }
+      .width('100%')
+
+      // 第二行：本月出钓、总出钓、总尾数
+      Row({ space: ThemeConstants.SPACE_SM }) {
+        StatCard({
+          label: '本月出钓',
+          value: this.statistics.monthTrips.toString(),
+          unit: '次',
+          valueColor: ThemeColors.INFO
+        })
+
+        StatCard({
+          label: '总出钓',
+          value: this.statistics.totalTrips.toString(),
+          unit: '次',
+          valueColor: ThemeColors.WARNING
+        })
+
+        StatCard({
+          label: '总尾数',
+          value: this.statistics.totalCount.toString(),
+          unit: '尾',
+          valueColor: ThemeColors.PRIMARY
+        })
+      }
+      .width('100%')
+    }
+    .padding({ left: ThemeConstants.SPACE_MD, right: ThemeConstants.SPACE_MD })
   }
 
   @Builder
   EmptyView() {
-    Column({ space: 12 }) {
-      Text('🎣')
-        .fontSize(48)
-      Text('暂无渔获记录')
-        .fontSize(ThemeConstants.FONT_SIZE_BASE)
-        .fontColor(ThemeColors.TEXT_SECONDARY)
-      Text('点击底部 + 按钮添加第一条记录')
-        .fontSize(ThemeConstants.FONT_SIZE_SM)
-        .fontColor(ThemeColors.TEXT_MUTED)
-    }
-    .width('100%')
-    .padding({ top: 60, bottom: 60 })
+    EmptyState({
+      icon: '🎣',
+      title: '暂无渔获记录',
+      subtitle: '记录每一次钓鱼的收获，见证你的成长'
+    })
   }
 
   @Builder
-  RecordCard(record: FishingRecord) {
-    Row({ space: 12 }) {
-      // 左侧日期
-      Column({ space: 2 }) {
-        Text(this.formatDate(record.date).split('月')[0])
-          .fontSize(ThemeConstants.FONT_SIZE_2XL)
-          .fontWeight(FontWeight.Bold)
-          .fontColor(ThemeColors.PRIMARY)
-        Text('月')
-          .fontSize(ThemeConstants.FONT_SIZE_XS)
-          .fontColor(ThemeColors.TEXT_MUTED)
-      }
-      .width(48)
-      .alignItems(HorizontalAlign.Center)
+  RecordListSection() {
+    Column({ space: ThemeConstants.SPACE_MD }) {
+      ForEach(this.groupedRecords, (group: MonthGroup) => {
+        Column({ space: ThemeConstants.SPACE_SM }) {
+          // 月份标题
+          Text(group.month)
+            .fontSize(ThemeConstants.FONT_SIZE_SM)
+            .fontColor(ThemeColors.TEXT_SECONDARY)
+            .fontWeight(FontWeight.Medium)
+            .width('100%')
+            .padding({ left: ThemeConstants.SPACE_MD })
 
-      // 分割线
-      Column()
-        .width(1)
-        .height(60)
-        .backgroundColor(ThemeColors.DIVIDER)
+          // 该月的记录
+          ForEach(group.records, (record: FishingRecord) => {
+            this.RecordItem(record)
+          }, (record: FishingRecord) => record.id)
+        }
+      }, (group: MonthGroup) => group.month)
+    }
+    .padding({ left: ThemeConstants.SPACE_MD, right: ThemeConstants.SPACE_MD })
+  }
 
-      // 中间信息
-      Column({ space: 6 }) {
+  @Builder
+  RecordItem(record: FishingRecord) {
+    Column({ space: 10 }) {
+      // 第一行：日期和天气
+      Row() {
         Row({ space: 6 }) {
-          Text(record.fishName || '未知鱼种')
+          Text('📅')
+            .fontSize(14)
+          Text(this.formatDate(record.date))
+            .fontSize(ThemeConstants.FONT_SIZE_SM)
+            .fontColor(ThemeColors.TEXT_SECONDARY)
+        }
+
+        Blank()
+
+        Row({ space: 4 }) {
+          Text(this.getWeatherIcon(record.weather))
+            .fontSize(14)
+          Text(record.weather)
+            .fontSize(ThemeConstants.FONT_SIZE_SM)
+            .fontColor(ThemeColors.TEXT_SECONDARY)
+        }
+        .padding({ left: 8, right: 8, top: 2, bottom: 2 })
+        .backgroundColor(ThemeColors.BG_TERTIARY)
+        .borderRadius(ThemeConstants.RADIUS_FULL)
+      }
+      .width('100%')
+
+      // 第二行：钓点
+      Row({ space: 6 }) {
+        Text('📍')
+          .fontSize(14)
+        Text(record.location || '未填写钓点')
+          .fontSize(ThemeConstants.FONT_SIZE_BASE)
+          .fontColor(ThemeColors.TEXT_PRIMARY)
+          .maxLines(1)
+          .textOverflow({ overflow: TextOverflow.Ellipsis })
+      }
+      .width('100%')
+
+      // 第三行：鱼种、数量、重量
+      Row() {
+        Row({ space: 6 }) {
+          Text('🐟')
+            .fontSize(16)
+            .flexShrink(0)
+          Text(this.formatFishName(record.fishName))
             .fontSize(ThemeConstants.FONT_SIZE_MD)
             .fontWeight(FontWeight.Medium)
             .fontColor(ThemeColors.TEXT_PRIMARY)
-
-          Row({ space: 4 }) {
-            Text(this.getWeatherIcon(record.weather))
-              .fontSize(12)
-            Text(record.weather)
-              .fontSize(ThemeConstants.FONT_SIZE_XS)
-              .fontColor(ThemeColors.TEXT_MUTED)
-          }
+            .maxLines(1)
+            .textOverflow({ overflow: TextOverflow.Ellipsis })
+            .constraintSize({ maxWidth: '45%' })
+          Text(`× ${record.count}尾`)
+            .fontSize(ThemeConstants.FONT_SIZE_SM)
+            .fontColor(ThemeColors.TEXT_SECONDARY)
+            .flexShrink(0)
         }
+        .flexShrink(1)
 
-        Row({ space: 8 }) {
-          Text(`📍 ${record.location || '未知地点'}`)
+        Blank()
+
+        Row() {
+          Text(`${record.weight}`)
+            .fontSize(ThemeConstants.FONT_SIZE_XL)
+            .fontWeight(FontWeight.Bold)
+            .fontColor(ThemeColors.PRIMARY)
+          Text('kg')
+            .fontSize(ThemeConstants.FONT_SIZE_SM)
+            .fontColor(ThemeColors.TEXT_SECONDARY)
+            .margin({ left: 2, top: 4 })
+        }
+        .flexShrink(0)
+      }
+      .width('100%')
+
+      // 第四行：配方（如有）
+      if (record.recipeName) {
+        Row({ space: 6 }) {
+          Text('🧪')
+            .fontSize(14)
+          Text(record.recipeName)
             .fontSize(ThemeConstants.FONT_SIZE_SM)
             .fontColor(ThemeColors.TEXT_SECONDARY)
             .maxLines(1)
             .textOverflow({ overflow: TextOverflow.Ellipsis })
-            .layoutWeight(1)
         }
-
-        Row({ space: 12 }) {
-          Text(`🐟 ${record.count}尾`)
-            .fontSize(ThemeConstants.FONT_SIZE_XS)
-            .fontColor(ThemeColors.TEXT_MUTED)
-
-          if (record.recipeName) {
-            Text(`🧪 ${record.recipeName}`)
-              .fontSize(ThemeConstants.FONT_SIZE_XS)
-              .fontColor(ThemeColors.TEXT_MUTED)
-              .maxLines(1)
-              .textOverflow({ overflow: TextOverflow.Ellipsis })
-          }
-        }
+        .width('100%')
       }
-      .alignItems(HorizontalAlign.Start)
-      .layoutWeight(1)
-
-      // 右侧重量
-      Column({ space: 2 }) {
-        Text(`${record.weight}`)
-          .fontSize(ThemeConstants.FONT_SIZE_XL)
-          .fontWeight(FontWeight.Bold)
-          .fontColor(ThemeColors.PRIMARY)
-        Text('kg')
-          .fontSize(ThemeConstants.FONT_SIZE_XS)
-          .fontColor(ThemeColors.TEXT_MUTED)
-      }
-      .alignItems(HorizontalAlign.End)
-
-      // 箭头
-      Text('›')
-        .fontSize(20)
-        .fontColor(ThemeColors.TEXT_MUTED)
     }
     .width('100%')
     .padding(ThemeConstants.SPACE_MD)
-    .margin({ left: ThemeConstants.SPACE_MD, right: ThemeConstants.SPACE_MD })
     .backgroundColor(ThemeColors.BG_CARD)
     .borderRadius(ThemeConstants.RADIUS_MD)
-    .shadow({ radius: 8, color: 'rgba(0,0,0,0.05)', offsetY: 2 })
+    .shadow({ radius: 4, color: 'rgba(0,0,0,0.05)', offsetY: 2 })
     .onClick(() => {
       Router.goToRecordDetail(record.id);
     })
+  }
+
+  @Builder
+  AddButton() {
+    Row() {
+      Button('+ 添加记录')
+        .fontSize(ThemeConstants.FONT_SIZE_MD)
+        .fontColor(Color.White)
+        .backgroundColor(ThemeColors.PRIMARY)
+        .borderRadius(ThemeConstants.RADIUS_FULL)
+        .height(48)
+        .width('90%')
+        .shadow({ radius: 8, color: 'rgba(232, 168, 73, 0.3)', offsetY: 4 })
+        .onClick(() => {
+          Router.goToAddRecord();
+        })
+    }
+    .width('100%')
+    .justifyContent(FlexAlign.Center)
+    .padding({ bottom: 20 })
+    .position({ x: 0, y: '100%' })
+    .translate({ y: -80 })
   }
 }

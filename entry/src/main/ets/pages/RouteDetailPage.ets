@@ -7,7 +7,7 @@ import { router } from '@kit.ArkUI';
 import { ThemeColors } from '../theme/ThemeColors';
 import { LocationService } from '../services/LocationService';
 import { FishingSpotService } from '../services/FishingSpotService';
-import { FishingSpot, WaterTypeNames, WaterTypeIcons } from '../data/FishingSpotData';
+import { FishingSpot, WaterTypeNames, WaterTypeImages } from '../data/FishingSpotData';
 
 interface RouteParams {
   spotId: string;
@@ -58,15 +58,31 @@ struct RouteDetailPage {
     };
 
     this.mapCallback = async (err, mapController) => {
-      if (!err) {
+      if (err) {
+        console.error(this.TAG, `Map init failed: ${err.code}, ${err.message}`);
+        return;
+      }
+      
+      if (!mapController) {
+        console.error(this.TAG, 'Map controller is null');
+        return;
+      }
+      
+      try {
         this.mapController = mapController;
         this.isMapReady = true;
 
         const eventManager = this.mapController.getEventManager();
         eventManager.on('mapLoad', () => {
-          this.addMarkers();
-          this.calculateRoute();
+          try {
+            this.addMarkers();
+            this.calculateRoute();
+          } catch (e) {
+            console.error(this.TAG, `mapLoad handler error: ${e}`);
+          }
         });
+      } catch (e) {
+        console.error(this.TAG, `Map callback error: ${e}`);
       }
     };
   }
@@ -76,26 +92,43 @@ struct RouteDetailPage {
 
     const userLocation = LocationService.currentLocation;
 
-    await this.mapController.addMarker({
+    // 起点标记 - 绿色
+    const startMarker = await this.mapController.addMarker({
       position: { latitude: userLocation.latitude, longitude: userLocation.longitude },
-      title: '📍 我的位置',
-      snippet: '出发点',
-      clickable: true
+      title: '起点',
+      snippet: '我的位置',
+      clickable: true,
+      alpha: 1,
+      anchorU: 0.5,
+      anchorV: 1
     });
+    startMarker.setInfoWindowVisible(true);
 
-    await this.mapController.addMarker({
+    // 终点标记 - 红色
+    const endMarker = await this.mapController.addMarker({
       position: { latitude: this.spot.latitude, longitude: this.spot.longitude },
-      title: `🎣 ${this.spot.name}`,
-      snippet: '目的地',
-      clickable: true
+      title: '终点',
+      snippet: this.spot.name,
+      clickable: true,
+      alpha: 1,
+      anchorU: 0.5,
+      anchorV: 1
     });
+    endMarker.setInfoWindowVisible(true);
   }
 
   async calculateRoute(): Promise<void> {
-    if (!this.spot) return;
+    if (!this.spot || !this.mapController) return;
 
     this.isLoading = true;
     const userLocation = LocationService.currentLocation;
+    
+    // 检查位置有效性
+    if (!userLocation.isValid) {
+      console.error(this.TAG, 'User location is invalid');
+      this.isLoading = false;
+      return;
+    }
 
     // 清除旧路线
     if (this.currentPolyline) {
@@ -354,11 +387,19 @@ struct RouteDetailPage {
   }
 
   onPageShow(): void {
-    if (this.mapController) this.mapController.show();
+    try {
+      if (this.mapController) this.mapController.show();
+    } catch (e) {
+      console.error(this.TAG, `onPageShow error: ${e}`);
+    }
   }
 
   onPageHide(): void {
-    if (this.mapController) this.mapController.hide();
+    try {
+      if (this.mapController) this.mapController.hide();
+    } catch (e) {
+      console.error(this.TAG, `onPageHide error: ${e}`);
+    }
   }
 
   build() {
@@ -387,8 +428,9 @@ struct RouteDetailPage {
 
       if (this.spot) {
         Row() {
-          Text(WaterTypeIcons[this.spot.waterType])
-            .fontSize(24)
+          Image(WaterTypeImages[this.spot.waterType].active)
+            .width(28)
+            .height(28)
             .margin({ right: 12 })
 
           Column() {

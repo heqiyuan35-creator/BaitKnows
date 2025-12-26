@@ -2,8 +2,6 @@
  * 饵知道 - 配方服务
  * 配方生成、查询、管理
  */
-import { StorageService } from './StorageService';
-import { AppConstants } from '../common/constants/AppConstants';
 
 // 配方材料接口
 export interface Ingredient {
@@ -779,6 +777,15 @@ export class RecipeService {
   // 根据ID获取配方
   public getRecipeById(id: string): Recipe | undefined {
     return this.recipes.find((r: Recipe) => r.id === id);
+  }
+
+  // 添加配方到配方库
+  public addRecipe(recipe: Recipe): void {
+    // 检查是否已存在同名配方
+    const exists = this.recipes.find((r: Recipe) => r.name === recipe.name);
+    if (!exists) {
+      this.recipes.unshift(recipe);  // 添加到列表开头
+    }
   }
 
   // 智能生成配方

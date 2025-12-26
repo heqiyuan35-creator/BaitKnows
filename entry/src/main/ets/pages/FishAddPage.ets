@@ -3,6 +3,7 @@
  * 用户自定义添加鱼种数据
  */
 import { router } from '@kit.ArkUI';
+import { photoAccessHelper } from '@kit.MediaLibraryKit';
 import { ThemeColors } from '../theme/ThemeColors';
 import { ThemeConstants } from '../theme/ThemeConstants';
 import { userDataService } from '../services/UserDataService';
@@ -30,9 +31,13 @@ struct FishAddPage {
   @State selectedFeedingType: string = 'omnivore';
   @State selectedWaterLayer: string = 'bottom';
   @State selectedActivityTime: string = 'all';
-  @State preferredTemp: string = '';
+  @State selectedTempRange: string = 'medium';  // 适宜水温范围
+  @State selectedFoods: string[] = [];  // 喜食饵料（多选）
   @State description: string = '';
-  @State favoriteFood: string = '';
+  @State fishIcon: string = '';  // 鱼种图标路径
+  @State showToast: boolean = false;
+  @State toastMessage: string = '';
+  @State isSaving: boolean = false;
 
   private waterTypes: SelectOption[] = [
     makeOption('pond', '池塘'),
@@ -61,6 +66,31 @@ struct FishAddPage {
     makeOption('all', '全天')
   ];
 
+  // 适宜水温范围选项
+  private tempRanges: SelectOption[] = [
+    makeOption('cold', '低温 (5-15°C)'),
+    makeOption('cool', '凉爽 (10-20°C)'),
+    makeOption('medium', '适中 (15-25°C)'),
+    makeOption('warm', '温暖 (20-30°C)'),
+    makeOption('hot', '高温 (25-35°C)')
+  ];
+
+  // 喜食饵料选项
+  private foodOptions: SelectOption[] = [
+    makeOption('earthworm', '蚯蚓'),
+    makeOption('bloodworm', '红虫'),
+    makeOption('corn', '玉米'),
+    makeOption('wheat', '小麦'),
+    makeOption('pellet', '颗粒饲料'),
+    makeOption('dough', '面饵'),
+    makeOption('shrimp', '虾'),
+    makeOption('snail', '螺蛳'),
+    makeOption('grass', '水草'),
+    makeOption('insect', '昆虫'),
+    makeOption('fish', '小鱼'),
+    makeOption('commercial', '商品饵')
+  ];
+
   build() {
     Column() {
       // 顶部导航栏
@@ -69,6 +99,9 @@ struct FishAddPage {
       // 表单内容
       Scroll() {
         Column({ space: 20 }) {
+          // 鱼种图片
+          this.FishIconSection()
+
           // 鱼种名称
           this.FishNameSection()
 
@@ -102,19 +135,117 @@ struct FishAddPage {
             .height(48)
             .fontSize(16)
             .fontWeight(FontWeight.Medium)
-            .backgroundColor(ThemeColors.PRIMARY)
+            .backgroundColor(this.isSaving ? ThemeColors.TEXT_MUTED : ThemeColors.PRIMARY)
             .fontColor(ThemeColors.TEXT_PRIMARY)
             .margin({ top: 16, bottom: 32 })
+            .enabled(!this.isSaving)
             .onClick(() => this.saveFish())
         }
         .padding(16)
       }
       .layoutWeight(1)
       .scrollBar(BarState.Off)
+
+      // Toast 提示
+      if (this.showToast) {
+        Column() {
+          Text(this.toastMessage)
+            .fontSize(14)
+            .fontColor(Color.White)
+            .padding({ left: 16, right: 16, top: 10, bottom: 10 })
+            .backgroundColor('rgba(0, 0, 0, 0.7)')
+            .borderRadius(20)
+        }
+        .width('100%')
+        .position({ x: 0, y: '40%' })
+        .justifyContent(FlexAlign.Center)
+      }
     }
     .width('100%')
     .height('100%')
     .backgroundColor(ThemeColors.BG_PRIMARY)
+  }
+
+  @Builder
+  FishIconSection() {
+    Column({ space: 8 }) {
+      Text('鱼种图片')
+        .fontSize(ThemeConstants.FONT_SIZE_SM)
+        .fontColor(ThemeColors.TEXT_SECONDARY)
+        .fontWeight(FontWeight.Medium)
+
+      Row() {
+        if (this.fishIcon) {
+          // 已选择图片
+          Stack() {
+            Image(this.fishIcon)
+              .width(100)
+              .height(100)
+              .borderRadius(12)
+              .objectFit(ImageFit.Cover)
+
+            // 删除按钮
+            Text('×')
+              .fontSize(16)
+              .fontColor(Color.White)
+              .width(24)
+              .height(24)
+              .textAlign(TextAlign.Center)
+              .backgroundColor('rgba(0,0,0,0.5)')
+              .borderRadius(12)
+              .position({ x: 76, y: 0 })
+              .onClick(() => {
+                this.fishIcon = '';
+              })
+          }
+          .width(100)
+          .height(100)
+        } else {
+          // 上传占位
+          Column({ space: 8 }) {
+            Image($r('app.media.fishImage'))
+              .width(48)
+              .height(48)
+              .objectFit(ImageFit.Contain)
+
+            Text('点击上传')
+              .fontSize(12)
+              .fontColor(ThemeColors.TEXT_MUTED)
+          }
+          .width(100)
+          .height(100)
+          .justifyContent(FlexAlign.Center)
+          .backgroundColor(ThemeColors.BG_CARD)
+          .borderRadius(12)
+          .border({ width: 1, color: ThemeColors.PRIMARY, style: BorderStyle.Dashed })
+          .onClick(() => {
+            // 调用图片选择器
+            this.selectImageFromGallery();
+          })
+        }
+
+        // 提示文字
+        Column({ space: 4 }) {
+          Text('建议上传正方形图片')
+            .fontSize(12)
+            .fontColor(ThemeColors.TEXT_MUTED)
+
+          Text('支持 JPG、PNG 格式')
+            .fontSize(12)
+            .fontColor(ThemeColors.TEXT_MUTED)
+
+          Text('不上传将使用默认图标')
+            .fontSize(12)
+            .fontColor(ThemeColors.TEXT_HINT)
+        }
+        .alignItems(HorizontalAlign.Start)
+        .margin({ left: 16 })
+      }
+      .width('100%')
+      .alignItems(VerticalAlign.Top)
+    }
+    .width('100%')
+    .alignItems(HorizontalAlign.Start)
   }
 
   @Builder
@@ -139,6 +270,7 @@ struct FishAddPage {
     .width('100%')
     .height(56)
     .padding({ left: 8, right: 16 })
+    .margin({ top: 44 })
     .backgroundColor(ThemeColors.BG_SECONDARY)
   }
 
@@ -252,16 +384,25 @@ struct FishAddPage {
         .fontColor(ThemeColors.TEXT_SECONDARY)
         .fontWeight(FontWeight.Medium)
 
-      TextInput({ placeholder: '如：15-25°C', text: this.preferredTemp })
-        .width('100%')
-        .height(48)
-        .fontSize(ThemeConstants.FONT_SIZE_BASE)
-        .backgroundColor(ThemeColors.BG_CARD)
-        .borderRadius(ThemeConstants.RADIUS_SM)
-        .padding({ left: 12, right: 12 })
-        .onChange((value: string) => {
-          this.preferredTemp = value;
+      Flex({ wrap: FlexWrap.Wrap }) {
+        ForEach(this.tempRanges, (item: SelectOption) => {
+          Text(item.name)
+            .fontSize(ThemeConstants.FONT_SIZE_SM)
+            .fontColor(this.selectedTempRange === item.id ? ThemeColors.PRIMARY : ThemeColors.TEXT_SECONDARY)
+            .padding({ left: 12, right: 12, top: 8, bottom: 8 })
+            .backgroundColor(this.selectedTempRange === item.id ? 'rgba(232, 168, 73, 0.15)' : ThemeColors.BG_CARD)
+            .borderRadius(ThemeConstants.RADIUS_FULL)
+            .border({
+              width: 1,
+              color: this.selectedTempRange === item.id ? ThemeColors.PRIMARY : Color.Transparent
+            })
+            .margin({ right: 8, bottom: 8 })
+            .onClick(() => {
+              this.selectedTempRange = item.id;
+            })
         })
+      }
+      .width('100%')
     }
     .width('100%')
     .alignItems(HorizontalAlign.Start)
@@ -270,21 +411,43 @@ struct FishAddPage {
   @Builder
   FavoriteFoodSection() {
     Column({ space: 8 }) {
-      Text('喜食饵料')
+      Text('喜食饵料（可多选）')
         .fontSize(ThemeConstants.FONT_SIZE_SM)
         .fontColor(ThemeColors.TEXT_SECONDARY)
         .fontWeight(FontWeight.Medium)
 
-      TextInput({ placeholder: '如：蚯蚓、玉米、红虫（顿号分隔）', text: this.favoriteFood })
-        .width('100%')
-        .height(48)
-        .fontSize(ThemeConstants.FONT_SIZE_BASE)
-        .backgroundColor(ThemeColors.BG_CARD)
-        .borderRadius(ThemeConstants.RADIUS_SM)
-        .padding({ left: 12, right: 12 })
-        .onChange((value: string) => {
-          this.favoriteFood = value;
+      Flex({ wrap: FlexWrap.Wrap }) {
+        ForEach(this.foodOptions, (item: SelectOption) => {
+          Row() {
+            Checkbox()
+              .select(this.selectedFoods.includes(item.id))
+              .selectedColor(ThemeColors.PRIMARY)
+              .width(16)
+              .height(16)
+              .onChange((checked: boolean) => {
+                if (checked) {
+                  this.selectedFoods.push(item.id);
+                } else {
+                  const idx = this.selectedFoods.indexOf(item.id);
+                  if (idx > -1) {
+                    this.selectedFoods.splice(idx, 1);
+                  }
+                }
+                this.selectedFoods = this.selectedFoods.slice();
+              })
+
+            Text(item.name)
+              .fontSize(ThemeConstants.FONT_SIZE_SM)
+              .fontColor(ThemeColors.TEXT_PRIMARY)
+              .margin({ left: 4 })
+          }
+          .padding({ left: 10, right: 10, top: 6, bottom: 6 })
+          .backgroundColor(this.selectedFoods.includes(item.id) ? 'rgba(232, 168, 73, 0.15)' : ThemeColors.BG_CARD)
+          .borderRadius(ThemeConstants.RADIUS_SM)
+          .margin({ right: 8, bottom: 8 })
         })
+      }
+      .width('100%')
     }
     .width('100%')
     .alignItems(HorizontalAlign.Start)
@@ -415,39 +578,78 @@ struct FishAddPage {
   }
 
   private async saveFish(): Promise<void> {
-    if (!this.fishName.trim()) {
-      console.info('请输入鱼种名称');
+    if (this.isSaving) return;
+
+    // 验证名称
+    const trimmedName = this.fishName.trim();
+    if (!trimmedName) {
+      this.showToastMessage('请输入鱼种名称');
       return;
     }
+
+    if (trimmedName.length < 2) {
+      this.showToastMessage('鱼种名称至少2个字符');
+      return;
+    }
+
+    // 验证水域
     if (this.selectedWaterTypes.length === 0) {
-      console.info('请选择适合水域');
+      this.showToastMessage('请选择适合水域');
       return;
     }
 
-    // 解析喜食饵料
-    const foodList: string[] = [];
-    const parts = this.favoriteFood.split(/[、,，]/);
-    for (let i = 0; i < parts.length; i++) {
-      const s = parts[i].trim();
-      if (s.length > 0) {
-        foodList.push(s);
-      }
+    this.isSaving = true;
+
+    try {
+      // 保存到 UserDataService（包含图片路径）
+      await userDataService.addFish(
+        trimmedName,
+        this.fishNameEn.trim(),
+        this.fishIcon,  // 图片路径
+        this.selectedWaterTypes.slice(),
+        this.selectedFeedingType,
+        this.selectedWaterLayer,
+        this.selectedActivityTime,
+        this.selectedTempRange,  // 适宜水温范围
+        this.selectedFoods.slice(),  // 喜食饵料（多选）
+        this.description.trim()
+      );
+
+      this.showToastMessage('鱼种保存成功');
+
+      setTimeout(() => {
+        router.back();
+      }, 800);
+
+    } catch (error) {
+      console.error('保存鱼种失败:', error);
+      this.showToastMessage('保存失败，请重试');
+      this.isSaving = false;
     }
+  }
 
-    // 保存到 UserDataService
-    await userDataService.addFish(
-      this.fishName.trim(),
-      this.fishNameEn.trim(),
-      this.selectedWaterTypes.slice(),
-      this.selectedFeedingType,
-      this.selectedWaterLayer,
-      this.selectedActivityTime,
-      this.preferredTemp.trim(),
-      foodList,
-      this.description.trim()
-    );
+  // 从相册选择图片
+  private selectImageFromGallery(): void {
+    const photoPicker = new photoAccessHelper.PhotoViewPicker();
+    photoPicker.select({
+      MIMEType: photoAccessHelper.PhotoViewMIMETypes.IMAGE_TYPE,
+      maxSelectNumber: 1
+    }).then((res: photoAccessHelper.PhotoSelectResult) => {
+      if (res.photoUris && res.photoUris.length > 0) {
+        this.fishIcon = res.photoUris[0];
+        this.showToastMessage('图片选择成功');
+      }
+    }).catch((err: Error) => {
+      console.error('选择图片失败:', err);
+      this.showToastMessage('选择图片失败');
+    });
+  }
 
-    console.info('鱼种保存成功:', this.fishName);
-    router.back();
+  private showToastMessage(message: string): void {
+    this.toastMessage = message;
+    this.showToast = true;
+    setTimeout(() => {
+      this.showToast = false;
+    }, 2000);
   }
 }

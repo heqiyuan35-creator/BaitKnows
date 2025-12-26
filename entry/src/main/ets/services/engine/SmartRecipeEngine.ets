@@ -540,16 +540,11 @@ export class SmartRecipeEngine {
   private generateStateProfile(weights: StateWeights): StateProfile {
     const profile = new StateProfile();
 
-    // 转换为1-5星级，增加随机变化
-    const randomOffset = (): number => {
-      // 随机 -1, 0, 或 +1
-      return Math.floor(Math.random() * 3) - 1;
-    };
-
-    profile.atomization = Math.min(5, Math.max(1, this.toStarRating(weights.atomization) + randomOffset()));
-    profile.viscosity = Math.min(5, Math.max(1, this.toStarRating(weights.viscosity) + randomOffset()));
-    profile.hookHolding = Math.min(5, Math.max(1, Math.round(weights.viscosity / 20) + randomOffset()));
-    profile.weight = Math.min(5, Math.max(1, this.toStarRating(weights.weight) + randomOffset()));
+    // 转换为1-5星级，基于实际权重值
+    profile.atomization = Math.min(5, Math.max(1, this.toStarRating(weights.atomization)));
+    profile.viscosity = Math.min(5, Math.max(1, this.toStarRating(weights.viscosity)));
+    profile.hookHolding = Math.min(5, Math.max(1, Math.round((weights.viscosity + 20) / 24)));  // 粘度越高附钩性越好
+    profile.weight = Math.min(5, Math.max(1, this.toStarRating(weights.weight)));
 
     return profile;
   }
@@ -560,46 +555,88 @@ export class SmartRecipeEngine {
   private generateUsage(input: GenerateRecipeInput, stateWeights: StateWeights): UsageSuggestion {
     const usage = new UsageSuggestion();
 
-    // 水比
-    if (stateWeights.atomization > 60) {
+    // 水比 - 根据雾化和粘度综合判断
+    if (stateWeights.atomization > 70) {
+      usage.waterRatio = '1:0.7';
+    } else if (stateWeights.atomization > 60) {
       usage.waterRatio = '1:0.8';
     } else if (stateWeights.atomization > 40) {
       usage.waterRatio = '1:0.9';
+    } else if (stateWeights.viscosity > 60) {
+      usage.waterRatio = '1:1.1';
     } else {
       usage.waterRatio = '1:1';
     }
 
-    // 静置时间
-    if (stateWeights.viscosity > 60) {
+    // 静置时间 - 根据粘度和雾化
+    if (stateWeights.viscosity > 70) {
+      usage.restTime = '15-20分钟';
+    } else if (stateWeights.viscosity > 60) {
       usage.restTime = '10-15分钟';
     } else if (stateWeights.viscosity > 40) {
       usage.restTime = '5-10分钟';
-    } else {
+    } else if (stateWeights.atomization > 60) {
       usage.restTime = '3-5分钟';
+    } else {
+      usage.restTime = '5-8分钟';
     }
 
-    // 首钓建议
+    // 首钓建议 - 根据钓法和状态综合判断
     if (input.fishingMethod === 'rub') {
-      usage.firstCast = '搓大饵找鱼层，有口后改小饵';
+      if (stateWeights.weight > 60) {
+        usage.firstCast = '搓大饵快速找底，确定水深后改小饵';
+      } else if (stateWeights.atomization > 60) {
+        usage.firstCast = '搓饵抽窝，形成雾化带后改小饵';
+      } else {
+        usage.firstCast = '搓大饵找鱼层，有口后改小饵';
+      }
     } else if (input.fishingMethod === 'pull') {
-      usage.firstCast = '拉小饵快频率，诱钓结合';
+      if (stateWeights.atomization > 60) {
+        usage.firstCast = '拉小饵快频率，边诱边钓';
+      } else {
+        usage.firstCast = '拉饵找口，注意控制饵团大小';
+      }
     } else if (input.fishingMethod === 'scatter') {
-      usage.firstCast = '先打散炮诱鱼，再搓饵钓';
+      if (stateWeights.weight > 60) {
+        usage.firstCast = '散炮到底诱鱼，搓饵钓底';
+      } else {
+        usage.firstCast = '先打散炮诱鱼，再搓饵钓';
+      }
     } else if (input.fishingMethod === 'wrap') {
       usage.firstCast = '外层雾化诱鱼，内层留鱼';
     } else {
-      usage.firstCast = '搓大饵试鱼层';
+      if (stateWeights.atomization > 50) {
+        usage.firstCast = '前几竿加大饵团快速诱鱼';
+      } else {
+        usage.firstCast = '搓大饵试鱼层，找到鱼层后调整';
+      }
     }
 
-    // 打窝建议
+    // 打窝建议 - 根据水域和状态
     if (input.waterType === 'river') {
-      usage.nestSuggestion = '酒米+颗粒，少量多次';
+      if (stateWeights.viscosity > 60) {
+        usage.nestSuggestion = '酒米+颗粒打底，粘饵带窝';
+      } else {
+        usage.nestSuggestion = '酒米+颗粒，少量多次补窝';
+      }
     } else if (input.waterType === 'pond') {
-      usage.nestSuggestion = '散炮带窝，边钓边诱';
+      if (stateWeights.atomization > 60) {
+        usage.nestSuggestion = '散炮带窝，高频率抽竿';
+      } else {
+        usage.nestSuggestion = '散炮带窝，边钓边诱';
+      }
     } else if (input.waterType === 'reservoir') {
-      usage.nestSuggestion = '大窝守钓，玉米+颗粒';
+      if (stateWeights.weight > 60) {
+        usage.nestSuggestion = '大窝守钓，玉米+颗粒+酒米';
+      } else {
+        usage.nestSuggestion = '提前打窝，耐心守钓';
+      }
     } else {
-      usage.nestSuggestion = '酒米打底，适量补窝';
+      if (stateWeights.atomization > 50) {
+        usage.nestSuggestion = '酒米打底，散炮诱鱼';
+      } else {
+        usage.nestSuggestion = '酒米打底，适量补窝';
+      }
     }
 
     return usage;
@@ -611,20 +648,51 @@ export class SmartRecipeEngine {
   private generateReasons(input: GenerateRecipeInput, analysis: AnalysisResult, variant: RecipeVariant | null): GenerateReason[] {
     const reasons: GenerateReason[] = [];
 
-    // 温度理由
-    const tempTemplate = getTempReasonTemplate(input.temperature);
+    // 温度理由 - 根据具体温度生成更详细的理由
     const tempReason = new GenerateReason();
-    tempReason.condition = tempTemplate.condition;
-    tempReason.decision = tempTemplate.decision;
-    tempReason.icon = tempTemplate.icon;
+    if (input.temperature < 5) {
+      tempReason.condition = `水温极低(${input.temperature}°C)`;
+      tempReason.decision = '浓腥浓香，慢雾化留鱼';
+      tempReason.icon = '❄️';
+    } else if (input.temperature < 10) {
+      tempReason.condition = `水温较低(${input.temperature}°C)`;
+      tempReason.decision = '腥香为主，增加粘度';
+      tempReason.icon = '🌡️';
+    } else if (input.temperature < 15) {
+      tempReason.condition = `水温偏低(${input.temperature}°C)`;
+      tempReason.decision = '腥香兼顾，状态偏软';
+      tempReason.icon = '🌡️';
+    } else if (input.temperature < 25) {
+      tempReason.condition = `水温适宜(${input.temperature}°C)`;
+      tempReason.decision = '香甜为主，状态适中';
+      tempReason.icon = '☀️';
+    } else if (input.temperature < 30) {
+      tempReason.condition = `水温偏高(${input.temperature}°C)`;
+      tempReason.decision = '清淡果香，快雾化';
+      tempReason.icon = '🌤️';
+    } else {
+      tempReason.condition = `水温较高(${input.temperature}°C)`;
+      tempReason.decision = '本味清淡，加果酸';
+      tempReason.icon = '🔥';
+    }
     reasons.push(tempReason);
 
-    // 水域理由
-    const waterTemplate = getWaterReasonTemplate(input.waterType);
+    // 水域理由 - 更详细的描述
     const waterReason = new GenerateReason();
-    waterReason.condition = waterTemplate.condition;
-    waterReason.decision = waterTemplate.decision;
-    waterReason.icon = waterTemplate.icon;
+    if (input.waterType === 'river') {
+      waterReason.condition = '野河流水环境';
+      waterReason.decision = '降低雾化，增加粘度';
+    } else if (input.waterType === 'pond') {
+      waterReason.condition = '黑坑竞技环境';
+      waterReason.decision = '快雾化诱鱼，味型突出';
+    } else if (input.waterType === 'reservoir') {
+      waterReason.condition = '水库大水面';
+      waterReason.decision = '重比重到底，持久留鱼';
+    } else {
+      waterReason.condition = '野塘自然环境';
+      waterReason.decision = '本味为主，状态自然';
+    }
+    waterReason.icon = '🌊';
     reasons.push(waterReason);
 
     // 鱼种理由
@@ -634,6 +702,52 @@ export class SmartRecipeEngine {
     fishReason.decision = fishTemplate.decision;
     fishReason.icon = fishTemplate.icon;
     reasons.push(fishReason);
+
+    // 变体理由 - 如果是换一换生成的
+    if (variant !== null && variant.description) {
+      const variantReason = new GenerateReason();
+      variantReason.condition = '配方调整';
+      // 根据变体策略生成更具体的理由
+      switch (variant.strategy) {
+        case 'flavor_shift':
+          if (variant.flavorShift?.primaryShift === 'increase_fishy') {
+            variantReason.decision = '增加腥味比例，提升诱鱼效果';
+          } else if (variant.flavorShift?.primaryShift === 'increase_fragrant') {
+            variantReason.decision = '增加香味比例，适合滑口鱼';
+          } else if (variant.flavorShift?.primaryShift === 'increase_sweet') {
+            variantReason.decision = '增加甜味，提升适口性';
+          } else if (variant.flavorShift?.primaryShift === 'decrease_intensity') {
+            variantReason.decision = '整体减淡，适合警惕性高的鱼';
+          } else if (variant.flavorShift?.primaryShift === 'more_atomization') {
+            variantReason.decision = '增加雾化，加快诱鱼速度';
+          } else if (variant.flavorShift?.primaryShift === 'more_viscosity') {
+            variantReason.decision = '增加粘度，提升附钩性';
+          } else if (variant.flavorShift?.primaryShift === 'lighter') {
+            variantReason.decision = '减轻比重，适合钓浮或离底';
+          } else if (variant.flavorShift?.primaryShift === 'heavier') {
+            variantReason.decision = '增加比重，快速到底守大鱼';
+          } else {
+            variantReason.decision = variant.description;
+          }
+          break;
+        case 'ingredient_swap':
+          variantReason.decision = '更换原料组合，尝试不同效果';
+          break;
+        case 'additive_change':
+          variantReason.decision = '更换添加剂，调整味型方向';
+          break;
+        case 'ratio_adjust':
+          variantReason.decision = '调整配比，优化饵料状态';
+          break;
+        case 'state_change':
+          variantReason.decision = '改变状态特性，适应不同鱼情';
+          break;
+        default:
+          variantReason.decision = variant.description;
+      }
+      variantReason.icon = '🔄';
+      reasons.push(variantReason);
+    }
 
     // 鱼情理由
     const densityTemplate = getDensityReasonTemplate(input.fishDensity);
@@ -663,15 +777,6 @@ export class SmartRecipeEngine {
       r.decision = modeTemplate.decision;
       r.icon = modeTemplate.icon;
       reasons.push(r);
-    }
-
-    // 变体理由
-    if (variant !== null && variant.description) {
-      const variantReason = new GenerateReason();
-      variantReason.condition = '配方变体';
-      variantReason.decision = variant.description;
-      variantReason.icon = '🔄';
-      reasons.push(variantReason);
     }
 
     // 特殊场景理由

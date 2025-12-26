@@ -22,6 +22,7 @@ export class AppConstants {
   static readonly ROUTE_RECORD_DETAIL: string = 'pages/RecordDetailPage';
   static readonly ROUTE_GENERATOR_HISTORY: string = 'pages/GeneratorHistoryPage';
   static readonly ROUTE_MAP: string = 'pages/MapPage';
+  static readonly ROUTE_VICTORY_SHARE: string = 'pages/VictorySharePage';
 
   // 存储键
   static readonly STORAGE_USER_PROFILE: string = 'user_profile';

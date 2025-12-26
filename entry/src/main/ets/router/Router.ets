@@ -13,6 +13,9 @@ export class RouteParams {
   season?: string;
   id?: string;
   isEdit?: boolean;
+  // 协议页面参数
+  title?: string;
+  type?: string;
 }
 
 export class Router {

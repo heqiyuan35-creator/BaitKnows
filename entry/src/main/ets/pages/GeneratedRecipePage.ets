@@ -9,7 +9,7 @@ import { generatorHistoryService } from '../services/GeneratorHistoryService';
 import { generateSmartRecipe, getNextRecipeVariant, getSmartRecipeEngine, recordRecipeSave } from '../services/engine/SmartRecipeEngine';
 import { fetchWeather } from '../services/WeatherService';
 import { promptAction } from '@kit.ArkUI';
-import { userDataService, CustomRecipeIngredient } from '../services/UserDataService';
+import { userDataService, CustomRecipeIngredient, RecipeStateProfile, RecipeFlavorProfile } from '../services/UserDataService';
 
 // 步骤信息类
 class StepInfo {
@@ -611,65 +611,117 @@ struct GeneratedRecipePage {
     .alignItems(HorizontalAlign.Start)
   }
 
-  // 动态生成步骤
+  // 动态生成步骤 - 根据原料和状态特性生成不同步骤
   private generateDynamicSteps(): StepInfo[] {
     const steps: StepInfo[] = [];
     const sp = this.recipe.stateProfile;
     const usage = this.recipe.usage;
+    const fp = this.recipe.flavorProfile;
+    const ings = this.recipe.ingredients;
 
-    // 步骤1：准备材料 - 根据原料数量调整
-    const ingCount = this.recipe.ingredients.length;
-    let prepDesc = `按配方比例准备好所有原料，总量${this.recipe.totalWeight}g`;
-    if (ingCount > 5) {
-      prepDesc += '，建议分类摆放便于操作';
+    // 获取主要原料名称
+    const mainIngs = ings.filter((ing: RecipeIngredient) => ing.category === 'main').map((ing: RecipeIngredient) => ing.name);
+    const auxIngs = ings.filter((ing: RecipeIngredient) => ing.category === 'auxiliary').map((ing: RecipeIngredient) => ing.name);
+    const stateIngs = ings.filter((ing: RecipeIngredient) => ing.category === 'state').map((ing: RecipeIngredient) => ing.name);
+    const addIngs = ings.filter((ing: RecipeIngredient) => ing.category === 'additive').map((ing: RecipeIngredient) => ing.name);
+
+    // 步骤1：准备材料 - 列出具体原料
+    let prepDesc = `准备${mainIngs.join('、')}等主料`;
+    if (auxIngs.length > 0) {
+      prepDesc += `，${auxIngs.join('、')}作为辅料`;
     }
+    prepDesc += `，总量${this.recipe.totalWeight}g`;
     steps.push(new StepInfo('准备材料', prepDesc));
 
-    // 步骤2：混合干料 - 根据原料特性调整
-    let mixDesc = '将所有干料倒入盆中，充分搅拌均匀';
-    const hasAdditive = this.recipe.ingredients.some((ing: RecipeIngredient) => ing.category === 'additive');
-    if (hasAdditive) {
-      mixDesc = '先将主饵和辅饵混合均匀，再加入添加剂搅拌';
+    // 步骤2：混合干料 - 根据具体原料调整
+    let mixDesc = '';
+    if (mainIngs.length > 1) {
+      mixDesc = `先将${mainIngs[0]}和${mainIngs.slice(1).join('、')}混合均匀`;
+    } else if (mainIngs.length === 1) {
+      mixDesc = `将${mainIngs[0]}倒入盆中`;
+    } else {
+      mixDesc = '将所有干料倒入盆中';
+    }
+    if (auxIngs.length > 0) {
+      mixDesc += `，再加入${auxIngs.join('、')}搅拌`;
     }
     steps.push(new StepInfo('混合干料', mixDesc));
 
-    // 步骤3：加水开饵 - 根据雾化和粘度调整
-    let waterDesc = `按${usage.waterRatio}比例加水，`;
-    if (sp.atomization >= 4) {
-      waterDesc += '快速搅拌，让饵料充分吸水雾化';
-    } else if (sp.viscosity >= 4) {
-      waterDesc += '慢慢搅拌，避免过度打揉';
+    // 步骤3：加水开饵 - 根据味型和状态调整
+    let waterDesc = `按${usage.waterRatio}比例`;
+    if (fp.primary.includes('腥')) {
+      waterDesc += '用常温水开饵，';
+    } else if (fp.primary.includes('香')) {
+      waterDesc += '用温水开饵效果更佳，';
     } else {
-      waterDesc += '快速搅拌均匀';
+      waterDesc += '加水，';
+    }
+    if (sp.atomization >= 4) {
+      waterDesc += '五指张开快速搅拌，让饵料充分吸水';
+    } else if (sp.viscosity >= 4) {
+      waterDesc += '顺时针慢慢搅拌，避免出丝过多';
+    } else if (sp.weight >= 4) {
+      waterDesc += '搅拌均匀后适当压实';
+    } else {
+      waterDesc += '快速搅拌至无干粉';
     }
     steps.push(new StepInfo('加水开饵', waterDesc));
 
-    // 步骤4：静置醒饵 - 根据粘度调整
-    let restDesc = `静置${usage.restTime}，让饵料充分吸水`;
+    // 步骤4：添加状态饵 - 如果有的话
+    if (stateIngs.length > 0) {
+      let stateDesc = `加入${stateIngs.join('、')}`;
+      if (stateIngs.some((n: string) => n.includes('拉丝'))) {
+        stateDesc += '，轻轻翻拌均匀，不要过度打揉';
+      } else if (stateIngs.some((n: string) => n.includes('雪花'))) {
+        stateDesc += '，增加雾化效果';
+      } else if (stateIngs.some((n: string) => n.includes('粘'))) {
+        stateDesc += '，增加附钩性';
+      } else {
+        stateDesc += '，调整饵料状态';
+      }
+      steps.push(new StepInfo('添加状态饵', stateDesc));
+    }
+
+    // 步骤5：静置醒饵 - 根据状态调整
+    let restDesc = `静置${usage.restTime}`;
     if (sp.viscosity >= 4) {
-      restDesc += '，期间可轻轻翻动一次';
+      restDesc += '，让拉丝粉充分出丝，期间可翻动一次';
     } else if (sp.atomization >= 4) {
-      restDesc += '，不要过度搅动';
+      restDesc += '，保持蓬松状态，不要压实';
+    } else if (fp.intensity >= 7) {
+      restDesc += '，让味型充分融合';
+    } else {
+      restDesc += '，让饵料充分吸水';
     }
     steps.push(new StepInfo('静置醒饵', restDesc));
 
-    // 步骤5：打揉成型 - 根据状态特性调整
+    // 步骤6：添加添加剂 - 如果有的话
+    if (addIngs.length > 0) {
+      let addDesc = `最后加入${addIngs.join('、')}`;
+      if (addIngs.some((n: string) => n.includes('诱食') || n.includes('DMPT'))) {
+        addDesc += '，少量多次，边加边搅拌';
+      } else if (addIngs.some((n: string) => n.includes('香精') || n.includes('essence'))) {
+        addDesc += '，滴入后快速搅匀';
+      } else {
+        addDesc += '，均匀撒入后轻轻翻拌';
+      }
+      steps.push(new StepInfo('添加小药', addDesc));
+    }
+
+    // 步骤7：打揉成型 - 根据状态特性调整
     let shapeDesc = '';
-    if (sp.hookHolding >= 4) {
-      shapeDesc = '适当打揉增加粘性，确保附钩性';
+    if (sp.hookHolding >= 4 && sp.viscosity >= 4) {
+      shapeDesc = '打揉20-30下增加粘性，搓成软硬适中的饵团';
     } else if (sp.atomization >= 4) {
-      shapeDesc = '轻轻收拢成团即可，保持雾化效果';
+      shapeDesc = '轻轻收拢成团即可，保持蓬松雾化效果';
     } else if (sp.weight >= 4) {
-      shapeDesc = '打揉紧实，增加比重快速到底';
+      shapeDesc = '用力打揉紧实，增加比重确保快速到底';
+    } else if (sp.viscosity <= 2) {
+      shapeDesc = '不需过度打揉，保持散落状态';
     } else {
-      shapeDesc = '根据需要适当打揉，调整软硬度';
+      shapeDesc = '根据鱼情适当打揉，调整软硬度';
     }
     steps.push(new StepInfo('打揉成型', shapeDesc));
-
-    // 额外步骤：根据特殊情况添加
-    if (sp.atomization >= 4 && sp.viscosity <= 2) {
-      steps.push(new StepInfo('状态调整', '如雾化过快，可适当加入拉丝粉调整'));
-    }
 
     return steps;
   }
@@ -705,9 +757,9 @@ struct GeneratedRecipePage {
       }
 
       Column({ space: 8 }) {
-        this.TipItem(this.recipe.usage.firstCast || '前几竿可适当加大饵团，快速诱鱼')
-        this.TipItem(this.recipe.usage.nestSuggestion || '可配合散炮打窝，效果更佳')
-        this.TipItem('根据鱼口调整饵料软硬度')
+        ForEach(this.generateDynamicTips(), (tip: string) => {
+          this.TipItem(tip)
+        })
       }
     }
     .width('100%')
@@ -715,6 +767,69 @@ struct GeneratedRecipePage {
     .backgroundColor('#FFF9F0')
     .borderRadius(12)
     .alignItems(HorizontalAlign.Start)
+  }
+
+  // 动态生成使用技巧
+  private generateDynamicTips(): string[] {
+    const tips: string[] = [];
+    const sp = this.recipe.stateProfile;
+    const fp = this.recipe.flavorProfile;
+    const usage = this.recipe.usage;
+    const ings = this.recipe.ingredients;
+    const temp = this.recipe.conditions.temperature;
+    const water = this.recipe.conditions.waterType;
+
+    // 技巧1：首钓建议 - 根据状态和水域
+    if (usage.firstCast) {
+      tips.push(usage.firstCast);
+    } else if (sp.atomization >= 4) {
+      tips.push('前几竿用大饵快速抽窝，形成雾化带诱鱼');
+    } else if (sp.weight >= 4) {
+      tips.push('首竿搓大饵找底，确定水深后再调整');
+    } else {
+      tips.push('前几竿可适当加大饵团，快速诱鱼进窝');
+    }
+
+    // 技巧2：打窝建议 - 根据水域和原料
+    if (usage.nestSuggestion) {
+      tips.push(usage.nestSuggestion);
+    } else if (water === 'river') {
+      tips.push('野河走水可用酒米打底，散炮带窝');
+    } else if (water === 'pond') {
+      tips.push('黑坑建议散炮带窝，边钓边诱');
+    } else {
+      tips.push('可配合散炮或酒米打窝，效果更佳');
+    }
+
+    // 技巧3：根据味型调整
+    if (fp.primary.includes('腥') && fp.intensity >= 6) {
+      tips.push('腥味较重，小杂鱼多时可适当减少用量');
+    } else if (fp.primary.includes('香') && temp > 25) {
+      tips.push('高温天气香味挥发快，可适当补充添加剂');
+    } else if (fp.primary.includes('酸')) {
+      tips.push('酸味饵料适合钓鲢鳙，注意控制雾化节奏');
+    }
+
+    // 技巧4：根据状态特性
+    if (sp.viscosity >= 4 && sp.hookHolding >= 4) {
+      tips.push('饵料粘度高，注意控制饵团大小避免挡口');
+    } else if (sp.atomization >= 4 && sp.viscosity <= 2) {
+      tips.push('雾化快粘度低，适合快频率抽竿');
+    }
+
+    // 技巧5：根据温度
+    if (temp < 10) {
+      tips.push('低温天气鱼口轻，饵团宜小宜软');
+    } else if (temp > 30) {
+      tips.push('高温天气鱼躲深水，可尝试钓深或早晚出钓');
+    }
+
+    // 确保至少3条技巧
+    if (tips.length < 3) {
+      tips.push('根据鱼口调整饵料软硬度和大小');
+    }
+
+    return tips.slice(0, 4);  // 最多显示4条
   }
 
   @Builder TipItem(text: string) {
@@ -853,7 +968,7 @@ struct GeneratedRecipePage {
 
     // 保存配方
     try {
-      // 转换配料格式
+      // 转换配料格式 - 保存完整信息
       const ingredients: CustomRecipeIngredient[] = [];
       for (let i = 0; i < this.recipe.ingredients.length; i++) {
         const ing = this.recipe.ingredients[i];
@@ -861,6 +976,9 @@ struct GeneratedRecipePage {
         customIng.ingredientId = ing.id;
         customIng.name = ing.name;
         customIng.ratio = ing.percentage;
+        customIng.weight = ing.weight;
+        customIng.purpose = ing.purpose;
+        customIng.category = ing.category;
         ingredients.push(customIng);
       }
 
@@ -874,7 +992,21 @@ struct GeneratedRecipePage {
       // 构建技巧
       const tips = `${this.recipe.usage.firstCast || '前几竿可适当加大饵团，快速诱鱼'}；${this.recipe.usage.nestSuggestion || '可配合散炮打窝，效果更佳'}`;
 
-      // 保存配方
+      // 构建状态特性
+      const stateProfile = new RecipeStateProfile();
+      stateProfile.atomization = this.recipe.stateProfile.atomization;
+      stateProfile.viscosity = this.recipe.stateProfile.viscosity;
+      stateProfile.hookHolding = this.recipe.stateProfile.hookHolding;
+      stateProfile.weight = this.recipe.stateProfile.weight;
+
+      // 构建味型特性
+      const flavorProfile = new RecipeFlavorProfile();
+      flavorProfile.primary = this.recipe.flavorProfile.primary;
+      flavorProfile.secondary = this.recipe.flavorProfile.secondary;
+      flavorProfile.intensity = this.recipe.flavorProfile.intensity;
+      flavorProfile.suitableTemp = this.recipe.flavorProfile.suitableTemp;
+
+      // 保存配方 - 包含完整数据
       await userDataService.addRecipe(
         name,
         [this.recipe.conditions.targetFishId],
@@ -882,14 +1014,16 @@ struct GeneratedRecipePage {
         this.recipe.conditions.season,
         ingredients,
         steps,
-        tips
+        tips,
+        stateProfile,
+        flavorProfile,
+        this.recipe.totalWeight
       );
 
       // 记录到偏好学习器
       recordRecipeSave(this.recipe);
 
       this.isSaved = true;
-      this.isFavorite = true;
       this.showNameDialog = false;
       promptAction.showToast({ message: '配方已保存', duration: 1500 });
     } catch (err) {
@@ -972,14 +1106,57 @@ struct GeneratedRecipePage {
 
   private getNotesText(): string {
     const temp = this.recipe.conditions.temperature;
-    let note = `当前气温${temp}°C，`;
-    if (temp < 15) {
-      note += '水温较低，建议适当增加腥味比例，饵料状态偏软粘。';
-    } else if (temp > 28) {
-      note += '水温较高，建议清淡为主，可适当加入果酸类添加剂。';
+    const water = this.recipe.conditions.waterType;
+    const fp = this.recipe.flavorProfile;
+    const sp = this.recipe.stateProfile;
+    const ings = this.recipe.ingredients;
+
+    let notes: string[] = [];
+
+    // 温度相关备注
+    if (temp < 10) {
+      notes.push(`当前气温${temp}°C，水温较低，建议适当增加腥味比例，饵料状态偏软粘，开饵时可用温水。`);
+    } else if (temp < 15) {
+      notes.push(`当前气温${temp}°C，早晚温差大，建议准备两套饵料，早晚用腥，中午用香。`);
+    } else if (temp > 30) {
+      notes.push(`当前气温${temp}°C，水温较高，建议清淡为主，可适当加入果酸类添加剂，避免饵料变质。`);
+    } else if (temp > 25) {
+      notes.push(`当前气温${temp}°C，温度适宜但偏高，注意饵料保鲜，开好的饵料尽快使用。`);
     } else {
-      note += '温度适宜，按配方正常使用即可。';
+      notes.push(`当前气温${temp}°C，温度适宜，按配方正常使用即可。`);
     }
-    return note + '\n\n如遇鱼口不佳，可尝试调整水比或添加小药。';
+
+    // 水域相关备注
+    if (water === 'river') {
+      notes.push('野河环境复杂，注意观察水流方向，选择缓流区作钓。');
+    } else if (water === 'pond') {
+      notes.push('黑坑竞争激烈，注意观察周围钓友用饵，适时调整。');
+    } else if (water === 'reservoir') {
+      notes.push('水库水面大，建议提前打窝，耐心守钓。');
+    }
+
+    // 味型相关备注
+    if (fp.intensity >= 8) {
+      notes.push('本配方味型较浓，如遇滑口鱼可适当减少添加剂用量。');
+    } else if (fp.intensity <= 3) {
+      notes.push('本配方味型清淡，适合钓滑口鱼或大个体鱼。');
+    }
+
+    // 状态相关备注
+    if (sp.atomization >= 4 && sp.viscosity <= 2) {
+      notes.push('雾化较快，适合快频率作钓，注意补窝节奏。');
+    }
+
+    // 原料相关备注
+    const hasLiveBait = ings.some((ing: RecipeIngredient) =>
+      ing.name.includes('红虫') || ing.name.includes('蚯蚓') || ing.name.includes('活饵'));
+    if (hasLiveBait) {
+      notes.push('含活饵成分，注意保持新鲜度。');
+    }
+
+    // 通用建议
+    notes.push('如遇鱼口不佳，可尝试调整水比或更换添加剂。');
+
+    return notes.slice(0, 3).join('\n\n');
   }
 }

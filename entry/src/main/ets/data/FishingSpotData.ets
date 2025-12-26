@@ -7,7 +7,7 @@ export enum WaterType {
   POND = 'pond',           // 池塘
   RESERVOIR = 'reservoir', // 水库
   RIVER = 'river',         // 河流
-  SEA = 'sea'              // 海洋
+  LAKE = 'lake'            // 湖泊
 }
 
 // 水域类型中文名
@@ -15,28 +15,20 @@ export const WaterTypeNames: Record<string, string> = {
   [WaterType.POND]: '池塘',
   [WaterType.RESERVOIR]: '水库',
   [WaterType.RIVER]: '河流',
-  [WaterType.SEA]: '海洋'
+  [WaterType.LAKE]: '湖泊'
 };
 
-// 水域类型图标 (emoji版本，用于标记点等)
-export const WaterTypeIcons: Record<string, string> = {
-  [WaterType.POND]: '🏞️',
-  [WaterType.RESERVOIR]: '💧',
-  [WaterType.RIVER]: '🌊',
-  [WaterType.SEA]: '🌅'
-};
-
-// 水域类型图片资源 - 统一使用波浪图标
+// 水域类型图片资源
 export interface WaterTypeImageResource {
   normal: Resource;
   active: Resource;
 }
 
 export const WaterTypeImages: Record<string, WaterTypeImageResource> = {
-  [WaterType.POND]: { normal: $r('app.media.River'), active: $r('app.media.Rivers') },
-  [WaterType.RESERVOIR]: { normal: $r('app.media.River'), active: $r('app.media.Rivers') },
+  [WaterType.POND]: { normal: $r('app.media.Pond'), active: $r('app.media.Ponds') },
+  [WaterType.RESERVOIR]: { normal: $r('app.media.Reservoir'), active: $r('app.media.Reservoirs') },
   [WaterType.RIVER]: { normal: $r('app.media.River'), active: $r('app.media.Rivers') },
-  [WaterType.SEA]: { normal: $r('app.media.River'), active: $r('app.media.Rivers') }
+  [WaterType.LAKE]: { normal: $r('app.media.Lake'), active: $r('app.media.Lakes') }
 };
 
 // 钓点信息
@@ -82,11 +74,11 @@ export const BaitDatabase: Record<string, BaitInfo[]> = {
     { name: '商品饵(浓腥)', description: '河流走水专用', targetFish: ['鲫鱼', '鲤鱼'], season: '四季', icon: '🎣' },
     { name: '面饵', description: '传统钓法常用', targetFish: ['鲫鱼', '鲤鱼'], season: '四季', icon: '🍞' },
   ],
-  [WaterType.SEA]: [
-    { name: '沙蚕', description: '海钓万能饵', targetFish: ['黑鲷', '黄鳍鲷', '石斑'], season: '四季', icon: '🪱' },
-    { name: '虾肉', description: '近海矶钓常用', targetFish: ['黑鲷', '真鲷', '石斑'], season: '四季', icon: '🦐' },
-    { name: '鱿鱼条', description: '船钓深海鱼', targetFish: ['带鱼', '鲈鱼', '石斑'], season: '四季', icon: '🦑' },
-    { name: '小鱼', description: '路亚活饵', targetFish: ['海鲈', '金枪鱼', '鲅鱼'], season: '夏秋', icon: '🐟' },
-    { name: '贝肉', description: '礁石区效果好', targetFish: ['黑鲷', '石鲷', '石斑'], season: '四季', icon: '🦪' },
+  [WaterType.LAKE]: [
+    { name: '活虾', description: '湖泊大鱼首选', targetFish: ['鲈鱼', '翘嘴', '鳜鱼'], season: '四季', icon: '🦐' },
+    { name: '泥鳅', description: '钓大鱼神器', targetFish: ['鲶鱼', '黑鱼', '鳜鱼'], season: '夏秋', icon: '🐟' },
+    { name: '玉米粒', description: '天然谷物饵', targetFish: ['鲤鱼', '草鱼'], season: '夏秋', icon: '🌽' },
+    { name: '商品饵(本味)', description: '湖泊通用配方', targetFish: ['鲤鱼', '草鱼', '鲢鳙'], season: '四季', icon: '🎣' },
+    { name: '蚯蚓', description: '万能饵料', targetFish: ['鲫鱼', '鲤鱼'], season: '四季', icon: '🪱' },
   ]
 };

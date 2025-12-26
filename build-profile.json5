@@ -5,13 +5,13 @@
         "name": "default",
         "type": "HarmonyOS",
         "material": {
-          "certpath": "C:/Users/Lenovo/.ohos/config/default_BaitKnows_KJYWOgGhn0_GzVmsFZYbyAlNvC6eKZIO-L5kJvi3gUU=.cer",
-          "keyAlias": "debugKey",
-          "keyPassword": "0000001B77EDC6D080A14EEB531CEA4F8CCF7CA868F52C686D59F497E64F893C1792961668823D0F439DB7",
-          "profile": "C:/Users/Lenovo/.ohos/config/default_BaitKnows_KJYWOgGhn0_GzVmsFZYbyAlNvC6eKZIO-L5kJvi3gUU=.p7b",
+          "storeFile": "C:/Users/Lenovo/Desktop/饵知道/饵知道.p12",
+          "storePassword": "0000001989F7A608969370FD045CE89FC52028BACFEE611A1A592EEC36CB20C97ECDA86E24D4773764",
+          "keyAlias": "nianan",
+          "keyPassword": "0000001915BFDABA0FEA2D2A19BE1136160CBB944BE209FFAA13E2450F266015EDCFF907B5E34C8053",
           "signAlg": "SHA256withECDSA",
-          "storeFile": "C:/Users/Lenovo/.ohos/config/default_BaitKnows_KJYWOgGhn0_GzVmsFZYbyAlNvC6eKZIO-L5kJvi3gUU=.p12",
-          "storePassword": "0000001BD5A077740E9B8CDD727D8054CAE4AC26E1F310B6CD4E522938439FAA1BF8B92DB72014573489F4"
+          "profile": "C:/Users/Lenovo/Desktop/饵知道/饵知道Release.p7b",
+          "certpath": "C:/Users/Lenovo/Desktop/饵知道/饵知道.cer"
         }
       }
     ],
@@ -20,7 +20,7 @@
         "name": "default",
         "signingConfig": "default",
         "targetSdkVersion": "6.0.0(20)",
-        "compatibleSdkVersion": "6.0.0(20)",
+        "compatibleSdkVersion": "5.0.5(17)",
         "runtimeOS": "HarmonyOS",
         "buildOption": {
           "strictMode": {
@@ -32,7 +32,7 @@
     ],
     "buildModeSet": [
       {
-        "name": "debug",
+        "name": "debug"
       },
       {
         "name": "release"
