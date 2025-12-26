@@ -44,7 +44,7 @@ interface QWeatherResponse {
 // 【配置区】和风天气API
 // ============================================================
 const QWEATHER_HOST = 'mv2pg7eyad.re.qweatherapi.com';
-const QWEATHER_KEY = '3338f3bed8d245bd8e4738a6294bc9a7';
+const QWEATHER_KEY = 'YOUR_QWEATHER_API_KEY';  // 请替换为你的和风天气API Key
 // ============================================================
 
 // 缓存的天气数据
