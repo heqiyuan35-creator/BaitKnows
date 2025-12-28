@@ -1,6 +1,6 @@
 /**
- * 饵知�?- 地图页面（高德地图版�?
- * 显示周边真实钓点，点击推荐饵�?
+ * 饵知�?- 地图页面（高德地图版�?
+ * 显示周边真实钓点，点击推荐饵�?
  */
 import {
   AMap,
@@ -60,10 +60,10 @@ import { FishingSpotService } from '../services/FishingSpotService';
 
 const MAP_VIEW_NAME: string = 'BaitKnowsMap';
 
-// 钓点搜索关键�?- 水域相关
-const FISHING_KEYWORDS: string[] = ['�?, '�?, '水库', '�?, '�?, '钓鱼', '垂钓', '公园'];
+// 钓点搜索关键�?- 水域相关
+const FISHING_KEYWORDS: string[] = ['�?, '�?, '水库', '�?, '�?, '钓鱼', '垂钓', '公园'];
 
-// 用户自定义钓点接�?
+// 用户自定义钓点接�?
 interface UserCustomSpot {
   id: string;
   name: string;
@@ -96,7 +96,7 @@ struct MapPage {
 
   @State isMapReady: boolean = false;
   @State isSearching: boolean = false;
-  @State currentLocation: string = '定位�?..';
+  @State currentLocation: string = '定位�?..';
   @State currentLatLng: LatLng | undefined = undefined;
   @State fishingSpots: FishingSpot[] = [];
   @State showBaitDialog: boolean = false;
@@ -104,9 +104,9 @@ struct MapPage {
   @State recommendedRecipes: Recipe[] = [];
   @State clickedLocationName: string = '';
   @State showMapTypePanel: boolean = false;
-  @State currentMapType: number = 0; // 0:普�?1:卫星 2:夜间
+  @State currentMapType: number = 0; // 0:普�?1:卫星 2:夜间
 
-  // 导航相关状�?
+  // 导航相关状�?
   @State showRoutePanel: boolean = false;
   @State selectedRouteType: RouteType = 'drive';
   @State isRouteSearching: boolean = false;
@@ -114,7 +114,7 @@ struct MapPage {
   @State routeDuration: number = 0;
   @State routeInfo: string = '';
 
-  // 用户自定义打点相关状�?
+  // 用户自定义打点相关状�?
   @State isAddingCustomSpot: boolean = false;
   @State showAddSpotDialog: boolean = false;
   @State pendingSpotLatLng: LatLng | undefined = undefined;
@@ -144,7 +144,7 @@ struct MapPage {
         this.aMap = map;
         this.isMapReady = true;
 
-        // 初始化地图位�?
+        // 初始化地图位�?
         const defaultLocation: LatLng = new LatLng(this.defaultLat, this.defaultLng);
         const update: CameraUpdate = CameraUpdateFactory.newLatLngZoom(defaultLocation, 12);
         map.moveCamera(update);
@@ -156,7 +156,7 @@ struct MapPage {
         // 请求定位权限
         this.requestLocationPermission();
 
-        // 地图点击事件 - 逆地理编码或添加自定义钓�?
+        // 地图点击事件 - 逆地理编码或添加自定义钓�?
         map.setOnMapClickListener((point: LatLng): void => {
           if (this.isAddingCustomSpot) {
             this.onMapClickForCustomSpot(point);
@@ -171,16 +171,16 @@ struct MapPage {
           return true;
         });
 
-        // 加载自定义标记图�?
+        // 加载自定义标记图�?
         this.loadCustomMarkerIcon();
       });
     };
 
-  // POI搜索监听�?
+  // POI搜索监听�?
   private currentKeywordIndex: number = 0;
   private tempSpots: FishingSpot[] = [];
 
-  // 路线搜索监听�?
+  // 路线搜索监听�?
   private routeSearchListener: OnRouteSearchListener = {
     onDriveRouteSearched: (result: DriveRouteResult | undefined, errorCode: number): void => {
       console.info(this.TAG, '========== 驾车路线回调 ==========');
@@ -193,11 +193,11 @@ struct MapPage {
           const path: DrivePath = paths[0];
           this.routeDistance = path.getDistance();
           this.routeDuration = path.getDuration();
-          console.info(this.TAG, `距离=${this.routeDistance}�? 时间=${this.routeDuration}秒`);
+          console.info(this.TAG, `距离=${this.routeDistance}�? 时间=${this.routeDuration}秒`);
           this.routeInfo = `驾车 ${this.formatRouteDistance(this.routeDistance)} · ${this.formatRouteDuration(this.routeDuration)}`;
           this.drawDriveRoute(path);
         } else {
-          this.routeInfo = '未找到驾车路�?;
+          this.routeInfo = '未找到驾车路�?;
         }
       } else {
         console.error(this.TAG, `驾车路线查询失败: ${errorCode}`);
@@ -216,11 +216,11 @@ struct MapPage {
           const path: WalkPath = paths[0];
           this.routeDistance = path.getDistance();
           this.routeDuration = path.getDuration();
-          console.info(this.TAG, `距离=${this.routeDistance}�? 时间=${this.routeDuration}秒`);
+          console.info(this.TAG, `距离=${this.routeDistance}�? 时间=${this.routeDuration}秒`);
           this.routeInfo = `步行 ${this.formatRouteDistance(this.routeDistance)} · ${this.formatRouteDuration(this.routeDuration)}`;
           this.drawWalkRoute(path);
         } else {
-          this.routeInfo = '未找到步行路�?;
+          this.routeInfo = '未找到步行路�?;
         }
       } else {
         console.error(this.TAG, `步行路线查询失败: ${errorCode}`);
@@ -239,11 +239,11 @@ struct MapPage {
           const path: RidePath = paths[0];
           this.routeDistance = path.getDistance();
           this.routeDuration = path.getDuration();
-          console.info(this.TAG, `距离=${this.routeDistance}�? 时间=${this.routeDuration}秒`);
+          console.info(this.TAG, `距离=${this.routeDistance}�? 时间=${this.routeDuration}秒`);
           this.routeInfo = `骑行 ${this.formatRouteDistance(this.routeDistance)} · ${this.formatRouteDuration(this.routeDuration)}`;
           this.drawRideRoute(path);
         } else {
-          this.routeInfo = '未找到骑行路�?;
+          this.routeInfo = '未找到骑行路�?;
         }
       } else {
         console.error(this.TAG, `骑行路线查询失败: ${errorCode}`);
@@ -261,12 +261,12 @@ struct MapPage {
     const errorMessages: Record<number, string> = {
       1001: '请求参数非法',
       1002: 'Key不正确或过期',
-      1003: '没有权限使用相应的服�?,
+      1003: '没有权限使用相应的服�?,
       1008: '起点或终点不在中国大陆范围内',
       1009: '起点附近没有找到道路',
       1010: '终点附近没有找到道路',
-      1011: '起点和终点距离太�?,
-      1012: '起点和终点距离太�?,
+      1011: '起点和终点距离太�?,
+      1012: '起点和终点距离太�?,
       1200: '服务响应错误',
       1804: '路线计算失败'
     };
@@ -341,7 +341,7 @@ struct MapPage {
     this.poiSearch.setOnPoiSearchListener(this.poiSearchListener);
     this.geocodeSearch = new GeocodeSearch(context);
     
-    // 初始化路线搜�?
+    // 初始化路线搜�?
     this.routeSearch = new RouteSearch(context);
     this.routeSearch.setRouteSearchListener(this.routeSearchListener);
 
@@ -349,7 +349,7 @@ struct MapPage {
     this.checkNavigationParams();
   }
 
-  // 检查导航参�?
+  // 检查导航参�?
   private checkNavigationParams(): void {
     const params = router.getParams() as Record<string, Object> | undefined;
     if (params && params['navigateToSpot'] === true) {
@@ -364,7 +364,7 @@ struct MapPage {
         distance: params['spotDistance'] as number || 0,
         description: ''
       };
-      console.info(this.TAG, `待导航钓�? ${this.pendingNavigateSpot.name}`);
+      console.info(this.TAG, `待导航钓�? ${this.pendingNavigateSpot.name}`);
     }
   }
 
@@ -420,7 +420,7 @@ struct MapPage {
     }
   }
 
-  // 开始定�?
+  // 开始定�?
   private startLocation(): void {
     this.currentLocation = '正在定位...';
 
@@ -433,9 +433,9 @@ struct MapPage {
       .then(async (location: geoLocationManager.Location): Promise<void> => {
         console.info(this.TAG, `Location: ${location.latitude}, ${location.longitude}`);
         this.currentLatLng = new LatLng(location.latitude, location.longitude);
-        this.currentLocation = '已定�?;
+        this.currentLocation = '已定�?;
 
-        // 移动地图到当前位�?
+        // 移动地图到当前位�?
         if (this.aMap) {
           const update: CameraUpdate = CameraUpdateFactory.newLatLngZoom(this.currentLatLng, 13);
           this.aMap.animateCamera(update);
@@ -452,7 +452,7 @@ struct MapPage {
       })
       .catch((error: Error): void => {
         console.error(this.TAG, `Location failed: ${error}`);
-        this.currentLocation = '定位失败，使用默认位�?;
+        this.currentLocation = '定位失败，使用默认位�?;
         this.currentLatLng = new LatLng(this.defaultLat, this.defaultLng);
         this.addLocationMarker();
         this.searchNearbySpots();
@@ -470,7 +470,7 @@ struct MapPage {
     const options: MarkerOptions = new MarkerOptions();
     options.setPosition(this.currentLatLng);
     options.setTitle('🎯 我的位置');
-    options.setSnippet('点击定位到此�?);
+    options.setSnippet('点击定位到此�?);
 
     // 使用红色标记，更醒目
     options.setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED));
@@ -479,7 +479,7 @@ struct MapPage {
 
     this.locationMarker = this.aMap.addMarker(options);
 
-    // 默认显示信息窗口，让用户一眼看�?
+    // 默认显示信息窗口，让用户一眼看�?
     if (this.locationMarker) {
       this.locationMarker.showInfoWindow();
     }
@@ -488,15 +488,15 @@ struct MapPage {
   // 搜索附近钓点
   private searchNearbySpots(): void {
     if (!this.poiSearch || !this.currentLatLng) {
-      console.error(this.TAG, '无法搜索：poiSearch或位置未初始�?);
+      console.error(this.TAG, '无法搜索：poiSearch或位置未初始�?);
       return;
     }
 
-    // 如果是导航模式，跳过 POI 搜索，直接开始导�?
+    // 如果是导航模式，跳过 POI 搜索，直接开始导�?
     if (this.navigateToSpotOnLoad && this.pendingNavigateSpot) {
       console.info(this.TAG, `导航模式：跳过POI搜索，直接导航到 ${this.pendingNavigateSpot.name}`);
       this.navigateToSpotOnLoad = false;
-      this.currentLocation = `导航�? ${this.pendingNavigateSpot.name}`;
+      this.currentLocation = `导航�? ${this.pendingNavigateSpot.name}`;
       
       setTimeout(() => {
         if (this.pendingNavigateSpot) {
@@ -508,26 +508,26 @@ struct MapPage {
     }
 
     this.isSearching = true;
-    this.currentLocation = '搜索钓点�?..';
+    this.currentLocation = '搜索钓点�?..';
     this.currentKeywordIndex = 0;
     this.tempSpots = [];
 
     this.searchNextKeyword();
   }
 
-  // 搜索下一个关键词 - 基于用户位置的周边搜�?
+  // 搜索下一个关键词 - 基于用户位置的周边搜�?
   private searchNextKeyword(): void {
     if (!this.poiSearch || !this.currentLatLng) return;
 
     const keyword = FISHING_KEYWORDS[this.currentKeywordIndex];
-    console.info(this.TAG, `搜索关键�? ${keyword}, 位置: (${this.currentLatLng.latitude}, ${this.currentLatLng.longitude})`);
+    console.info(this.TAG, `搜索关键�? ${keyword}, 位置: (${this.currentLatLng.latitude}, ${this.currentLatLng.longitude})`);
 
     // 创建查询
     const query: PoiQuery = new PoiQuery(keyword, '', '');
     query.setPageSize(20);
     query.setPageNum(0);
 
-    // 基于用户当前位置创建周边搜索范围�?0公里�?
+    // 基于用户当前位置创建周边搜索范围�?0公里�?
     const centerPoint: LatLonPoint = new LatLonPoint(
       this.currentLatLng.latitude,
       this.currentLatLng.longitude
@@ -541,19 +541,19 @@ struct MapPage {
 
   // 完成搜索
   private finishSearch(): void {
-    // 按距离排�?
+    // 按距离排�?
     this.tempSpots.sort((a, b) => (a.distance || 0) - (b.distance || 0));
     this.fishingSpots = this.tempSpots.slice(0, 20);
 
-    console.info(this.TAG, `搜索完成，找�?${this.fishingSpots.length} 个钓点`);
+    console.info(this.TAG, `搜索完成，找�?${this.fishingSpots.length} 个钓点`);
 
     this.isSearching = false;
 
-    // 如果是导航模式，不添加其他钓点，只处理目标钓�?
+    // 如果是导航模式，不添加其他钓点，只处理目标钓�?
     if (this.navigateToSpotOnLoad && this.pendingNavigateSpot) {
       console.info(this.TAG, `导航模式：直接导航到 ${this.pendingNavigateSpot.name}`);
       this.navigateToSpotOnLoad = false;
-      this.currentLocation = `导航�? ${this.pendingNavigateSpot.name}`;
+      this.currentLocation = `导航�? ${this.pendingNavigateSpot.name}`;
       
       // 更新缓存
       FishingSpotService.updateCachedSpots(this.fishingSpots);
@@ -568,12 +568,12 @@ struct MapPage {
       return;
     }
 
-    // 如果没有搜索到钓点，添加附近的模拟钓点（基于当前位置�?
+    // 如果没有搜索到钓点，添加附近的模拟钓点（基于当前位置�?
     if (this.fishingSpots.length === 0 && this.currentLatLng) {
       this.addNearbyMockSpots();
     }
 
-    // 更新缓存，让首页也能获取到钓点数�?
+    // 更新缓存，让首页也能获取到钓点数�?
     FishingSpotService.updateCachedSpots(this.fishingSpots);
 
     if (this.fishingSpots.length > 0) {
@@ -602,7 +602,7 @@ struct MapPage {
         latitude: 30.5547,
         longitude: 114.4283,
         waterType: WaterType.RESERVOIR,
-        description: '东湖最大的湖汊，水质好，鱼种丰�?,
+        description: '东湖最大的湖汊，水质好，鱼种丰�?,
         distance: 0
       },
       {
@@ -620,7 +620,7 @@ struct MapPage {
         latitude: 30.5612,
         longitude: 114.3856,
         waterType: WaterType.RESERVOIR,
-        description: '交通便利，岸边钓位�?,
+        description: '交通便利，岸边钓位�?,
         distance: 0
       },
       // 沙湖区域
@@ -640,7 +640,7 @@ struct MapPage {
         latitude: 30.4523,
         longitude: 114.3678,
         waterType: WaterType.RESERVOIR,
-        description: '武汉最大城中湖，大物频�?,
+        description: '武汉最大城中湖，大物频�?,
         distance: 0
       },
       // 长江区域
@@ -650,7 +650,7 @@ struct MapPage {
         latitude: 30.5912,
         longitude: 114.2934,
         waterType: WaterType.RIVER,
-        description: '长江钓场，鱼口活�?,
+        description: '长江钓场，鱼口活�?,
         distance: 0
       },
       {
@@ -659,17 +659,17 @@ struct MapPage {
         latitude: 30.5523,
         longitude: 114.3123,
         waterType: WaterType.RIVER,
-        description: '江边钓位，注意安�?,
+        description: '江边钓位，注意安�?,
         distance: 0
       },
       // 其他湖泊
       {
         id: 'spot_8',
-        name: '墨水�?,
+        name: '墨水�?,
         latitude: 30.5234,
         longitude: 114.2156,
         waterType: WaterType.POND,
-        description: '汉阳区钓场，鲫鱼�?,
+        description: '汉阳区钓场，鲫鱼�?,
         distance: 0
       },
       {
@@ -683,29 +683,29 @@ struct MapPage {
       },
       {
         id: 'spot_10',
-        name: '后官�?,
+        name: '后官�?,
         latitude: 30.4912,
         longitude: 114.1234,
         waterType: WaterType.RESERVOIR,
-        description: '蔡甸区大型水库，鱼种�?,
+        description: '蔡甸区大型水库，鱼种�?,
         distance: 0
       },
       {
         id: 'spot_11',
-        name: '严西�?,
+        name: '严西�?,
         latitude: 30.5234,
         longitude: 114.4789,
         waterType: WaterType.RESERVOIR,
-        description: '光谷附近，水质清�?,
+        description: '光谷附近，水质清�?,
         distance: 0
       },
       {
         id: 'spot_12',
-        name: '梁子�?,
+        name: '梁子�?,
         latitude: 30.2567,
         longitude: 114.5234,
         waterType: WaterType.RESERVOIR,
-        description: '武汉最大淡水湖，野钓圣�?,
+        description: '武汉最大淡水湖，野钓圣�?,
         distance: 0
       }
     ];
@@ -715,22 +715,22 @@ struct MapPage {
       spot.distance = Math.round(this.calculateDistance(userLat, userLng, spot.latitude, spot.longitude));
     });
 
-    // 按距离排序，取最近的10�?
+    // 按距离排序，取最近的10�?
     realSpots.sort((a, b) => (a.distance || 0) - (b.distance || 0));
     this.fishingSpots = realSpots.slice(0, 10);
 
-    console.info(this.TAG, `添加�?${this.fishingSpots.length} 个真实钓点`);
+    console.info(this.TAG, `添加�?${this.fishingSpots.length} 个真实钓点`);
   }
 
   // 添加钓点标记 - 按照高德地图文档方式添加
   private addSpotMarkers(): void {
     if (!this.aMap) {
-      console.error(this.TAG, '地图未初始化，无法添加标�?);
+      console.error(this.TAG, '地图未初始化，无法添加标�?);
       return;
     }
 
     this.clearSpotMarkers();
-    console.info(this.TAG, `开始添�?${this.fishingSpots.length} 个钓点标记`);
+    console.info(this.TAG, `开始添�?${this.fishingSpots.length} 个钓点标记`);
 
     for (let i = 0; i < this.fishingSpots.length; i++) {
       const spot = this.fishingSpots[i];
@@ -741,7 +741,7 @@ struct MapPage {
       options.setTitle(spot.name);
       options.setSnippet(`${WaterTypeNames[spot.waterType]} · ${this.formatDistance(spot.distance || 0)}`);
 
-      // �?个用橙色（推荐），其他用绿色
+      // �?个用橙色（推荐），其他用绿色
       const hue = i < 3 ? BitmapDescriptorFactory.HUE_ORANGE : BitmapDescriptorFactory.HUE_GREEN;
       options.setIcon(BitmapDescriptorFactory.defaultMarker(hue));
       options.setAnchor(0.5, 1.0);
@@ -768,7 +768,7 @@ struct MapPage {
   private onMarkerClick(marker: Marker): void {
     const position = marker.getPosition();
 
-    // 先检查是否是自定义钓�?
+    // 先检查是否是自定义钓�?
     const customSpot = this.userCustomSpots.find(s =>
       Math.abs(s.latitude - position.latitude) < 0.0001 &&
       Math.abs(s.longitude - position.longitude) < 0.0001
@@ -797,11 +797,11 @@ struct MapPage {
     this.showBaitDialog = true;
   }
 
-  // 地图点击事件 - 逆地理编�?
+  // 地图点击事件 - 逆地理编�?
   private async onMapClick(point: LatLng): Promise<void> {
     if (!this.geocodeSearch) return;
 
-    this.clickedLocationName = '查询�?..';
+    this.clickedLocationName = '查询�?..';
 
     try {
       const latLonPoint: LatLonPoint = new LatLonPoint(point.latitude, point.longitude);
@@ -853,7 +853,7 @@ struct MapPage {
     this.startLocation();
   }
 
-  // 移动到当前位�?
+  // 移动到当前位�?
   private moveToCurrentLocation(): void {
     if (!this.aMap || !this.currentLatLng) return;
     const update: CameraUpdate = CameraUpdateFactory.newLatLngZoom(this.currentLatLng, 14);
@@ -870,7 +870,7 @@ struct MapPage {
     if (!this.aMap) return;
     this.currentMapType = type;
     switch (type) {
-      case 0: // 普通地�?
+      case 0: // 普通地�?
         this.aMap.setMapType(MapType.MAP_TYPE_NORMAL);
         break;
       case 1: // 卫星地图
@@ -885,33 +885,33 @@ struct MapPage {
 
   // 获取地图类型名称
   private getMapTypeName(): string {
-    const names = ['普�?, '卫星', '夜间'];
-    return names[this.currentMapType] || '普�?;
+    const names = ['普�?, '卫星', '夜间'];
+    return names[this.currentMapType] || '普�?;
   }
 
-  // 判断是否为水域相�?
+  // 判断是否为水域相�?
   private isWaterRelated(name: string): boolean {
-    const excludeKeywords = ['厕所', '卫生�?, '火锅', '餐厅', '饭店', '超市', '商场', '医院', '学校',
-      '停车�?, '加油�?, '银行', '药店', '美容', '美发', '酒店', '宾馆', '公司', '�?];
+    const excludeKeywords = ['厕所', '卫生�?, '火锅', '餐厅', '饭店', '超市', '商场', '医院', '学校',
+      '停车�?, '加油�?, '银行', '药店', '美容', '美发', '酒店', '宾馆', '公司', '�?];
     for (const exclude of excludeKeywords) {
       if (name.includes(exclude)) return false;
     }
 
     const waterKeywords = ['垂钓', '钓场', '钓鱼', '渔场', '鱼塘', '鱼池', '钓园',
-      '江滩', '河滩', '湖滩', '水库', '湿地公园', '湿地', '�?, '�?, '�?, '�?, '�?, '�?, '�?, '渡口'];
+      '江滩', '河滩', '湖滩', '水库', '湿地公园', '湿地', '�?, '�?, '�?, '�?, '�?, '�?, '�?, '渡口'];
     for (const keyword of waterKeywords) {
       if (name.includes(keyword)) return true;
     }
     return false;
   }
 
-  // 检测水域类�?
+  // 检测水域类�?
   private detectWaterType(name: string): WaterType {
-    if (name.includes('�?) || name.includes('�?)) {
+    if (name.includes('�?) || name.includes('�?)) {
       return WaterType.LAKE;
     }
-    if (name.includes('�?) || name.includes('�?) || name.includes('�?) ||
-        name.includes('�?) || name.includes('码头') || name.includes('渡口')) {
+    if (name.includes('�?) || name.includes('�?) || name.includes('�?) ||
+        name.includes('�?) || name.includes('码头') || name.includes('渡口')) {
       return WaterType.RIVER;
     }
     if (name.includes('水库')) {
@@ -925,8 +925,8 @@ struct MapPage {
     const descriptions: Record<string, string> = {
       [WaterType.POND]: '适合休闲垂钓',
       [WaterType.RESERVOIR]: '水域开阔，适合守钓',
-      [WaterType.RIVER]: '流水钓场，鱼口活�?,
-      [WaterType.LAKE]: '湖泊钓场，鱼种丰�?
+      [WaterType.RIVER]: '流水钓场，鱼口活�?,
+      [WaterType.LAKE]: '湖泊钓场，鱼种丰�?
     };
     return descriptions[type] || '钓点环境良好';
   }
@@ -943,19 +943,19 @@ struct MapPage {
     return R * c;
   }
 
-  // 格式化距�?
+  // 格式化距�?
   private formatDistance(meters: number): string {
     if (meters < 1000) return `${meters}米`;
     return `${(meters / 1000).toFixed(1)}公里`;
   }
 
-  // 格式化路线距�?
+  // 格式化路线距�?
   private formatRouteDistance(meters: number): string {
     if (meters < 1000) return `${meters}米`;
     return `${(meters / 1000).toFixed(1)}公里`;
   }
 
-  // 格式化路线时�?
+  // 格式化路线时�?
   private formatRouteDuration(seconds: number): string {
     if (seconds < 60) return `${seconds}秒`;
     const minutes: number = Math.floor(seconds / 60);
@@ -1007,26 +1007,26 @@ struct MapPage {
     // 在界面上显示坐标信息用于调试
     this.routeInfo = `起点:(${startLat.toFixed(4)},${startLng.toFixed(4)}) 终点:(${endLat.toFixed(4)},${endLng.toFixed(4)})`;
 
-    // 验证坐标有效�?
+    // 验证坐标有效�?
     if (startLat === 0 || startLng === 0) {
       this.routeInfo = '当前位置无效(0,0)，请重新定位';
       this.isRouteSearching = false;
-      console.error(this.TAG, '起点坐标�?');
+      console.error(this.TAG, '起点坐标�?');
       return;
     }
 
     if (endLat === 0 || endLng === 0) {
       this.routeInfo = '钓点位置无效(0,0)';
       this.isRouteSearching = false;
-      console.error(this.TAG, '终点坐标�?');
+      console.error(this.TAG, '终点坐标�?');
       return;
     }
 
-    // 检查坐标是否在中国范围�?(大致范围: 纬度3-54, 经度73-136)
+    // 检查坐标是否在中国范围�?(大致范围: 纬度3-54, 经度73-136)
     const isStartInChina = startLat >= 3 && startLat <= 54 && startLng >= 73 && startLng <= 136;
     const isEndInChina = endLat >= 3 && endLat <= 54 && endLng >= 73 && endLng <= 136;
     
-    console.info(this.TAG, `起点在中国范�? ${isStartInChina}, 终点在中国范�? ${isEndInChina}`);
+    console.info(this.TAG, `起点在中国范�? ${isStartInChina}, 终点在中国范�? ${isEndInChina}`);
 
     if (!isStartInChina) {
       this.routeInfo = `起点不在中国范围:(${startLat.toFixed(4)},${startLng.toFixed(4)})`;
@@ -1048,11 +1048,11 @@ struct MapPage {
     
     const fromAndTo: FromAndTo = new FromAndTo(startPoint, endPoint);
 
-    // 添加起终点标�?
+    // 添加起终点标�?
     this.addRouteMarkers(startPoint, endPoint);
 
-    console.info(this.TAG, `开始搜�?{this.selectedRouteType}路线...`);
-    this.routeInfo = `搜索${this.selectedRouteType === 'drive' ? '驾车' : this.selectedRouteType === 'walk' ? '步行' : '骑行'}路线�?..`;
+    console.info(this.TAG, `开始搜�?{this.selectedRouteType}路线...`);
+    this.routeInfo = `搜索${this.selectedRouteType === 'drive' ? '驾车' : this.selectedRouteType === 'walk' ? '步行' : '骑行'}路线�?..`;
 
     if (this.selectedRouteType === 'drive') {
       const query: DriveRouteQuery = new DriveRouteQuery(fromAndTo, RouteSearch.DrivingDefault, undefined, undefined, '');
@@ -1069,11 +1069,11 @@ struct MapPage {
     }
   }
 
-  // 添加起终点标�?
+  // 添加起终点标�?
   private addRouteMarkers(start: LatLonPoint, end: LatLonPoint): void {
     if (!this.aMap) return;
 
-    // 清除旧标�?
+    // 清除旧标�?
     if (this.startMarker) {
       this.startMarker.remove();
       this.startMarker = undefined;
@@ -1202,7 +1202,7 @@ struct MapPage {
     this.showRoutePanel = false;
     this.clearRouteLine();
     
-    // 清除起终点标�?
+    // 清除起终点标�?
     if (this.startMarker) {
       this.startMarker.remove();
       this.startMarker = undefined;
@@ -1217,7 +1217,7 @@ struct MapPage {
     this.routeDuration = 0;
   }
 
-  // 调整地图视野以显示整条路�?
+  // 调整地图视野以显示整条路�?
   private fitRouteBounds(points: ArrayList<LatLng>): void {
     if (!this.aMap || points.length === 0) return;
 
@@ -1242,9 +1242,9 @@ struct MapPage {
     this.aMap.animateCamera(update);
   }
 
-  // 推荐配方 - 使用真实配方�?
+  // 推荐配方 - 使用真实配方�?
   private recommendRecipes(waterType: WaterType): Recipe[] {
-    // 水域类型映射: pond→池�? reservoir→水�? river→河�? lake→湖�?
+    // 水域类型映射: pond→池�? reservoir→水�? river→河�? lake→湖�?
     const waterTypeMap: Record<string, string> = {
       [WaterType.POND]: '池塘',
       [WaterType.RESERVOIR]: '水库',
@@ -1263,27 +1263,27 @@ struct MapPage {
       return shuffled.slice(0, 3);
     }
     
-    // 随机选择2-4个配�?
+    // 随机选择2-4个配�?
     const shuffled = [...allRecipes].sort(() => Math.random() - 0.5);
     const count = Math.min(Math.floor(Math.random() * 3) + 2, shuffled.length);
     return shuffled.slice(0, count);
   }
 
-  // ==================== 用户自定义打点功�?====================
+  // ==================== 用户自定义打点功�?====================
 
-  // 加载自定义标记图�?
+  // 加载自定义标记图�?
   private async loadCustomMarkerIcon(): Promise<void> {
     try {
       const context = getContext(this);
-      // �?rawfile 目录加载 hooks.png
+      // �?rawfile 目录加载 hooks.png
       this.hooksIcon = await BitmapDescriptorFactory.fromRawfilePath(context, 'hooks.png');
-      console.info(this.TAG, '自定义标记图标加载成�?);
+      console.info(this.TAG, '自定义标记图标加载成�?);
     } catch (error) {
-      console.error(this.TAG, `加载自定义图标失�? ${error}`);
+      console.error(this.TAG, `加载自定义图标失�? ${error}`);
     }
   }
 
-  // 开�?关闭打点模式
+  // 开�?关闭打点模式
   private toggleAddSpotMode(): void {
     this.isAddingCustomSpot = !this.isAddingCustomSpot;
     if (this.isAddingCustomSpot) {
@@ -1295,14 +1295,14 @@ struct MapPage {
     }
   }
 
-  // 地图点击添加自定义钓�?
+  // 地图点击添加自定义钓�?
   private async onMapClickForCustomSpot(point: LatLng): Promise<void> {
-    // 检查附�?000米内是否已有钓点
+    // 检查附�?000米内是否已有钓点
     const nearbySpot = this.findNearbySpot(point, 1000);
     if (nearbySpot) {
       this.currentLocation = `附近已有钓点: ${nearbySpot.name}`;
       this.isAddingCustomSpot = false;
-      // 高亮显示附近的钓�?
+      // 高亮显示附近的钓�?
       if (this.aMap) {
         const update: CameraUpdate = CameraUpdateFactory.newLatLngZoom(
           new LatLng(nearbySpot.latitude, nearbySpot.longitude), 15
@@ -1312,7 +1312,7 @@ struct MapPage {
       return;
     }
 
-    // 检查附�?000米内是否已有自定义钓�?
+    // 检查附�?000米内是否已有自定义钓�?
     const nearbyCustomSpot = this.findNearbyCustomSpot(point, 1000);
     if (nearbyCustomSpot) {
       this.currentLocation = `附近已有钓点: ${nearbyCustomSpot.name}`;
@@ -1327,7 +1327,7 @@ struct MapPage {
     }
 
     this.pendingSpotLatLng = point;
-    this.pendingSpotAddress = '获取地址�?..';
+    this.pendingSpotAddress = '获取地址�?..';
     
     // 获取点击位置的地址
     if (this.geocodeSearch) {
@@ -1385,7 +1385,7 @@ struct MapPage {
     return null;
   }
 
-  // 保存自定义钓�?
+  // 保存自定义钓�?
   private saveCustomSpot(): void {
     if (!this.pendingSpotLatLng) return;
     
@@ -1406,10 +1406,10 @@ struct MapPage {
     this.showAddSpotDialog = false;
     this.pendingSpotLatLng = undefined;
     
-    console.info(this.TAG, `保存自定义钓�? ${newSpot.name}`);
+    console.info(this.TAG, `保存自定义钓�? ${newSpot.name}`);
   }
 
-  // 添加自定义钓点标�?
+  // 添加自定义钓点标�?
   private addCustomSpotMarker(spot: UserCustomSpot): void {
     if (!this.aMap) return;
     
@@ -1422,7 +1422,7 @@ struct MapPage {
     if (this.hooksIcon) {
       options.setIcon(this.hooksIcon);
     } else {
-      // 备用：使用紫色标�?
+      // 备用：使用紫色标�?
       options.setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_VIOLET));
     }
     options.setAnchor(0.5, 1.0);
@@ -1448,7 +1448,7 @@ struct MapPage {
     }
   }
 
-  // 删除自定义钓�?
+  // 删除自定义钓�?
   private deleteCustomSpot(spotId: string): void {
     const index = this.userCustomSpots.findIndex(s => s.id === spotId);
     if (index > -1) {
@@ -1459,7 +1459,7 @@ struct MapPage {
     }
   }
 
-  // 点击自定义钓�?
+  // 点击自定义钓�?
   private onCustomSpotClick(spot: UserCustomSpot): void {
     this.selectedCustomSpot = spot;
     this.showCustomSpotDetail = true;
@@ -1473,7 +1473,7 @@ struct MapPage {
     }
   }
 
-  // 格式化时�?
+  // 格式化时�?
   private formatTime(timestamp: number): string {
     const date = new Date(timestamp);
     return `${date.getFullYear()}-${(date.getMonth() + 1).toString().padStart(2, '0')}-${date.getDate().toString().padStart(2, '0')} ${date.getHours().toString().padStart(2, '0')}:${date.getMinutes().toString().padStart(2, '0')}`;
@@ -1482,7 +1482,7 @@ struct MapPage {
   build() {
     Stack() {
       Column() {
-        // 顶部导航�?
+        // 顶部导航�?
         Row() {
           Image($r('app.media.Left'))
             .width(24)
@@ -1512,7 +1512,7 @@ struct MapPage {
         .margin({ top: 44 })
         .backgroundColor(ThemeColors.BG_SECONDARY)
 
-        // 状态提�?
+        // 状态提�?
         Row() {
           Text(this.currentLocation)
             .fontSize(12)
@@ -1543,7 +1543,7 @@ struct MapPage {
               .fontColor(ThemeColors.PRIMARY_DARK)
               .fontWeight(FontWeight.Medium)
               .layoutWeight(1)
-            Text('�?)
+            Text('�?)
               .fontSize(14)
               .fontColor(ThemeColors.TEXT_SECONDARY)
               .onClick(() => { this.clickedLocationName = '' })
@@ -1562,7 +1562,7 @@ struct MapPage {
           if (!this.isMapReady) {
             Column() {
               LoadingProgress().width(48).height(48).color(ThemeColors.PRIMARY)
-              Text('地图加载�?..').fontSize(14).fontColor(ThemeColors.TEXT_SECONDARY).margin({ top: 12 })
+              Text('地图加载�?..').fontSize(14).fontColor(ThemeColors.TEXT_SECONDARY).margin({ top: 12 })
             }
             .width('100%')
             .height('100%')
@@ -1573,7 +1573,7 @@ struct MapPage {
           // 地图类型切换按钮
           if (this.isMapReady) {
             Column() {
-              Text('🗺�?)
+              Text('🗺�?)
                 .fontSize(20)
                 .padding(10)
                 .backgroundColor('rgba(255,255,255,0.95)')
@@ -1606,8 +1606,8 @@ struct MapPage {
           // 地图类型选择面板
           if (this.showMapTypePanel) {
             Column({ space: 8 }) {
-              this.MapTypeButton('🗺�?, '普�?, 0)
-              this.MapTypeButton('🛰�?, '卫星', 1)
+              this.MapTypeButton('🗺�?, '普�?, 0)
+              this.MapTypeButton('🛰�?, '卫星', 1)
               this.MapTypeButton('🌙', '夜间', 2)
             }
             .padding(12)
@@ -1628,12 +1628,12 @@ struct MapPage {
         this.BaitRecommendDialog()
       }
 
-      // 添加自定义钓点弹�?
+      // 添加自定义钓点弹�?
       if (this.showAddSpotDialog) {
         this.AddCustomSpotDialog()
       }
 
-      // 自定义钓点详情弹�?
+      // 自定义钓点详情弹�?
       if (this.showCustomSpotDetail && this.selectedCustomSpot) {
         this.CustomSpotDetailDialog()
       }
@@ -1656,7 +1656,7 @@ struct MapPage {
   @Builder
   RoutePlanPanel() {
     Column() {
-      // 顶部信息�?
+      // 顶部信息�?
       Row() {
         Column() {
           Text(this.selectedSpot?.name || '钓点')
@@ -1673,7 +1673,7 @@ struct MapPage {
         .alignItems(HorizontalAlign.Start)
         .layoutWeight(1)
 
-        Text('�?)
+        Text('�?)
           .fontSize(22)
           .fontColor(ThemeColors.TEXT_SECONDARY)
           .padding(8)
@@ -1702,7 +1702,7 @@ struct MapPage {
               .fontSize(20)
               .fontWeight(FontWeight.Bold)
               .fontColor(ThemeColors.PRIMARY_DARK)
-            Text('总距�?)
+            Text('总距�?)
               .fontSize(12)
               .fontColor(ThemeColors.TEXT_SECONDARY)
           }
@@ -1724,7 +1724,7 @@ struct MapPage {
         .backgroundColor('#E8F5E9')
       }
 
-      // 加载中提�?
+      // 加载中提�?
       if (this.isRouteSearching) {
         Row() {
           LoadingProgress()
@@ -1783,7 +1783,7 @@ struct MapPage {
         .fontColor(this.currentMapType === type ? ThemeColors.PRIMARY : ThemeColors.TEXT_PRIMARY)
         .fontWeight(this.currentMapType === type ? FontWeight.Bold : FontWeight.Normal)
       if (this.currentMapType === type) {
-        Text('�?)
+        Text('�?)
           .fontSize(14)
           .fontColor(ThemeColors.PRIMARY_DARK)
           .margin({ left: 8 })
@@ -1820,7 +1820,7 @@ struct MapPage {
             .fontWeight(FontWeight.Bold)
             .fontColor(ThemeColors.TEXT_PRIMARY)
             .layoutWeight(1)
-          Text('�?)
+          Text('�?)
             .fontSize(20)
             .fontColor(ThemeColors.TEXT_SECONDARY)
             .onClick(() => { this.showBaitDialog = false })
@@ -1848,12 +1848,12 @@ struct MapPage {
           .fontColor(ThemeColors.TEXT_PRIMARY)
           .margin({ bottom: 12 })
 
-        // 配方列表 - 可滚�?
+        // 配方列表 - 可滚�?
         Scroll() {
           Column({ space: 12 }) {
             ForEach(this.recommendedRecipes, (recipe: Recipe) => {
               Column() {
-                // 配方名称和评�?
+                // 配方名称和评�?
                 Row() {
                   Text(recipe.name)
                     .fontSize(15)
@@ -1861,7 +1861,7 @@ struct MapPage {
                     .fontColor(ThemeColors.TEXT_PRIMARY)
                     .layoutWeight(1)
                   Row() {
-                    Text('�?)
+                    Text('�?)
                       .fontSize(12)
                     Text(recipe.rating.toFixed(1))
                       .fontSize(12)
@@ -1872,9 +1872,9 @@ struct MapPage {
                 .width('100%')
                 .margin({ bottom: 6 })
 
-                // 目标鱼种和难�?
+                // 目标鱼种和难�?
                 Row() {
-                  Text(`🐟 ${recipe.targetFish.join('�?)}`)
+                  Text(`🐟 ${recipe.targetFish.join('�?)}`)
                     .fontSize(11)
                     .fontColor(ThemeColors.PRIMARY_DARK)
                   Blank()
@@ -1894,7 +1894,7 @@ struct MapPage {
                   .fontWeight(FontWeight.Medium)
                   .fontColor(ThemeColors.TEXT_PRIMARY)
                   .margin({ bottom: 4 })
-                Text(recipe.ingredients.map(i => `${i.name}${i.amount}${i.unit}`).join('�?))
+                Text(recipe.ingredients.map(i => `${i.name}${i.amount}${i.unit}`).join('�?))
                   .fontSize(11)
                   .fontColor(ThemeColors.TEXT_SECONDARY)
                   .maxLines(2)
@@ -1907,14 +1907,14 @@ struct MapPage {
                   .fontWeight(FontWeight.Medium)
                   .fontColor(ThemeColors.TEXT_PRIMARY)
                   .margin({ bottom: 4 })
-                Text(recipe.steps.slice(0, 2).join(' �?') + (recipe.steps.length > 2 ? '...' : ''))
+                Text(recipe.steps.slice(0, 2).join(' �?') + (recipe.steps.length > 2 ? '...' : ''))
                   .fontSize(11)
                   .fontColor(ThemeColors.TEXT_SECONDARY)
                   .maxLines(2)
                   .textOverflow({ overflow: TextOverflow.Ellipsis })
                   .margin({ bottom: 8 })
 
-                // 小贴�?
+                // 小贴�?
                 if (recipe.tips.length > 0) {
                   Text('💡 ' + recipe.tips[0])
                     .fontSize(11)
@@ -1948,7 +1948,7 @@ struct MapPage {
         .height(320)
         .scrollBar(BarState.Auto)
 
-        Button('换一批推�?)
+        Button('换一批推�?)
           .width('100%')
           .height(44)
           .fontSize(14)
@@ -1981,7 +1981,7 @@ struct MapPage {
     .position({ x: 0, y: 0 })
   }
 
-  // 添加自定义钓点弹�?
+  // 添加自定义钓点弹�?
   @Builder
   AddCustomSpotDialog() {
     Stack() {
@@ -2003,7 +2003,7 @@ struct MapPage {
             .fontColor(ThemeColors.TEXT_PRIMARY)
             .margin({ left: 8 })
             .layoutWeight(1)
-          Text('�?)
+          Text('�?)
             .fontSize(20)
             .fontColor(ThemeColors.TEXT_SECONDARY)
             .onClick(() => { this.showAddSpotDialog = false })
@@ -2033,7 +2033,7 @@ struct MapPage {
           .fontColor(ThemeColors.TEXT_PRIMARY)
           .fontWeight(FontWeight.Medium)
           .margin({ bottom: 8 })
-        TextInput({ placeholder: '给这个钓点起个名�?, text: this.customSpotName })
+        TextInput({ placeholder: '给这个钓点起个名�?, text: this.customSpotName })
           .width('100%')
           .height(44)
           .fontSize(14)
@@ -2110,7 +2110,7 @@ struct MapPage {
     .onClick(() => { this.customSpotWaterType = type })
   }
 
-  // 自定义钓点详情弹�?
+  // 自定义钓点详情弹�?
   @Builder
   CustomSpotDetailDialog() {
     Stack() {
@@ -2132,7 +2132,7 @@ struct MapPage {
             .fontColor(ThemeColors.TEXT_PRIMARY)
             .margin({ left: 8 })
             .layoutWeight(1)
-          Text('�?)
+          Text('�?)
             .fontSize(20)
             .fontColor(ThemeColors.TEXT_SECONDARY)
             .onClick(() => { this.showCustomSpotDetail = false })
@@ -2204,15 +2204,14 @@ struct MapPage {
             .backgroundColor(ThemeColors.PRIMARY)
             .fontColor(Color.White)
             .onClick(() => {
-              // 转换�?FishingSpot 格式并显示配�?
-              const spot: FishingSpot = {
-                id: this.selectedCustomSpot!.id,
-                name: this.selectedCustomSpot!.name,
-                latitude: this.selectedCustomSpot!.latitude,
-                longitude: this.selectedCustomSpot!.longitude,
-                waterType: this.selectedCustomSpot!.waterType,
-                description: this.selectedCustomSpot!.note || WaterTypeNames[this.selectedCustomSpot!.waterType]
-              };
+              // 转换为 FishingSpot 格式并显示配方
+              const spot = new FishingSpot();
+              spot.id = this.selectedCustomSpot!.id;
+              spot.name = this.selectedCustomSpot!.name;
+              spot.latitude = this.selectedCustomSpot!.latitude;
+              spot.longitude = this.selectedCustomSpot!.longitude;
+              spot.waterType = this.selectedCustomSpot!.waterType;
+              spot.description = this.selectedCustomSpot!.note || WaterTypeNames[this.selectedCustomSpot!.waterType];
               this.selectedSpot = spot;
               this.recommendedRecipes = this.recommendRecipes(spot.waterType);
               this.showCustomSpotDetail = false;
@@ -2263,11 +2262,11 @@ struct MapPage {
             .fontColor(ThemeColors.TEXT_PRIMARY)
             .margin({ left: 8 })
             .layoutWeight(1)
-          Text(`�?${this.userCustomSpots.length} 个`)
+          Text(`�?${this.userCustomSpots.length} 个`)
             .fontSize(13)
             .fontColor(ThemeColors.TEXT_SECONDARY)
             .margin({ right: 12 })
-          Text('�?)
+          Text('�?)
             .fontSize(20)
             .fontColor(ThemeColors.TEXT_SECONDARY)
             .onClick(() => { this.showMySpotsList = false })
@@ -2276,12 +2275,12 @@ struct MapPage {
         .margin({ bottom: 16 })
 
         if (this.userCustomSpots.length === 0) {
-          // 空状�?
+          // 空状�?
           Column() {
             Text('🎣')
               .fontSize(48)
               .margin({ bottom: 12 })
-            Text('还没有添加钓�?)
+            Text('还没有添加钓�?)
               .fontSize(15)
               .fontColor(ThemeColors.TEXT_SECONDARY)
             Text('点击地图上的"打点"按钮添加')
@@ -2333,7 +2332,7 @@ struct MapPage {
                   .alignItems(HorizontalAlign.Start)
                   .layoutWeight(1)
 
-                  Text('�?)
+                  Text('�?)
                     .fontSize(20)
                     .fontColor('#ccc')
                 }
@@ -2353,7 +2352,7 @@ struct MapPage {
         }
 
         // 添加钓点按钮
-        Button('+ 添加新钓�?)
+        Button('+ 添加新钓�?)
           .width('100%')
           .height(48)
           .fontSize(15)
