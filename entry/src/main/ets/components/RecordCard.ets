@@ -1,5 +1,5 @@
 /**
- * 饵知道 - 渔获记录卡片组件
+ * 饵知�?- 渔获记录卡片组件
  * 用于在列表中展示单条渔获记录
  */
 import { ThemeColors } from '../theme/ThemeColors';
@@ -18,31 +18,31 @@ export struct RecordCard {
     const day = date.getDate();
     const weekDays = ['周日', '周一', '周二', '周三', '周四', '周五', '周六'];
     const weekDay = weekDays[date.getDay()];
-    return `${month}月${day}日 ${weekDay}`;
+    return `${month}�?{day}�?${weekDay}`;
   }
 
   private getWeatherIcon(weather: string): string {
     const icons: Record<string, string> = {
-      '晴朗': '☀️',
-      '多云': '⛅',
+      '晴朗': '☀�?,
+      '多云': '�?,
       '阴天': '☁️',
-      '小雨': '🌧️',
+      '小雨': '🌧�?,
       '大风': '💨'
     };
-    return icons[weather] || '🌤️';
+    return icons[weather] || '🌤�?;
   }
 
-  // 截断鱼种名称，最多显示2种鱼
+  // 截断鱼种名称，最多显�?种鱼
   private formatFishName(name: string): string {
     if (!name) return '未知鱼种';
-    const fishList = name.split('、');
+    const fishList = name.split('�?);
     if (fishList.length <= 2) return name;
-    return fishList.slice(0, 2).join('、') + '等';
+    return fishList.slice(0, 2).join('�?) + '�?;
   }
 
   build() {
     Column({ space: 8 }) {
-      // 第一行：日期和天气
+      // 第一行：日期和天�?
       Row() {
         Row({ space: 6 }) {
           Text('📅')
@@ -71,7 +71,7 @@ export struct RecordCard {
       Row({ space: 6 }) {
         Text('📍')
           .fontSize(14)
-        Text(this.record.location || '未填写钓点')
+        Text(this.record.location || '未填写钓�?)
           .fontSize(ThemeConstants.FONT_SIZE_BASE)
           .fontColor(ThemeColors.TEXT_PRIMARY)
           .maxLines(1)
@@ -103,12 +103,12 @@ export struct RecordCard {
 
         Blank()
 
-        // 右侧：重量
+        // 右侧：重�?
         Row() {
           Text(`${this.record.weight}`)
             .fontSize(ThemeConstants.FONT_SIZE_XL)
             .fontWeight(FontWeight.Bold)
-            .fontColor(ThemeColors.PRIMARY)
+            .fontColor(ThemeColors.PRIMARY_DARK)
           Text('kg')
             .fontSize(ThemeConstants.FONT_SIZE_SM)
             .fontColor(ThemeColors.TEXT_SECONDARY)

@@ -1,5 +1,5 @@
 /**
- * 饵知道 - 渔获记录详情/编辑页
+ * 饵知�?- 渔获记录详情/编辑�?
  */
 import { ThemeColors } from '../theme/ThemeColors';
 import { ThemeConstants } from '../theme/ThemeConstants';
@@ -83,26 +83,26 @@ struct RecordDetailPage {
     const day = date.getDate();
     const weekDays = ['周日', '周一', '周二', '周三', '周四', '周五', '周六'];
     const weekDay = weekDays[date.getDay()];
-    return `${month}月${day}日 ${weekDay}`;
+    return `${month}�?{day}�?${weekDay}`;
   }
 
   private getWeatherIcon(weather: string): string {
     const icons: Record<string, string> = {
-      '晴朗': '☀️',
-      '多云': '⛅',
+      '晴朗': '☀�?,
+      '多云': '�?,
       '阴天': '☁️',
-      '小雨': '🌧️',
+      '小雨': '🌧�?,
       '大风': '💨'
     };
-    return icons[weather] || '🌤️';
+    return icons[weather] || '🌤�?;
   }
 
-  // 截断鱼种名称，最多显示2种鱼
+  // 截断鱼种名称，最多显�?种鱼
   private formatFishName(name: string): string {
     if (!name) return '未知鱼种';
-    const fishList = name.split('、');
+    const fishList = name.split('�?);
     if (fishList.length <= 2) return name;
-    return fishList.slice(0, 2).join('、') + '等';
+    return fishList.slice(0, 2).join('�?) + '�?;
   }
 
   private async saveChanges(): Promise<void> {
@@ -146,7 +146,7 @@ struct RecordDetailPage {
 
   build() {
     Column() {
-      // 顶部导航栏
+      // 顶部导航�?
       this.HeaderBar()
 
       if (this.isLoading) {
@@ -202,7 +202,7 @@ struct RecordDetailPage {
           Row({ space: 16 }) {
             Text('编辑')
               .fontSize(ThemeConstants.FONT_SIZE_SM)
-              .fontColor(ThemeColors.PRIMARY)
+              .fontColor(ThemeColors.PRIMARY_DARK)
               .onClick(() => { this.isEdit = true; })
 
             Text('删除')
@@ -213,7 +213,7 @@ struct RecordDetailPage {
         } else {
           Text('保存')
             .fontSize(ThemeConstants.FONT_SIZE_SM)
-            .fontColor(ThemeColors.PRIMARY)
+            .fontColor(ThemeColors.PRIMARY_DARK)
             .onClick(() => { this.saveChanges(); })
         }
       }
@@ -231,7 +231,7 @@ struct RecordDetailPage {
         .width(48)
         .height(48)
         .color(ThemeColors.PRIMARY)
-      Text('加载中...')
+      Text('加载�?..')
         .fontSize(ThemeConstants.FONT_SIZE_SM)
         .fontColor(ThemeColors.TEXT_SECONDARY)
         .margin({ top: 12 })
@@ -245,9 +245,9 @@ struct RecordDetailPage {
   DetailView() {
     Scroll() {
       Column({ space: ThemeConstants.SPACE_MD }) {
-        // 主信息卡片
+        // 主信息卡�?
         Column({ space: 12 }) {
-          // 日期和天气
+          // 日期和天�?
           Row() {
             Row({ space: 6 }) {
               Text('📅')
@@ -270,7 +270,7 @@ struct RecordDetailPage {
           }
           .width('100%')
 
-          // 鱼种和重量
+          // 鱼种和重�?
           Row() {
             Column({ space: 4 }) {
               Row({ space: 8 }) {
@@ -286,7 +286,7 @@ struct RecordDetailPage {
               }
               .constraintSize({ maxWidth: '60%' })
 
-              Text(`共 ${this.record.count} 尾`)
+              Text(`�?${this.record.count} 尾`)
                 .fontSize(ThemeConstants.FONT_SIZE_SM)
                 .fontColor(ThemeColors.TEXT_SECONDARY)
             }
@@ -300,7 +300,7 @@ struct RecordDetailPage {
                 Text(`${this.record.weight}`)
                   .fontSize(36)
                   .fontWeight(FontWeight.Bold)
-                  .fontColor(ThemeColors.PRIMARY)
+                  .fontColor(ThemeColors.PRIMARY_DARK)
                 Text('kg')
                   .fontSize(ThemeConstants.FONT_SIZE_MD)
                   .fontColor(ThemeColors.TEXT_SECONDARY)
@@ -321,8 +321,8 @@ struct RecordDetailPage {
 
         // 详细信息
         Column({ space: 1 }) {
-          this.InfoRow('📍 钓点', this.record.location || '未填写')
-          this.InfoRow('🏆 最大单尾', `${this.record.maxSingle} kg`)
+          this.InfoRow('📍 钓点', this.record.location || '未填�?)
+          this.InfoRow('🏆 最大单�?, `${this.record.maxSingle} kg`)
           this.RecipeInfoRow()
         }
         .margin({ left: ThemeConstants.SPACE_MD, right: ThemeConstants.SPACE_MD })
@@ -423,16 +423,16 @@ struct RecordDetailPage {
         Row({ space: 4 }) {
           Text(this.record.recipeName)
             .fontSize(ThemeConstants.FONT_SIZE_BASE)
-            .fontColor(ThemeColors.PRIMARY)
+            .fontColor(ThemeColors.PRIMARY_DARK)
           Text('>')
             .fontSize(ThemeConstants.FONT_SIZE_SM)
-            .fontColor(ThemeColors.PRIMARY)
+            .fontColor(ThemeColors.PRIMARY_DARK)
         }
         .onClick(() => {
           Router.goToRecipeDetail(this.record.recipeId);
         })
       } else {
-        Text(this.record.recipeName || '未填写')
+        Text(this.record.recipeName || '未填�?)
           .fontSize(ThemeConstants.FONT_SIZE_BASE)
           .fontColor(ThemeColors.TEXT_PRIMARY)
       }
@@ -448,7 +448,7 @@ struct RecordDetailPage {
     Scroll() {
       Column({ space: ThemeConstants.SPACE_MD }) {
         // 钓点位置
-        this.EditInput('📍 钓点位置', '请输入钓点名称', this.editLocation, (v: string) => { this.editLocation = v; })
+        this.EditInput('📍 钓点位置', '请输入钓点名�?, this.editLocation, (v: string) => { this.editLocation = v; })
 
         // 天气选择
         this.WeatherSelector()
@@ -457,16 +457,16 @@ struct RecordDetailPage {
         this.FishSelector()
 
         // 重量
-        this.EditInput('⚖️ 总重量 (kg)', '请输入重量', this.editWeight, (v: string) => { this.editWeight = v; })
+        this.EditInput('⚖️ 总重�?(kg)', '请输入重�?, this.editWeight, (v: string) => { this.editWeight = v; })
 
         // 数量
-        this.EditInput('🔢 数量 (尾)', '请输入数量', this.editCount, (v: string) => { this.editCount = v; })
+        this.EditInput('🔢 数量 (�?', '请输入数�?, this.editCount, (v: string) => { this.editCount = v; })
 
-        // 最大单尾
-        this.EditInput('🏆 最大单尾 (kg)', '请输入最大单尾重量', this.editMaxSingle, (v: string) => { this.editMaxSingle = v; })
+        // 最大单�?
+        this.EditInput('🏆 最大单�?(kg)', '请输入最大单尾重�?, this.editMaxSingle, (v: string) => { this.editMaxSingle = v; })
 
         // 使用配方
-        this.EditInput('🧪 使用配方', '请输入配方名称', this.editRecipeName, (v: string) => { this.editRecipeName = v; })
+        this.EditInput('🧪 使用配方', '请输入配方名�?, this.editRecipeName, (v: string) => { this.editRecipeName = v; })
 
         // 备注
         this.NotesInput()
@@ -500,7 +500,7 @@ struct RecordDetailPage {
   @Builder
   WeatherSelector() {
     Column({ space: 8 }) {
-      Text('🌤️ 天气')
+      Text('🌤�?天气')
         .fontSize(ThemeConstants.FONT_SIZE_SM)
         .fontColor(ThemeColors.TEXT_SECONDARY)
         .width('100%')
@@ -559,7 +559,7 @@ struct RecordDetailPage {
         .fontColor(ThemeColors.TEXT_SECONDARY)
         .width('100%')
 
-      TextArea({ placeholder: '记录一些心得体会...', text: this.editNotes })
+      TextArea({ placeholder: '记录一些心得体�?..', text: this.editNotes })
         .fontSize(ThemeConstants.FONT_SIZE_BASE)
         .fontColor(ThemeColors.TEXT_PRIMARY)
         .placeholderColor(ThemeColors.TEXT_HINT)
@@ -588,7 +588,7 @@ struct RecordDetailPage {
           .fontWeight(FontWeight.Medium)
           .fontColor(ThemeColors.TEXT_PRIMARY)
 
-        Text('删除后无法恢复，确定要删除这条记录吗？')
+        Text('删除后无法恢复，确定要删除这条记录吗�?)
           .fontSize(ThemeConstants.FONT_SIZE_BASE)
           .fontColor(ThemeColors.TEXT_SECONDARY)
           .textAlign(TextAlign.Center)

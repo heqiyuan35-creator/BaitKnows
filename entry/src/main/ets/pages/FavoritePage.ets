@@ -1,6 +1,6 @@
 /**
- * 饵知道 - 收藏页面
- * 展示用户收藏的配方
+ * 饵知�?- 收藏页面
+ * 展示用户收藏的配�?
  */
 import { ThemeColors } from '../theme/ThemeColors';
 import { ThemeConstants } from '../theme/ThemeConstants';
@@ -34,36 +34,36 @@ class PresetRecipeInfo {
   }
 }
 
-// 预设配方数据库（简化版，用于收藏页显示）
+// 预设配方数据库（简化版，用于收藏页显示�?
 const PRESET_RECIPES: Map<string, PresetRecipeInfo> = new Map([
   // 池塘
   ['r_001', new PresetRecipeInfo('r_001', '池塘鲫鱼散炮', '鲫鱼', 4.6)],
   ['r_002', new PresetRecipeInfo('r_002', '黑坑鲤鱼颗粒', '鲤鱼', 4.8)],
-  ['r_003', new PresetRecipeInfo('r_003', '池塘草鱼青草饵', '草鱼', 4.5)],
-  ['r_004', new PresetRecipeInfo('r_004', '池塘鳙鱼酸臭饵', '鳙鱼', 4.6)],
+  ['r_003', new PresetRecipeInfo('r_003', '池塘草鱼青草�?, '草鱼', 4.5)],
+  ['r_004', new PresetRecipeInfo('r_004', '池塘鳙鱼酸臭�?, '鳙鱼', 4.6)],
   ['r_005', new PresetRecipeInfo('r_005', '池塘鲢鱼酸饵', '鲢鱼', 4.5)],
-  ['r_006', new PresetRecipeInfo('r_006', '南方罗非专用饵', '罗非鱼', 4.4)],
-  ['r_007', new PresetRecipeInfo('r_007', '黑坑叉尾专用饵', '斑点叉尾鮰', 4.5)],
+  ['r_006', new PresetRecipeInfo('r_006', '南方罗非专用�?, '罗非�?, 4.4)],
+  ['r_007', new PresetRecipeInfo('r_007', '黑坑叉尾专用�?, '斑点叉尾�?, 4.5)],
   ['r_008', new PresetRecipeInfo('r_008', '池塘鲶鱼腥饵', '鲶鱼', 4.6)],
   // 河流
   ['r_101', new PresetRecipeInfo('r_101', '野河鲫鱼蚯蚓伴侣', '鲫鱼', 4.7)],
-  ['r_102', new PresetRecipeInfo('r_102', '江河鲤鱼玉米饵', '鲤鱼', 4.8)],
-  ['r_103', new PresetRecipeInfo('r_103', '河流草鱼嫩草饵', '草鱼', 4.6)],
-  ['r_105', new PresetRecipeInfo('r_105', '河流黄颡鱼饵', '黄颡鱼', 4.5)],
+  ['r_102', new PresetRecipeInfo('r_102', '江河鲤鱼玉米�?, '鲤鱼', 4.8)],
+  ['r_103', new PresetRecipeInfo('r_103', '河流草鱼嫩草�?, '草鱼', 4.6)],
+  ['r_105', new PresetRecipeInfo('r_105', '河流黄颡鱼饵', '黄颡�?, 4.5)],
   ['r_106', new PresetRecipeInfo('r_106', '河流鳊鱼素饵', '鳊鱼', 4.5)],
-  ['r_107', new PresetRecipeInfo('r_107', '河流翘嘴路亚饵', '翘嘴', 4.7)],
+  ['r_107', new PresetRecipeInfo('r_107', '河流翘嘴路亚�?, '翘嘴', 4.7)],
   // 水库
-  ['r_201', new PresetRecipeInfo('r_201', '水库大鲤守钓饵', '鲤鱼', 4.9)],
-  ['r_202', new PresetRecipeInfo('r_202', '水库草鱼浮钓饵', '草鱼', 4.7)],
-  ['r_205', new PresetRecipeInfo('r_205', '水库青鱼螺蛳饵', '青鱼', 4.8)],
+  ['r_201', new PresetRecipeInfo('r_201', '水库大鲤守钓�?, '鲤鱼', 4.9)],
+  ['r_202', new PresetRecipeInfo('r_202', '水库草鱼浮钓�?, '草鱼', 4.7)],
+  ['r_205', new PresetRecipeInfo('r_205', '水库青鱼螺蛳�?, '青鱼', 4.8)],
   ['r_206', new PresetRecipeInfo('r_206', '水库鳜鱼活饵', '鳜鱼', 4.9)],
-  ['r_207', new PresetRecipeInfo('r_207', '水库武昌鱼素饵', '武昌鱼', 4.5)],
-  ['r_210', new PresetRecipeInfo('r_210', '南方鲮鱼专用饵', '鲮鱼', 4.6)],
+  ['r_207', new PresetRecipeInfo('r_207', '水库武昌鱼素�?, '武昌�?, 4.5)],
+  ['r_210', new PresetRecipeInfo('r_210', '南方鲮鱼专用�?, '鲮鱼', 4.6)],
   // 湖泊
-  ['r_301', new PresetRecipeInfo('r_301', '湖泊鲫鱼传统钓', '鲫鱼', 4.7)],
-  ['r_302', new PresetRecipeInfo('r_302', '湖泊鲤鱼爆炸钩', '鲤鱼', 4.8)],
+  ['r_301', new PresetRecipeInfo('r_301', '湖泊鲫鱼传统�?, '鲫鱼', 4.7)],
+  ['r_302', new PresetRecipeInfo('r_302', '湖泊鲤鱼爆炸�?, '鲤鱼', 4.8)],
   ['r_304', new PresetRecipeInfo('r_304', '湖泊鳜鱼活饵', '鳜鱼', 4.9)],
-  ['r_305', new PresetRecipeInfo('r_305', '湖泊青鱼螺蛳饵', '青鱼', 4.8)],
+  ['r_305', new PresetRecipeInfo('r_305', '湖泊青鱼螺蛳�?, '青鱼', 4.8)],
   ['r_306', new PresetRecipeInfo('r_306', '湖泊黑鱼雷蛙', '黑鱼', 4.7)],
   ['r_315', new PresetRecipeInfo('r_315', '湖泊鳊鱼素饵', '鳊鱼', 4.5)]
 ]);
@@ -131,10 +131,10 @@ struct FavoritePage {
     this.isLoading = false;
   }
 
-  // 格式化日期
+  // 格式化日�?
   private formatDate(timestamp: number): string {
     const date = new Date(timestamp);
-    return `${date.getMonth() + 1}月${date.getDate()}日`;
+    return `${date.getMonth() + 1}�?{date.getDate()}日`;
   }
 
   // 获取鱼种名称
@@ -143,8 +143,8 @@ struct FavoritePage {
     const fishMap: Map<string, string> = new Map([
       ['crucian', '鲫鱼'], ['carp', '鲤鱼'], ['grass', '草鱼'],
       ['black_carp', '青鱼'], ['catfish', '鲶鱼'], ['bighead', '鳙鱼'],
-      ['silver', '鲢鱼'], ['tilapia', '罗非鱼'], ['grass_carp', '草鱼'],
-      ['silver_carp', '鲢鱼'], ['bighead_carp', '鳙鱼'], ['yellow_catfish', '黄颡鱼'],
+      ['silver', '鲢鱼'], ['tilapia', '罗非�?], ['grass_carp', '草鱼'],
+      ['silver_carp', '鲢鱼'], ['bighead_carp', '鳙鱼'], ['yellow_catfish', '黄颡�?],
       ['mandarin_fish', '鳜鱼'], ['snakehead', '黑鱼'], ['bream', '鳊鱼'],
       ['topmouth_culter', '翘嘴']
     ]);
@@ -159,7 +159,7 @@ struct FavoritePage {
       if (this.isLoading) {
         Column() {
           LoadingProgress().width(40).height(40)
-          Text('加载中...').fontSize(14).fontColor(ThemeColors.TEXT_SECONDARY).margin({ top: 12 })
+          Text('加载�?..').fontSize(14).fontColor(ThemeColors.TEXT_SECONDARY).margin({ top: 12 })
         }
         .width('100%')
         .layoutWeight(1)
@@ -217,7 +217,7 @@ struct FavoritePage {
       Text('暂无收藏')
         .fontSize(ThemeConstants.FONT_SIZE_MD)
         .fontColor(ThemeColors.TEXT_SECONDARY)
-      Text('浏览配方库，点击爱心收藏喜欢的配方')
+      Text('浏览配方库，点击爱心收藏喜欢的配�?)
         .fontSize(ThemeConstants.FONT_SIZE_SM)
         .fontColor(ThemeColors.TEXT_MUTED)
     }
@@ -255,7 +255,7 @@ struct FavoritePage {
           if (item.isUserRecipe) {
             Text('我的')
               .fontSize(10)
-              .fontColor(ThemeColors.PRIMARY)
+              .fontColor(ThemeColors.PRIMARY_DARK)
               .padding({ left: 6, right: 6, top: 2, bottom: 2 })
               .backgroundColor('rgba(232, 168, 73, 0.15)')
               .borderRadius(4)
@@ -267,9 +267,9 @@ struct FavoritePage {
           Text(`🐟 ${item.targetFish}`)
             .fontSize(ThemeConstants.FONT_SIZE_XS)
             .fontColor(ThemeColors.TEXT_SECONDARY)
-          Text(`⭐ ${item.rating.toFixed(1)}`)
+          Text(`�?${item.rating.toFixed(1)}`)
             .fontSize(ThemeConstants.FONT_SIZE_XS)
-            .fontColor(ThemeColors.PRIMARY)
+            .fontColor(ThemeColors.PRIMARY_DARK)
         }
 
         Text(`${item.addTime}收藏`)

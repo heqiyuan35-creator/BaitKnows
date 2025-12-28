@@ -1,5 +1,5 @@
 /**
- * 饵知道 - 配方生成历史服务
+ * 饵知�?- 配方生成历史服务
  */
 import { GeneratedRecipe } from '../common/types/RecipeTypes';
 import { storageService } from './StorageService';
@@ -58,7 +58,7 @@ class GeneratorHistoryServiceClass {
 
     this._history.unshift(recipe);
 
-    // 限制最大数量
+    // 限制最大数�?
     if (this._history.length > this.MAX_HISTORY) {
       this._history = this._history.slice(0, this.MAX_HISTORY);
     }
@@ -81,7 +81,7 @@ class GeneratorHistoryServiceClass {
   }
 
   /**
-   * 清空所有历史
+   * 清空所有历�?
    */
   async clearAll(): Promise<void> {
     this._history = [];
@@ -96,7 +96,7 @@ class GeneratorHistoryServiceClass {
   }
 
   /**
-   * 获取最近N条记录
+   * 获取最近N条记�?
    */
   getRecentHistory(limit: number = 10): GeneratedRecipe[] {
     return this._history.slice(0, limit);

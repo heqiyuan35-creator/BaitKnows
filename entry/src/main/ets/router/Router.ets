@@ -1,10 +1,10 @@
 /**
- * 饵知道 - 路由管理
+ * 饵知�?- 路由管理
  */
 import { router } from '@kit.ArkUI';
 import { AppConstants } from '../common/constants/AppConstants';
 
-// 路由参数类
+// 路由参数�?
 export class RouteParams {
   recipeId?: string;
   recordId?: string;
@@ -50,7 +50,7 @@ export class Router {
   }
 
   /**
-   * 返回上一页
+   * 返回上一�?
    */
   static back(): void {
     router.back();
@@ -64,7 +64,7 @@ export class Router {
     return (params as RouteParams) || {};
   }
 
-  // 预定义路由方法
+  // 预定义路由方�?
   static async goToMain(): Promise<void> {
     await Router.replace(AppConstants.ROUTE_MAIN);
   }

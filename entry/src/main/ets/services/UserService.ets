@@ -1,6 +1,6 @@
 /**
- * 饵知道 - 用户服务
- * 管理用户信息、等级计算
+ * 饵知�?- 用户服务
+ * 管理用户信息、等级计�?
  */
 import { UserProfile, UserLevel, LevelConfig, LEVEL_CONFIGS, FishingRecord } from '../common/types/UserTypes';
 import { storageService } from './StorageService';
@@ -19,7 +19,7 @@ class UserServiceClass {
   }
 
   /**
-   * 初始化加载用户数据
+   * 初始化加载用户数�?
    */
   async load(): Promise<UserProfile> {
     if (this._isLoaded) {
@@ -59,7 +59,7 @@ class UserServiceClass {
   }
 
   /**
-   * 计算经验值
+   * 计算经验�?
    * 经验 = 渔获重量×10 + 出钓次数×20 + 钓获尾数×5 + 活跃天数×5
    */
   calculateExperience(): number {
@@ -73,7 +73,7 @@ class UserServiceClass {
   }
 
   /**
-   * 根据经验值获取等级配置
+   * 根据经验值获取等级配�?
    */
   getLevelConfig(exp: number): LevelConfig {
     for (let i = LEVEL_CONFIGS.length - 1; i >= 0; i--) {
@@ -113,7 +113,7 @@ class UserServiceClass {
   }
 
   /**
-   * 添加渔获记录后更新统计
+   * 添加渔获记录后更新统�?
    */
   async onRecordAdded(record: FishingRecord): Promise<void> {
     this._profile.totalCatch += record.weight;
@@ -124,7 +124,7 @@ class UserServiceClass {
       this._profile.bestRecord = record.maxSingle;
     }
 
-    // 更新活跃天数（简化：每次记录+1，实际应该按日期去重）
+    // 更新活跃天数（简化：每次记录+1，实际应该按日期去重�?
     this._profile.activeDays += 1;
 
     if (record.recipeId) {
@@ -135,7 +135,7 @@ class UserServiceClass {
   }
 
   /**
-   * 删除渔获记录后更新统计
+   * 删除渔获记录后更新统�?
    */
   async onRecordDeleted(record: FishingRecord): Promise<void> {
     this._profile.totalCatch = Math.max(0, this._profile.totalCatch - record.weight);
@@ -158,7 +158,7 @@ class UserServiceClass {
   }
 
   /**
-   * 从记录列表重新计算统计数据
+   * 从记录列表重新计算统计数�?
    */
   async recalculateFromRecords(records: FishingRecord[]): Promise<void> {
     this._profile.totalCatch = 0;
@@ -181,7 +181,7 @@ class UserServiceClass {
         this._profile.recipeUseCount += 1;
       }
 
-      // 按日期统计活跃天数
+      // 按日期统计活跃天�?
       const dateKey = new Date(record.date).toDateString();
       activeDates.add(dateKey);
     }
@@ -195,7 +195,7 @@ class UserServiceClass {
    */
   async resetProfile(): Promise<void> {
     this._profile = new UserProfile();
-    this._isLoaded = false;  // 重置加载标志，允许重新加载
+    this._isLoaded = false;  // 重置加载标志，允许重新加�?
     await this.save();
     console.info('[UserService] User profile reset');
   }

@@ -1,5 +1,5 @@
 /**
- * 饵知道 - 主题常量定义
+ * 饵知�?- 主题常量定义
  */
 export class ThemeConstants {
   // 字体大小
@@ -51,6 +51,6 @@ export class ThemeConstants {
   static readonly ANIM_BASE: number = 300;
   static readonly ANIM_SLOW: number = 500;
 
-  // Tab栏高度
+  // Tab栏高�?
   static readonly TAB_BAR_HEIGHT: number = 56;
 }

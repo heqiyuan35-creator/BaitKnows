@@ -1,6 +1,6 @@
 /**
  * 分析过程动画组件
- * 展示精确匹配的5步分析过程
+ * 展示精确匹配�?步分析过�?
  */
 import { ThemeColors } from '../theme/ThemeColors';
 
@@ -13,16 +13,16 @@ interface AnalysisStepData {
 
 const ANALYSIS_STEPS: AnalysisStepData[] = [
   { step: 1, title: '参数解析', description: '解析钓况参数', icon: '📊' },
-  { step: 2, title: '习性匹配', description: '匹配鱼种习性', icon: '🐟' },
-  { step: 3, title: '原料筛选', description: '智能筛选原料', icon: '🎣' },
-  { step: 4, title: '配比优化', description: '计算最优配比', icon: '⚖️' },
-  { step: 5, title: '方案生成', description: '生成最优方案', icon: '✨' }
+  { step: 2, title: '习性匹�?, description: '匹配鱼种习�?, icon: '🐟' },
+  { step: 3, title: '原料筛�?, description: '智能筛选原�?, icon: '🎣' },
+  { step: 4, title: '配比优化', description: '计算最优配�?, icon: '⚖️' },
+  { step: 5, title: '方案生成', description: '生成最优方�?, icon: '�? }
 ];
 
 @Component
 export struct AnalysisAnimation {
   @Prop currentStep: number = 0;
-  @Prop fishName: string = '目标鱼';
+  @Prop fishName: string = '目标�?;
 
   build() {
     Column({ space: 24 }) {
@@ -38,7 +38,7 @@ export struct AnalysisAnimation {
           .fontColor('#666')
       }
 
-      // 进度指示器
+      // 进度指示�?
       Row({ space: 8 }) {
         ForEach([1, 2, 3, 4, 5], (step: number) => {
           Row()
@@ -76,9 +76,9 @@ export struct AnalysisAnimation {
       // 步骤图标
       Stack() {
         if (this.currentStep > stepData.step) {
-          // 已完成
+          // 已完�?
           Row() {
-            Text('✓').fontSize(14).fontColor(Color.White)
+            Text('�?).fontSize(14).fontColor(Color.White)
           }
           .width(36)
           .height(36)
@@ -86,7 +86,7 @@ export struct AnalysisAnimation {
           .backgroundColor(ThemeColors.PRIMARY)
           .justifyContent(FlexAlign.Center)
         } else if (this.currentStep === stepData.step) {
-          // 进行中
+          // 进行�?
           Row() {
             LoadingProgress()
               .width(20)
@@ -99,7 +99,7 @@ export struct AnalysisAnimation {
           .backgroundColor(ThemeColors.PRIMARY)
           .justifyContent(FlexAlign.Center)
         } else {
-          // 未开始
+          // 未开�?
           Row() {
             Text(stepData.icon).fontSize(16)
           }
@@ -125,16 +125,16 @@ export struct AnalysisAnimation {
       .alignItems(HorizontalAlign.Start)
       .layoutWeight(1)
 
-      // 状态标签
+      // 状态标�?
       if (this.currentStep > stepData.step) {
         Text('完成')
           .fontSize(12)
-          .fontColor(ThemeColors.PRIMARY)
+          .fontColor(ThemeColors.PRIMARY_DARK)
           .padding({ left: 8, right: 8, top: 4, bottom: 4 })
           .backgroundColor('#FFF5E6')
           .borderRadius(10)
       } else if (this.currentStep === stepData.step) {
-        Text('进行中')
+        Text('进行�?)
           .fontSize(12)
           .fontColor(Color.White)
           .padding({ left: 8, right: 8, top: 4, bottom: 4 })

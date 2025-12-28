@@ -1,12 +1,12 @@
 /**
- * 饵知道 - 加载状态组件
+ * 饵知�?- 加载状态组�?
  */
 import { ThemeColors } from '../theme/ThemeColors';
 import { ThemeConstants } from '../theme/ThemeConstants';
 
 @Component
 export struct LoadingView {
-  @Prop message: string = '加载中...';
+  @Prop message: string = '加载�?..';
 
   build() {
     Column({ space: 12 }) {

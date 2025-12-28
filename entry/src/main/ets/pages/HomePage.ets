@@ -1,6 +1,6 @@
 /**
- * 饵知道 - 首页
- * 天气信息、快速配方生成、附近渔点
+ * 饵知�?- 首页
+ * 天气信息、快速配方生成、附近渔�?
  */
 import { ThemeColors } from '../theme/ThemeColors';
 import { ThemeConstants } from '../theme/ThemeConstants';
@@ -22,7 +22,7 @@ interface WaterOption {
   iconActive: Resource;
 }
 
-// 推荐配方简化结构
+// 推荐配方简化结�?
 class RecommendRecipe {
   id: string = '';
   name: string = '';
@@ -40,10 +40,10 @@ export struct HomePage {
   @State selectedWater: string = AppConstants.WATER_RIVER;
   @State temperature: number = 0;
   @State weather: string = '--';
-  @State city: string = '定位中...';
+  @State city: string = '定位�?..';
   @State windInfo: string = '-- --';
   @State pressure: number = 0;
-  @State fishingIndex: FishingIndex = { level: '未知', color: '#999999', description: '加载中...' };
+  @State fishingIndex: FishingIndex = { level: '未知', color: '#999999', description: '加载�?..' };
   @State isLoadingWeather: boolean = true;
   @State fishingSpots: FishingSpot[] = [];
   @State isLoadingSpots: boolean = false;
@@ -52,7 +52,7 @@ export struct HomePage {
   @State recommendedBaits: BaitInfo[] = [];
   @State recommendedRecipes: RecommendRecipe[] = [];
   @State showFishPicker: boolean = false;
-  @State currentFishList: FishData[] = [];  // 当前水域的鱼种列表（缓存）
+  @State currentFishList: FishData[] = [];  // 当前水域的鱼种列表（缓存�?
 
   // 水域选项（四大类：池塘、河流、水库、湖泊）
   private waterOptions: WaterOption[] = [
@@ -68,7 +68,7 @@ export struct HomePage {
   // 预缓存各水域鱼种（避免重复计算）
   private waterFishCache: Record<string, FishData[]> = {};
 
-  // 更新当前水域的鱼种列表
+  // 更新当前水域的鱼种列�?
   private updateCurrentFishList(): void {
     if (!this.waterFishCache[this.selectedWater]) {
       this.waterFishCache[this.selectedWater] = getFishByWaterType(this.selectedWater);
@@ -80,16 +80,16 @@ export struct HomePage {
     // 初始化配方数据库
     this.initRecipeDatabase();
 
-    // 初始化鱼种列表
+    // 初始化鱼种列�?
     this.updateCurrentFishList();
 
-    // 加载缓存的钓点数据
+    // 加载缓存的钓点数�?
     this.fishingSpots = FishingSpotService.cachedSpots;
 
     // 根据附近渔点自动选择最多的水域类型
     this.autoSelectWaterType();
 
-    // 如果没有缓存，主动搜索（等待定位完成后再搜索）
+    // 如果没有缓存，主动搜索（等待定位完成后再搜索�?
     if (this.fishingSpots.length === 0) {
       this.loadNearbySpots();
     }
@@ -102,42 +102,42 @@ export struct HomePage {
   private initRecipeDatabase(): void {
     // 池塘配方
     const pondRecipes: RecommendRecipe[] = [];
-    pondRecipes.push(this.createRecipe('r_001', '池塘鲫鱼散炮', '鲫鱼', ['麸皮', '雪花粉', '拉丝粉'], ['春季', '浅水'], 88));
+    pondRecipes.push(this.createRecipe('r_001', '池塘鲫鱼散炮', '鲫鱼', ['麸皮', '雪花�?, '拉丝�?], ['春季', '浅水'], 88));
     pondRecipes.push(this.createRecipe('r_002', '黑坑鲤鱼颗粒', '鲤鱼', ['原塘颗粒', '小药', '状态粉'], ['四季', '黑坑'], 92));
-    pondRecipes.push(this.createRecipe('r_003', '池塘草鱼青草饵', '草鱼', ['嫩草', '玉米', '麦麸'], ['夏季', '浮钓'], 85));
-    pondRecipes.push(this.createRecipe('r_004', '池塘鳙鱼酸臭饵', '鳙鱼', ['臭豆腐汁', '蒜粉', '雪花粉'], ['夏季', '浮钓'], 86));
-    pondRecipes.push(this.createRecipe('r_006', '南方罗非专用饵', '罗非鱼', ['罗非颗粒', '虾粉', '蚯蚓膏'], ['夏季', '底钓'], 82));
-    pondRecipes.push(this.createRecipe('r_008', '池塘鲶鱼腥饵', '鲶鱼', ['鸡肝', '蚯蚓', '血粉'], ['夜钓', '底钓'], 88));
+    pondRecipes.push(this.createRecipe('r_003', '池塘草鱼青草�?, '草鱼', ['嫩草', '玉米', '麦麸'], ['夏季', '浮钓'], 85));
+    pondRecipes.push(this.createRecipe('r_004', '池塘鳙鱼酸臭�?, '鳙鱼', ['臭豆腐汁', '蒜粉', '雪花�?], ['夏季', '浮钓'], 86));
+    pondRecipes.push(this.createRecipe('r_006', '南方罗非专用�?, '罗非�?, ['罗非颗粒', '虾粉', '蚯蚓�?], ['夏季', '底钓'], 82));
+    pondRecipes.push(this.createRecipe('r_008', '池塘鲶鱼腥饵', '鲶鱼', ['鸡肝', '蚯蚓', '血�?], ['夜钓', '底钓'], 88));
     this.recipeDatabase.set('pond', pondRecipes);
 
     // 河流配方
     const riverRecipes: RecommendRecipe[] = [];
-    riverRecipes.push(this.createRecipe('r_101', '野河鲫鱼蚯蚓伴侣', '鲫鱼', ['蚯蚓粉', '红虫', '酒米'], ['四季', '走水'], 90));
-    riverRecipes.push(this.createRecipe('r_102', '江河鲤鱼玉米饵', '鲤鱼', ['发酵玉米', '蜂蜜', '麦粒'], ['夏秋', '深水'], 95));
-    riverRecipes.push(this.createRecipe('r_103', '河流草鱼嫩草饵', '草鱼', ['嫩草', '芦苇芯', '玉米粒'], ['夏季', '浮钓'], 85));
-    riverRecipes.push(this.createRecipe('r_105', '河流黄颡鱼饵', '黄颡鱼', ['蚯蚓', '鸡肝', '红虫'], ['夜钓', '石缝'], 85));
-    riverRecipes.push(this.createRecipe('r_106', '河流鳊鱼素饵', '鳊鱼', ['麸皮', '玉米粉', '蜂蜜'], ['春夏', '中层'], 82));
-    riverRecipes.push(this.createRecipe('r_107', '河流翘嘴路亚饵', '翘嘴', ['亮片', '活虾', '小鱼'], ['夏秋', '路亚'], 82));
+    riverRecipes.push(this.createRecipe('r_101', '野河鲫鱼蚯蚓伴侣', '鲫鱼', ['蚯蚓�?, '红虫', '酒米'], ['四季', '走水'], 90));
+    riverRecipes.push(this.createRecipe('r_102', '江河鲤鱼玉米�?, '鲤鱼', ['发酵玉米', '蜂蜜', '麦粒'], ['夏秋', '深水'], 95));
+    riverRecipes.push(this.createRecipe('r_103', '河流草鱼嫩草�?, '草鱼', ['嫩草', '芦苇�?, '玉米�?], ['夏季', '浮钓'], 85));
+    riverRecipes.push(this.createRecipe('r_105', '河流黄颡鱼饵', '黄颡�?, ['蚯蚓', '鸡肝', '红虫'], ['夜钓', '石缝'], 85));
+    riverRecipes.push(this.createRecipe('r_106', '河流鳊鱼素饵', '鳊鱼', ['麸皮', '玉米�?, '蜂蜜'], ['春夏', '中层'], 82));
+    riverRecipes.push(this.createRecipe('r_107', '河流翘嘴路亚�?, '翘嘴', ['亮片', '活虾', '小鱼'], ['夏秋', '路亚'], 82));
     this.recipeDatabase.set('river', riverRecipes);
 
     // 水库配方
     const reservoirRecipes: RecommendRecipe[] = [];
-    reservoirRecipes.push(this.createRecipe('r_201', '水库大鲤守钓饵', '鲤鱼', ['发酵玉米', '红薯', '药酒'], ['秋季', '守大物'], 98));
-    reservoirRecipes.push(this.createRecipe('r_202', '水库草鱼浮钓饵', '草鱼', ['嫩玉米', '青草', '麦麸'], ['夏季', '浮钓'], 90));
-    reservoirRecipes.push(this.createRecipe('r_205', '水库青鱼螺蛳饵', '青鱼', ['田螺', '螺蛳粉', '蚌肉粉'], ['四季', '底钓'], 92));
-    reservoirRecipes.push(this.createRecipe('r_206', '水库鳜鱼活饵', '鳜鱼', ['活泥鳅', '活虾', '小鱼'], ['春秋', '活饵'], 95));
-    reservoirRecipes.push(this.createRecipe('r_207', '水库武昌鱼素饵', '武昌鱼', ['麸皮', '玉米粉', '蜂蜜'], ['春夏', '中层'], 82));
-    reservoirRecipes.push(this.createRecipe('r_210', '南方鲮鱼专用饵', '鲮鱼', ['花生粉', '麸皮', '玉米粉'], ['夏秋', '底钓'], 85));
+    reservoirRecipes.push(this.createRecipe('r_201', '水库大鲤守钓�?, '鲤鱼', ['发酵玉米', '红薯', '药酒'], ['秋季', '守大�?], 98));
+    reservoirRecipes.push(this.createRecipe('r_202', '水库草鱼浮钓�?, '草鱼', ['嫩玉�?, '青草', '麦麸'], ['夏季', '浮钓'], 90));
+    reservoirRecipes.push(this.createRecipe('r_205', '水库青鱼螺蛳�?, '青鱼', ['田螺', '螺蛳�?, '蚌肉�?], ['四季', '底钓'], 92));
+    reservoirRecipes.push(this.createRecipe('r_206', '水库鳜鱼活饵', '鳜鱼', ['活泥�?, '活虾', '小鱼'], ['春秋', '活饵'], 95));
+    reservoirRecipes.push(this.createRecipe('r_207', '水库武昌鱼素�?, '武昌�?, ['麸皮', '玉米�?, '蜂蜜'], ['春夏', '中层'], 82));
+    reservoirRecipes.push(this.createRecipe('r_210', '南方鲮鱼专用�?, '鲮鱼', ['花生�?, '麸皮', '玉米�?], ['夏秋', '底钓'], 85));
     this.recipeDatabase.set('reservoir', reservoirRecipes);
 
     // 湖泊配方
     const lakeRecipes: RecommendRecipe[] = [];
-    lakeRecipes.push(this.createRecipe('r_301', '湖泊鲫鱼传统钓', '鲫鱼', ['酒米', '蚯蚓', '红虫'], ['四季', '传统钓'], 90));
-    lakeRecipes.push(this.createRecipe('r_302', '湖泊鲤鱼爆炸钩', '鲤鱼', ['糠饼', '玉米', '麦粒'], ['夏秋', '海竿'], 92));
-    lakeRecipes.push(this.createRecipe('r_304', '湖泊鳜鱼活饵', '鳜鱼', ['活泥鳅', '活虾', '小鱼'], ['夏秋', '活饵'], 95));
-    lakeRecipes.push(this.createRecipe('r_305', '湖泊青鱼螺蛳饵', '青鱼', ['田螺', '螺蛳粉', '蚌肉'], ['夏秋', '底钓'], 90));
+    lakeRecipes.push(this.createRecipe('r_301', '湖泊鲫鱼传统�?, '鲫鱼', ['酒米', '蚯蚓', '红虫'], ['四季', '传统�?], 90));
+    lakeRecipes.push(this.createRecipe('r_302', '湖泊鲤鱼爆炸�?, '鲤鱼', ['糠饼', '玉米', '麦粒'], ['夏秋', '海竿'], 92));
+    lakeRecipes.push(this.createRecipe('r_304', '湖泊鳜鱼活饵', '鳜鱼', ['活泥�?, '活虾', '小鱼'], ['夏秋', '活饵'], 95));
+    lakeRecipes.push(this.createRecipe('r_305', '湖泊青鱼螺蛳�?, '青鱼', ['田螺', '螺蛳�?, '蚌肉'], ['夏秋', '底钓'], 90));
     lakeRecipes.push(this.createRecipe('r_306', '湖泊黑鱼雷蛙', '黑鱼', ['雷蛙', '软虫', '泥鳅'], ['夏季', '路亚'], 85));
-    lakeRecipes.push(this.createRecipe('r_315', '湖泊鳊鱼素饵', '鳊鱼', ['麸皮', '玉米粉', '拉丝粉'], ['春夏', '浮钓'], 82));
+    lakeRecipes.push(this.createRecipe('r_315', '湖泊鳊鱼素饵', '鳊鱼', ['麸皮', '玉米�?, '拉丝�?], ['春夏', '浮钓'], 82));
     this.recipeDatabase.set('lake', lakeRecipes);
   }
 
@@ -157,7 +157,7 @@ export struct HomePage {
   private getRecipesForWater(waterType: string): RecommendRecipe[] {
     const recipes = this.recipeDatabase.get(waterType);
     if (recipes && recipes.length > 0) {
-      // 随机打乱并返回前3个
+      // 随机打乱并返回前3�?
       const shuffled = recipes.slice();
       for (let i = shuffled.length - 1; i > 0; i--) {
         const j = Math.floor(Math.random() * (i + 1));
@@ -183,7 +183,7 @@ export struct HomePage {
   private autoSelectWaterType(): void {
     if (this.fishingSpots.length === 0) return;
 
-    // 统计各水域类型数量
+    // 统计各水域类型数�?
     const waterCount: Record<string, number> = {
       'pond': 0,
       'river': 0,
@@ -209,11 +209,11 @@ export struct HomePage {
       }
     }
 
-    // 设置选中的水域类型
+    // 设置选中的水域类�?
     if (maxCount > 0 && this.selectedWater !== maxType) {
       this.selectedWater = maxType;
       this.updateCurrentFishList();
-      // 同时更新鱼种为该水域的第一个
+      // 同时更新鱼种为该水域的第一�?
       if (this.currentFishList.length > 0) {
         this.selectedFish = this.currentFishList[0].id;
       }
@@ -272,7 +272,7 @@ export struct HomePage {
       const result = await site.reverseGeocode(params);
       if (result && result.addressComponent) {
         const addr = result.addressComponent;
-        // 显示"市+区"，如"武汉市 江岸区"
+        // 显示"�?�?，如"武汉�?江岸�?
         if (addr.adminLevel2 && addr.adminLevel3) {
           this.city = `${addr.adminLevel2} ${addr.adminLevel3}`;
         } else if (addr.adminLevel2) {
@@ -280,25 +280,25 @@ export struct HomePage {
         } else if (addr.adminLevel3) {
           this.city = addr.adminLevel3;
         } else {
-          // 逆地理编码没有返回地址，根据坐标判断
-          this.city = isDefaultLocation ? '武汉市' : '定位中...';
+          // 逆地理编码没有返回地址，根据坐标判�?
+          this.city = isDefaultLocation ? '武汉�? : '定位�?..';
         }
       } else {
-        // 没有结果，使用默认
-        this.city = isDefaultLocation ? '武汉市' : '定位中...';
+        // 没有结果，使用默�?
+        this.city = isDefaultLocation ? '武汉�? : '定位�?..';
       }
     } catch (err) {
       console.error('Fetch city name failed:', err);
       // 逆地理编码失败，根据坐标显示
-      this.city = isDefaultLocation ? '武汉市' : this.getCityByCoordinates(location.latitude, location.longitude);
+      this.city = isDefaultLocation ? '武汉�? : this.getCityByCoordinates(location.latitude, location.longitude);
     }
   }
 
   // 根据坐标粗略判断城市（备用方案）
   private getCityByCoordinates(lat: number, lng: number): string {
-    // 武汉市范围：纬度29.97-31.37，经度113.70-115.08
+    // 武汉市范围：纬度29.97-31.37，经�?13.70-115.08
     if (lat >= 29.97 && lat <= 31.37 && lng >= 113.70 && lng <= 115.08) {
-      return '武汉市';
+      return '武汉�?;
     }
     // 其他城市可以继续添加...
     return `${lat.toFixed(2)}°N, ${lng.toFixed(2)}°E`;
@@ -306,11 +306,11 @@ export struct HomePage {
 
   // 加载附近钓点
   async loadNearbySpots(): Promise<void> {
-    // 如果定位还没完成，等待定位
+    // 如果定位还没完成，等待定�?
     let location = LocationService.currentLocation;
     if (!location.isValid) {
       this.isLoadingSpots = true;
-      // 等待定位完成（最多等待5秒）
+      // 等待定位完成（最多等�?秒）
       for (let i = 0; i < 10; i++) {
         await new Promise<void>((resolve) => setTimeout(resolve, 500));
         location = LocationService.currentLocation;
@@ -367,7 +367,7 @@ export struct HomePage {
     if (fish) {
       return `${fish.name} (${fish.nameEn})`;
     }
-    // 再从用户自定义鱼种查找
+    // 再从用户自定义鱼种查�?
     const customFish = userDataService.getCustomFish().find((f: CustomFish) => f.id === this.selectedFish);
     if (customFish) {
       return customFish.nameEn ? `${customFish.name} (${customFish.nameEn})` : customFish.name;
@@ -379,7 +379,7 @@ export struct HomePage {
     Stack() {
       Scroll() {
         Column({ space: ThemeConstants.SPACE_MD }) {
-          // 顶部标题栏
+          // 顶部标题�?
           this.HeaderBar()
 
           // 天气卡片
@@ -447,16 +447,16 @@ export struct HomePage {
       }
       .padding({ left: 12, right: 12, top: 6, bottom: 6 })
       .backgroundColor(this.fishingIndex.level === '适宜' ? 'rgba(76, 175, 80, 0.15)' :
-        this.fishingIndex.level === '一般' ? 'rgba(255, 152, 0, 0.15)' : 'rgba(244, 67, 54, 0.15)')
+        this.fishingIndex.level === '一�? ? 'rgba(255, 152, 0, 0.15)' : 'rgba(244, 67, 54, 0.15)')
       .borderRadius(ThemeConstants.RADIUS_FULL)
 
-      // 温度和天气
+      // 温度和天�?
       Row() {
         Column({ space: 4 }) {
           if (this.isLoadingWeather) {
             Row() {
               LoadingProgress().width(24).height(24)
-              Text('加载中...').fontSize(14).fontColor(ThemeColors.TEXT_SECONDARY).margin({ left: 8 })
+              Text('加载�?..').fontSize(14).fontColor(ThemeColors.TEXT_SECONDARY).margin({ left: 8 })
             }
           } else {
             Text(`${this.temperature}°C`)
@@ -485,7 +485,7 @@ export struct HomePage {
       }
       .width('100%')
 
-      // 风向和气压
+      // 风向和气�?
       Row({ space: ThemeConstants.SPACE_MD }) {
         // 风向
         Row({ space: 8 }) {
@@ -537,47 +537,47 @@ export struct HomePage {
 
   // 根据天气获取渐变背景色（柔和版）
   private getWeatherGradient(): [string, number][] {
-    if (this.weather.includes('晴')) {
+    if (this.weather.includes('�?)) {
       return [['#E3F2FD', 0], ['#BBDEFB', 1]];  // 浅蓝
     }
-    if (this.weather.includes('云') || this.weather.includes('多云')) {
-      return [['#ECEFF1', 0], ['#CFD8DC', 1]];  // 浅灰蓝
+    if (this.weather.includes('�?) || this.weather.includes('多云')) {
+      return [['#ECEFF1', 0], ['#CFD8DC', 1]];  // 浅灰�?
     }
-    if (this.weather.includes('阴')) {
+    if (this.weather.includes('�?)) {
       return [['#E0E0E0', 0], ['#BDBDBD', 1]];  // 浅灰
     }
-    if (this.weather.includes('雨')) {
-      return [['#E8EAF6', 0], ['#C5CAE9', 1]];  // 浅紫蓝
+    if (this.weather.includes('�?)) {
+      return [['#E8EAF6', 0], ['#C5CAE9', 1]];  // 浅紫�?
     }
-    if (this.weather.includes('雪')) {
-      return [['#E3F2FD', 0], ['#E1F5FE', 1]];  // 浅蓝白
+    if (this.weather.includes('�?)) {
+      return [['#E3F2FD', 0], ['#E1F5FE', 1]];  // 浅蓝�?
     }
-    if (this.weather.includes('雷')) {
+    if (this.weather.includes('�?)) {
       return [['#EDE7F6', 0], ['#D1C4E9', 1]];  // 浅紫
     }
-    if (this.weather.includes('雾') || this.weather.includes('霾')) {
+    if (this.weather.includes('�?) || this.weather.includes('�?)) {
       return [['#EFEBE9', 0], ['#D7CCC8', 1]];  // 浅棕
     }
-    // 默认 - 浅粉色（原来的卡片色）
+    // 默认 - 浅粉色（原来的卡片色�?
     return [['#FFF8F0', 0], ['#FFF3E8', 1]];
   }
 
   // 根据天气获取emoji
   private getWeatherEmoji(): string {
-    if (this.weather.includes('晴')) return '☀️';
-    if (this.weather.includes('云')) return '⛅';
-    if (this.weather.includes('阴')) return '☁️';
-    if (this.weather.includes('雨')) return '🌧️';
-    if (this.weather.includes('雪')) return '❄️';
-    if (this.weather.includes('雷')) return '⛈️';
-    if (this.weather.includes('雾') || this.weather.includes('霾')) return '🌫️';
-    return '🌤️';
+    if (this.weather.includes('�?)) return '☀�?;
+    if (this.weather.includes('�?)) return '�?;
+    if (this.weather.includes('�?)) return '☁️';
+    if (this.weather.includes('�?)) return '🌧�?;
+    if (this.weather.includes('�?)) return '❄️';
+    if (this.weather.includes('�?)) return '⛈️';
+    if (this.weather.includes('�?) || this.weather.includes('�?)) return '🌫�?;
+    return '🌤�?;
   }
 
   @Builder
   WeatherInfoItem(label: string, value: string) {
     Row({ space: 8 }) {
-      Text('→')
+      Text('�?)
         .fontSize(14)
         .fontColor(ThemeColors.TEXT_MUTED)
       Column({ space: 2 }) {
@@ -600,21 +600,21 @@ export struct HomePage {
     Column({ space: ThemeConstants.SPACE_MD }) {
       // 标题
       Row() {
-        Text('快速配方')
+        Text('快速配�?)
           .fontSize(ThemeConstants.FONT_SIZE_LG)
           .fontWeight(FontWeight.Medium)
           .fontColor(ThemeColors.TEXT_PRIMARY)
         Blank()
         Text('查看历史')
           .fontSize(ThemeConstants.FONT_SIZE_SM)
-          .fontColor(ThemeColors.PRIMARY)
+          .fontColor(ThemeColors.PRIMARY_DARK)
           .onClick(() => {
             router.pushUrl({ url: 'pages/GeneratorHistoryPage' });
           })
       }
       .width('100%')
 
-      Text('根据天气和附近渔点，一键生成配方。')
+      Text('根据天气和附近渔点，一键生成配方�?)
         .fontSize(ThemeConstants.FONT_SIZE_SM)
         .fontColor(ThemeColors.TEXT_SECONDARY)
 
@@ -629,7 +629,7 @@ export struct HomePage {
             .fontSize(ThemeConstants.FONT_SIZE_BASE)
             .fontColor(ThemeColors.TEXT_PRIMARY)
           Blank()
-          Text('▼')
+          Text('�?)
             .fontSize(12)
             .fontColor(ThemeColors.TEXT_MUTED)
         }
@@ -675,9 +675,9 @@ export struct HomePage {
       // 生成按钮
       Button() {
         Row({ space: 8 }) {
-          Text('✨')
+          Text('�?)
             .fontSize(16)
-          Text('一键生成配方')
+          Text('一键生成配�?)
             .fontSize(ThemeConstants.FONT_SIZE_MD)
             .fontColor(ThemeColors.TEXT_PRIMARY)
             .fontWeight(FontWeight.Medium)
@@ -695,7 +695,7 @@ export struct HomePage {
           params: {
             fish: this.selectedFish,
             water: this.selectedWater,
-            quickMode: true  // 快速模式标记
+            quickMode: true  // 快速模式标�?
           }
         });
       })
@@ -730,7 +730,7 @@ export struct HomePage {
       if (this.selectedWater === option.type) return;  // 避免重复点击
       this.selectedWater = option.type;
       this.updateCurrentFishList();
-      // 切换水域时，重置鱼种为该水域的第一个鱼种
+      // 切换水域时，重置鱼种为该水域的第一个鱼�?
       if (this.currentFishList.length > 0 && !this.currentFishList.some((f: FishData) => f.id === this.selectedFish)) {
         this.selectedFish = this.currentFishList[0].id;
       }
@@ -749,14 +749,14 @@ export struct HomePage {
         Blank()
         Text('地图模式')
           .fontSize(ThemeConstants.FONT_SIZE_SM)
-          .fontColor(ThemeColors.PRIMARY)
+          .fontColor(ThemeColors.PRIMARY_DARK)
           .onClick(() => {
             router.pushUrl({ url: 'pages/MapPage' });
           })
       }
       .width('100%')
 
-      // 加载中
+      // 加载�?
       if (this.isLoadingSpots) {
         Row() {
           LoadingProgress().width(20).height(20)
@@ -766,13 +766,13 @@ export struct HomePage {
         .padding(16)
         .justifyContent(FlexAlign.Center)
       } else if (this.fishingSpots.length === 0) {
-        // 无数据
-        Text('暂无附近钓点，点击地图模式搜索')
+        // 无数�?
+        Text('暂无附近钓点，点击地图模式搜�?)
           .fontSize(14)
           .fontColor(ThemeColors.TEXT_SECONDARY)
           .padding(16)
       } else {
-        // 钓点列表（显示最多10个）
+        // 钓点列表（显示最�?0个）
         ForEach(this.fishingSpots.slice(0, 10), (spot: FishingSpot) => {
           this.SpotCardReal(spot)
         })
@@ -823,7 +823,7 @@ export struct HomePage {
 
       // 导航按钮
       Row() {
-        Text('→')
+        Text('�?)
           .fontSize(16)
           .fontColor(ThemeColors.TEXT_PRIMARY)
       }
@@ -862,7 +862,7 @@ export struct HomePage {
       Blank()
 
       Row() {
-        Text('→')
+        Text('�?)
           .fontSize(16)
           .fontColor(ThemeColors.TEXT_PRIMARY)
       }
@@ -905,7 +905,7 @@ export struct HomePage {
           .fontWeight(FontWeight.Bold)
           .fontColor(ThemeColors.TEXT_PRIMARY)
           .layoutWeight(1)
-        Text('✕')
+        Text('�?)
           .fontSize(20)
           .fontColor(ThemeColors.TEXT_SECONDARY)
           .onClick(() => { this.showBaitDialog = false })
@@ -955,25 +955,25 @@ export struct HomePage {
 
             Row({ space: 4 }) {
               ForEach(recipe.ingredients, (ing: string) => {
-                Text(`• ${ing}`)
+                Text(`�?${ing}`)
                   .fontSize(11)
                   .fontColor(ThemeColors.TEXT_SECONDARY)
               })
             }
             .margin({ top: 4 })
 
-            Text(`目标鱼: ${recipe.targetFish}`)
+            Text(`目标�? ${recipe.targetFish}`)
               .fontSize(11)
-              .fontColor(ThemeColors.PRIMARY)
+              .fontColor(ThemeColors.PRIMARY_DARK)
               .margin({ top: 4 })
           }
           .alignItems(HorizontalAlign.Start)
           .layoutWeight(1)
 
           // 查看详情按钮
-          Text('→')
+          Text('�?)
             .fontSize(16)
-            .fontColor(ThemeColors.PRIMARY)
+            .fontColor(ThemeColors.PRIMARY_DARK)
             .onClick(() => {
               this.showBaitDialog = false;
               router.pushUrl({
@@ -991,7 +991,7 @@ export struct HomePage {
 
       // 底部按钮
       Row({ space: 12 }) {
-        Button('换一批')
+        Button('换一�?)
           .layoutWeight(1)
           .height(44)
           .fontSize(14)
@@ -1001,7 +1001,7 @@ export struct HomePage {
             this.recommendedRecipes = this.getRecipesForWater(this.selectedSpot!.waterType);
           })
 
-        Button('去这里')
+        Button('去这�?)
           .layoutWeight(1)
           .height(44)
           .fontSize(14)
@@ -1024,7 +1024,7 @@ export struct HomePage {
 
   @Builder
   FishPickerDialog() {
-    // 遮罩层
+    // 遮罩�?
     Column()
       .width('100%')
       .height('100%')
@@ -1041,7 +1041,7 @@ export struct HomePage {
           .fontWeight(FontWeight.Bold)
           .fontColor(ThemeColors.TEXT_PRIMARY)
         Blank()
-        Text('✕')
+        Text('�?)
           .fontSize(20)
           .fontColor(ThemeColors.TEXT_SECONDARY)
           .onClick(() => { this.showFishPicker = false })
@@ -1049,13 +1049,13 @@ export struct HomePage {
       .width('100%')
       .padding({ bottom: 12 })
 
-      // 鱼种列表（可滚动）
+      // 鱼种列表（可滚动�?
       Scroll() {
         Column({ space: 8 }) {
           // 系统鱼种
           ForEach(this.currentFishList, (fish: FishData) => {
             Row() {
-              // 鱼图片
+              // 鱼图�?
               Image(fish.icon)
                 .width(40)
                 .height(40)
@@ -1076,9 +1076,9 @@ export struct HomePage {
 
               // 选中标记
               if (this.selectedFish === fish.id) {
-                Text('✓')
+                Text('�?)
                   .fontSize(18)
-                  .fontColor(ThemeColors.PRIMARY)
+                  .fontColor(ThemeColors.PRIMARY_DARK)
                   .fontWeight(FontWeight.Bold)
               }
             }
@@ -1099,7 +1099,7 @@ export struct HomePage {
           // 用户自定义鱼种（筛选当前水域）
           ForEach(this.getCustomFishForCurrentWater(), (fish: CustomFish) => {
             Row() {
-              // 鱼图片
+              // 鱼图�?
               Image(fish.icon || $r('app.media.fishImage'))
                 .width(40)
                 .height(40)
@@ -1113,9 +1113,9 @@ export struct HomePage {
                     .fontWeight(FontWeight.Medium)
                     .fontColor(ThemeColors.TEXT_PRIMARY)
 
-                  Text('自定义')
+                  Text('自定�?)
                     .fontSize(10)
-                    .fontColor(ThemeColors.PRIMARY)
+                    .fontColor(ThemeColors.PRIMARY_DARK)
                     .padding({ left: 4, right: 4, top: 2, bottom: 2 })
                     .backgroundColor('rgba(232, 168, 73, 0.15)')
                     .borderRadius(4)
@@ -1129,9 +1129,9 @@ export struct HomePage {
 
               // 选中标记
               if (this.selectedFish === fish.id) {
-                Text('✓')
+                Text('�?)
                   .fontSize(18)
-                  .fontColor(ThemeColors.PRIMARY)
+                  .fontColor(ThemeColors.PRIMARY_DARK)
                   .fontWeight(FontWeight.Bold)
               }
             }

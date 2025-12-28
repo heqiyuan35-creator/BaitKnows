@@ -1,6 +1,6 @@
 /**
- * 环境分析器
- * 负责分析输入的环境条件，生成味型权重和状态权重
+ * 环境分析�?
+ * 负责分析输入的环境条件，生成味型权重和状态权�?
  */
 import {
   GenerateRecipeInput, FlavorModifier, StateModifier,
@@ -10,11 +10,11 @@ import { getFishRule, getTemperatureRule, getDensityModifier, getActivityModifie
 
 // 味型权重
 export class FlavorWeights {
-  fishy: number = 0;      // 腥
-  fragrant: number = 0;   // 香
-  sweet: number = 0;      // 甜
-  sour: number = 0;       // 酸
-  stinky: number = 0;     // 臭
+  fishy: number = 0;      // �?
+  fragrant: number = 0;   // �?
+  sweet: number = 0;      // �?
+  sour: number = 0;       // �?
+  stinky: number = 0;     // �?
 
   constructor() {}
 
@@ -28,41 +28,41 @@ export class FlavorWeights {
     return FlavorWeights.create(this.fishy, this.fragrant, this.sweet, this.sour, this.stinky);
   }
 
-  // 获取主味型
+  // 获取主味�?
   getPrimaryFlavor(): string {
     let max = this.fishy;
-    let primary = '腥';
-    if (this.fragrant > max) { max = this.fragrant; primary = '香'; }
-    if (this.sweet > max) { max = this.sweet; primary = '甜'; }
-    if (this.sour > max) { max = this.sour; primary = '酸'; }
-    if (this.stinky > max) { max = this.stinky; primary = '臭'; }
+    let primary = '�?;
+    if (this.fragrant > max) { max = this.fragrant; primary = '�?; }
+    if (this.sweet > max) { max = this.sweet; primary = '�?; }
+    if (this.sour > max) { max = this.sour; primary = '�?; }
+    if (this.stinky > max) { max = this.stinky; primary = '�?; }
     return primary;
   }
 
-  // 获取次味型
+  // 获取次味�?
   getSecondaryFlavor(): string {
     const primary = this.getPrimaryFlavor();
     let max = -1;
     let secondary = '';
-    if (primary !== '腥' && this.fishy > max) { max = this.fishy; secondary = '腥'; }
-    if (primary !== '香' && this.fragrant > max) { max = this.fragrant; secondary = '香'; }
-    if (primary !== '甜' && this.sweet > max) { max = this.sweet; secondary = '甜'; }
-    if (primary !== '酸' && this.sour > max) { max = this.sour; secondary = '酸'; }
-    if (primary !== '臭' && this.stinky > max) { max = this.stinky; secondary = '臭'; }
+    if (primary !== '�? && this.fishy > max) { max = this.fishy; secondary = '�?; }
+    if (primary !== '�? && this.fragrant > max) { max = this.fragrant; secondary = '�?; }
+    if (primary !== '�? && this.sweet > max) { max = this.sweet; secondary = '�?; }
+    if (primary !== '�? && this.sour > max) { max = this.sour; secondary = '�?; }
+    if (primary !== '�? && this.stinky > max) { max = this.stinky; secondary = '�?; }
     return secondary;
   }
 
-  // 计算总强度
+  // 计算总强�?
   getTotalIntensity(): number {
     return this.fishy + this.fragrant + this.sweet + this.sour + this.stinky;
   }
 }
 
-// 状态权重
+// 状态权�?
 export class StateWeights {
-  atomization: number = 50;  // 雾化 (0-100, 高=快雾化)
-  viscosity: number = 50;    // 粘度 (0-100, 高=粘)
-  weight: number = 50;       // 比重 (0-100, 高=重)
+  atomization: number = 50;  // 雾化 (0-100, �?快雾�?
+  viscosity: number = 50;    // 粘度 (0-100, �?�?
+  weight: number = 50;       // 比重 (0-100, �?�?
 
   constructor() {}
 
@@ -81,19 +81,19 @@ export class StateWeights {
 export type SpecialScenario =
   'extreme_cold' |      // 极寒 (<5°C)
   'extreme_hot' |       // 极热 (>30°C)
-  'carnivore_fish' |    // 肉食性鱼类
-  'black_pit_new' |     // 黑坑新放鱼
+  'carnivore_fish' |    // 肉食性鱼�?
+  'black_pit_new' |     // 黑坑新放�?
   'black_pit_old' |     // 黑坑老鱼
   'flowing_water' |     // 流水环境
-  'deep_water' |        // 深水区
+  'deep_water' |        // 深水�?
   'night_fishing' |     // 夜钓
-  'competition';        // 竞技钓
+  'competition';        // 竞技�?
 
 // 分析结果
 export class AnalysisResult {
   flavorWeights: FlavorWeights = new FlavorWeights();
   stateWeights: StateWeights = new StateWeights();
-  priorityFactors: string[] = [];       // 优先考虑的因素
+  priorityFactors: string[] = [];       // 优先考虑的因�?
   specialScenarios: SpecialScenario[] = [];  // 特殊场景标记
   fishRule: FishRecipeRule | null = null;
   analysisNotes: string[] = [];         // 分析备注
@@ -101,7 +101,7 @@ export class AnalysisResult {
   constructor() {}
 }
 
-// 环境分析器
+// 环境分析�?
 export class ContextAnalyzer {
   private static instance: ContextAnalyzer | null = null;
 
@@ -115,7 +115,7 @@ export class ContextAnalyzer {
   }
 
   /**
-   * 综合分析所有环境因素
+   * 综合分析所有环境因�?
    */
   analyze(input: GenerateRecipeInput): AnalysisResult {
     const result = new AnalysisResult();
@@ -139,16 +139,16 @@ export class ContextAnalyzer {
       fishRule.baseFlavor.stinky
     );
 
-    // 3. 初始化基础状态权重
+    // 3. 初始化基础状态权�?
     result.stateWeights = StateWeights.create(50, 50, 50);
 
-    // 4. 检测特殊场景
+    // 4. 检测特殊场�?
     result.specialScenarios = this.detectSpecialScenarios(input, fishRule);
 
     // 5. 应用季节修正
     this.applySeasonModifier(result, fishRule, input.season);
 
-    // 6. 应用温度修正 (权重最高)
+    // 6. 应用温度修正 (权重最�?
     this.applyTemperatureModifier(result, input.temperature);
 
     // 7. 应用水域修正
@@ -166,7 +166,7 @@ export class ContextAnalyzer {
     // 11. 应用特殊场景修正
     this.applySpecialScenarioModifiers(result);
 
-    // 12. 归一化权重
+    // 12. 归一化权�?
     this.normalizeWeights(result);
 
     // 13. 确定优先因素
@@ -177,7 +177,7 @@ export class ContextAnalyzer {
 
 
   /**
-   * 检测特殊场景
+   * 检测特殊场�?
    */
   private detectSpecialScenarios(input: GenerateRecipeInput, fishRule: FishRecipeRule): SpecialScenario[] {
     const scenarios: SpecialScenario[] = [];
@@ -189,7 +189,7 @@ export class ContextAnalyzer {
       scenarios.push('extreme_hot');
     }
 
-    // 肉食性鱼类
+    // 肉食性鱼�?
     const carnivoreFish = ['catfish', 'snakehead', 'mandarin_fish', 'yellow_catfish', 'pike', 'bass', 'eel'];
     for (let i = 0; i < carnivoreFish.length; i++) {
       if (input.targetFishId === carnivoreFish[i]) {
@@ -212,7 +212,7 @@ export class ContextAnalyzer {
       scenarios.push('flowing_water');
     }
 
-    // 深水区 (水库)
+    // 深水�?(水库)
     if (input.waterType === 'reservoir') {
       scenarios.push('deep_water');
     }
@@ -230,13 +230,13 @@ export class ContextAnalyzer {
       result.analysisNotes.push('春季：鱼刚开口，适当增腥');
     } else if (season === 'summer') {
       mod = fishRule.seasonModifier.summer;
-      result.analysisNotes.push('夏季：水温高，清淡为主');
+      result.analysisNotes.push('夏季：水温高，清淡为�?);
     } else if (season === 'autumn') {
       mod = fishRule.seasonModifier.autumn;
-      result.analysisNotes.push('秋季：鱼储备过冬，香甜为主');
+      result.analysisNotes.push('秋季：鱼储备过冬，香甜为�?);
     } else {
       mod = fishRule.seasonModifier.winter;
-      result.analysisNotes.push('冬季：水温低，浓腥浓香');
+      result.analysisNotes.push('冬季：水温低，浓腥浓�?);
     }
 
     result.flavorWeights.fishy += mod.fishy;
@@ -279,10 +279,10 @@ export class ContextAnalyzer {
       result.analysisNotes.push('黑坑：加快雾化，味型加重');
     } else if (waterType === 'reservoir') {
       mod = fishRule.waterModifier.reservoir;
-      result.analysisNotes.push('水库：大颗粒，留鱼持久');
+      result.analysisNotes.push('水库：大颗粒，留鱼持�?);
     } else {
       mod = fishRule.waterModifier.wild_pond;
-      result.analysisNotes.push('野塘：味型适中，状态自然');
+      result.analysisNotes.push('野塘：味型适中，状态自�?);
     }
 
     result.stateWeights.atomization += mod.atomization;
@@ -306,19 +306,19 @@ export class ContextAnalyzer {
       result.analysisNotes.push('鱼密度低：慢雾化留鱼');
     }
 
-    // 开口情况修正
+    // 开口情况修�?
     const activityMod = getActivityModifier(input.fishActivity);
     result.stateWeights.atomization += activityMod.atomization;
     result.stateWeights.viscosity += activityMod.viscosity;
 
     if (input.fishActivity === 'good') {
-      // 开口好，味型可以淡一点
+      // 开口好，味型可以淡一�?
       this.scaleFlavorWeights(result.flavorWeights, 0.9);
       result.analysisNotes.push('开口好：味型可适当减淡');
     } else if (input.fishActivity === 'poor') {
-      // 开口差，味型要浓
+      // 开口差，味型要�?
       this.scaleFlavorWeights(result.flavorWeights, 1.2);
-      result.analysisNotes.push('开口差：味型加重');
+      result.analysisNotes.push('开口差：味型加�?);
     }
   }
 
@@ -333,7 +333,7 @@ export class ContextAnalyzer {
     if (method === 'pull') {
       result.analysisNotes.push('拉饵：需要拉丝粉');
     } else if (method === 'scatter') {
-      result.analysisNotes.push('散炮：极快雾化');
+      result.analysisNotes.push('散炮：极快雾�?);
     } else if (method === 'wrap') {
       result.analysisNotes.push('包食：外雾化内粘');
     }
@@ -354,7 +354,7 @@ export class ContextAnalyzer {
     if (mode === 'conservative') {
       result.analysisNotes.push('保守模式：经典配方，稳定出鱼');
     } else if (mode === 'aggressive') {
-      result.analysisNotes.push('激进模式：味型浓烈，可能爆护');
+      result.analysisNotes.push('激进模式：味型浓烈，可能爆�?);
     }
   }
 
@@ -373,38 +373,38 @@ export class ContextAnalyzer {
         result.stateWeights.viscosity += 15;
         result.analysisNotes.push('极寒场景：高腥高蛋白，慢雾化');
       } else if (scenario === 'extreme_hot') {
-        // 极热：清淡果酸
+        // 极热：清淡果�?
         result.flavorWeights.fishy -= 30;
         result.flavorWeights.sour += 25;
         result.flavorWeights.sweet -= 15;
         result.stateWeights.atomization += 20;
-        result.analysisNotes.push('极热场景：清淡果酸，快雾化');
+        result.analysisNotes.push('极热场景：清淡果酸，快雾�?);
       } else if (scenario === 'carnivore_fish') {
         // 肉食性鱼类：浓腥
         result.flavorWeights.fishy += 20;
         result.flavorWeights.stinky += 15;
-        result.analysisNotes.push('肉食性鱼类：浓腥味');
+        result.analysisNotes.push('肉食性鱼类：浓腥�?);
       } else if (scenario === 'black_pit_new') {
-        // 黑坑新放鱼：加小药
+        // 黑坑新放鱼：加小�?
         result.flavorWeights.fragrant += 15;
         result.stateWeights.atomization += 15;
-        result.analysisNotes.push('黑坑新鱼：可加小药，快雾化');
+        result.analysisNotes.push('黑坑新鱼：可加小药，快雾�?);
       } else if (scenario === 'black_pit_old') {
-        // 黑坑老鱼：本味
+        // 黑坑老鱼：本�?
         this.scaleFlavorWeights(result.flavorWeights, 0.7);
         result.stateWeights.atomization -= 15;
-        result.analysisNotes.push('黑坑老鱼：本味为主，慢雾化');
+        result.analysisNotes.push('黑坑老鱼：本味为主，慢雾�?);
       } else if (scenario === 'flowing_water') {
-        // 流水：增粘增重
+        // 流水：增粘增�?
         result.stateWeights.viscosity += 20;
         result.stateWeights.weight += 15;
         result.stateWeights.atomization -= 15;
-        result.analysisNotes.push('流水环境：增粘增重');
+        result.analysisNotes.push('流水环境：增粘增�?);
       } else if (scenario === 'deep_water') {
         // 深水：重比重
         result.stateWeights.weight += 20;
         result.stateWeights.atomization -= 10;
-        result.analysisNotes.push('深水区：重比重，快到底');
+        result.analysisNotes.push('深水区：重比重，快到�?);
       }
     }
   }
@@ -431,7 +431,7 @@ export class ContextAnalyzer {
     result.flavorWeights.sour = Math.min(100, Math.max(0, result.flavorWeights.sour));
     result.flavorWeights.stinky = Math.min(100, Math.max(0, result.flavorWeights.stinky));
 
-    // 状态权重
+    // 状态权�?
     result.stateWeights.atomization = Math.min(100, Math.max(0, result.stateWeights.atomization));
     result.stateWeights.viscosity = Math.min(100, Math.max(0, result.stateWeights.viscosity));
     result.stateWeights.weight = Math.min(100, Math.max(0, result.stateWeights.weight));
@@ -443,7 +443,7 @@ export class ContextAnalyzer {
   private determinePriorityFactors(input: GenerateRecipeInput, result: AnalysisResult): string[] {
     const factors: string[] = [];
 
-    // 温度是最重要的因素
+    // 温度是最重要的因�?
     if (input.temperature < 10 || input.temperature > 28) {
       factors.push('temperature');
     }
@@ -453,7 +453,7 @@ export class ContextAnalyzer {
       factors.push('special_scenario');
     }
 
-    // 鱼种特性
+    // 鱼种特�?
     factors.push('fish_species');
 
     // 水域类型
@@ -482,14 +482,14 @@ export class ContextAnalyzer {
     flavorDiff += Math.abs(result1.flavorWeights.stinky - result2.flavorWeights.stinky);
     flavorDiff = flavorDiff / 5; // 平均
 
-    // 状态差异
+    // 状态差�?
     let stateDiff = 0;
     stateDiff += Math.abs(result1.stateWeights.atomization - result2.stateWeights.atomization);
     stateDiff += Math.abs(result1.stateWeights.viscosity - result2.stateWeights.viscosity);
     stateDiff += Math.abs(result1.stateWeights.weight - result2.stateWeights.weight);
     stateDiff = stateDiff / 3; // 平均
 
-    // 综合差异度 (0-100)
+    // 综合差异�?(0-100)
     return Math.min(100, (flavorDiff * 0.6 + stateDiff * 0.4));
   }
 }

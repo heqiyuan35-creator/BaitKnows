@@ -1,6 +1,6 @@
 /**
- * 饵知道 - 渔获分析页面（创意版）
- * 钓鱼成就、个人画像、趣味数据
+ * 饵知�?- 渔获分析页面（创意版�?
+ * 钓鱼成就、个人画像、趣味数�?
  */
 import { ThemeColors } from '../theme/ThemeColors';
 import { ThemeConstants } from '../theme/ThemeConstants';
@@ -112,16 +112,16 @@ struct RecordAnalysisPage {
       sumCount += r.count;
       if (r.maxSingle > maxW) maxW = r.maxSingle;
       
-      // 统计最爱钓点
+      // 统计最爱钓�?
       const loc = r.location || '未知';
       locationMap.set(loc, (locationMap.get(loc) || 0) + r.weight);
       
-      // 统计最爱天气
+      // 统计最爱天�?
       const weather = r.weather || '未知';
       weatherMap.set(weather, (weatherMap.get(weather) || 0) + r.weight);
       
-      // 统计最爱鱼种
-      const fishNames = r.fishName.split('、');
+      // 统计最爱鱼�?
+      const fishNames = r.fishName.split('�?);
       for (const f of fishNames) {
         const name = f.trim();
         if (name) fishMap.set(name, (fishMap.get(name) || 0) + 1);
@@ -133,7 +133,7 @@ struct RecordAnalysisPage {
     this.maxSingle = Math.round(maxW * 10) / 10;
     this.avgWeight = this.totalTrips > 0 ? Math.round((sumWeight / this.totalTrips) * 10) / 10 : 0;
     
-    // 找最爱
+    // 找最�?
     let maxLoc = '';
     let maxLocW = 0;
     locationMap.forEach((w, loc) => { if (w > maxLocW) { maxLocW = w; maxLoc = loc; } });
@@ -154,52 +154,52 @@ struct RecordAnalysisPage {
   private generateAchievements(): void {
     const list: Achievement[] = [];
     
-    // 初出茅庐 - 第一次记录
+    // 初出茅庐 - 第一次记�?
     const a1 = new Achievement();
     a1.id = 'first'; a1.name = '初出茅庐'; a1.icon = '🎣';
-    a1.desc = '完成第一次渔获记录'; a1.target = 1;
+    a1.desc = '完成第一次渔获记�?; a1.target = 1;
     a1.progress = Math.min(this.totalTrips, 1);
     a1.unlocked = this.totalTrips >= 1;
     list.push(a1);
     
-    // 钓鱼达人 - 出钓10次
+    // 钓鱼达人 - 出钓10�?
     const a2 = new Achievement();
     a2.id = 'trips10'; a2.name = '钓鱼达人'; a2.icon = '🏆';
-    a2.desc = '累计出钓10次'; a2.target = 10;
+    a2.desc = '累计出钓10�?; a2.target = 10;
     a2.progress = Math.min(this.totalTrips, 10);
     a2.unlocked = this.totalTrips >= 10;
     list.push(a2);
     
-    // 百斤渔王 - 总渔获100kg
+    // 百斤渔王 - 总渔�?00kg
     const a3 = new Achievement();
     a3.id = 'weight100'; a3.name = '百斤渔王'; a3.icon = '👑';
-    a3.desc = '累计渔获达100kg'; a3.target = 100;
+    a3.desc = '累计渔获�?00kg'; a3.target = 100;
     a3.progress = Math.min(this.totalWeight, 100);
     a3.unlocked = this.totalWeight >= 100;
     list.push(a3);
     
-    // 大物猎手 - 单尾超5kg
+    // 大物猎手 - 单尾�?kg
     const a4 = new Achievement();
     a4.id = 'big5'; a4.name = '大物猎手'; a4.icon = '🦈';
-    a4.desc = '钓获单尾超5kg的大鱼'; a4.target = 5;
+    a4.desc = '钓获单尾�?kg的大�?; a4.target = 5;
     a4.progress = Math.min(this.maxSingle, 5);
     a4.unlocked = this.maxSingle >= 5;
     list.push(a4);
     
-    // 效率之王 - 场均超10kg
+    // 效率之王 - 场均�?0kg
     const a5 = new Achievement();
-    a5.id = 'avg10'; a5.name = '效率之王'; a5.icon = '⚡';
+    a5.id = 'avg10'; a5.name = '效率之王'; a5.icon = '�?;
     a5.desc = '场均渔获超过10kg'; a5.target = 10;
     a5.progress = Math.min(this.avgWeight, 10);
     a5.unlocked = this.avgWeight >= 10;
     list.push(a5);
     
-    // 多多益善 - 单次钓获10尾以上
+    // 多多益善 - 单次钓获10尾以�?
     let maxCount = 0;
     for (const r of this.records) { if (r.count > maxCount) maxCount = r.count; }
     const a6 = new Achievement();
     a6.id = 'count10'; a6.name = '多多益善'; a6.icon = '🐟';
-    a6.desc = '单次钓获10尾以上'; a6.target = 10;
+    a6.desc = '单次钓获10尾以�?; a6.target = 10;
     a6.progress = Math.min(maxCount, 10);
     a6.unlocked = maxCount >= 10;
     list.push(a6);
@@ -212,11 +212,11 @@ struct RecordAnalysisPage {
     
     // 根据出钓频率
     if (this.totalTrips >= 20) {
-      const t = new ProfileTag(); t.label = '钓鱼狂热者'; t.color = '#FF6B6B'; t.icon = '🔥'; tags.push(t);
+      const t = new ProfileTag(); t.label = '钓鱼狂热�?; t.color = '#FF6B6B'; t.icon = '🔥'; tags.push(t);
     } else if (this.totalTrips >= 10) {
-      const t = new ProfileTag(); t.label = '资深钓友'; t.color = '#4ECDC4'; t.icon = '⭐'; tags.push(t);
+      const t = new ProfileTag(); t.label = '资深钓友'; t.color = '#4ECDC4'; t.icon = '�?; tags.push(t);
     } else if (this.totalTrips >= 5) {
-      const t = new ProfileTag(); t.label = '钓鱼爱好者'; t.color = '#45B7D1'; t.icon = '💙'; tags.push(t);
+      const t = new ProfileTag(); t.label = '钓鱼爱好�?; t.color = '#45B7D1'; t.icon = '💙'; tags.push(t);
     }
     
     // 根据场均渔获
@@ -226,18 +226,18 @@ struct RecordAnalysisPage {
       const t = new ProfileTag(); t.label = '稳定输出'; t.color = '#82E0AA'; t.icon = '📈'; tags.push(t);
     }
     
-    // 根据最大单尾
+    // 根据最大单�?
     if (this.maxSingle >= 10) {
-      const t = new ProfileTag(); t.label = '巨物终结者'; t.color = '#BB8FCE'; t.icon = '🦈'; tags.push(t);
+      const t = new ProfileTag(); t.label = '巨物终结�?; t.color = '#BB8FCE'; t.icon = '🦈'; tags.push(t);
     } else if (this.maxSingle >= 5) {
       const t = new ProfileTag(); t.label = '大物猎人'; t.color = '#F8B500'; t.icon = '🎯'; tags.push(t);
     }
     
-    // 根据最爱天气
+    // 根据最爱天�?
     if (this.favoriteWeather === '小雨') {
-      const t = new ProfileTag(); t.label = '雨中垂钓者'; t.color = '#5DADE2'; t.icon = '🌧️'; tags.push(t);
+      const t = new ProfileTag(); t.label = '雨中垂钓�?; t.color = '#5DADE2'; t.icon = '🌧�?; tags.push(t);
     } else if (this.favoriteWeather === '晴朗') {
-      const t = new ProfileTag(); t.label = '阳光钓手'; t.color = '#F39C12'; t.icon = '☀️'; tags.push(t);
+      const t = new ProfileTag(); t.label = '阳光钓手'; t.color = '#F39C12'; t.icon = '☀�?; tags.push(t);
     }
     
     // 默认标签
@@ -251,24 +251,24 @@ struct RecordAnalysisPage {
   private generateFunFacts(): void {
     const facts: string[] = [];
     
-    // 鱼汤计算（假设1kg鱼可以做2碗鱼汤）
+    // 鱼汤计算（假�?kg鱼可以做2碗鱼汤）
     const soupCount = Math.round(this.totalWeight * 2);
-    if (soupCount > 0) facts.push(`🍜 你的渔获可以做 ${soupCount} 碗鱼汤`);
+    if (soupCount > 0) facts.push(`🍜 你的渔获可以�?${soupCount} 碗鱼汤`);
     
-    // 时间计算（假设每次出钓平均4小时）
+    // 时间计算（假设每次出钓平�?小时�?
     const hours = this.totalTrips * 4;
     if (hours >= 24) {
       const days = Math.round(hours / 24 * 10) / 10;
-      facts.push(`⏰ 你已在水边度过约 ${days} 天`);
+      facts.push(`�?你已在水边度过约 ${days} 天`);
     } else if (hours > 0) {
-      facts.push(`⏰ 你已在水边度过约 ${hours} 小时`);
+      facts.push(`�?你已在水边度过约 ${hours} 小时`);
     }
     
     // 重量比喻
     if (this.totalWeight >= 100) {
-      facts.push(`⚖️ 渔获总重相当于 ${Math.round(this.totalWeight / 50)} 袋大米`);
+      facts.push(`⚖️ 渔获总重相当�?${Math.round(this.totalWeight / 50)} 袋大米`);
     } else if (this.totalWeight >= 10) {
-      facts.push(`⚖️ 渔获总重相当于 ${Math.round(this.totalWeight / 3)} 只猫咪`);
+      facts.push(`⚖️ 渔获总重相当�?${Math.round(this.totalWeight / 3)} 只猫咪`);
     }
     
     // 鱼的数量
@@ -311,7 +311,7 @@ struct RecordAnalysisPage {
   private analyzeFish(): void {
     const fishMap = new Map<string, FishMapValue>();
     for (const r of this.records) {
-      const names = r.fishName.split('、');
+      const names = r.fishName.split('�?);
       const wPerFish = r.weight / names.length;
       const cPerFish = Math.ceil(r.count / names.length);
       for (const f of names) {
@@ -392,8 +392,8 @@ struct RecordAnalysisPage {
     Column({ space: 16 }) {
       Text('📊').fontSize(56)
       Text('暂无渔获数据').fontSize(18).fontColor(ThemeColors.TEXT_PRIMARY)
-      Text('记录你的第一次渔获，开启钓鱼之旅').fontSize(14).fontColor(ThemeColors.TEXT_SECONDARY)
-      Button('去记录').fontSize(14).fontColor(Color.White).backgroundColor(ThemeColors.PRIMARY)
+      Text('记录你的第一次渔获，开启钓鱼之�?).fontSize(14).fontColor(ThemeColors.TEXT_SECONDARY)
+      Button('去记�?).fontSize(14).fontColor(Color.White).backgroundColor(ThemeColors.PRIMARY)
         .borderRadius(20).height(40).padding({ left: 24, right: 24 }).margin({ top: 8 })
         .onClick(() => Router.push('pages/AddRecordPage'))
     }
@@ -414,7 +414,7 @@ struct RecordAnalysisPage {
       // 核心数据展示
       Row() {
         Column({ space: 4 }) {
-          Text(`${this.totalTrips}`).fontSize(32).fontWeight(FontWeight.Bold).fontColor(ThemeColors.PRIMARY)
+          Text(`${this.totalTrips}`).fontSize(32).fontWeight(FontWeight.Bold).fontColor(ThemeColors.PRIMARY_DARK)
           Text('出钓次数').fontSize(12).fontColor(ThemeColors.TEXT_SECONDARY)
         }
         .layoutWeight(1).alignItems(HorizontalAlign.Center)
@@ -424,7 +424,7 @@ struct RecordAnalysisPage {
             Text(`${this.totalWeight}`).fontSize(32).fontWeight(FontWeight.Bold).fontColor(ThemeColors.SUCCESS)
             Text('kg').fontSize(14).fontColor(ThemeColors.TEXT_SECONDARY).margin({ top: 16 })
           }
-          Text('总渔获').fontSize(12).fontColor(ThemeColors.TEXT_SECONDARY)
+          Text('总渔�?).fontSize(12).fontColor(ThemeColors.TEXT_SECONDARY)
         }
         .layoutWeight(1).alignItems(HorizontalAlign.Center)
 
@@ -433,7 +433,7 @@ struct RecordAnalysisPage {
             Text(`${this.maxSingle}`).fontSize(32).fontWeight(FontWeight.Bold).fontColor(ThemeColors.WARNING)
             Text('kg').fontSize(14).fontColor(ThemeColors.TEXT_SECONDARY).margin({ top: 16 })
           }
-          Text('最大单尾').fontSize(12).fontColor(ThemeColors.TEXT_SECONDARY)
+          Text('最大单�?).fontSize(12).fontColor(ThemeColors.TEXT_SECONDARY)
         }
         .layoutWeight(1).alignItems(HorizontalAlign.Center)
       }
@@ -456,11 +456,11 @@ struct RecordAnalysisPage {
         .width('100%')
       }
 
-      // 最爱信息
+      // 最爱信�?
       Row({ space: 8 }) {
-        this.FavoriteItem('🐟', '最爱鱼种', this.favoriteFish || '--')
+        this.FavoriteItem('🐟', '最爱鱼�?, this.favoriteFish || '--')
         this.FavoriteItem('📍', '常去钓点', this.favoriteLocation || '--')
-        this.FavoriteItem('🌤️', '偏爱天气', this.favoriteWeather || '--')
+        this.FavoriteItem('🌤�?, '偏爱天气', this.favoriteWeather || '--')
       }
       .width('100%')
     }
@@ -512,7 +512,7 @@ struct RecordAnalysisPage {
               .fontWeight(ach.unlocked ? FontWeight.Medium : FontWeight.Normal)
 
             if (!ach.unlocked) {
-              // 进度条
+              // 进度�?
               Stack({ alignContent: Alignment.Start }) {
                 Row().width('100%').height(4).backgroundColor(ThemeColors.BG_TERTIARY).borderRadius(2)
                 Row().width(`${(ach.progress / ach.target) * 100}%`).height(4)
@@ -535,7 +535,7 @@ struct RecordAnalysisPage {
     if (this.funFacts.length > 0) {
       Column({ space: 12 }) {
         Row({ space: 8 }) {
-          Text('✨').fontSize(20)
+          Text('�?).fontSize(20)
           Text('趣味数据').fontSize(16).fontWeight(FontWeight.Bold).fontColor(ThemeColors.TEXT_PRIMARY)
         }
         .width('100%')
@@ -591,10 +591,10 @@ struct RecordAnalysisPage {
 
           Column({ space: 2 }) {
             Row() {
-              Text(`${this.mvpRecipe.totalWeight}`).fontSize(24).fontWeight(FontWeight.Bold).fontColor(ThemeColors.PRIMARY)
+              Text(`${this.mvpRecipe.totalWeight}`).fontSize(24).fontWeight(FontWeight.Bold).fontColor(ThemeColors.PRIMARY_DARK)
               Text('kg').fontSize(12).fontColor(ThemeColors.TEXT_SECONDARY).margin({ left: 2, top: 10 })
             }
-            Text('总渔获').fontSize(10).fontColor(ThemeColors.TEXT_MUTED)
+            Text('总渔�?).fontSize(10).fontColor(ThemeColors.TEXT_MUTED)
           }
           .alignItems(HorizontalAlign.End)
         }
@@ -608,7 +608,7 @@ struct RecordAnalysisPage {
                 Text(index === 0 ? '🥈' : '🥉').fontSize(16)
                 Text(recipe.name).fontSize(13).fontColor(ThemeColors.TEXT_PRIMARY)
                   .layoutWeight(1).maxLines(1).textOverflow({ overflow: TextOverflow.Ellipsis })
-                Text(`${recipe.totalWeight}kg`).fontSize(12).fontColor(ThemeColors.PRIMARY)
+                Text(`${recipe.totalWeight}kg`).fontSize(12).fontColor(ThemeColors.PRIMARY_DARK)
               }
               .width('100%').padding({ top: 6, bottom: 6 })
             }, (recipe: RecipeStats) => recipe.name)
@@ -643,12 +643,12 @@ struct RecordAnalysisPage {
               }
               .width(32).alignItems(HorizontalAlign.Center)
 
-              // 鱼种名和进度条
+              // 鱼种名和进度�?
               Column({ space: 4 }) {
                 Row() {
                   Text(fish.name).fontSize(14).fontWeight(FontWeight.Medium).fontColor(ThemeColors.TEXT_PRIMARY)
                   Blank()
-                  Text(`${fish.weight}kg`).fontSize(13).fontColor(ThemeColors.PRIMARY)
+                  Text(`${fish.weight}kg`).fontSize(13).fontColor(ThemeColors.PRIMARY_DARK)
                 }
                 .width('100%')
 

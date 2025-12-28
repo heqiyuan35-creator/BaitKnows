@@ -1,5 +1,5 @@
 /**
- * 分析仪表盘组件 - 纯ArkTS实现
+ * 分析仪表盘组�?- 纯ArkTS实现
  */
 import { ThemeColors } from '../theme/ThemeColors';
 import { DimensionScores, IngredientRatio, ParameterWeight } from '../common/types/PreciseMatchTypes';
@@ -62,17 +62,17 @@ export struct AnalysisDashboard {
           Progress({ value: this.getAverageScore(), total: 100, type: ProgressType.Ring })
             .width(90).height(90).color(ThemeColors.PRIMARY).backgroundColor('#F0F0F0').style({ strokeWidth: 10 })
           Column() {
-            Text(`${this.getAverageScore()}`).fontSize(24).fontWeight(FontWeight.Bold).fontColor(ThemeColors.PRIMARY)
+            Text(`${this.getAverageScore()}`).fontSize(24).fontWeight(FontWeight.Bold).fontColor(ThemeColors.PRIMARY_DARK)
             Text('综合').fontSize(11).fontColor('#999')
           }
         }.width(90).height(90)
 
         Column({ space: 8 }) {
-          this.DimensionBar('诱鱼性', this.dimensionScores.attraction, DIMENSION_COLORS[0])
-          this.DimensionBar('适口性', this.dimensionScores.palatability, DIMENSION_COLORS[1])
-          this.DimensionBar('状态', this.dimensionScores.state, DIMENSION_COLORS[2])
-          this.DimensionBar('留鱼性', this.dimensionScores.retention, DIMENSION_COLORS[3])
-          this.DimensionBar('性价比', this.dimensionScores.costEffective, DIMENSION_COLORS[4])
+          this.DimensionBar('诱鱼�?, this.dimensionScores.attraction, DIMENSION_COLORS[0])
+          this.DimensionBar('适口�?, this.dimensionScores.palatability, DIMENSION_COLORS[1])
+          this.DimensionBar('状�?, this.dimensionScores.state, DIMENSION_COLORS[2])
+          this.DimensionBar('留鱼�?, this.dimensionScores.retention, DIMENSION_COLORS[3])
+          this.DimensionBar('性价�?, this.dimensionScores.costEffective, DIMENSION_COLORS[4])
         }.layoutWeight(1)
       }.width('100%')
     }.width('100%').padding({ top: 8 })
@@ -137,7 +137,7 @@ export struct AnalysisDashboard {
             Row() {
               Text(weight.name).fontSize(12).fontColor('#1A1A1A')
               Blank()
-              Text(`${weight.weight}%`).fontSize(12).fontWeight(FontWeight.Medium).fontColor(ThemeColors.PRIMARY)
+              Text(`${weight.weight}%`).fontSize(12).fontWeight(FontWeight.Medium).fontColor(ThemeColors.PRIMARY_DARK)
             }.width('100%')
             Stack({ alignContent: Alignment.Start }) {
               Row().width('100%').height(14).backgroundColor('#F5F5F5').borderRadius(7)

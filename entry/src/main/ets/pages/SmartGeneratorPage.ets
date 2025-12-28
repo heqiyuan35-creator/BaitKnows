@@ -1,5 +1,5 @@
 /**
- * 鱼饵生成器 - 按设计图重做
+ * 鱼饵生成�?- 按设计图重做
  */
 import { router } from '@kit.ArkUI';
 import { ThemeColors } from '../theme/ThemeColors';
@@ -51,7 +51,7 @@ struct SmartGeneratorPage {
 
   // 根据水域类型更新鱼种列表（包含系统鱼种和用户自定义鱼种）
   private updateFishList(): void {
-    // 映射水域类型到 FishData 中的 waterTypes
+    // 映射水域类型�?FishData 中的 waterTypes
     let waterTypeKey = this.selectedWater;
     if (this.selectedWater === 'wild_pond') {
       waterTypeKey = 'lake' as RecipeWaterType;  // wild_pond 对应 lake
@@ -67,7 +67,7 @@ struct SmartGeneratorPage {
       isCustom: false
     }));
 
-    // 用户自定义鱼种
+    // 用户自定义鱼�?
     const customFishList = userDataService.getCustomFish().filter((fish: CustomFish) =>
       fish.waterTypes.includes(waterTypeKey)
     );
@@ -81,7 +81,7 @@ struct SmartGeneratorPage {
       });
     });
 
-    // 如果当前选中的鱼不在新列表中，选择第一个
+    // 如果当前选中的鱼不在新列表中，选择第一�?
     const currentFishExists = this.fishList.some((f: FishItem) => f.id === this.selectedFish);
     if (!currentFishExists && this.fishList.length > 0) {
       this.selectedFish = this.fishList[0].id;
@@ -125,11 +125,11 @@ struct SmartGeneratorPage {
 
   build() {
     Column() {
-      // 顶部标题栏
+      // 顶部标题�?
       Row() {
-        Text('鱼饵生成器').fontSize(18).fontWeight(FontWeight.Bold).fontColor('#1A1A1A')
+        Text('鱼饵生成�?).fontSize(18).fontWeight(FontWeight.Bold).fontColor('#1A1A1A')
         Blank()
-        Text('⟳').fontSize(22).fontColor('#1A1A1A')
+        Text('�?).fontSize(22).fontColor('#1A1A1A')
       }
       .width('100%').height(56).padding({ left: 20, right: 20 }).margin({ top: 44 })
 
@@ -141,7 +141,7 @@ struct SmartGeneratorPage {
           // 水域环境
           this.WaterSection()
 
-          // 季节与天气
+          // 季节与天�?
           this.SeasonWeatherSection()
 
           // 高级选项
@@ -169,7 +169,7 @@ struct SmartGeneratorPage {
       Row() {
         Text('目标鱼种').fontSize(18).fontWeight(FontWeight.Bold).fontColor('#1A1A1A')
         Blank()
-        Text('查看全部').fontSize(14).fontColor(ThemeColors.PRIMARY)
+        Text('查看全部').fontSize(14).fontColor(ThemeColors.PRIMARY_DARK)
       }.width('100%')
 
       Scroll() {
@@ -188,10 +188,10 @@ struct SmartGeneratorPage {
                     color: this.selectedFish === fish.id ? ThemeColors.PRIMARY : '#E5E5E5'
                   })
 
-                // 选中勾选标记
+                // 选中勾选标�?
                 if (this.selectedFish === fish.id) {
                   Row() {
-                    Text('✓').fontSize(11).fontColor(Color.White)
+                    Text('�?).fontSize(11).fontColor(Color.White)
                   }
                   .width(18)
                   .height(18)
@@ -256,7 +256,7 @@ struct SmartGeneratorPage {
 
   @Builder SeasonWeatherSection() {
     Column({ space: 16 }) {
-      Text('季节与天气').fontSize(18).fontWeight(FontWeight.Bold).fontColor('#1A1A1A')
+      Text('季节与天�?).fontSize(18).fontWeight(FontWeight.Bold).fontColor('#1A1A1A')
 
       // 温度滑块卡片
       Column({ space: 12 }) {
@@ -266,7 +266,7 @@ struct SmartGeneratorPage {
             Text('气温').fontSize(15).fontColor('#1A1A1A')
           }
           Blank()
-          Text(`${this.temperature}°C`).fontSize(18).fontWeight(FontWeight.Bold).fontColor(ThemeColors.PRIMARY)
+          Text(`${this.temperature}°C`).fontSize(18).fontWeight(FontWeight.Bold).fontColor(ThemeColors.PRIMARY_DARK)
         }.width('100%')
 
         Slider({
@@ -334,10 +334,10 @@ struct SmartGeneratorPage {
   @Builder AdvancedSection() {
     Column({ space: 12 }) {
       Row() {
-        Text('⚙').fontSize(16).fontColor('#666')
+        Text('�?).fontSize(16).fontColor('#666')
         Text('高级选项').fontSize(16).fontColor('#1A1A1A').margin({ left: 8 })
         Blank()
-        Text(this.showAdvanced ? '∧' : '∨').fontSize(16).fontColor('#999')
+        Text(this.showAdvanced ? '�? : '�?).fontSize(16).fontColor('#999')
       }
       .width('100%')
       .height(50)
@@ -352,13 +352,13 @@ struct SmartGeneratorPage {
           Column({ space: 8 }) {
             Text('鱼情判断').fontSize(14).fontColor('#666')
             Row({ space: 8 }) {
-              this.OptionChip('密度高', this.fishDensity === 'high', () => { this.fishDensity = 'high'; })
-              this.OptionChip('密度中', this.fishDensity === 'medium', () => { this.fishDensity = 'medium'; })
-              this.OptionChip('密度低', this.fishDensity === 'low', () => { this.fishDensity = 'low'; })
+              this.OptionChip('密度�?, this.fishDensity === 'high', () => { this.fishDensity = 'high'; })
+              this.OptionChip('密度�?, this.fishDensity === 'medium', () => { this.fishDensity = 'medium'; })
+              this.OptionChip('密度�?, this.fishDensity === 'low', () => { this.fishDensity = 'low'; })
             }
             Row({ space: 8 }) {
               this.OptionChip('开口好', this.fishActivity === 'good', () => { this.fishActivity = 'good'; })
-              this.OptionChip('开口一般', this.fishActivity === 'normal', () => { this.fishActivity = 'normal'; })
+              this.OptionChip('开口一�?, this.fishActivity === 'normal', () => { this.fishActivity = 'normal'; })
               this.OptionChip('开口差', this.fishActivity === 'poor', () => { this.fishActivity = 'poor'; })
             }
           }.width('100%').alignItems(HorizontalAlign.Start)
@@ -380,7 +380,7 @@ struct SmartGeneratorPage {
             Row({ space: 8 }) {
               this.OptionChip('保守', this.mode === 'conservative', () => { this.mode = 'conservative'; })
               this.OptionChip('均衡', this.mode === 'balanced', () => { this.mode = 'balanced'; })
-              this.OptionChip('激进', this.mode === 'aggressive', () => { this.mode = 'aggressive'; })
+              this.OptionChip('激�?, this.mode === 'aggressive', () => { this.mode = 'aggressive'; })
             }
           }.width('100%').alignItems(HorizontalAlign.Start)
         }
@@ -406,11 +406,11 @@ struct SmartGeneratorPage {
   @Builder LastRecordSection() {
     Row() {
       Row({ space: 6 }) {
-        Text('⏱').fontSize(14).fontColor('#999')
+        Text('�?).fontSize(14).fontColor('#999')
         Text(`上次记录: ${this.lastRecord}`).fontSize(13).fontColor('#666')
       }
       Blank()
-      Text('载入').fontSize(14).fontColor(ThemeColors.PRIMARY)
+      Text('载入').fontSize(14).fontColor(ThemeColors.PRIMARY_DARK)
     }
     .width('100%')
     .padding({ left: 4, right: 4 })
@@ -423,9 +423,9 @@ struct SmartGeneratorPage {
           if (this.isLoading) {
             LoadingProgress().width(20).height(20).color(Color.White)
           } else {
-            Text('✦').fontSize(16).fontColor(Color.White)
+            Text('�?).fontSize(16).fontColor(Color.White)
           }
-          Text(this.isLoading ? '生成中...' : '生成配方')
+          Text(this.isLoading ? '生成�?..' : '生成配方')
             .fontSize(16).fontColor(Color.White).fontWeight(FontWeight.Medium)
         }
       }

@@ -26,7 +26,7 @@ class FlavorWeights {
   constructor() {}
 }
 
-// 状态权重
+// 状态权�?
 class StateWeights {
   atomization: number = 0;
   viscosity: number = 0;
@@ -34,7 +34,7 @@ class StateWeights {
   constructor() {}
 }
 
-// 匹配的原料
+// 匹配的原�?
 class MatchedIngredient {
   id: string = '';
   name: string = '';
@@ -51,7 +51,7 @@ class RecipeGeneratorServiceClass {
   }
 
   /**
-   * 主生成方法
+   * 主生成方�?
    */
   generateRecipe(input: GenerateRecipeInput): GeneratedRecipe {
     const recipe = new GeneratedRecipe();
@@ -68,10 +68,10 @@ class RecipeGeneratorServiceClass {
       return recipe;
     }
 
-    // 2. 计算最终味型权重
+    // 2. 计算最终味型权�?
     const flavorWeights = this.calculateFlavorWeights(fishRule, input);
 
-    // 3. 计算最终状态权重
+    // 3. 计算最终状态权�?
     const stateWeights = this.calculateStateWeights(fishRule, input);
 
     // 4. 匹配原料
@@ -86,7 +86,7 @@ class RecipeGeneratorServiceClass {
     // 7. 生成味型说明
     recipe.flavorProfile = this.generateFlavorProfile(flavorWeights, input);
 
-    // 8. 生成状态特性
+    // 8. 生成状态特�?
     recipe.stateProfile = this.generateStateProfile(stateWeights, input);
 
     // 9. 生成使用建议
@@ -103,7 +103,7 @@ class RecipeGeneratorServiceClass {
    * 计算味型权重
    */
   private calculateFlavorWeights(fishRule: FishRecipeRule, input: GenerateRecipeInput): FlavorWeights {
-    // 基础值
+    // 基础�?
     const weights = new FlavorWeights();
     weights.fishy = fishRule.baseFlavor.fishy;
     weights.fragrant = fishRule.baseFlavor.fragrant;
@@ -119,7 +119,7 @@ class RecipeGeneratorServiceClass {
     const tempRule = getTemperatureRule(input.temperature);
     this.applyFlavorModifier(weights, tempRule.flavorModifier);
 
-    // 鱼情修正 - 开口差时味型加重
+    // 鱼情修正 - 开口差时味型加�?
     if (input.fishActivity === 'poor') {
       this.scaleFlavorWeights(weights, 1.2);
     } else if (input.fishActivity === 'good') {
@@ -137,10 +137,10 @@ class RecipeGeneratorServiceClass {
   }
 
   /**
-   * 计算状态权重
+   * 计算状态权�?
    */
   private calculateStateWeights(fishRule: FishRecipeRule, input: GenerateRecipeInput): StateWeights {
-    // 基础值
+    // 基础�?
     const weights = new StateWeights();
     weights.atomization = 50;
     weights.viscosity = 50;
@@ -154,11 +154,11 @@ class RecipeGeneratorServiceClass {
     const tempRule = getTemperatureRule(input.temperature);
     this.applyStateModifier(weights, tempRule.stateModifier);
 
-    // 鱼密度修正
+    // 鱼密度修�?
     const densityMod = getDensityModifier(input.fishDensity);
     this.applyStateModifier(weights, densityMod);
 
-    // 开口情况修正
+    // 开口情况修�?
     const activityMod = getActivityModifier(input.fishActivity);
     this.applyStateModifier(weights, activityMod);
 
@@ -188,7 +188,7 @@ class RecipeGeneratorServiceClass {
     const matched: MatchedIngredient[] = [];
     const available = input.availableBaits || [];
 
-    // 过滤出用户有的原料
+    // 过滤出用户有的原�?
     const filterAvailable = (ids: string[]): string[] => {
       if (available.length === 0) return ids;
       const filtered: string[] = [];
@@ -224,7 +224,7 @@ class RecipeGeneratorServiceClass {
       matched.push(item);
     }
 
-    // 3. 选状态粉（1种）
+    // 3. 选状态粉�?种）
     const stateIds = filterAvailable(fishRule.recommendedIngredients.state);
     const stateSelected = this.selectByState(stateIds, stateWeights, input.fishingMethod, 1);
     for (let i = 0; i < stateSelected.length; i++) {
@@ -236,7 +236,7 @@ class RecipeGeneratorServiceClass {
       matched.push(item);
     }
 
-    // 4. 选添加剂（1种）
+    // 4. 选添加剂�?种）
     const addIds = filterAvailable(fishRule.recommendedIngredients.additive);
     const addSelected = this.selectByFlavor(addIds, flavorWeights, 1);
     for (let i = 0; i < addSelected.length; i++) {
@@ -258,7 +258,7 @@ class RecipeGeneratorServiceClass {
   private calculateRatio(matched: MatchedIngredient[], totalWeight: number): RecipeIngredient[] {
     const result: RecipeIngredient[] = [];
 
-    // 统计各类别数量
+    // 统计各类别数�?
     let mainCount = 0, auxCount = 0, stateCount = 0, addCount = 0;
     for (let i = 0; i < matched.length; i++) {
       if (matched[i].category === 'main') mainCount++;
@@ -267,11 +267,11 @@ class RecipeGeneratorServiceClass {
       else if (matched[i].category === 'additive') addCount++;
     }
 
-    // 配比规则：主饵40-50%，辅饵20-30%，状态15-20%，添加剂5-10%
-    const mainTotal = 45;   // 主饵总占比
-    const auxTotal = 25;    // 辅饵总占比
-    const stateTotal = 18;  // 状态总占比
-    const addTotal = 12;    // 添加剂总占比
+    // 配比规则：主�?0-50%，辅�?0-30%，状�?5-20%，添加剂5-10%
+    const mainTotal = 45;   // 主饵总占�?
+    const auxTotal = 25;    // 辅饵总占�?
+    const stateTotal = 18;  // 状态总占�?
+    const addTotal = 12;    // 添加剂总占�?
 
     for (let i = 0; i < matched.length; i++) {
       const ing = matched[i];
@@ -280,7 +280,7 @@ class RecipeGeneratorServiceClass {
       item.name = ing.name;
       item.category = ing.category as 'main' | 'auxiliary' | 'state' | 'additive';
 
-      // 计算百分比
+      // 计算百分�?
       if (ing.category === 'main') {
         item.percentage = Math.round(mainTotal / mainCount);
       } else if (ing.category === 'auxiliary') {
@@ -294,7 +294,7 @@ class RecipeGeneratorServiceClass {
       // 计算克数
       item.weight = Math.round(totalWeight * item.percentage / 100);
 
-      // 用途说明
+      // 用途说�?
       item.purpose = this.getIngredientPurpose(ing.category);
 
       result.push(item);
@@ -321,7 +321,7 @@ class RecipeGeneratorServiceClass {
 
     let mode = '均衡';
     if (input.mode === 'conservative') mode = '保守';
-    else if (input.mode === 'aggressive') mode = '激进';
+    else if (input.mode === 'aggressive') mode = '激�?;
 
     return `${season}${water}${fishRule.fishName}-${mode}配方`;
   }
@@ -332,39 +332,39 @@ class RecipeGeneratorServiceClass {
   private generateFlavorProfile(weights: FlavorWeights, input: GenerateRecipeInput): FlavorDescription {
     const profile = new FlavorDescription();
 
-    // 确定主味型 - 手动比较找出最大的两个
-    let primary = '腥';
+    // 确定主味�?- 手动比较找出最大的两个
+    let primary = '�?;
     let primaryValue = weights.fishy;
-    let secondary = '香';
+    let secondary = '�?;
     let secondaryValue = weights.fragrant;
 
     // 检查香
     if (weights.fragrant > primaryValue) {
       secondary = primary; secondaryValue = primaryValue;
-      primary = '香'; primaryValue = weights.fragrant;
+      primary = '�?; primaryValue = weights.fragrant;
     } else if (weights.fragrant > secondaryValue) {
-      secondary = '香'; secondaryValue = weights.fragrant;
+      secondary = '�?; secondaryValue = weights.fragrant;
     }
     // 检查甜
     if (weights.sweet > primaryValue) {
       secondary = primary; secondaryValue = primaryValue;
-      primary = '甜'; primaryValue = weights.sweet;
+      primary = '�?; primaryValue = weights.sweet;
     } else if (weights.sweet > secondaryValue) {
-      secondary = '甜'; secondaryValue = weights.sweet;
+      secondary = '�?; secondaryValue = weights.sweet;
     }
     // 检查酸
     if (weights.sour > primaryValue) {
       secondary = primary; secondaryValue = primaryValue;
-      primary = '酸'; primaryValue = weights.sour;
+      primary = '�?; primaryValue = weights.sour;
     } else if (weights.sour > secondaryValue) {
-      secondary = '酸'; secondaryValue = weights.sour;
+      secondary = '�?; secondaryValue = weights.sour;
     }
     // 检查臭
     if (weights.stinky > primaryValue) {
       secondary = primary; secondaryValue = primaryValue;
-      primary = '臭'; primaryValue = weights.stinky;
+      primary = '�?; primaryValue = weights.stinky;
     } else if (weights.stinky > secondaryValue) {
-      secondary = '臭'; secondaryValue = weights.stinky;
+      secondary = '�?; secondaryValue = weights.stinky;
     }
 
     profile.primary = primary;
@@ -389,16 +389,16 @@ class RecipeGeneratorServiceClass {
   }
 
   /**
-   * 生成状态特性
+   * 生成状态特�?
    */
   private generateStateProfile(weights: StateWeights, input: GenerateRecipeInput): StateProfile {
     const profile = new StateProfile();
 
-    // 转换为1-5星级
+    // 转换�?-5星级
     profile.atomization = this.toStarRating(weights.atomization);
     profile.viscosity = this.toStarRating(weights.viscosity);
 
-    // 持钩性与粘度正相关
+    // 持钩性与粘度正相�?
     profile.hookHolding = Math.min(5, Math.max(1, Math.round(weights.viscosity / 20)));
 
     // 比重：雾化快则轻，粘度高则重
@@ -425,7 +425,7 @@ class RecipeGeneratorServiceClass {
       usage.waterRatio = '1:1';
     }
 
-    // 静置时间：粘度高需要更长时间
+    // 静置时间：粘度高需要更长时�?
     const viscLevel = stateWeights.viscosity;
     if (viscLevel > 60) {
       usage.restTime = '10-15分钟';
@@ -437,24 +437,24 @@ class RecipeGeneratorServiceClass {
 
     // 首钓建议
     if (input.fishingMethod === 'rub') {
-      usage.firstCast = '搓大饵找鱼层，有口后改小饵';
+      usage.firstCast = '搓大饵找鱼层，有口后改小�?;
     } else if (input.fishingMethod === 'pull') {
-      usage.firstCast = '拉小饵快频率，诱钓结合';
+      usage.firstCast = '拉小饵快频率，诱钓结�?;
     } else if (input.fishingMethod === 'scatter') {
-      usage.firstCast = '先打散炮诱鱼，再搓饵钓';
+      usage.firstCast = '先打散炮诱鱼，再搓饵�?;
     } else if (input.fishingMethod === 'wrap') {
-      usage.firstCast = '外层雾化诱鱼，内层留鱼';
+      usage.firstCast = '外层雾化诱鱼，内层留�?;
     } else {
       usage.firstCast = '搓大饵试鱼层';
     }
 
     // 打窝建议
     if (input.waterType === 'river') {
-      usage.nestSuggestion = '酒米+颗粒，少量多次';
+      usage.nestSuggestion = '酒米+颗粒，少量多�?;
     } else if (input.waterType === 'pond') {
-      usage.nestSuggestion = '散炮带窝，边钓边诱';
+      usage.nestSuggestion = '散炮带窝，边钓边�?;
     } else if (input.waterType === 'reservoir') {
-      usage.nestSuggestion = '大窝守钓，玉米+颗粒';
+      usage.nestSuggestion = '大窝守钓，玉�?颗粒';
     } else {
       usage.nestSuggestion = '酒米打底，适量补窝';
     }
@@ -502,7 +502,7 @@ class RecipeGeneratorServiceClass {
       reasons.push(r);
     }
 
-    // 开口理由
+    // 开口理�?
     const activityTemplate = getActivityReasonTemplate(input.fishActivity);
     if (activityTemplate !== null) {
       const r = new GenerateReason();
@@ -603,10 +603,10 @@ class RecipeGeneratorServiceClass {
       scored.push(item);
     }
 
-    // 按分数排序
+    // 按分数排�?
     scored.sort((a: MatchedIngredient, b: MatchedIngredient): number => b.score - a.score);
 
-    // 返回前N个
+    // 返回前N�?
     const result: MatchedIngredient[] = [];
     const maxCount: number = Math.min(count, scored.length);
     for (let i = 0; i < maxCount; i++) {
@@ -623,7 +623,7 @@ class RecipeGeneratorServiceClass {
       const ing: Ingredient | null = getIngredientById(id);
       if (ing === null) continue;
 
-      // 计算状态匹配分数
+      // 计算状态匹配分�?
       const phys = ing.physical;
       let score: number = 0;
 
@@ -664,15 +664,15 @@ class RecipeGeneratorServiceClass {
 
 
   private getIngredientPurpose(category: string): string {
-    if (category === 'main') return '主饵，提供基础味型和状态';
-    if (category === 'auxiliary') return '辅饵，增强诱鱼效果';
+    if (category === 'main') return '主饵，提供基础味型和状�?;
+    if (category === 'auxiliary') return '辅饵，增强诱鱼效�?;
     if (category === 'state') return '状态粉，调节雾化和粘度';
     if (category === 'additive') return '添加剂，提升味型浓度';
     return '';
   }
 
   private toStarRating(value: number): number {
-    // 0-100 转换为 1-5
+    // 0-100 转换�?1-5
     return Math.min(5, Math.max(1, Math.round(value / 20)));
   }
 

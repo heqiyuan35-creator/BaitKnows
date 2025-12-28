@@ -1,6 +1,6 @@
 /**
- * 饵知道 - 生成配方结果页
- * 按设计图重做：Tab导航、配料图标、步骤编号、使用技巧
+ * 饵知�?- 生成配方结果�?
+ * 按设计图重做：Tab导航、配料图标、步骤编号、使用技�?
  */
 import { router } from '@kit.ArkUI';
 import { ThemeColors } from '../theme/ThemeColors';
@@ -11,7 +11,7 @@ import { fetchWeather } from '../services/WeatherService';
 import { promptAction } from '@kit.ArkUI';
 import { userDataService, CustomRecipeIngredient, RecipeStateProfile, RecipeFlavorProfile } from '../services/UserDataService';
 
-// 步骤信息类
+// 步骤信息�?
 class StepInfo {
   title: string = '';
   desc: string = '';
@@ -43,12 +43,12 @@ struct GeneratedRecipePage {
       if (params) {
         const p = params as Record<string, Object>;
         if (p.recipe) {
-          // 从鱼饵生成器传入的完整配方
+          // 从鱼饵生成器传入的完整配�?
           const data: Record<string, Object> = JSON.parse(p.recipe as string);
           this.recipe = this.parseRecipe(data);
           this.isLoaded = true;
         } else if (p.quickMode) {
-          // 快速模式：从首页传入鱼种和水域，自动生成
+          // 快速模式：从首页传入鱼种和水域，自动生�?
           this.quickGenerate(p.fish as string, p.water as string);
           return;
         }
@@ -60,13 +60,13 @@ struct GeneratedRecipePage {
       this.isLoaded = true;
     }
 
-    // 保存到生成历史
+    // 保存到生成历�?
     if (this.recipe.id) {
       this.saveToHistory();
     }
   }
 
-  // 快速生成配方
+  // 快速生成配�?
   private async quickGenerate(fishId: string, waterType: string): Promise<void> {
     try {
       // 获取当前天气温度
@@ -96,7 +96,7 @@ struct GeneratedRecipePage {
       this.recipe = recipe;
       this.isLoaded = true;
 
-      // 保存到历史
+      // 保存到历�?
       this.saveToHistory();
     } catch (err) {
       console.error('Quick generate failed:', err);
@@ -186,7 +186,7 @@ struct GeneratedRecipePage {
         if (!this.isLoaded) {
           Column() {
             LoadingProgress().width(40).height(40)
-            Text('加载中...').fontSize(14).fontColor(ThemeColors.TEXT_SECONDARY).margin({ top: 12 })
+            Text('加载�?..').fontSize(14).fontColor(ThemeColors.TEXT_SECONDARY).margin({ top: 12 })
           }.width('100%').layoutWeight(1).justifyContent(FlexAlign.Center)
         } else {
           Scroll() {
@@ -220,7 +220,7 @@ struct GeneratedRecipePage {
       .height('100%')
       .backgroundColor('#FFFBF5')
 
-      // 命名对话框
+      // 命名对话�?
       if (this.showNameDialog) {
         this.NameDialog()
       }
@@ -231,7 +231,7 @@ struct GeneratedRecipePage {
 
   @Builder NameDialog() {
     Column() {
-      // 遮罩层
+      // 遮罩�?
       Column()
         .width('100%')
         .height('100%')
@@ -250,7 +250,7 @@ struct GeneratedRecipePage {
 
       Column({ space: 8 }) {
         Text('配方名称').fontSize(14).fontColor(ThemeColors.TEXT_SECONDARY).alignSelf(ItemAlign.Start)
-        TextInput({ text: this.customRecipeName, placeholder: '请输入配方名称' })
+        TextInput({ text: this.customRecipeName, placeholder: '请输入配方名�? })
           .fontSize(15)
           .height(44)
           .backgroundColor('#F5F5F5')
@@ -303,7 +303,7 @@ struct GeneratedRecipePage {
   @Builder HeaderBar() {
     Row() {
       Row() {
-        Text('←').fontSize(22).fontColor(ThemeColors.TEXT_PRIMARY)
+        Text('�?).fontSize(22).fontColor(ThemeColors.TEXT_PRIMARY)
       }
       .width(40)
       .height(40)
@@ -317,7 +317,7 @@ struct GeneratedRecipePage {
       Blank()
 
       Row() {
-        Text(this.isFavorite ? '♥' : '♡')
+        Text(this.isFavorite ? '�? : '�?)
           .fontSize(22)
           .fontColor(this.isFavorite ? '#F44336' : ThemeColors.TEXT_PRIMARY)
       }
@@ -346,7 +346,7 @@ struct GeneratedRecipePage {
         .fontColor(ThemeColors.TEXT_SECONDARY)
         .lineHeight(20)
 
-      // 标签行：时间、难度、评分
+      // 标签行：时间、难度、评�?
       Row({ space: 12 }) {
         this.InfoTagWithImage($r('app.media.time'), `${this.recipe.usage.restTime}`)
         this.InfoTagWithImage($r('app.media.Difficulty'), this.getDifficultyText())
@@ -397,7 +397,7 @@ struct GeneratedRecipePage {
       // 味型卡片
       this.FlavorCard()
 
-      // 状态特性卡片
+      // 状态特性卡�?
       this.StateCard()
 
       // 推荐理由
@@ -413,11 +413,11 @@ struct GeneratedRecipePage {
 
       Row({ space: 20 }) {
         Column({ space: 4 }) {
-          Text('主味型').fontSize(12).fontColor(ThemeColors.TEXT_MUTED)
+          Text('主味�?).fontSize(12).fontColor(ThemeColors.TEXT_MUTED)
           Text(this.recipe.flavorProfile.primary + this.recipe.flavorProfile.secondary)
             .fontSize(18)
             .fontWeight(FontWeight.Bold)
-            .fontColor(ThemeColors.PRIMARY)
+            .fontColor(ThemeColors.PRIMARY_DARK)
         }
 
         Column({ space: 4 }) {
@@ -450,7 +450,7 @@ struct GeneratedRecipePage {
 
   @Builder StateCard() {
     Column({ space: 12 }) {
-      Text('状态特性').fontSize(16).fontWeight(FontWeight.Medium).fontColor(ThemeColors.TEXT_PRIMARY)
+      Text('状态特�?).fontSize(16).fontWeight(FontWeight.Medium).fontColor(ThemeColors.TEXT_PRIMARY)
 
       Row() {
         this.StateItem('雾化', this.recipe.stateProfile.atomization)
@@ -469,7 +469,7 @@ struct GeneratedRecipePage {
   @Builder StateItem(label: string, value: number) {
     Column({ space: 6 }) {
       Text(label).fontSize(12).fontColor(ThemeColors.TEXT_MUTED)
-      // 进度条样式
+      // 进度条样�?
       Stack({ alignContent: Alignment.Start }) {
         Row().width('100%').height(6).borderRadius(3).backgroundColor('#F0F0F0')
         Row().width(`${value * 20}%`).height(6).borderRadius(3).backgroundColor(ThemeColors.PRIMARY)
@@ -482,7 +482,7 @@ struct GeneratedRecipePage {
 
   @Builder ReasonsCard() {
     Column({ space: 12 }) {
-      Text('为什么推荐').fontSize(16).fontWeight(FontWeight.Medium).fontColor(ThemeColors.TEXT_PRIMARY)
+      Text('为什么推�?).fontSize(16).fontWeight(FontWeight.Medium).fontColor(ThemeColors.TEXT_PRIMARY)
 
       ForEach(this.recipe.reasons, (reason: GenerateReason, index: number) => {
         Row({ space: 12 }) {
@@ -498,7 +498,7 @@ struct GeneratedRecipePage {
 
           Column({ space: 2 }) {
             Text(reason.condition).fontSize(14).fontColor(ThemeColors.TEXT_PRIMARY)
-            Text(reason.decision).fontSize(13).fontColor(ThemeColors.PRIMARY)
+            Text(reason.decision).fontSize(13).fontColor(ThemeColors.PRIMARY_DARK)
           }
           .alignItems(HorizontalAlign.Start)
           .layoutWeight(1)
@@ -566,7 +566,7 @@ struct GeneratedRecipePage {
 
       // 用量
       Column({ space: 2 }) {
-        Text(`${ing.weight}g`).fontSize(16).fontWeight(FontWeight.Medium).fontColor(ThemeColors.PRIMARY)
+        Text(`${ing.weight}g`).fontSize(16).fontWeight(FontWeight.Medium).fontColor(ThemeColors.PRIMARY_DARK)
         Text(`${ing.percentage}%`).fontSize(12).fontColor(ThemeColors.TEXT_MUTED)
       }
       .alignItems(HorizontalAlign.End)
@@ -585,7 +585,7 @@ struct GeneratedRecipePage {
       // 使用步骤
       this.UsageStepsCard()
 
-      // 使用技巧
+      // 使用技�?
       this.TipsCard()
 
       // 备注
@@ -599,7 +599,7 @@ struct GeneratedRecipePage {
     Column({ space: 16 }) {
       Text('使用步骤').fontSize(16).fontWeight(FontWeight.Medium).fontColor(ThemeColors.TEXT_PRIMARY)
 
-      // 动态生成步骤
+      // 动态生成步�?
       ForEach(this.generateDynamicSteps(), (step: StepInfo, index: number) => {
         this.StepItem(index + 1, step.title, step.desc)
       })
@@ -611,7 +611,7 @@ struct GeneratedRecipePage {
     .alignItems(HorizontalAlign.Start)
   }
 
-  // 动态生成步骤 - 根据原料和状态特性生成不同步骤
+  // 动态生成步�?- 根据原料和状态特性生成不同步�?
   private generateDynamicSteps(): StepInfo[] {
     const steps: StepInfo[] = [];
     const sp = this.recipe.stateProfile;
@@ -625,67 +625,67 @@ struct GeneratedRecipePage {
     const stateIngs = ings.filter((ing: RecipeIngredient) => ing.category === 'state').map((ing: RecipeIngredient) => ing.name);
     const addIngs = ings.filter((ing: RecipeIngredient) => ing.category === 'additive').map((ing: RecipeIngredient) => ing.name);
 
-    // 步骤1：准备材料 - 列出具体原料
-    let prepDesc = `准备${mainIngs.join('、')}等主料`;
+    // 步骤1：准备材�?- 列出具体原料
+    let prepDesc = `准备${mainIngs.join('�?)}等主料`;
     if (auxIngs.length > 0) {
-      prepDesc += `，${auxIngs.join('、')}作为辅料`;
+      prepDesc += `�?{auxIngs.join('�?)}作为辅料`;
     }
     prepDesc += `，总量${this.recipe.totalWeight}g`;
     steps.push(new StepInfo('准备材料', prepDesc));
 
-    // 步骤2：混合干料 - 根据具体原料调整
+    // 步骤2：混合干�?- 根据具体原料调整
     let mixDesc = '';
     if (mainIngs.length > 1) {
-      mixDesc = `先将${mainIngs[0]}和${mainIngs.slice(1).join('、')}混合均匀`;
+      mixDesc = `先将${mainIngs[0]}�?{mainIngs.slice(1).join('�?)}混合均匀`;
     } else if (mainIngs.length === 1) {
-      mixDesc = `将${mainIngs[0]}倒入盆中`;
+      mixDesc = `�?{mainIngs[0]}倒入盆中`;
     } else {
       mixDesc = '将所有干料倒入盆中';
     }
     if (auxIngs.length > 0) {
-      mixDesc += `，再加入${auxIngs.join('、')}搅拌`;
+      mixDesc += `，再加入${auxIngs.join('�?)}搅拌`;
     }
     steps.push(new StepInfo('混合干料', mixDesc));
 
-    // 步骤3：加水开饵 - 根据味型和状态调整
-    let waterDesc = `按${usage.waterRatio}比例`;
-    if (fp.primary.includes('腥')) {
+    // 步骤3：加水开�?- 根据味型和状态调�?
+    let waterDesc = `�?{usage.waterRatio}比例`;
+    if (fp.primary.includes('�?)) {
       waterDesc += '用常温水开饵，';
-    } else if (fp.primary.includes('香')) {
+    } else if (fp.primary.includes('�?)) {
       waterDesc += '用温水开饵效果更佳，';
     } else {
-      waterDesc += '加水，';
+      waterDesc += '加水�?;
     }
     if (sp.atomization >= 4) {
-      waterDesc += '五指张开快速搅拌，让饵料充分吸水';
+      waterDesc += '五指张开快速搅拌，让饵料充分吸�?;
     } else if (sp.viscosity >= 4) {
       waterDesc += '顺时针慢慢搅拌，避免出丝过多';
     } else if (sp.weight >= 4) {
       waterDesc += '搅拌均匀后适当压实';
     } else {
-      waterDesc += '快速搅拌至无干粉';
+      waterDesc += '快速搅拌至无干�?;
     }
-    steps.push(new StepInfo('加水开饵', waterDesc));
+    steps.push(new StepInfo('加水开�?, waterDesc));
 
-    // 步骤4：添加状态饵 - 如果有的话
+    // 步骤4：添加状态饵 - 如果有的�?
     if (stateIngs.length > 0) {
-      let stateDesc = `加入${stateIngs.join('、')}`;
+      let stateDesc = `加入${stateIngs.join('�?)}`;
       if (stateIngs.some((n: string) => n.includes('拉丝'))) {
-        stateDesc += '，轻轻翻拌均匀，不要过度打揉';
+        stateDesc += '，轻轻翻拌均匀，不要过度打�?;
       } else if (stateIngs.some((n: string) => n.includes('雪花'))) {
-        stateDesc += '，增加雾化效果';
-      } else if (stateIngs.some((n: string) => n.includes('粘'))) {
-        stateDesc += '，增加附钩性';
+        stateDesc += '，增加雾化效�?;
+      } else if (stateIngs.some((n: string) => n.includes('�?))) {
+        stateDesc += '，增加附钩�?;
       } else {
-        stateDesc += '，调整饵料状态';
+        stateDesc += '，调整饵料状�?;
       }
       steps.push(new StepInfo('添加状态饵', stateDesc));
     }
 
-    // 步骤5：静置醒饵 - 根据状态调整
+    // 步骤5：静置醒�?- 根据状态调�?
     let restDesc = `静置${usage.restTime}`;
     if (sp.viscosity >= 4) {
-      restDesc += '，让拉丝粉充分出丝，期间可翻动一次';
+      restDesc += '，让拉丝粉充分出丝，期间可翻动一�?;
     } else if (sp.atomization >= 4) {
       restDesc += '，保持蓬松状态，不要压实';
     } else if (fp.intensity >= 7) {
@@ -695,29 +695,29 @@ struct GeneratedRecipePage {
     }
     steps.push(new StepInfo('静置醒饵', restDesc));
 
-    // 步骤6：添加添加剂 - 如果有的话
+    // 步骤6：添加添加剂 - 如果有的�?
     if (addIngs.length > 0) {
-      let addDesc = `最后加入${addIngs.join('、')}`;
+      let addDesc = `最后加�?{addIngs.join('�?)}`;
       if (addIngs.some((n: string) => n.includes('诱食') || n.includes('DMPT'))) {
-        addDesc += '，少量多次，边加边搅拌';
+        addDesc += '，少量多次，边加边搅�?;
       } else if (addIngs.some((n: string) => n.includes('香精') || n.includes('essence'))) {
         addDesc += '，滴入后快速搅匀';
       } else {
-        addDesc += '，均匀撒入后轻轻翻拌';
+        addDesc += '，均匀撒入后轻轻翻�?;
       }
       steps.push(new StepInfo('添加小药', addDesc));
     }
 
-    // 步骤7：打揉成型 - 根据状态特性调整
+    // 步骤7：打揉成�?- 根据状态特性调�?
     let shapeDesc = '';
     if (sp.hookHolding >= 4 && sp.viscosity >= 4) {
-      shapeDesc = '打揉20-30下增加粘性，搓成软硬适中的饵团';
+      shapeDesc = '打揉20-30下增加粘性，搓成软硬适中的饵�?;
     } else if (sp.atomization >= 4) {
-      shapeDesc = '轻轻收拢成团即可，保持蓬松雾化效果';
+      shapeDesc = '轻轻收拢成团即可，保持蓬松雾化效�?;
     } else if (sp.weight >= 4) {
-      shapeDesc = '用力打揉紧实，增加比重确保快速到底';
+      shapeDesc = '用力打揉紧实，增加比重确保快速到�?;
     } else if (sp.viscosity <= 2) {
-      shapeDesc = '不需过度打揉，保持散落状态';
+      shapeDesc = '不需过度打揉，保持散落状�?;
     } else {
       shapeDesc = '根据鱼情适当打揉，调整软硬度';
     }
@@ -753,7 +753,7 @@ struct GeneratedRecipePage {
     Column({ space: 12 }) {
       Row({ space: 6 }) {
         Image($r('app.media.Twinkles')).width(18).height(18)
-        Text('使用技巧').fontSize(16).fontWeight(FontWeight.Medium).fontColor(ThemeColors.TEXT_PRIMARY)
+        Text('使用技�?).fontSize(16).fontWeight(FontWeight.Medium).fontColor(ThemeColors.TEXT_PRIMARY)
       }
 
       Column({ space: 8 }) {
@@ -769,7 +769,7 @@ struct GeneratedRecipePage {
     .alignItems(HorizontalAlign.Start)
   }
 
-  // 动态生成使用技巧
+  // 动态生成使用技�?
   private generateDynamicTips(): string[] {
     const tips: string[] = [];
     const sp = this.recipe.stateProfile;
@@ -779,62 +779,62 @@ struct GeneratedRecipePage {
     const temp = this.recipe.conditions.temperature;
     const water = this.recipe.conditions.waterType;
 
-    // 技巧1：首钓建议 - 根据状态和水域
+    // 技�?：首钓建�?- 根据状态和水域
     if (usage.firstCast) {
       tips.push(usage.firstCast);
     } else if (sp.atomization >= 4) {
-      tips.push('前几竿用大饵快速抽窝，形成雾化带诱鱼');
+      tips.push('前几竿用大饵快速抽窝，形成雾化带诱�?);
     } else if (sp.weight >= 4) {
       tips.push('首竿搓大饵找底，确定水深后再调整');
     } else {
-      tips.push('前几竿可适当加大饵团，快速诱鱼进窝');
+      tips.push('前几竿可适当加大饵团，快速诱鱼进�?);
     }
 
-    // 技巧2：打窝建议 - 根据水域和原料
+    // 技�?：打窝建�?- 根据水域和原�?
     if (usage.nestSuggestion) {
       tips.push(usage.nestSuggestion);
     } else if (water === 'river') {
-      tips.push('野河走水可用酒米打底，散炮带窝');
+      tips.push('野河走水可用酒米打底，散炮带�?);
     } else if (water === 'pond') {
-      tips.push('黑坑建议散炮带窝，边钓边诱');
+      tips.push('黑坑建议散炮带窝，边钓边�?);
     } else {
-      tips.push('可配合散炮或酒米打窝，效果更佳');
+      tips.push('可配合散炮或酒米打窝，效果更�?);
     }
 
-    // 技巧3：根据味型调整
-    if (fp.primary.includes('腥') && fp.intensity >= 6) {
+    // 技�?：根据味型调�?
+    if (fp.primary.includes('�?) && fp.intensity >= 6) {
       tips.push('腥味较重，小杂鱼多时可适当减少用量');
-    } else if (fp.primary.includes('香') && temp > 25) {
-      tips.push('高温天气香味挥发快，可适当补充添加剂');
-    } else if (fp.primary.includes('酸')) {
+    } else if (fp.primary.includes('�?) && temp > 25) {
+      tips.push('高温天气香味挥发快，可适当补充添加�?);
+    } else if (fp.primary.includes('�?)) {
       tips.push('酸味饵料适合钓鲢鳙，注意控制雾化节奏');
     }
 
-    // 技巧4：根据状态特性
+    // 技�?：根据状态特�?
     if (sp.viscosity >= 4 && sp.hookHolding >= 4) {
       tips.push('饵料粘度高，注意控制饵团大小避免挡口');
     } else if (sp.atomization >= 4 && sp.viscosity <= 2) {
-      tips.push('雾化快粘度低，适合快频率抽竿');
+      tips.push('雾化快粘度低，适合快频率抽�?);
     }
 
-    // 技巧5：根据温度
+    // 技�?：根据温�?
     if (temp < 10) {
       tips.push('低温天气鱼口轻，饵团宜小宜软');
     } else if (temp > 30) {
-      tips.push('高温天气鱼躲深水，可尝试钓深或早晚出钓');
+      tips.push('高温天气鱼躲深水，可尝试钓深或早晚出�?);
     }
 
-    // 确保至少3条技巧
+    // 确保至少3条技�?
     if (tips.length < 3) {
       tips.push('根据鱼口调整饵料软硬度和大小');
     }
 
-    return tips.slice(0, 4);  // 最多显示4条
+    return tips.slice(0, 4);  // 最多显�?�?
   }
 
   @Builder TipItem(text: string) {
     Row({ space: 8 }) {
-      Text('•').fontSize(14).fontColor(ThemeColors.PRIMARY)
+      Text('�?).fontSize(14).fontColor(ThemeColors.PRIMARY_DARK)
       Text(text).fontSize(13).fontColor(ThemeColors.TEXT_SECONDARY).layoutWeight(1)
     }.width('100%')
   }
@@ -860,7 +860,7 @@ struct GeneratedRecipePage {
 
   @Builder ActionButtons() {
     Row({ space: 12 }) {
-      Button('换一换')
+      Button('换一�?)
         .fontSize(14)
         .fontColor(ThemeColors.TEXT_PRIMARY)
         .backgroundColor('#F5F5F5')
@@ -871,7 +871,7 @@ struct GeneratedRecipePage {
           this.regenerateRecipe();
         })
 
-      Button(this.isSaved ? '已保存' : '保存配方')
+      Button(this.isSaved ? '已保�? : '保存配方')
         .fontSize(14)
         .fontColor(Color.White)
         .backgroundColor(this.isSaved ? '#AAAAAA' : ThemeColors.PRIMARY)
@@ -888,22 +888,22 @@ struct GeneratedRecipePage {
     .padding({ left: 20, right: 20, top: 24 })
   }
 
-  // 换一换：使用智能变体管理器获取不同配方
+  // 换一换：使用智能变体管理器获取不同配�?
   private async regenerateRecipe(): Promise<void> {
     try {
-      // 使用智能配方引擎的变体功能
+      // 使用智能配方引擎的变体功�?
       const newRecipe = getNextRecipeVariant();
 
       if (newRecipe !== null) {
         this.recipe = newRecipe;
         this.isSaved = false;
 
-        // 保存到历史
+        // 保存到历�?
         this.saveToHistory();
 
-        promptAction.showToast({ message: '已为您换一个配方', duration: 1500 });
+        promptAction.showToast({ message: '已为您换一个配�?, duration: 1500 });
       } else {
-        // 如果变体管理器返回null，重新生成
+        // 如果变体管理器返回null，重新生�?
         let temperature = this.recipe.conditions.temperature || 20;
         try {
           const weather = await fetchWeather();
@@ -929,7 +929,7 @@ struct GeneratedRecipePage {
         this.isSaved = false;
 
         this.saveToHistory();
-        promptAction.showToast({ message: '已为您换一个配方', duration: 1500 });
+        promptAction.showToast({ message: '已为您换一个配�?, duration: 1500 });
       }
     } catch (err) {
       console.error('Regenerate recipe failed:', err);
@@ -937,7 +937,7 @@ struct GeneratedRecipePage {
     }
   }
 
-  // 显示保存对话框
+  // 显示保存对话�?
   private async showSaveDialog(): Promise<void> {
     await userDataService.load();
     this.customRecipeName = this.recipe.name;
@@ -951,18 +951,18 @@ struct GeneratedRecipePage {
 
     // 验证名称
     if (name.length === 0) {
-      this.nameError = '请输入配方名称';
+      this.nameError = '请输入配方名�?;
       return;
     }
 
     if (name.length > 20) {
-      this.nameError = '名称不能超过20个字符';
+      this.nameError = '名称不能超过20个字�?;
       return;
     }
 
-    // 检查重名
+    // 检查重�?
     if (userDataService.isRecipeNameExists(name)) {
-      this.nameError = '该名称已存在，请换一个';
+      this.nameError = '该名称已存在，请换一�?;
       return;
     }
 
@@ -982,24 +982,24 @@ struct GeneratedRecipePage {
         ingredients.push(customIng);
       }
 
-      // 构建动态步骤
+      // 构建动态步�?
       const dynamicSteps = this.generateDynamicSteps();
       const steps: string[] = [];
       for (let i = 0; i < dynamicSteps.length; i++) {
-        steps.push(`${dynamicSteps[i].title}：${dynamicSteps[i].desc}`);
+        steps.push(`${dynamicSteps[i].title}�?{dynamicSteps[i].desc}`);
       }
 
-      // 构建技巧
-      const tips = `${this.recipe.usage.firstCast || '前几竿可适当加大饵团，快速诱鱼'}；${this.recipe.usage.nestSuggestion || '可配合散炮打窝，效果更佳'}`;
+      // 构建技�?
+      const tips = `${this.recipe.usage.firstCast || '前几竿可适当加大饵团，快速诱�?}�?{this.recipe.usage.nestSuggestion || '可配合散炮打窝，效果更佳'}`;
 
-      // 构建状态特性
+      // 构建状态特�?
       const stateProfile = new RecipeStateProfile();
       stateProfile.atomization = this.recipe.stateProfile.atomization;
       stateProfile.viscosity = this.recipe.stateProfile.viscosity;
       stateProfile.hookHolding = this.recipe.stateProfile.hookHolding;
       stateProfile.weight = this.recipe.stateProfile.weight;
 
-      // 构建味型特性
+      // 构建味型特�?
       const flavorProfile = new RecipeFlavorProfile();
       flavorProfile.primary = this.recipe.flavorProfile.primary;
       flavorProfile.secondary = this.recipe.flavorProfile.secondary;
@@ -1025,14 +1025,14 @@ struct GeneratedRecipePage {
 
       this.isSaved = true;
       this.showNameDialog = false;
-      promptAction.showToast({ message: '配方已保存', duration: 1500 });
+      promptAction.showToast({ message: '配方已保�?, duration: 1500 });
     } catch (err) {
       console.error('Save recipe failed:', err);
       this.nameError = '保存失败，请重试';
     }
   }
 
-  // 保存配方到用户数据 (旧方法保留兼容)
+  // 保存配方到用户数�?(旧方法保留兼�?
   private async saveRecipeToUserData(): Promise<void> {
     this.showSaveDialog();
   }
@@ -1042,12 +1042,12 @@ struct GeneratedRecipePage {
     const fish = this.getFishName();
     const water = this.getWaterName();
     const season = this.getSeasonName();
-    return `专为${season}${water}钓${fish}设计，${this.recipe.flavorProfile.primary}${this.recipe.flavorProfile.secondary}味型，适合${this.recipe.flavorProfile.suitableTemp || '15-25°C'}水温使用。`;
+    return `专为${season}${water}�?{fish}设计�?{this.recipe.flavorProfile.primary}${this.recipe.flavorProfile.secondary}味型，适合${this.recipe.flavorProfile.suitableTemp || '15-25°C'}水温使用。`;
   }
 
   private getDifficultyText(): string {
     const count = this.recipe.ingredients.length;
-    if (count <= 3) return '简单';
+    if (count <= 3) return '简�?;
     if (count <= 5) return '中等';
     return '复杂';
   }
@@ -1059,7 +1059,7 @@ struct GeneratedRecipePage {
     if (fishId === 'grass') return '草鱼';
     if (fishId === 'black') return '青鱼';
     if (fishId === 'catfish') return '鲶鱼';
-    return '目标鱼';
+    return '目标�?;
   }
 
   private getWaterName(): string {
@@ -1084,7 +1084,7 @@ struct GeneratedRecipePage {
     if (cat === 'main') return '主饵';
     if (cat === 'auxiliary') return '辅饵';
     if (cat === 'state') return '状态饵';
-    if (cat === 'additive') return '添加剂';
+    if (cat === 'additive') return '添加�?;
     return '';
   }
 
@@ -1092,7 +1092,7 @@ struct GeneratedRecipePage {
     if (cat === 'main') return '🌾';
     if (cat === 'auxiliary') return '🥜';
     if (cat === 'state') return '💧';
-    if (cat === 'additive') return '✨';
+    if (cat === 'additive') return '�?;
     return '📦';
   }
 
@@ -1128,34 +1128,34 @@ struct GeneratedRecipePage {
 
     // 水域相关备注
     if (water === 'river') {
-      notes.push('野河环境复杂，注意观察水流方向，选择缓流区作钓。');
+      notes.push('野河环境复杂，注意观察水流方向，选择缓流区作钓�?);
     } else if (water === 'pond') {
-      notes.push('黑坑竞争激烈，注意观察周围钓友用饵，适时调整。');
+      notes.push('黑坑竞争激烈，注意观察周围钓友用饵，适时调整�?);
     } else if (water === 'reservoir') {
-      notes.push('水库水面大，建议提前打窝，耐心守钓。');
+      notes.push('水库水面大，建议提前打窝，耐心守钓�?);
     }
 
     // 味型相关备注
     if (fp.intensity >= 8) {
-      notes.push('本配方味型较浓，如遇滑口鱼可适当减少添加剂用量。');
+      notes.push('本配方味型较浓，如遇滑口鱼可适当减少添加剂用量�?);
     } else if (fp.intensity <= 3) {
-      notes.push('本配方味型清淡，适合钓滑口鱼或大个体鱼。');
+      notes.push('本配方味型清淡，适合钓滑口鱼或大个体鱼�?);
     }
 
-    // 状态相关备注
+    // 状态相关备�?
     if (sp.atomization >= 4 && sp.viscosity <= 2) {
-      notes.push('雾化较快，适合快频率作钓，注意补窝节奏。');
+      notes.push('雾化较快，适合快频率作钓，注意补窝节奏�?);
     }
 
     // 原料相关备注
     const hasLiveBait = ings.some((ing: RecipeIngredient) =>
       ing.name.includes('红虫') || ing.name.includes('蚯蚓') || ing.name.includes('活饵'));
     if (hasLiveBait) {
-      notes.push('含活饵成分，注意保持新鲜度。');
+      notes.push('含活饵成分，注意保持新鲜度�?);
     }
 
     // 通用建议
-    notes.push('如遇鱼口不佳，可尝试调整水比或更换添加剂。');
+    notes.push('如遇鱼口不佳，可尝试调整水比或更换添加剂�?);
 
     return notes.slice(0, 3).join('\n\n');
   }

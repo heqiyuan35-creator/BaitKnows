@@ -14,10 +14,10 @@ export type FishingMethod = 'rub' | 'pull' | 'scatter' | 'wrap';
 // 生成模式
 export type GenerateMode = 'conservative' | 'balanced' | 'aggressive';
 
-// 鱼密度
+// 鱼密�?
 export type FishDensity = 'high' | 'medium' | 'low';
 
-// 开口情况
+// 开口情�?
 export type FishActivity = 'good' | 'normal' | 'poor';
 
 // 配方原料分类
@@ -38,7 +38,7 @@ export class FlavorModifier {
   }
 }
 
-// 状态修正
+// 状态修�?
 export class StateModifier {
   atomization: number = 0;
   viscosity: number = 0;
@@ -135,7 +135,7 @@ export class FlavorDescription {
   constructor() {}
 }
 
-// 状态特性
+// 状态特�?
 export class StateProfile {
   atomization: number = 3;
   viscosity: number = 3;
@@ -161,7 +161,7 @@ export class GenerateReason {
   constructor() {}
 }
 
-// 生成的配方
+// 生成的配�?
 export class GeneratedRecipe {
   id: string = '';
   name: string = '';

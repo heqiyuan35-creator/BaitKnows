@@ -1,9 +1,9 @@
 /**
- * 饵知道 - 应用常量
+ * 饵知�?- 应用常量
  */
 export class AppConstants {
   // 应用信息
-  static readonly APP_NAME: string = '饵知道';
+  static readonly APP_NAME: string = '饵知�?;
   static readonly APP_VERSION: string = 'V1.0.0';
   static readonly APP_SLOGAN: string = '智能配方 · 记录渔获';
 
@@ -24,7 +24,7 @@ export class AppConstants {
   static readonly ROUTE_MAP: string = 'pages/MapPage';
   static readonly ROUTE_VICTORY_SHARE: string = 'pages/VictorySharePage';
 
-  // 存储键
+  // 存储�?
   static readonly STORAGE_USER_PROFILE: string = 'user_profile';
   static readonly STORAGE_FAVORITES: string = 'favorite_recipes';
   static readonly STORAGE_RECORDS: string = 'fishing_records';

@@ -40,11 +40,11 @@ export const WindConditionNames: Record<WindCondition, string> = {
   'strong': '大风'
 };
 
-// 饵料状态偏好
+// 饵料状态偏�?
 export type BaitState = 'fast_dissolve' | 'slow_dissolve' | 'sticky' | 'dry_loose';
 export const BaitStateNames: Record<BaitState, string> = {
-  'fast_dissolve': '雾化快',
-  'slow_dissolve': '雾化慢',
+  'fast_dissolve': '雾化�?,
+  'slow_dissolve': '雾化�?,
   'sticky': '粘软',
   'dry_loose': '干散'
 };
@@ -58,12 +58,12 @@ export const FlavorIntensityNames: Record<FlavorIntensity, string> = {
   'intense': '刺激'
 };
 
-// 目标鱼体型
+// 目标鱼体�?
 export type FishSize = 'small' | 'medium' | 'large';
 export const FishSizeNames: Record<FishSize, string> = {
-  'small': '小型(<1斤)',
-  'medium': '中型(1-5斤)',
-  'large': '大型(>5斤)'
+  'small': '小型(<1�?',
+  'medium': '中型(1-5�?',
+  'large': '大型(>5�?'
 };
 
 // ==================== 精确匹配输入 ====================
@@ -90,15 +90,15 @@ export class PreciseMatchInput {
 // ==================== 维度评分 ====================
 
 export class DimensionScores {
-  attraction: number = 0;      // 诱鱼性 0-100
-  palatability: number = 0;    // 适口性 0-100
-  state: number = 0;           // 状态 0-100
-  retention: number = 0;       // 留鱼性 0-100
-  costEffective: number = 0;   // 性价比 0-100
+  attraction: number = 0;      // 诱鱼�?0-100
+  palatability: number = 0;    // 适口�?0-100
+  state: number = 0;           // 状�?0-100
+  retention: number = 0;       // 留鱼�?0-100
+  costEffective: number = 0;   // 性价�?0-100
 
   constructor() {}
 
-  // 计算平均分
+  // 计算平均�?
   getAverage(): number {
     return Math.round((this.attraction + this.palatability + this.state +
       this.retention + this.costEffective) / 5);
@@ -109,7 +109,7 @@ export class DimensionScores {
 
 export class ParameterWeight {
   name: string = '';           // 参数名称
-  weight: number = 0;          // 权重值 0-100
+  weight: number = 0;          // 权重�?0-100
   impact: string = '';         // 影响说明
 
   constructor() {}
@@ -149,7 +149,7 @@ export class AnalysisStep {
 
 export class IngredientRatio {
   name: string = '';
-  category: string = '';       // 基础饵/主攻饵/状态饵/添加剂
+  category: string = '';       // 基础�?主攻�?状态饵/添加�?
   percentage: number = 0;
   color: string = '#E6A23C';
 
@@ -169,12 +169,12 @@ export class IngredientRatio {
 
 export class PreciseMatchResult {
   recipe: GeneratedRecipe = new GeneratedRecipe();
-  matchScore: number = 0;                          // 0-100 匹配度
+  matchScore: number = 0;                          // 0-100 匹配�?
   dimensionScores: DimensionScores = new DimensionScores();
   parameterWeights: ParameterWeight[] = [];
   analysisSteps: AnalysisStep[] = [];
   ingredientRatios: IngredientRatio[] = [];
-  alternatives: GeneratedRecipe[] = [];            // 备选方案
+  alternatives: GeneratedRecipe[] = [];            // 备选方�?
   scoreDescription: string = '';                   // 评分说明
 
   constructor() {}
@@ -214,9 +214,9 @@ export class FeedbackOption {
 
 // 预定义反馈选项
 export const FEEDBACK_OPTIONS: FeedbackOption[] = [
-  FeedbackOption.create('flavor_dislike', '味型不喜欢', '👃', 'flavor'),
-  FeedbackOption.create('ingredient_hard', '原料难获取', '🛒', 'ingredient'),
-  FeedbackOption.create('state_wrong', '状态不合适', '💧', 'state'),
+  FeedbackOption.create('flavor_dislike', '味型不喜�?, '👃', 'flavor'),
+  FeedbackOption.create('ingredient_hard', '原料难获�?, '🛒', 'ingredient'),
+  FeedbackOption.create('state_wrong', '状态不合�?, '💧', 'state'),
   FeedbackOption.create('want_more_fishy', '想要更腥', '🐟', 'intensity'),
   FeedbackOption.create('want_more_fragrant', '想要更香', '🌸', 'intensity'),
   FeedbackOption.create('want_lighter', '想要更淡', '💨', 'intensity'),

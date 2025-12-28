@@ -1,44 +1,44 @@
 /**
- * 饵知道 - 鱼种数据
- * 统一的鱼种信息管理
+ * 饵知�?- 鱼种数据
+ * 统一的鱼种信息管�?
  */
 
-// 食性类型
+// 食性类�?
 export type FeedingType = 'herbivore' | 'carnivore' | 'omnivore';  // 草食 | 肉食 | 杂食
 
 // 活动水层
-export type WaterLayer = 'surface' | 'middle' | 'bottom' | 'all';  // 上层 | 中层 | 底层 | 全水层
+export type WaterLayer = 'surface' | 'middle' | 'bottom' | 'all';  // 上层 | 中层 | 底层 | 全水�?
 
 // 活动时段
 export type ActivityTime = 'day' | 'night' | 'dawn_dusk' | 'all';  // 白天 | 夜间 | 晨昏 | 全天
 
-// 鱼种习性
+// 鱼种习�?
 export interface FishHabit {
-  feedingType: FeedingType;       // 食性
+  feedingType: FeedingType;       // 食�?
   waterLayer: WaterLayer;         // 活动水层
   activityTime: ActivityTime;     // 活动时段
   preferredTemp: string;          // 适宜水温范围
   activeSeasons: string[];        // 活跃季节
   favoriteFood: string[];         // 喜食饵料
-  description: string;            // 习性描述
+  description: string;            // 习性描�?
 }
 
 // 鱼种数据接口
 export interface FishData {
   id: string;                     // 唯一标识
-  name: string;                   // 中文名
-  nameEn: string;                 // 英文名
+  name: string;                   // 中文�?
+  nameEn: string;                 // 英文�?
   icon: Resource;                 // 图标
   iconActive: Resource;           // 选中图标
-  waterTypes: string[];           // 适合的水域类型
-  habit: FishHabit;               // 习性信息
+  waterTypes: string[];           // 适合的水域类�?
+  habit: FishHabit;               // 习性信�?
 }
 
-// 食性名称映射
+// 食性名称映�?
 export const FeedingTypeNames: Record<FeedingType, string> = {
-  'herbivore': '草食性',
-  'carnivore': '肉食性',
-  'omnivore': '杂食性'
+  'herbivore': '草食�?,
+  'carnivore': '肉食�?,
+  'omnivore': '杂食�?
 };
 
 // 水层名称映射
@@ -46,7 +46,7 @@ export const WaterLayerNames: Record<WaterLayer, string> = {
   'surface': '上层',
   'middle': '中层',
   'bottom': '底层',
-  'all': '全水层'
+  'all': '全水�?
 };
 
 // 活动时段名称映射
@@ -58,7 +58,7 @@ export const ActivityTimeNames: Record<ActivityTime, string> = {
 };
 
 
-// ==================== 所有鱼种数据 ====================
+// ==================== 所有鱼种数�?====================
 export const ALL_FISH_DATA: FishData[] = [
   // ========== 池塘常见鱼种 ==========
   {
@@ -67,8 +67,8 @@ export const ALL_FISH_DATA: FishData[] = [
     waterTypes: ['pond', 'river', 'lake'],
     habit: { feedingType: 'omnivore', waterLayer: 'bottom', activityTime: 'all',
       preferredTemp: '15-25°C', activeSeasons: ['春季', '秋季'],
-      favoriteFood: ['蚯蚓', '红虫', '商品饵', '玉米'],
-      description: '性情温和，喜群居，耐低氧，四季可钓，春秋最佳' }
+      favoriteFood: ['蚯蚓', '红虫', '商品�?, '玉米'],
+      description: '性情温和，喜群居，耐低氧，四季可钓，春秋最�? }
   },
   {
     id: 'carp', name: '鲤鱼', nameEn: 'Common Carp',
@@ -77,7 +77,7 @@ export const ALL_FISH_DATA: FishData[] = [
     habit: { feedingType: 'omnivore', waterLayer: 'bottom', activityTime: 'dawn_dusk',
       preferredTemp: '18-28°C', activeSeasons: ['春季', '夏季', '秋季'],
       favoriteFood: ['玉米', '红薯', '螺蛳', '蚯蚓'],
-      description: '生性胆小警觉，喜在水底觅食，晨昏活动频繁' }
+      description: '生性胆小警觉，喜在水底觅食，晨昏活动频�? }
   },
   {
     id: 'grass_carp', name: '草鱼', nameEn: 'Grass Carp',
@@ -94,7 +94,7 @@ export const ALL_FISH_DATA: FishData[] = [
     waterTypes: ['pond', 'reservoir'],
     habit: { feedingType: 'omnivore', waterLayer: 'surface', activityTime: 'day',
       preferredTemp: '22-30°C', activeSeasons: ['夏季'],
-      favoriteFood: ['酸臭饵', '发酵饵', '浮游生物'],
+      favoriteFood: ['酸臭�?, '发酵�?, '浮游生物'],
       description: '滤食性鱼类，喜酸臭味饵料，夏季高温浮钓效果好' }
   },
   {
@@ -103,26 +103,26 @@ export const ALL_FISH_DATA: FishData[] = [
     waterTypes: ['pond', 'reservoir'],
     habit: { feedingType: 'omnivore', waterLayer: 'surface', activityTime: 'day',
       preferredTemp: '22-30°C', activeSeasons: ['夏季'],
-      favoriteFood: ['酸饵', '雾化饵', '浮游生物'],
-      description: '与鳙鱼习性相近，喜酸味饵料，常浮钓' }
+      favoriteFood: ['酸饵', '雾化�?, '浮游生物'],
+      description: '与鳙鱼习性相近，喜酸味饵料，常浮�? }
   },
   {
-    id: 'tilapia', name: '罗非鱼', nameEn: 'Tilapia',
+    id: 'tilapia', name: '罗非�?, nameEn: 'Tilapia',
     icon: $r('app.media.Tilapia'), iconActive: $r('app.media.Tilapia'),
     waterTypes: ['pond'],
     habit: { feedingType: 'omnivore', waterLayer: 'all', activityTime: 'day',
       preferredTemp: '25-35°C', activeSeasons: ['夏季', '秋季'],
-      favoriteFood: ['蚯蚓', '虾粉', '商品饵', '冻料'],
-      description: '南方池塘常见，耐高温，繁殖力强，夏季活跃' }
+      favoriteFood: ['蚯蚓', '虾粉', '商品�?, '冻料'],
+      description: '南方池塘常见，耐高温，繁殖力强，夏季活�? }
   },
   {
-    id: 'channel_catfish', name: '斑点叉尾鮰', nameEn: 'Channel Catfish',
+    id: 'channel_catfish', name: '斑点叉尾�?, nameEn: 'Channel Catfish',
     icon: $r('app.media.Spotted_Forktail_Catfish'), iconActive: $r('app.media.Spotted_Forktail_Catfish'),
     waterTypes: ['pond'],
     habit: { feedingType: 'omnivore', waterLayer: 'bottom', activityTime: 'night',
       preferredTemp: '20-28°C', activeSeasons: ['夏季', '秋季'],
-      favoriteFood: ['鸡肝', '颗粒饵', '蚯蚓', '虾肉'],
-      description: '黑坑常见养殖鱼种，喜腥味饵料，夜间活跃' }
+      favoriteFood: ['鸡肝', '颗粒�?, '蚯蚓', '虾肉'],
+      description: '黑坑常见养殖鱼种，喜腥味饵料，夜间活�? }
   },
 
   // ========== 河流特色鱼种 ==========
@@ -133,10 +133,10 @@ export const ALL_FISH_DATA: FishData[] = [
     habit: { feedingType: 'carnivore', waterLayer: 'bottom', activityTime: 'night',
       preferredTemp: '20-28°C', activeSeasons: ['夏季', '秋季'],
       favoriteFood: ['鸡肝', '蚯蚓', '小鱼', '泥鳅'],
-      description: '夜行性肉食鱼，喜腥味重饵，夜钓效果最佳' }
+      description: '夜行性肉食鱼，喜腥味重饵，夜钓效果最�? }
   },
   {
-    id: 'yellow_catfish', name: '黄颡鱼', nameEn: 'Yellow Catfish',
+    id: 'yellow_catfish', name: '黄颡�?, nameEn: 'Yellow Catfish',
     icon: $r('app.media.Yellow_catfish'), iconActive: $r('app.media.Yellow_catfish'),
     waterTypes: ['river'],
     habit: { feedingType: 'carnivore', waterLayer: 'bottom', activityTime: 'night',
@@ -150,8 +150,8 @@ export const ALL_FISH_DATA: FishData[] = [
     waterTypes: ['river', 'lake'],
     habit: { feedingType: 'herbivore', waterLayer: 'middle', activityTime: 'day',
       preferredTemp: '18-26°C', activeSeasons: ['春季', '夏季', '秋季'],
-      favoriteFood: ['麸皮', '玉米粉', '青草', '麦粒'],
-      description: '草食性为主，喜素饵，常在中上层活动' }
+      favoriteFood: ['麸皮', '玉米�?, '青草', '麦粒'],
+      description: '草食性为主，喜素饵，常在中上层活�? }
   },
   {
     id: 'culter', name: '翘嘴', nameEn: 'Culter',
@@ -159,7 +159,7 @@ export const ALL_FISH_DATA: FishData[] = [
     waterTypes: ['river', 'reservoir', 'lake'],
     habit: { feedingType: 'carnivore', waterLayer: 'surface', activityTime: 'dawn_dusk',
       preferredTemp: '18-28°C', activeSeasons: ['夏季', '秋季'],
-      favoriteFood: ['小鱼', '虾', '亮片', '米诺'],
+      favoriteFood: ['小鱼', '�?, '亮片', '米诺'],
       description: '凶猛掠食性，喜追逐小鱼，路亚和活饵效果好' }
   },
   {
@@ -178,16 +178,16 @@ export const ALL_FISH_DATA: FishData[] = [
     habit: { feedingType: 'omnivore', waterLayer: 'bottom', activityTime: 'day',
       preferredTemp: '18-26°C', activeSeasons: ['春季', '夏季', '秋季'],
       favoriteFood: ['蚯蚓', '虾肉', '螺蛳', '水生昆虫'],
-      description: '喜急流环境，常在石缝觅食，力量大' }
+      description: '喜急流环境，常在石缝觅食，力量�? }
   },
   {
-    id: 'chub', name: '赤眼鳟', nameEn: 'Chub',
+    id: 'chub', name: '赤眼�?, nameEn: 'Chub',
     icon: $r('app.media.Red_eye_trout'), iconActive: $r('app.media.Red_eye_trout'),
     waterTypes: ['river'],
     habit: { feedingType: 'omnivore', waterLayer: 'middle', activityTime: 'day',
       preferredTemp: '16-26°C', activeSeasons: ['春季', '夏季', '秋季'],
       favoriteFood: ['蚯蚓', '面饵', '玉米', '麦粒'],
-      description: '中小型河鱼，眼睛红色，肉质鲜美' }
+      description: '中小型河鱼，眼睛红色，肉质鲜�? }
   },
   {
     id: 'loach', name: '泥鳅', nameEn: 'Loach',
@@ -195,7 +195,7 @@ export const ALL_FISH_DATA: FishData[] = [
     waterTypes: ['river', 'pond'],
     habit: { feedingType: 'omnivore', waterLayer: 'bottom', activityTime: 'night',
       preferredTemp: '18-28°C', activeSeasons: ['夏季', '秋季'],
-      favoriteFood: ['蚯蚓', '红虫', '腐殖质'],
+      favoriteFood: ['蚯蚓', '红虫', '腐殖�?],
       description: '底栖鱼类，喜泥底环境，常作为钓饵使用' }
   },
   {
@@ -204,7 +204,7 @@ export const ALL_FISH_DATA: FishData[] = [
     waterTypes: ['river'],
     habit: { feedingType: 'carnivore', waterLayer: 'middle', activityTime: 'dawn_dusk',
       preferredTemp: '18-26°C', activeSeasons: ['春季', '秋季'],
-      favoriteFood: ['小鱼', '虾', '泥鳅'],
+      favoriteFood: ['小鱼', '�?, '泥鳅'],
       description: '河流中的鳜鱼，喜清澈流水，以活饵垂钓' }
   },
 
@@ -224,11 +224,11 @@ export const ALL_FISH_DATA: FishData[] = [
     waterTypes: ['reservoir', 'lake'],
     habit: { feedingType: 'carnivore', waterLayer: 'middle', activityTime: 'dawn_dusk',
       preferredTemp: '18-25°C', activeSeasons: ['春季', '秋季'],
-      favoriteFood: ['小鱼', '虾', '泥鳅'],
-      description: '名贵肉食性鱼类，喜清澈水质，以活饵垂钓效果最佳' }
+      favoriteFood: ['小鱼', '�?, '泥鳅'],
+      description: '名贵肉食性鱼类，喜清澈水质，以活饵垂钓效果最�? }
   },
   {
-    id: 'wuchang_fish', name: '武昌鱼', nameEn: 'Wuchang Fish',
+    id: 'wuchang_fish', name: '武昌�?, nameEn: 'Wuchang Fish',
     icon: $r('app.media.Wuchang_Fish'), iconActive: $r('app.media.Wuchang_Fish'),
     waterTypes: ['reservoir', 'lake'],
     habit: { feedingType: 'herbivore', waterLayer: 'middle', activityTime: 'day',
@@ -246,12 +246,12 @@ export const ALL_FISH_DATA: FishData[] = [
       description: '水库大物代表，体重可达数十斤，需重窝守钓' }
   },
   {
-    id: 'yellow_cheek', name: '黄尾鲴', nameEn: 'Yellow Cheek Carp',
+    id: 'yellow_cheek', name: '黄尾�?, nameEn: 'Yellow Cheek Carp',
     icon: $r('app.media.Yellowtail_Catfish'), iconActive: $r('app.media.Yellowtail_Catfish'),
     waterTypes: ['reservoir'],
     habit: { feedingType: 'omnivore', waterLayer: 'bottom', activityTime: 'day',
       preferredTemp: '16-26°C', activeSeasons: ['春季', '夏季', '秋季'],
-      favoriteFood: ['藻类', '蚯蚓', '商品饵'],
+      favoriteFood: ['藻类', '蚯蚓', '商品�?],
       description: '水库常见鱼种，喜刮食石头上的藻类' }
   },
   {
@@ -260,7 +260,7 @@ export const ALL_FISH_DATA: FishData[] = [
     waterTypes: ['reservoir'],
     habit: { feedingType: 'omnivore', waterLayer: 'bottom', activityTime: 'day',
       preferredTemp: '22-30°C', activeSeasons: ['夏季', '秋季'],
-      favoriteFood: ['花生麸', '商品饵', '蚯蚓'],
+      favoriteFood: ['花生�?, '商品�?, '蚯蚓'],
       description: '南方水库常见，喜温暖水域，力量大' }
   },
   {
@@ -269,7 +269,7 @@ export const ALL_FISH_DATA: FishData[] = [
     waterTypes: ['reservoir', 'lake'],
     habit: { feedingType: 'carnivore', waterLayer: 'all', activityTime: 'dawn_dusk',
       preferredTemp: '18-28°C', activeSeasons: ['春季', '夏季', '秋季'],
-      favoriteFood: ['小鱼', '虾', '软虫', '米诺'],
+      favoriteFood: ['小鱼', '�?, '软虫', '米诺'],
       description: '路亚钓法最热门对象鱼，攻击性强，手感好' }
   },
 
@@ -290,7 +290,7 @@ export const ALL_FISH_DATA: FishData[] = [
     habit: { feedingType: 'carnivore', waterLayer: 'middle', activityTime: 'day',
       preferredTemp: '12-22°C', activeSeasons: ['春季', '秋季', '冬季'],
       favoriteFood: ['小鱼', '蛙类', '大型软虫'],
-      description: '北方湖泊顶级掠食者，体型大，攻击性极强' }
+      description: '北方湖泊顶级掠食者，体型大，攻击性极�? }
   },
   {
     id: 'perch', name: '鲈鱼', nameEn: 'Perch',
@@ -298,8 +298,8 @@ export const ALL_FISH_DATA: FishData[] = [
     waterTypes: ['lake'],
     habit: { feedingType: 'carnivore', waterLayer: 'middle', activityTime: 'day',
       preferredTemp: '15-25°C', activeSeasons: ['春季', '秋季'],
-      favoriteFood: ['小鱼', '虾', '蚯蚓'],
-      description: '淡水鲈鱼，肉质鲜美，喜清澈水质' }
+      favoriteFood: ['小鱼', '�?, '蚯蚓'],
+      description: '淡水鲈鱼，肉质鲜美，喜清澈水�? }
   },
   {
     id: 'whitebait', name: '银鱼', nameEn: 'Whitebait',
@@ -311,12 +311,12 @@ export const ALL_FISH_DATA: FishData[] = [
       description: '太湖特产，体型小透明，常作为其他鱼的饵料' }
   },
   {
-    id: 'redfin_culter', name: '红鳍鲌', nameEn: 'Redfin Culter',
+    id: 'redfin_culter', name: '红鳍�?, nameEn: 'Redfin Culter',
     icon: $r('app.media.Redfin_culter'), iconActive: $r('app.media.Redfin_culter'),
     waterTypes: ['lake', 'river'],
     habit: { feedingType: 'carnivore', waterLayer: 'surface', activityTime: 'day',
       preferredTemp: '18-28°C', activeSeasons: ['夏季', '秋季'],
-      favoriteFood: ['小鱼', '虾', '昆虫'],
+      favoriteFood: ['小鱼', '�?, '昆虫'],
       description: '鳍呈红色，外形优美，攻击性强' }
   },
   {
@@ -326,7 +326,7 @@ export const ALL_FISH_DATA: FishData[] = [
     habit: { feedingType: 'carnivore', waterLayer: 'bottom', activityTime: 'night',
       preferredTemp: '22-30°C', activeSeasons: ['夏季', '秋季'],
       favoriteFood: ['鸡肝', '猪肝', '小鱼', '蚯蚓'],
-      description: '夜行性，喜腥味重饵，需用专门钓组' }
+      description: '夜行性，喜腥味重饵，需用专门钓�? }
   },
   {
     id: 'eel', name: '黄鳝', nameEn: 'Asian Swamp Eel',
@@ -352,7 +352,7 @@ export const ALL_FISH_DATA: FishData[] = [
     waterTypes: ['lake', 'river'],
     habit: { feedingType: 'omnivore', waterLayer: 'bottom', activityTime: 'night',
       preferredTemp: '18-28°C', activeSeasons: ['夏季', '秋季'],
-      favoriteFood: ['腐殖质', '藻类', '小虫'],
+      favoriteFood: ['腐殖�?, '藻类', '小虫'],
       description: '常见淡水虾，可作为钓饵或垂钓对象' }
   }
 ];
@@ -370,7 +370,7 @@ export function getFishByWaterType(waterType: string): FishData[] {
   return ALL_FISH_DATA.filter((fish: FishData) => fish.waterTypes.includes(waterType));
 }
 
-// 根据食性获取鱼种列表
+// 根据食性获取鱼种列�?
 export function getFishByFeedingType(feedingType: FeedingType): FishData[] {
   return ALL_FISH_DATA.filter((fish: FishData) => fish.habit.feedingType === feedingType);
 }
@@ -385,7 +385,7 @@ export function getFishByActivityTime(time: ActivityTime): FishData[] {
   return ALL_FISH_DATA.filter((fish: FishData) => fish.habit.activityTime === time);
 }
 
-// 获取所有鱼种ID列表（按水域分组）
+// 获取所有鱼种ID列表（按水域分组�?
 export function getFishIdsByWaterType(): Record<string, string[]> {
   return {
     'pond': ALL_FISH_DATA.filter((f: FishData) => f.waterTypes.includes('pond')).map((f: FishData) => f.id),

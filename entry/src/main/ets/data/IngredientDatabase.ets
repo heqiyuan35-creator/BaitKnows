@@ -1,6 +1,6 @@
 /**
  * 原材料数据库
- * 包含饵料制作所需的各类原材料（含民间偏方/邪修）
+ * 包含饵料制作所需的各类原材料（含民间偏方/邪修�?
  */
 import { FlavorProfile } from '../common/types/FishTypes';
 
@@ -9,7 +9,7 @@ import { FlavorProfile } from '../common/types/FishTypes';
 // 原料大类
 export type IngredientCategory = 'base' | 'protein' | 'additive' | 'state' | 'binder' | 'natural' | 'pellet' | 'live' | 'folk';
 
-// 原料子分类
+// 原料子分�?
 export type IngredientSubCategory = 'grain' | 'tuber' | 'bean' | 'aquatic' | 'insect' | 'animal' | 'essence' | 'attractant' | 'acid' | 'atomizer' | 'weight' | 'plant' | 'seed' | 'worm' | 'baitfish' | 'medicine' | 'beverage' | 'condiment' | 'oil' | 'fermented' | 'other';
 
 // 季节
@@ -63,7 +63,7 @@ export class SimpleTemperatureRange {
 }
 
 
-// ==================== 原材料主类 ====================
+// ==================== 原材料主�?====================
 
 export class Ingredient {
   id: string = '';
@@ -89,7 +89,7 @@ export class Ingredient {
   constructor() {}
 }
 
-// 创建原料的辅助函数
+// 创建原料的辅助函�?
 function makeIng(
   id: string, name: string, cat: IngredientCategory, sub: IngredientSubCategory,
   fp: FlavorProfile, phys: PhysicalProperties,
@@ -129,8 +129,8 @@ function makeFolkIng(
 // ==================== 基础饵料数据 ====================
 function getBaseIngredients(): Ingredient[] {
   const list: Ingredient[] = [];
-  // 谷物类
-  list.push(makeIng('corn_flour', '玉米粉', 'base', 'grain',
+  // 谷物�?
+  list.push(makeIng('corn_flour', '玉米�?, 'base', 'grain',
     FlavorProfile.create(60, 0, 50, 0, 0, 0, 20, 0, 0), PhysicalProperties.create(6, 4, 5, 7),
     ['carp', 'crucian', 'grass_carp', 'bream'], ['spring', 'summer', 'autumn'],
     SimpleTemperatureRange.create(10, 35), DosageRange.create(20, 50, 'g'),
@@ -139,50 +139,50 @@ function getBaseIngredients(): Ingredient[] {
     FlavorProfile.create(30, 0, 40, 0, 0, 0, 0, 0, 10), PhysicalProperties.create(8, 2, 3, 9),
     ['crucian', 'carp', 'bream', 'grass_carp'], ['spring', 'summer', 'autumn', 'winter'],
     SimpleTemperatureRange.create(5, 35), DosageRange.create(10, 30, 'g'),
-    '雾化好，诱鱼快', 4));
+    '雾化好，诱鱼�?, 4));
   list.push(makeIng('wheat_flour', '面粉', 'base', 'grain',
     FlavorProfile.create(20, 0, 30, 0, 0, 5, 0, 0, 0), PhysicalProperties.create(3, 8, 6, 4),
     ['crucian', 'carp', 'bream'], ['spring', 'summer', 'autumn', 'winter'],
     SimpleTemperatureRange.create(0, 40), DosageRange.create(10, 30, 'g'),
-    '增加粘性，调节状态', 3));
+    '增加粘性，调节状�?, 3));
   list.push(makeIng('millet', '小米', 'base', 'grain',
     FlavorProfile.create(40, 0, 50, 0, 0, 0, 0, 0, 0), PhysicalProperties.create(2, 1, 7, 3),
     ['crucian', 'carp'], ['spring', 'summer', 'autumn', 'winter'],
     SimpleTemperatureRange.create(0, 35), DosageRange.create(20, 100, 'g'),
     '打窝神器，留鱼效果好', 8));
   // 薯类
-  list.push(makeIng('sweet_potato_flour', '红薯粉', 'base', 'tuber',
+  list.push(makeIng('sweet_potato_flour', '红薯�?, 'base', 'tuber',
     FlavorProfile.create(80, 0, 55, 0, 0, 15, 30, 0, 0), PhysicalProperties.create(4, 6, 5, 7),
     ['carp', 'grass_carp', 'bream'], ['summer', 'autumn'],
     SimpleTemperatureRange.create(15, 35), DosageRange.create(15, 35, 'g'),
     '甜香味浓，钓鲤鱼效果极佳', 8));
-  list.push(makeIng('potato_flour', '土豆粉', 'base', 'tuber',
+  list.push(makeIng('potato_flour', '土豆�?, 'base', 'tuber',
     FlavorProfile.create(30, 0, 25, 0, 0, 10, 0, 0, 0), PhysicalProperties.create(3, 7, 6, 4),
     ['carp', 'crucian'], ['spring', 'summer', 'autumn'],
     SimpleTemperatureRange.create(10, 30), DosageRange.create(10, 25, 'g'),
-    '增粘效果好', 6));
+    '增粘效果�?, 6));
   // 豆类
-  list.push(makeIng('soybean_flour', '黄豆粉', 'base', 'bean',
+  list.push(makeIng('soybean_flour', '黄豆�?, 'base', 'bean',
     FlavorProfile.create(25, 0, 60, 0, 10, 20, 0, 0, 0), PhysicalProperties.create(5, 5, 5, 6),
     ['crucian', 'carp', 'grass_carp', 'bream'], ['spring', 'summer', 'autumn'],
     SimpleTemperatureRange.create(10, 35), DosageRange.create(10, 25, 'g'),
-    '豆香浓郁，蛋白质含量高', 6));
-  list.push(makeIng('peanut_flour', '花生粉', 'base', 'bean',
+    '豆香浓郁，蛋白质含量�?, 6));
+  list.push(makeIng('peanut_flour', '花生�?, 'base', 'bean',
     FlavorProfile.create(35, 0, 70, 0, 0, 10, 0, 0, 0), PhysicalProperties.create(5, 4, 5, 6),
     ['carp', 'grass_carp', 'catla'], ['spring', 'summer', 'autumn'],
     SimpleTemperatureRange.create(15, 35), DosageRange.create(10, 30, 'g'),
     '南方钓鲮鱼必备，香味浓郁', 10));
-  list.push(makeIng('sesame_flour', '芝麻粉', 'base', 'bean',
+  list.push(makeIng('sesame_flour', '芝麻�?, 'base', 'bean',
     FlavorProfile.create(20, 0, 85, 0, 0, 0, 0, 0, 0), PhysicalProperties.create(6, 3, 4, 7),
     ['crucian', 'carp', 'bream'], ['spring', 'summer', 'autumn', 'winter'],
     SimpleTemperatureRange.create(5, 35), DosageRange.create(5, 15, 'g'),
-    '香味穿透力强', 15));
-  // 特殊基础饵
-  list.push(makeIng('bread_crumb', '面包糠', 'base', 'grain',
+    '香味穿透力�?, 15));
+  // 特殊基础�?
+  list.push(makeIng('bread_crumb', '面包�?, 'base', 'grain',
     FlavorProfile.create(35, 0, 40, 0, 0, 10, 0, 0, 0), PhysicalProperties.create(7, 2, 3, 8),
     ['crucian', 'carp', 'bream'], ['spring', 'summer', 'autumn', 'winter'],
     SimpleTemperatureRange.create(5, 35), DosageRange.create(10, 40, 'g'),
-    '雾化好，增加蓬松度', 8));
+    '雾化好，增加蓬松�?, 8));
   list.push(makeIng('rice_bran', '米糠', 'base', 'grain',
     FlavorProfile.create(20, 0, 35, 0, 5, 0, 0, 0, 5), PhysicalProperties.create(8, 1, 2, 9),
     ['crucian', 'carp', 'bream', 'grass_carp'], ['spring', 'summer', 'autumn', 'winter'],
@@ -192,25 +192,25 @@ function getBaseIngredients(): Ingredient[] {
     FlavorProfile.create(20, 0, 55, 0, 15, 10, 0, 0, 0), PhysicalProperties.create(5, 4, 5, 6),
     ['carp', 'crucian', 'grass_carp', 'bream'], ['spring', 'summer', 'autumn', 'winter'],
     SimpleTemperatureRange.create(5, 35), DosageRange.create(20, 60, 'g'),
-    '经典基础饵，发酵后效果更佳', 5));
+    '经典基础饵，发酵后效果更�?, 5));
   return list;
 }
 
 // ==================== 蛋白质类原料 ====================
 function getProteinIngredients(): Ingredient[] {
   const list: Ingredient[] = [];
-  // 水产类
+  // 水产�?
   list.push(makeIng('fish_meal', '鱼粉', 'protein', 'aquatic',
     FlavorProfile.create(0, 100, 0, 0, 30, 0, 0, 0, 0), PhysicalProperties.create(5, 5, 6, 5),
     ['catfish', 'snakehead', 'mandarin_fish', 'yellow_catfish', 'carp'], ['spring', 'summer', 'autumn', 'winter'],
     SimpleTemperatureRange.create(5, 35), DosageRange.create(5, 20, 'g'),
-    '腥味浓郁，肉食性鱼类最爱', 15));
+    '腥味浓郁，肉食性鱼类最�?, 15));
   list.push(makeIng('shrimp_powder', '虾粉', 'protein', 'aquatic',
     FlavorProfile.create(0, 90, 0, 0, 20, 0, 0, 0, 0), PhysicalProperties.create(6, 4, 5, 6),
     ['crucian', 'carp', 'bream', 'catfish', 'yellow_catfish'], ['spring', 'summer', 'autumn', 'winter'],
     SimpleTemperatureRange.create(5, 35), DosageRange.create(5, 15, 'g'),
     '鲜腥味，诱鱼效果极佳', 25));
-  list.push(makeIng('snail_powder', '螺蛳粉', 'protein', 'aquatic',
+  list.push(makeIng('snail_powder', '螺蛳�?, 'protein', 'aquatic',
     FlavorProfile.create(0, 85, 0, 0, 25, 0, 0, 0, 5), PhysicalProperties.create(4, 5, 7, 4),
     ['black_carp', 'carp', 'crucian', 'bream'], ['spring', 'summer', 'autumn'],
     SimpleTemperatureRange.create(10, 35), DosageRange.create(10, 30, 'g'),
@@ -219,45 +219,45 @@ function getProteinIngredients(): Ingredient[] {
     FlavorProfile.create(0, 80, 0, 0, 15, 0, 0, 0, 0), PhysicalProperties.create(5, 4, 5, 5),
     ['carp', 'crucian', 'catfish', 'yellow_catfish'], ['summer', 'autumn'],
     SimpleTemperatureRange.create(15, 35), DosageRange.create(3, 10, 'g'),
-    '鲜味浓郁，价格较高', 40));
-  list.push(makeIng('squid_powder', '鱿鱼粉', 'protein', 'aquatic',
+    '鲜味浓郁，价格较�?, 40));
+  list.push(makeIng('squid_powder', '鱿鱼�?, 'protein', 'aquatic',
     FlavorProfile.create(0, 85, 0, 0, 20, 0, 0, 0, 0), PhysicalProperties.create(5, 5, 5, 5),
     ['catfish', 'snakehead', 'mandarin_fish', 'carp'], ['spring', 'summer', 'autumn'],
     SimpleTemperatureRange.create(10, 35), DosageRange.create(5, 15, 'g'),
-    '海鲜腥味，穿透力强', 30));
-  list.push(makeIng('clam_powder', '蚬子粉', 'protein', 'aquatic',
+    '海鲜腥味，穿透力�?, 30));
+  list.push(makeIng('clam_powder', '蚬子�?, 'protein', 'aquatic',
     FlavorProfile.create(0, 75, 0, 0, 15, 0, 0, 0, 0), PhysicalProperties.create(5, 4, 6, 5),
     ['crucian', 'carp', 'bream', 'black_carp'], ['spring', 'summer', 'autumn'],
     SimpleTemperatureRange.create(10, 35), DosageRange.create(5, 20, 'g'),
-    '河鲜味，野钓效果好', 18));
-  // 昆虫类
-  list.push(makeIng('silkworm_pupa_powder', '蚕蛹粉', 'protein', 'insect',
+    '河鲜味，野钓效果�?, 18));
+  // 昆虫�?
+  list.push(makeIng('silkworm_pupa_powder', '蚕蛹�?, 'protein', 'insect',
     FlavorProfile.create(0, 95, 0, 0, 35, 0, 0, 0, 0), PhysicalProperties.create(5, 5, 5, 5),
     ['carp', 'crucian', 'grass_carp', 'bream', 'catfish'], ['spring', 'summer', 'autumn'],
     SimpleTemperatureRange.create(10, 35), DosageRange.create(5, 20, 'g'),
-    '腥味极浓，蛋白质含量高', 20));
-  list.push(makeIng('earthworm_powder', '蚯蚓粉', 'protein', 'insect',
+    '腥味极浓，蛋白质含量�?, 20));
+  list.push(makeIng('earthworm_powder', '蚯蚓�?, 'protein', 'insect',
     FlavorProfile.create(0, 90, 0, 0, 40, 0, 0, 0, 5), PhysicalProperties.create(5, 5, 5, 5),
     ['crucian', 'carp', 'catfish', 'yellow_catfish', 'eel'], ['spring', 'summer', 'autumn', 'winter'],
     SimpleTemperatureRange.create(5, 35), DosageRange.create(5, 15, 'g'),
-    '万能腥饵，四季可用', 25));
-  list.push(makeIng('bloodworm_powder', '红虫粉', 'protein', 'insect',
+    '万能腥饵，四季可�?, 25));
+  list.push(makeIng('bloodworm_powder', '红虫�?, 'protein', 'insect',
     FlavorProfile.create(0, 95, 0, 0, 30, 0, 0, 0, 0), PhysicalProperties.create(5, 5, 5, 5),
     ['crucian', 'carp', 'bream'], ['autumn', 'winter', 'spring'],
     SimpleTemperatureRange.create(0, 20), DosageRange.create(3, 10, 'g'),
-    '冬季神饵，低温效果极佳', 35));
-  list.push(makeIng('fly_maggot_powder', '蝇蛆粉', 'protein', 'insect',
+    '冬季神饵，低温效果极�?, 35));
+  list.push(makeIng('fly_maggot_powder', '蝇蛆�?, 'protein', 'insect',
     FlavorProfile.create(0, 85, 0, 0, 45, 0, 0, 0, 10), PhysicalProperties.create(5, 5, 5, 5),
     ['catfish', 'yellow_catfish', 'snakehead', 'carp'], ['summer', 'autumn'],
     SimpleTemperatureRange.create(15, 35), DosageRange.create(5, 15, 'g'),
-    '腥臭味重，肉食鱼最爱', 15));
-  // 动物类
+    '腥臭味重，肉食鱼最�?, 15));
+  // 动物�?
   list.push(makeIng('bone_meal', '骨粉', 'protein', 'animal',
     FlavorProfile.create(0, 60, 0, 0, 20, 0, 0, 0, 0), PhysicalProperties.create(3, 5, 8, 3),
     ['catfish', 'snakehead', 'carp'], ['spring', 'summer', 'autumn'],
     SimpleTemperatureRange.create(10, 35), DosageRange.create(5, 15, 'g'),
-    '增加比重，补充钙质', 8));
-  list.push(makeIng('blood_meal', '血粉', 'protein', 'animal',
+    '增加比重，补充钙�?, 8));
+  list.push(makeIng('blood_meal', '血�?, 'protein', 'animal',
     FlavorProfile.create(0, 100, 0, 0, 50, 0, 0, 0, 0), PhysicalProperties.create(4, 6, 6, 4),
     ['catfish', 'snakehead', 'yellow_catfish', 'mandarin_fish'], ['spring', 'summer', 'autumn'],
     SimpleTemperatureRange.create(10, 35), DosageRange.create(3, 10, 'g'),
@@ -266,12 +266,12 @@ function getProteinIngredients(): Ingredient[] {
     FlavorProfile.create(0, 90, 0, 0, 35, 0, 0, 0, 0), PhysicalProperties.create(4, 5, 6, 4),
     ['catfish', 'yellow_catfish', 'snakehead', 'carp'], ['spring', 'summer', 'autumn'],
     SimpleTemperatureRange.create(10, 35), DosageRange.create(5, 15, 'g'),
-    '腥味浓郁，营养丰富', 25));
-  list.push(makeIng('egg_yolk_powder', '蛋黄粉', 'protein', 'animal',
+    '腥味浓郁，营养丰�?, 25));
+  list.push(makeIng('egg_yolk_powder', '蛋黄�?, 'protein', 'animal',
     FlavorProfile.create(30, 50, 40, 0, 10, 0, 0, 0, 0), PhysicalProperties.create(4, 6, 5, 4),
     ['crucian', 'carp', 'bream'], ['spring', 'summer', 'autumn', 'winter'],
     SimpleTemperatureRange.create(5, 35), DosageRange.create(5, 15, 'g'),
-    '蛋香味，增加适口性', 20));
+    '蛋香味，增加适口�?, 20));
   list.push(makeIng('milk_powder', '奶粉', 'protein', 'animal',
     FlavorProfile.create(50, 30, 30, 0, 0, 0, 20, 0, 0), PhysicalProperties.create(5, 5, 4, 6),
     ['crucian', 'carp', 'bream', 'grass_carp'], ['spring', 'summer', 'autumn', 'winter'],
@@ -284,38 +284,38 @@ function getProteinIngredients(): Ingredient[] {
 // ==================== 添加剂类原料 ====================
 function getAdditiveIngredients(): Ingredient[] {
   const list: Ingredient[] = [];
-  // 诱食剂
-  list.push(makeIng('dmpt', 'DMPT诱食剂', 'additive', 'attractant',
+  // 诱食�?
+  list.push(makeIng('dmpt', 'DMPT诱食�?, 'additive', 'attractant',
     FlavorProfile.create(0, 50, 0, 0, 0, 0, 0, 0, 0), PhysicalProperties.create(10, 1, 1, 10),
     ['crucian', 'carp', 'bream', 'grass_carp', 'catfish'], ['spring', 'summer', 'autumn', 'winter'],
     SimpleTemperatureRange.create(0, 40), DosageRange.create(0.5, 3, 'g'),
-    '强效诱食剂，用量要控制', 50));
-  list.push(makeIng('betaine', '甜菜碱', 'additive', 'attractant',
+    '强效诱食剂，用量要控�?, 50));
+  list.push(makeIng('betaine', '甜菜�?, 'additive', 'attractant',
     FlavorProfile.create(30, 20, 0, 0, 0, 0, 0, 0, 0), PhysicalProperties.create(10, 1, 1, 10),
     ['crucian', 'carp', 'bream', 'grass_carp'], ['spring', 'summer', 'autumn', 'winter'],
     SimpleTemperatureRange.create(0, 40), DosageRange.create(1, 5, 'g'),
     '天然诱食剂，安全有效', 40));
-  list.push(makeIng('amino_acid', '氨基酸', 'additive', 'attractant',
+  list.push(makeIng('amino_acid', '氨基�?, 'additive', 'attractant',
     FlavorProfile.create(20, 40, 0, 0, 0, 0, 0, 0, 0), PhysicalProperties.create(10, 1, 1, 10),
     ['crucian', 'carp', 'bream', 'grass_carp', 'catfish'], ['spring', 'summer', 'autumn', 'winter'],
     SimpleTemperatureRange.create(0, 40), DosageRange.create(1, 5, 'g'),
     '增强饵料鲜味', 35));
-  // 香精类
+  // 香精�?
   list.push(makeIng('vanilla_essence', '香草香精', 'additive', 'essence',
     FlavorProfile.create(80, 0, 60, 0, 0, 0, 30, 0, 0), PhysicalProperties.create(10, 1, 1, 10),
     ['crucian', 'carp', 'bream'], ['spring', 'summer', 'autumn'],
     SimpleTemperatureRange.create(10, 35), DosageRange.create(1, 5, 'ml'),
-    '甜香味，夏季效果好', 15));
+    '甜香味，夏季效果�?, 15));
   list.push(makeIng('strawberry_essence', '草莓香精', 'additive', 'essence',
     FlavorProfile.create(90, 0, 50, 0, 0, 0, 40, 0, 0), PhysicalProperties.create(10, 1, 1, 10),
     ['crucian', 'carp', 'bream', 'grass_carp'], ['spring', 'summer', 'autumn'],
     SimpleTemperatureRange.create(10, 35), DosageRange.create(1, 5, 'ml'),
-    '果香浓郁，鲫鱼最爱', 15));
+    '果香浓郁，鲫鱼最�?, 15));
   list.push(makeIng('banana_essence', '香蕉香精', 'additive', 'essence',
     FlavorProfile.create(85, 0, 55, 0, 0, 0, 35, 0, 0), PhysicalProperties.create(10, 1, 1, 10),
     ['crucian', 'carp', 'grass_carp'], ['summer', 'autumn'],
     SimpleTemperatureRange.create(15, 35), DosageRange.create(1, 5, 'ml'),
-    '热天效果好', 15));
+    '热天效果�?, 15));
   list.push(makeIng('honey_essence', '蜂蜜香精', 'additive', 'essence',
     FlavorProfile.create(95, 0, 40, 0, 0, 0, 50, 0, 0), PhysicalProperties.create(10, 1, 1, 10),
     ['crucian', 'carp', 'bream', 'grass_carp'], ['spring', 'summer', 'autumn'],
@@ -325,34 +325,34 @@ function getAdditiveIngredients(): Ingredient[] {
     FlavorProfile.create(0, 30, 0, 0, 0, 0, 0, 80, 0), PhysicalProperties.create(10, 1, 1, 10),
     ['crucian', 'carp', 'grass_carp', 'bream'], ['spring', 'summer', 'autumn', 'winter'],
     SimpleTemperatureRange.create(5, 35), DosageRange.create(1, 5, 'ml'),
-    '蒜香味，穿透力强', 12));
+    '蒜香味，穿透力�?, 12));
   list.push(makeIng('anise_essence', '茴香香精', 'additive', 'essence',
     FlavorProfile.create(20, 0, 30, 0, 0, 0, 0, 70, 0), PhysicalProperties.create(10, 1, 1, 10),
     ['crucian', 'carp', 'bream'], ['autumn', 'winter', 'spring'],
     SimpleTemperatureRange.create(0, 25), DosageRange.create(1, 3, 'ml'),
-    '冬季效果好', 15));
+    '冬季效果�?, 15));
   list.push(makeIng('fishy_essence', '腥香香精', 'additive', 'essence',
     FlavorProfile.create(0, 90, 0, 0, 20, 0, 0, 0, 0), PhysicalProperties.create(10, 1, 1, 10),
     ['catfish', 'yellow_catfish', 'snakehead', 'carp'], ['spring', 'summer', 'autumn', 'winter'],
     SimpleTemperatureRange.create(5, 35), DosageRange.create(1, 5, 'ml'),
-    '浓腥味，肉食鱼专用', 20));
+    '浓腥味，肉食鱼专�?, 20));
   // 酸类
-  list.push(makeIng('citric_acid', '柠檬酸', 'additive', 'acid',
+  list.push(makeIng('citric_acid', '柠檬�?, 'additive', 'acid',
     FlavorProfile.create(30, 0, 0, 80, 0, 0, 0, 0, 0), PhysicalProperties.create(10, 1, 1, 10),
     ['silver_carp', 'bighead_carp', 'crucian'], ['summer', 'autumn'],
     SimpleTemperatureRange.create(15, 35), DosageRange.create(1, 5, 'g'),
-    '酸味，鲢鳙最爱', 10));
+    '酸味，鲢鳙最�?, 10));
   list.push(makeIng('lactic_acid', '乳酸', 'additive', 'acid',
     FlavorProfile.create(20, 0, 0, 70, 0, 0, 0, 0, 0), PhysicalProperties.create(10, 1, 1, 10),
     ['silver_carp', 'bighead_carp'], ['summer', 'autumn'],
     SimpleTemperatureRange.create(15, 35), DosageRange.create(1, 5, 'ml'),
-    '发酵酸味，鲢鳙专用', 15));
+    '发酵酸味，鲢鳙专�?, 15));
   list.push(makeIng('acetic_acid', '醋酸', 'additive', 'acid',
     FlavorProfile.create(0, 0, 0, 90, 0, 0, 0, 0, 10), PhysicalProperties.create(10, 1, 1, 10),
     ['silver_carp', 'bighead_carp'], ['summer', 'autumn'],
     SimpleTemperatureRange.create(15, 35), DosageRange.create(1, 3, 'ml'),
-    '酸臭味，大头鱼最爱', 5));
-  // 调味料
+    '酸臭味，大头鱼最�?, 5));
+  // 调味�?
   list.push(makeIng('white_sugar', '白糖', 'additive', 'condiment',
     FlavorProfile.create(100, 0, 0, 0, 0, 0, 50, 0, 0), PhysicalProperties.create(10, 1, 1, 10),
     ['crucian', 'carp', 'bream', 'grass_carp'], ['spring', 'summer', 'autumn'],
@@ -362,17 +362,17 @@ function getAdditiveIngredients(): Ingredient[] {
     FlavorProfile.create(90, 0, 20, 0, 0, 0, 40, 0, 0), PhysicalProperties.create(10, 1, 1, 10),
     ['crucian', 'carp', 'bream'], ['spring', 'summer', 'autumn'],
     SimpleTemperatureRange.create(10, 35), DosageRange.create(5, 20, 'g'),
-    '红糖香甜，效果独特', 5));
+    '红糖香甜，效果独�?, 5));
   list.push(makeIng('honey', '蜂蜜', 'additive', 'condiment',
     FlavorProfile.create(95, 0, 30, 0, 0, 0, 60, 0, 0), PhysicalProperties.create(8, 3, 2, 8),
     ['crucian', 'carp', 'bream', 'grass_carp'], ['spring', 'summer', 'autumn'],
     SimpleTemperatureRange.create(10, 35), DosageRange.create(5, 20, 'ml'),
-    '天然甜味，增加粘性', 30));
+    '天然甜味，增加粘�?, 30));
   list.push(makeIng('salt', '食盐', 'additive', 'condiment',
     FlavorProfile.create(0, 20, 0, 0, 0, 0, 0, 0, 0), PhysicalProperties.create(10, 1, 1, 10),
     ['crucian', 'carp', 'bream', 'catfish'], ['spring', 'summer', 'autumn', 'winter'],
     SimpleTemperatureRange.create(0, 40), DosageRange.create(1, 5, 'g'),
-    '少量增鲜，过量有害', 2));
+    '少量增鲜，过量有�?, 2));
   list.push(makeIng('msg', '味精', 'additive', 'condiment',
     FlavorProfile.create(20, 50, 0, 0, 0, 0, 0, 0, 0), PhysicalProperties.create(10, 1, 1, 10),
     ['crucian', 'carp', 'bream', 'catfish'], ['spring', 'summer', 'autumn', 'winter'],
@@ -388,8 +388,8 @@ function getAdditiveIngredients(): Ingredient[] {
     FlavorProfile.create(10, 0, 90, 0, 0, 0, 0, 0, 0), PhysicalProperties.create(8, 2, 2, 8),
     ['crucian', 'carp', 'bream'], ['spring', 'summer', 'autumn', 'winter'],
     SimpleTemperatureRange.create(5, 35), DosageRange.create(2, 10, 'ml'),
-    '香味浓郁，增加诱鱼效果', 25));
-  list.push(makeIng('peanut_oil', '花生油', 'additive', 'oil',
+    '香味浓郁，增加诱鱼效�?, 25));
+  list.push(makeIng('peanut_oil', '花生�?, 'additive', 'oil',
     FlavorProfile.create(10, 0, 70, 0, 0, 0, 0, 0, 0), PhysicalProperties.create(8, 2, 2, 8),
     ['carp', 'grass_carp', 'catla'], ['spring', 'summer', 'autumn'],
     SimpleTemperatureRange.create(10, 35), DosageRange.create(2, 10, 'ml'),
@@ -398,7 +398,7 @@ function getAdditiveIngredients(): Ingredient[] {
     FlavorProfile.create(0, 80, 0, 0, 20, 0, 0, 0, 0), PhysicalProperties.create(8, 2, 2, 8),
     ['catfish', 'snakehead', 'yellow_catfish', 'carp'], ['spring', 'summer', 'autumn', 'winter'],
     SimpleTemperatureRange.create(5, 35), DosageRange.create(2, 10, 'ml'),
-    '腥味浓，肉食鱼专用', 30));
+    '腥味浓，肉食鱼专�?, 30));
   return list;
 }
 
@@ -406,59 +406,59 @@ function getAdditiveIngredients(): Ingredient[] {
 // ==================== 状态调节类原料 ====================
 function getStateIngredients(): Ingredient[] {
   const list: Ingredient[] = [];
-  // 雾化类
-  list.push(makeIng('drawing_powder', '拉丝粉', 'state', 'atomizer',
+  // 雾化�?
+  list.push(makeIng('drawing_powder', '拉丝�?, 'state', 'atomizer',
     FlavorProfile.create(0, 0, 0, 0, 0, 0, 0, 0, 0), PhysicalProperties.create(2, 9, 5, 3),
     ['crucian', 'carp', 'bream'], ['spring', 'summer', 'autumn', 'winter'],
     SimpleTemperatureRange.create(0, 40), DosageRange.create(5, 20, 'g'),
     '增加拉丝效果，必备状态饵', 15));
-  list.push(makeIng('snowflake_powder', '雪花粉', 'state', 'atomizer',
+  list.push(makeIng('snowflake_powder', '雪花�?, 'state', 'atomizer',
     FlavorProfile.create(10, 0, 10, 0, 0, 0, 0, 0, 0), PhysicalProperties.create(9, 1, 2, 10),
     ['crucian', 'carp', 'bream', 'grass_carp'], ['spring', 'summer', 'autumn', 'winter'],
     SimpleTemperatureRange.create(0, 40), DosageRange.create(10, 40, 'g'),
-    '极轻，雾化极好', 12));
+    '极轻，雾化极�?, 12));
   list.push(makeIng('light_bran', '轻麸', 'state', 'atomizer',
     FlavorProfile.create(15, 0, 20, 0, 0, 0, 0, 0, 0), PhysicalProperties.create(9, 1, 1, 10),
     ['crucian', 'carp', 'bream'], ['spring', 'summer', 'autumn', 'winter'],
     SimpleTemperatureRange.create(0, 40), DosageRange.create(10, 30, 'g'),
-    '超轻雾化，钓浮必备', 18));
+    '超轻雾化，钓浮必�?, 18));
   list.push(makeIng('puffed_corn', '膨化玉米', 'state', 'atomizer',
     FlavorProfile.create(50, 0, 40, 0, 0, 0, 15, 0, 0), PhysicalProperties.create(8, 2, 2, 9),
     ['crucian', 'carp', 'grass_carp', 'bream'], ['spring', 'summer', 'autumn'],
     SimpleTemperatureRange.create(10, 35), DosageRange.create(15, 40, 'g'),
-    '玉米香，雾化好', 10));
-  // 增重类
+    '玉米香，雾化�?, 10));
+  // 增重�?
   list.push(makeIng('sticky_powder', '粘粉', 'state', 'weight',
     FlavorProfile.create(0, 0, 0, 0, 0, 0, 0, 0, 0), PhysicalProperties.create(1, 10, 7, 1),
     ['crucian', 'carp', 'bream', 'catfish'], ['spring', 'summer', 'autumn', 'winter'],
     SimpleTemperatureRange.create(0, 40), DosageRange.create(5, 20, 'g'),
     '增加粘性，钓底必备', 10));
-  list.push(makeIng('heavy_powder', '比重粉', 'state', 'weight',
+  list.push(makeIng('heavy_powder', '比重�?, 'state', 'weight',
     FlavorProfile.create(0, 0, 0, 0, 0, 0, 0, 0, 0), PhysicalProperties.create(1, 5, 10, 1),
     ['carp', 'bream', 'catfish', 'black_carp'], ['spring', 'summer', 'autumn', 'winter'],
     SimpleTemperatureRange.create(0, 40), DosageRange.create(10, 30, 'g'),
-    '增加比重，快速到底', 8));
-  list.push(makeIng('pellet_powder', '颗粒粉', 'state', 'weight',
+    '增加比重，快速到�?, 8));
+  list.push(makeIng('pellet_powder', '颗粒�?, 'state', 'weight',
     FlavorProfile.create(30, 40, 30, 0, 10, 0, 0, 0, 0), PhysicalProperties.create(4, 5, 6, 5),
     ['carp', 'crucian', 'grass_carp', 'bream'], ['spring', 'summer', 'autumn', 'winter'],
     SimpleTemperatureRange.create(5, 35), DosageRange.create(20, 50, 'g'),
     '颗粒饲料磨粉，养殖塘必备', 8));
-  // 粘合剂
-  list.push(makeIng('glutinous_rice_flour', '糯米粉', 'binder', 'grain',
+  // 粘合�?
+  list.push(makeIng('glutinous_rice_flour', '糯米�?, 'binder', 'grain',
     FlavorProfile.create(25, 0, 20, 0, 0, 10, 0, 0, 0), PhysicalProperties.create(2, 9, 6, 2),
     ['crucian', 'carp', 'bream'], ['spring', 'summer', 'autumn', 'winter'],
     SimpleTemperatureRange.create(0, 40), DosageRange.create(5, 20, 'g'),
-    '天然粘合剂，增加粘性', 6));
-  list.push(makeIng('tapioca_starch', '木薯粉', 'binder', 'tuber',
+    '天然粘合剂，增加粘�?, 6));
+  list.push(makeIng('tapioca_starch', '木薯�?, 'binder', 'tuber',
     FlavorProfile.create(15, 0, 10, 0, 0, 5, 0, 0, 0), PhysicalProperties.create(2, 8, 5, 2),
     ['crucian', 'carp', 'bream'], ['spring', 'summer', 'autumn', 'winter'],
     SimpleTemperatureRange.create(0, 40), DosageRange.create(5, 15, 'g'),
     '粘性强，透明度高', 8));
-  list.push(makeIng('corn_starch', '玉米淀粉', 'binder', 'grain',
+  list.push(makeIng('corn_starch', '玉米淀�?, 'binder', 'grain',
     FlavorProfile.create(20, 0, 15, 0, 0, 5, 0, 0, 0), PhysicalProperties.create(2, 8, 5, 2),
     ['crucian', 'carp', 'bream', 'grass_carp'], ['spring', 'summer', 'autumn', 'winter'],
     SimpleTemperatureRange.create(0, 40), DosageRange.create(5, 15, 'g'),
-    '增加粘性，调节状态', 5));
+    '增加粘性，调节状�?, 5));
   return list;
 }
 
@@ -466,17 +466,17 @@ function getStateIngredients(): Ingredient[] {
 // ==================== 天然原料 ====================
 function getNaturalIngredients(): Ingredient[] {
   const list: Ingredient[] = [];
-  // 谷物种子类
-  list.push(makeIng('corn_kernel', '玉米粒', 'natural', 'seed',
+  // 谷物种子�?
+  list.push(makeIng('corn_kernel', '玉米�?, 'natural', 'seed',
     FlavorProfile.create(70, 0, 40, 0, 0, 0, 30, 0, 0), PhysicalProperties.create(1, 1, 8, 1),
     ['carp', 'grass_carp', 'bream', 'crucian'], ['spring', 'summer', 'autumn'],
     SimpleTemperatureRange.create(15, 35), DosageRange.create(20, 100, 'g'),
-    '钓大鱼神饵，可发酵使用', 3));
+    '钓大鱼神饵，可发酵使�?, 3));
   list.push(makeIng('wheat_kernel', '麦粒', 'natural', 'seed',
     FlavorProfile.create(40, 0, 35, 0, 0, 0, 10, 0, 0), PhysicalProperties.create(1, 1, 7, 1),
     ['carp', 'crucian', 'bream', 'grass_carp'], ['spring', 'summer', 'autumn'],
     SimpleTemperatureRange.create(10, 35), DosageRange.create(20, 100, 'g'),
-    '发酵后效果极佳', 3));
+    '发酵后效果极�?, 3));
   list.push(makeIng('rice_grain', '米粒', 'natural', 'seed',
     FlavorProfile.create(30, 0, 25, 0, 0, 0, 0, 0, 0), PhysicalProperties.create(1, 1, 6, 1),
     ['crucian', 'carp', 'bream'], ['spring', 'summer', 'autumn', 'winter'],
@@ -486,134 +486,134 @@ function getNaturalIngredients(): Ingredient[] {
     FlavorProfile.create(35, 0, 30, 0, 0, 0, 0, 0, 0), PhysicalProperties.create(1, 1, 7, 1),
     ['carp', 'crucian', 'bream'], ['summer', 'autumn'],
     SimpleTemperatureRange.create(15, 35), DosageRange.create(20, 80, 'g'),
-    '发酵后酒香浓郁', 4));
-  // 植物类
+    '发酵后酒香浓�?, 4));
+  // 植物�?
   list.push(makeIng('tender_grass', '嫩草', 'natural', 'plant',
     FlavorProfile.create(20, 0, 30, 0, 0, 0, 0, 0, 0), PhysicalProperties.create(1, 1, 2, 1),
     ['grass_carp'], ['spring', 'summer', 'autumn'],
     SimpleTemperatureRange.create(15, 35), DosageRange.create(50, 200, 'g'),
     '草鱼最爱，新鲜为佳', 0));
-  list.push(makeIng('reed_core', '芦苇芯', 'natural', 'plant',
+  list.push(makeIng('reed_core', '芦苇�?, 'natural', 'plant',
     FlavorProfile.create(25, 0, 25, 0, 0, 0, 0, 0, 0), PhysicalProperties.create(1, 1, 2, 1),
     ['grass_carp'], ['spring', 'summer'],
     SimpleTemperatureRange.create(15, 35), DosageRange.create(30, 100, 'g'),
-    '草鱼专用，嫩芯效果最好', 0));
-  list.push(makeIng('water_hyacinth', '水葫芦', 'natural', 'plant',
+    '草鱼专用，嫩芯效果最�?, 0));
+  list.push(makeIng('water_hyacinth', '水葫�?, 'natural', 'plant',
     FlavorProfile.create(15, 0, 20, 0, 0, 0, 0, 0, 0), PhysicalProperties.create(1, 1, 2, 1),
     ['grass_carp', 'bream'], ['summer', 'autumn'],
     SimpleTemperatureRange.create(20, 35), DosageRange.create(30, 100, 'g'),
-    '水生植物，草鱼喜欢', 0));
+    '水生植物，草鱼喜�?, 0));
   list.push(makeIng('mulberry_leaf', '桑叶', 'natural', 'plant',
     FlavorProfile.create(20, 0, 25, 0, 0, 0, 0, 0, 0), PhysicalProperties.create(1, 1, 2, 1),
     ['grass_carp'], ['spring', 'summer'],
     SimpleTemperatureRange.create(15, 35), DosageRange.create(20, 80, 'g'),
-    '草鱼喜欢，嫩叶为佳', 0));
-  list.push(makeIng('pumpkin_flower', '南瓜花', 'natural', 'plant',
+    '草鱼喜欢，嫩叶为�?, 0));
+  list.push(makeIng('pumpkin_flower', '南瓜�?, 'natural', 'plant',
     FlavorProfile.create(40, 0, 30, 0, 0, 0, 20, 0, 0), PhysicalProperties.create(1, 1, 1, 1),
     ['grass_carp', 'crucian'], ['summer', 'autumn'],
     SimpleTemperatureRange.create(20, 35), DosageRange.create(10, 50, 'g'),
     '花香味，草鱼喜欢', 0));
-  // 果实类
+  // 果实�?
   list.push(makeIng('mulberry', '桑葚', 'natural', 'seed',
     FlavorProfile.create(80, 0, 40, 10, 0, 0, 50, 0, 0), PhysicalProperties.create(2, 2, 4, 2),
     ['grass_carp', 'carp', 'crucian'], ['spring', 'summer'],
     SimpleTemperatureRange.create(15, 35), DosageRange.create(20, 80, 'g'),
-    '桑葚季节神饵，草鱼最爱', 10));
+    '桑葚季节神饵，草鱼最�?, 10));
   list.push(makeIng('grape', '葡萄', 'natural', 'seed',
     FlavorProfile.create(85, 0, 35, 5, 0, 0, 45, 0, 0), PhysicalProperties.create(1, 1, 5, 1),
     ['grass_carp', 'carp'], ['summer', 'autumn'],
     SimpleTemperatureRange.create(20, 35), DosageRange.create(10, 50, 'g'),
-    '果香浓郁，大鱼喜欢', 15));
+    '果香浓郁，大鱼喜�?, 15));
   list.push(makeIng('cherry', '樱桃', 'natural', 'seed',
     FlavorProfile.create(80, 0, 30, 5, 0, 0, 40, 0, 0), PhysicalProperties.create(1, 1, 4, 1),
     ['grass_carp', 'carp'], ['spring', 'summer'],
     SimpleTemperatureRange.create(15, 35), DosageRange.create(10, 40, 'g'),
-    '果香味，季节性使用', 20));
+    '果香味，季节性使�?, 20));
   return list;
 }
 
 
-// ==================== 活饵类 ====================
+// ==================== 活饵�?====================
 function getLiveIngredients(): Ingredient[] {
   const list: Ingredient[] = [];
-  // 蠕虫类
+  // 蠕虫�?
   list.push(makeIng('earthworm', '蚯蚓', 'live', 'worm',
     FlavorProfile.create(0, 100, 0, 0, 50, 0, 0, 0, 10), PhysicalProperties.create(1, 1, 5, 1),
     ['crucian', 'carp', 'catfish', 'yellow_catfish', 'eel', 'snakehead'], ['spring', 'summer', 'autumn', 'winter'],
-    SimpleTemperatureRange.create(0, 35), DosageRange.create(5, 30, '条'),
+    SimpleTemperatureRange.create(0, 35), DosageRange.create(5, 30, '�?),
     '万能饵，四季可用', 5));
   list.push(makeIng('bloodworm', '红虫', 'live', 'worm',
     FlavorProfile.create(0, 100, 0, 0, 40, 0, 0, 0, 0), PhysicalProperties.create(1, 1, 3, 1),
     ['crucian', 'carp', 'bream'], ['autumn', 'winter', 'spring'],
-    SimpleTemperatureRange.create(0, 20), DosageRange.create(10, 50, '条'),
-    '冬季神饵，低温效果极佳', 20));
+    SimpleTemperatureRange.create(0, 20), DosageRange.create(10, 50, '�?),
+    '冬季神饵，低温效果极�?, 20));
   list.push(makeIng('maggot', '蛆虫', 'live', 'worm',
     FlavorProfile.create(0, 90, 0, 0, 60, 0, 0, 0, 20), PhysicalProperties.create(1, 1, 3, 1),
     ['catfish', 'yellow_catfish', 'snakehead', 'carp'], ['summer', 'autumn'],
-    SimpleTemperatureRange.create(15, 35), DosageRange.create(10, 50, '条'),
-    '腥臭味重，肉食鱼最爱', 8));
-  list.push(makeIng('mealworm', '面包虫', 'live', 'worm',
+    SimpleTemperatureRange.create(15, 35), DosageRange.create(10, 50, '�?),
+    '腥臭味重，肉食鱼最�?, 8));
+  list.push(makeIng('mealworm', '面包�?, 'live', 'worm',
     FlavorProfile.create(0, 85, 0, 0, 35, 0, 0, 0, 0), PhysicalProperties.create(1, 1, 4, 1),
     ['crucian', 'carp', 'catfish', 'yellow_catfish'], ['spring', 'summer', 'autumn'],
-    SimpleTemperatureRange.create(10, 35), DosageRange.create(5, 30, '条'),
+    SimpleTemperatureRange.create(10, 35), DosageRange.create(5, 30, '�?),
     '蛋白质高，效果好', 15));
   list.push(makeIng('leech', '蚂蟥', 'live', 'worm',
     FlavorProfile.create(0, 95, 0, 0, 55, 0, 0, 0, 15), PhysicalProperties.create(1, 1, 4, 1),
     ['catfish', 'snakehead', 'yellow_catfish', 'eel'], ['summer', 'autumn'],
-    SimpleTemperatureRange.create(15, 35), DosageRange.create(3, 15, '条'),
+    SimpleTemperatureRange.create(15, 35), DosageRange.create(3, 15, '�?),
     '肉食鱼专用，效果极佳', 25));
-  // 水生类
+  // 水生�?
   list.push(makeIng('live_shrimp', '活虾', 'live', 'aquatic',
     FlavorProfile.create(0, 95, 0, 0, 30, 0, 0, 0, 0), PhysicalProperties.create(1, 1, 5, 1),
     ['mandarin_fish', 'snakehead', 'catfish', 'carp', 'bass'], ['spring', 'summer', 'autumn'],
-    SimpleTemperatureRange.create(10, 35), DosageRange.create(5, 20, '只'),
-    '鲜活诱鱼，效果极佳', 30));
-  list.push(makeIng('live_loach', '活泥鳅', 'live', 'baitfish',
+    SimpleTemperatureRange.create(10, 35), DosageRange.create(5, 20, '�?),
+    '鲜活诱鱼，效果极�?, 30));
+  list.push(makeIng('live_loach', '活泥�?, 'live', 'baitfish',
     FlavorProfile.create(0, 100, 0, 0, 40, 0, 0, 0, 0), PhysicalProperties.create(1, 1, 6, 1),
     ['snakehead', 'mandarin_fish', 'catfish', 'pike'], ['spring', 'summer', 'autumn'],
-    SimpleTemperatureRange.create(10, 35), DosageRange.create(3, 10, '条'),
+    SimpleTemperatureRange.create(10, 35), DosageRange.create(3, 10, '�?),
     '钓大型肉食鱼神饵', 40));
-  list.push(makeIng('live_crucian', '活鲫鱼', 'live', 'baitfish',
+  list.push(makeIng('live_crucian', '活鲫�?, 'live', 'baitfish',
     FlavorProfile.create(0, 100, 0, 0, 35, 0, 0, 0, 0), PhysicalProperties.create(1, 1, 7, 1),
     ['snakehead', 'mandarin_fish', 'catfish', 'pike'], ['spring', 'summer', 'autumn'],
-    SimpleTemperatureRange.create(10, 35), DosageRange.create(1, 5, '条'),
+    SimpleTemperatureRange.create(10, 35), DosageRange.create(1, 5, '�?),
     '钓大型肉食鱼', 50));
   list.push(makeIng('snail', '螺蛳', 'live', 'aquatic',
     FlavorProfile.create(0, 80, 0, 0, 30, 0, 0, 0, 5), PhysicalProperties.create(1, 1, 9, 1),
     ['black_carp', 'carp', 'crucian'], ['spring', 'summer', 'autumn'],
-    SimpleTemperatureRange.create(10, 35), DosageRange.create(10, 50, '个'),
+    SimpleTemperatureRange.create(10, 35), DosageRange.create(10, 50, '�?),
     '青鱼最爱，砸碎使用', 5));
   list.push(makeIng('river_mussel', '河蚌', 'live', 'aquatic',
     FlavorProfile.create(0, 85, 0, 0, 35, 0, 0, 0, 5), PhysicalProperties.create(1, 1, 8, 1),
     ['black_carp', 'carp', 'catfish'], ['spring', 'summer', 'autumn'],
-    SimpleTemperatureRange.create(10, 35), DosageRange.create(5, 20, '个'),
-    '青鱼、鲤鱼喜欢', 8));
-  list.push(makeIng('crayfish', '小龙虾', 'live', 'aquatic',
+    SimpleTemperatureRange.create(10, 35), DosageRange.create(5, 20, '�?),
+    '青鱼、鲤鱼喜�?, 8));
+  list.push(makeIng('crayfish', '小龙�?, 'live', 'aquatic',
     FlavorProfile.create(0, 90, 0, 0, 35, 0, 0, 0, 0), PhysicalProperties.create(1, 1, 7, 1),
     ['snakehead', 'catfish', 'mandarin_fish', 'carp'], ['summer', 'autumn'],
-    SimpleTemperatureRange.create(15, 35), DosageRange.create(3, 15, '只'),
+    SimpleTemperatureRange.create(15, 35), DosageRange.create(3, 15, '�?),
     '去壳使用，肉食鱼喜欢', 15));
-  // 昆虫类
+  // 昆虫�?
   list.push(makeIng('grasshopper', '蚂蚱', 'live', 'insect',
     FlavorProfile.create(0, 80, 0, 0, 30, 0, 0, 0, 0), PhysicalProperties.create(1, 1, 3, 1),
     ['grass_carp', 'carp', 'crucian'], ['summer', 'autumn'],
-    SimpleTemperatureRange.create(15, 35), DosageRange.create(5, 20, '只'),
-    '草鱼最爱，秋季效果好', 0));
+    SimpleTemperatureRange.create(15, 35), DosageRange.create(5, 20, '�?),
+    '草鱼最爱，秋季效果�?, 0));
   list.push(makeIng('cricket', '蟋蟀', 'live', 'insect',
     FlavorProfile.create(0, 75, 0, 0, 25, 0, 0, 0, 0), PhysicalProperties.create(1, 1, 3, 1),
     ['grass_carp', 'carp', 'crucian'], ['summer', 'autumn'],
-    SimpleTemperatureRange.create(15, 35), DosageRange.create(5, 20, '只'),
+    SimpleTemperatureRange.create(15, 35), DosageRange.create(5, 20, '�?),
     '草鱼喜欢', 0));
-  list.push(makeIng('silkworm', '蚕宝宝', 'live', 'insect',
+  list.push(makeIng('silkworm', '蚕宝�?, 'live', 'insect',
     FlavorProfile.create(0, 85, 0, 0, 35, 0, 0, 0, 0), PhysicalProperties.create(1, 1, 4, 1),
     ['grass_carp', 'carp', 'crucian', 'catfish'], ['spring', 'summer'],
-    SimpleTemperatureRange.create(15, 35), DosageRange.create(5, 20, '条'),
+    SimpleTemperatureRange.create(15, 35), DosageRange.create(5, 20, '�?),
     '蛋白质高，效果好', 20));
   return list;
 }
 
 
-// ==================== 颗粒饲料类 ====================
+// ==================== 颗粒饲料�?====================
 function getPelletIngredients(): Ingredient[] {
   const list: Ingredient[] = [];
   list.push(makeIng('crucian_pellet', '鲫鱼颗粒', 'pellet', 'other',
@@ -635,36 +635,36 @@ function getPelletIngredients(): Ingredient[] {
     FlavorProfile.create(10, 80, 20, 0, 40, 0, 0, 0, 0), PhysicalProperties.create(3, 5, 8, 4),
     ['catfish', 'yellow_catfish', 'snakehead'], ['spring', 'summer', 'autumn'],
     SimpleTemperatureRange.create(10, 35), DosageRange.create(30, 100, 'g'),
-    '肉食鱼专用，腥味重', 15));
+    '肉食鱼专用，腥味�?, 15));
   list.push(makeIng('tilapia_pellet', '罗非颗粒', 'pellet', 'other',
     FlavorProfile.create(30, 60, 25, 0, 25, 0, 0, 0, 0), PhysicalProperties.create(3, 5, 7, 4),
     ['tilapia', 'carp', 'crucian'], ['spring', 'summer', 'autumn'],
     SimpleTemperatureRange.create(15, 35), DosageRange.create(30, 100, 'g'),
-    '南方常用，罗非专用', 8));
+    '南方常用，罗非专�?, 8));
   list.push(makeIng('mixed_pellet', '混合颗粒', 'pellet', 'other',
     FlavorProfile.create(35, 50, 30, 0, 15, 0, 0, 0, 0), PhysicalProperties.create(3, 5, 7, 4),
     ['crucian', 'carp', 'bream', 'grass_carp'], ['spring', 'summer', 'autumn', 'winter'],
     SimpleTemperatureRange.create(5, 35), DosageRange.create(30, 100, 'g'),
-    '通用颗粒，适合多种鱼', 8));
+    '通用颗粒，适合多种�?, 8));
   list.push(makeIng('floating_pellet', '浮水颗粒', 'pellet', 'other',
     FlavorProfile.create(40, 45, 30, 0, 10, 0, 0, 0, 0), PhysicalProperties.create(8, 3, 1, 7),
     ['grass_carp', 'carp', 'crucian'], ['summer', 'autumn'],
     SimpleTemperatureRange.create(15, 35), DosageRange.create(20, 80, 'g'),
-    '钓浮专用，草鱼喜欢', 12));
+    '钓浮专用，草鱼喜�?, 12));
   list.push(makeIng('sinking_pellet', '沉底颗粒', 'pellet', 'other',
     FlavorProfile.create(35, 55, 30, 0, 20, 0, 0, 0, 0), PhysicalProperties.create(2, 6, 9, 3),
     ['carp', 'bream', 'catfish', 'black_carp'], ['spring', 'summer', 'autumn', 'winter'],
     SimpleTemperatureRange.create(5, 35), DosageRange.create(30, 100, 'g'),
-    '钓底专用，快速到底', 10));
+    '钓底专用，快速到�?, 10));
   return list;
 }
 
 
-// ==================== 邪修类原料（民间偏方） ====================
+// ==================== 邪修类原料（民间偏方�?====================
 function getFolkIngredients(): Ingredient[] {
   const list: Ingredient[] = [];
-  // 药品类
-  list.push(makeFolkIng('huoxiang_zhengqi', '藿香正气水', 'medicine',
+  // 药品�?
+  list.push(makeFolkIng('huoxiang_zhengqi', '藿香正气�?, 'medicine',
     FlavorProfile.create(10, 30, 40, 0, 0, 0, 0, 90, 20), PhysicalProperties.create(10, 1, 1, 10),
     ['crucian', 'carp', 'bream', 'grass_carp'], ['summer', 'autumn'],
     SimpleTemperatureRange.create(20, 35), DosageRange.create(5, 20, 'ml'),
@@ -677,34 +677,34 @@ function getFolkIngredients(): Ingredient[] {
   list.push(makeFolkIng('vitamin_b', '维生素B', 'medicine',
     FlavorProfile.create(10, 20, 0, 0, 0, 0, 0, 30, 0), PhysicalProperties.create(10, 1, 1, 10),
     ['crucian', 'carp', 'bream', 'grass_carp'], ['spring', 'summer', 'autumn', 'winter'],
-    SimpleTemperatureRange.create(5, 35), DosageRange.create(2, 10, '片'),
-    '钓鱼论坛', 'safe', '据说能增加诱鱼效果', 5));
-  list.push(makeFolkIng('fengyoujing', '风油精', 'medicine',
+    SimpleTemperatureRange.create(5, 35), DosageRange.create(2, 10, '�?),
+    '钓鱼论坛', 'safe', '据说能增加诱鱼效�?, 5));
+  list.push(makeFolkIng('fengyoujing', '风油�?, 'medicine',
     FlavorProfile.create(0, 0, 0, 0, 0, 0, 0, 95, 0), PhysicalProperties.create(10, 1, 1, 10),
     ['crucian', 'carp', 'grass_carp'], ['summer'],
-    SimpleTemperatureRange.create(25, 35), DosageRange.create(1, 5, '滴'),
+    SimpleTemperatureRange.create(25, 35), DosageRange.create(1, 5, '�?),
     '民间偏方', 'experimental', '清凉味，夏季高温尝试', 3));
-  list.push(makeFolkIng('qingliangyu', '清凉油', 'medicine',
+  list.push(makeFolkIng('qingliangyu', '清凉�?, 'medicine',
     FlavorProfile.create(0, 0, 0, 0, 0, 0, 0, 90, 0), PhysicalProperties.create(8, 2, 2, 8),
     ['crucian', 'carp', 'grass_carp'], ['summer'],
     SimpleTemperatureRange.create(25, 35), DosageRange.create(1, 3, 'g'),
     '民间偏方', 'experimental', '清凉味，高温天气尝试', 5));
-  list.push(makeFolkIng('niuhuang_jiedu', '牛黄解毒片', 'medicine',
+  list.push(makeFolkIng('niuhuang_jiedu', '牛黄解毒�?, 'medicine',
     FlavorProfile.create(0, 20, 0, 0, 0, 0, 0, 70, 30), PhysicalProperties.create(10, 1, 1, 10),
     ['crucian', 'carp', 'bream'], ['summer', 'autumn'],
-    SimpleTemperatureRange.create(20, 35), DosageRange.create(1, 3, '片'),
-    '民间偏方', 'experimental', '苦味药香，效果存疑', 8));
-  // 饮料类
+    SimpleTemperatureRange.create(20, 35), DosageRange.create(1, 3, '�?),
+    '民间偏方', 'experimental', '苦味药香，效果存�?, 8));
+  // 饮料�?
   list.push(makeFolkIng('beer', '啤酒', 'beverage',
     FlavorProfile.create(30, 20, 40, 10, 0, 0, 0, 50, 10), PhysicalProperties.create(10, 1, 1, 10),
     ['crucian', 'carp', 'bream', 'grass_carp'], ['summer', 'autumn'],
     SimpleTemperatureRange.create(15, 35), DosageRange.create(50, 200, 'ml'),
-    '民间常用', 'safe', '酒香味，开饵常用', 5));
+    '民间常用', 'safe', '酒香味，开饵常�?, 5));
   list.push(makeFolkIng('baijiu', '白酒', 'beverage',
     FlavorProfile.create(20, 10, 50, 0, 0, 0, 0, 80, 0), PhysicalProperties.create(10, 1, 1, 10),
     ['crucian', 'carp', 'bream', 'grass_carp'], ['spring', 'summer', 'autumn', 'winter'],
     SimpleTemperatureRange.create(5, 35), DosageRange.create(10, 50, 'ml'),
-    '传统方法', 'safe', '泡制酒米必备，曲香浓郁', 15));
+    '传统方法', 'safe', '泡制酒米必备，曲香浓�?, 15));
   list.push(makeFolkIng('cola', '可乐', 'beverage',
     FlavorProfile.create(90, 0, 30, 20, 0, 0, 60, 0, 0), PhysicalProperties.create(10, 1, 1, 10),
     ['crucian', 'carp', 'grass_carp'], ['summer', 'autumn'],
@@ -714,22 +714,22 @@ function getFolkIngredients(): Ingredient[] {
     FlavorProfile.create(85, 0, 20, 30, 0, 0, 55, 0, 0), PhysicalProperties.create(10, 1, 1, 10),
     ['crucian', 'carp', 'grass_carp'], ['summer', 'autumn'],
     SimpleTemperatureRange.create(15, 35), DosageRange.create(30, 100, 'ml'),
-    '网络偏方', 'safe', '柠檬甜味，夏季尝试', 3));
+    '网络偏方', 'safe', '柠檬甜味，夏季尝�?, 3));
   list.push(makeFolkIng('redbull', '红牛', 'beverage',
     FlavorProfile.create(70, 0, 20, 10, 0, 0, 40, 30, 0), PhysicalProperties.create(10, 1, 1, 10),
     ['crucian', 'carp', 'grass_carp'], ['summer', 'autumn'],
     SimpleTemperatureRange.create(15, 35), DosageRange.create(30, 100, 'ml'),
-    '网络偏方', 'experimental', '功能饮料，效果存疑', 8));
+    '网络偏方', 'experimental', '功能饮料，效果存�?, 8));
   list.push(makeFolkIng('milk', '牛奶', 'beverage',
     FlavorProfile.create(50, 30, 30, 0, 0, 0, 20, 0, 0), PhysicalProperties.create(9, 2, 2, 9),
     ['crucian', 'carp', 'bream'], ['spring', 'summer', 'autumn'],
     SimpleTemperatureRange.create(10, 35), DosageRange.create(30, 100, 'ml'),
-    '民间偏方', 'safe', '奶香味，开饵使用', 5));
+    '民间偏方', 'safe', '奶香味，开饵使�?, 5));
   list.push(makeFolkIng('yogurt', '酸奶', 'beverage',
     FlavorProfile.create(60, 20, 25, 40, 0, 0, 30, 0, 0), PhysicalProperties.create(8, 3, 2, 8),
     ['crucian', 'carp', 'bream', 'silver_carp'], ['summer', 'autumn'],
     SimpleTemperatureRange.create(15, 35), DosageRange.create(30, 100, 'ml'),
-    '民间偏方', 'safe', '酸奶香，鲢鳙也喜欢', 8));
+    '民间偏方', 'safe', '酸奶香，鲢鳙也喜�?, 8));
   list.push(makeFolkIng('coconut_milk', '椰汁', 'beverage',
     FlavorProfile.create(70, 0, 50, 0, 0, 0, 40, 0, 0), PhysicalProperties.create(9, 2, 2, 9),
     ['crucian', 'carp', 'grass_carp'], ['summer', 'autumn'],
@@ -740,12 +740,12 @@ function getFolkIngredients(): Ingredient[] {
     FlavorProfile.create(0, 60, 0, 20, 0, 0, 0, 50, 100), PhysicalProperties.create(10, 1, 1, 10),
     ['crucian', 'carp', 'catfish', 'silver_carp', 'bighead_carp'], ['summer', 'autumn'],
     SimpleTemperatureRange.create(15, 35), DosageRange.create(10, 50, 'ml'),
-    '民间偏方', 'caution', '臭味极重，鲢鳙最爱', 10));
-  list.push(makeFolkIng('fermented_bean_curd', '腐乳汁', 'fermented',
+    '民间偏方', 'caution', '臭味极重，鲢鳙最�?, 10));
+  list.push(makeFolkIng('fermented_bean_curd', '腐乳�?, 'fermented',
     FlavorProfile.create(20, 40, 30, 10, 0, 0, 0, 60, 40), PhysicalProperties.create(9, 2, 2, 9),
     ['crucian', 'carp', 'bream', 'silver_carp'], ['spring', 'summer', 'autumn'],
     SimpleTemperatureRange.create(10, 35), DosageRange.create(10, 40, 'ml'),
-    '民间常用', 'safe', '发酵香味，效果不错', 5));
+    '民间常用', 'safe', '发酵香味，效果不�?, 5));
   list.push(makeFolkIng('soy_sauce', '酱油', 'condiment',
     FlavorProfile.create(30, 50, 20, 0, 0, 0, 0, 40, 0), PhysicalProperties.create(10, 1, 1, 10),
     ['crucian', 'carp', 'bream'], ['spring', 'summer', 'autumn', 'winter'],
@@ -765,8 +765,8 @@ function getFolkIngredients(): Ingredient[] {
     FlavorProfile.create(0, 95, 0, 0, 35, 0, 0, 30, 20), PhysicalProperties.create(10, 1, 1, 10),
     ['crucian', 'carp', 'catfish', 'yellow_catfish'], ['spring', 'summer', 'autumn'],
     SimpleTemperatureRange.create(10, 35), DosageRange.create(5, 15, 'ml'),
-    '东南亚调料', 'safe', '鱼腥味极浓', 20));
-  list.push(makeFolkIng('doubanjiang', '豆瓣酱', 'fermented',
+    '东南亚调�?, 'safe', '鱼腥味极�?, 20));
+  list.push(makeFolkIng('doubanjiang', '豆瓣�?, 'fermented',
     FlavorProfile.create(20, 40, 30, 0, 0, 0, 0, 70, 10), PhysicalProperties.create(7, 4, 3, 7),
     ['crucian', 'carp', 'bream'], ['spring', 'summer', 'autumn'],
     SimpleTemperatureRange.create(10, 35), DosageRange.create(5, 20, 'g'),
@@ -781,37 +781,37 @@ function getFolkIngredients(): Ingredient[] {
     FlavorProfile.create(0, 95, 0, 0, 55, 0, 0, 0, 30), PhysicalProperties.create(2, 3, 6, 2),
     ['catfish', 'snakehead', 'yellow_catfish', 'eel'], ['spring', 'summer', 'autumn'],
     SimpleTemperatureRange.create(10, 35), DosageRange.create(20, 100, 'g'),
-    '民间偏方', 'safe', '腥臭味，钓鲶鱼神饵', 5));
+    '民间偏方', 'safe', '腥臭味，钓鲶鱼神�?, 5));
   list.push(makeFolkIng('duck_liver', '鸭肝', 'animal',
     FlavorProfile.create(0, 90, 0, 0, 45, 0, 0, 0, 15), PhysicalProperties.create(2, 4, 7, 2),
     ['catfish', 'snakehead', 'yellow_catfish'], ['spring', 'summer', 'autumn'],
     SimpleTemperatureRange.create(10, 35), DosageRange.create(20, 80, 'g'),
-    '民间偏方', 'safe', '腥味浓，肉食鱼喜欢', 8));
-  list.push(makeFolkIng('soap', '肥皂水', 'other',
+    '民间偏方', 'safe', '腥味浓，肉食鱼喜�?, 8));
+  list.push(makeFolkIng('soap', '肥皂�?, 'other',
     FlavorProfile.create(30, 0, 50, 0, 0, 0, 0, 80, 0), PhysicalProperties.create(10, 1, 1, 10),
     ['crucian', 'carp'], ['summer'],
     SimpleTemperatureRange.create(25, 35), DosageRange.create(5, 15, 'ml'),
-    '网络偏方', 'experimental', '香皂味，效果存疑，慎用', 2));
+    '网络偏方', 'experimental', '香皂味，效果存疑，慎�?, 2));
   list.push(makeFolkIng('toothpaste', '牙膏', 'other',
     FlavorProfile.create(40, 0, 30, 0, 0, 0, 0, 90, 0), PhysicalProperties.create(8, 3, 2, 8),
     ['crucian', 'carp'], ['summer'],
     SimpleTemperatureRange.create(25, 35), DosageRange.create(3, 10, 'g'),
-    '网络偏方', 'experimental', '薄荷味，效果存疑，慎用', 3));
+    '网络偏方', 'experimental', '薄荷味，效果存疑，慎�?, 3));
   list.push(makeFolkIng('garlic_juice', '蒜汁', 'condiment',
     FlavorProfile.create(0, 30, 0, 0, 0, 0, 0, 100, 10), PhysicalProperties.create(10, 1, 1, 10),
     ['crucian', 'carp', 'grass_carp', 'bream'], ['spring', 'summer', 'autumn', 'winter'],
     SimpleTemperatureRange.create(5, 35), DosageRange.create(5, 20, 'ml'),
-    '民间常用', 'safe', '蒜香味，穿透力强', 3));
+    '民间常用', 'safe', '蒜香味，穿透力�?, 3));
   list.push(makeFolkIng('ginger_juice', '姜汁', 'condiment',
     FlavorProfile.create(10, 20, 0, 0, 0, 0, 0, 80, 0), PhysicalProperties.create(10, 1, 1, 10),
     ['crucian', 'carp', 'catfish'], ['autumn', 'winter', 'spring'],
     SimpleTemperatureRange.create(5, 25), DosageRange.create(5, 15, 'ml'),
-    '民间偏方', 'safe', '姜辣味，冬季效果好', 3));
-  list.push(makeFolkIng('chili_oil', '辣椒油', 'oil',
+    '民间偏方', 'safe', '姜辣味，冬季效果�?, 3));
+  list.push(makeFolkIng('chili_oil', '辣椒�?, 'oil',
     FlavorProfile.create(0, 20, 40, 0, 0, 0, 0, 90, 0), PhysicalProperties.create(8, 2, 2, 8),
     ['crucian', 'carp'], ['summer', 'autumn'],
     SimpleTemperatureRange.create(15, 35), DosageRange.create(3, 10, 'ml'),
-    '四川偏方', 'experimental', '辣味刺激，效果存疑', 5));
+    '四川偏方', 'experimental', '辣味刺激，效果存�?, 5));
   list.push(makeFolkIng('vinegar', '陈醋', 'fermented',
     FlavorProfile.create(10, 0, 0, 100, 0, 0, 0, 30, 10), PhysicalProperties.create(10, 1, 1, 10),
     ['silver_carp', 'bighead_carp', 'crucian'], ['summer', 'autumn'],
@@ -826,7 +826,7 @@ function getFolkIngredients(): Ingredient[] {
     FlavorProfile.create(60, 20, 50, 20, 0, 0, 40, 50, 10), PhysicalProperties.create(6, 4, 5, 6),
     ['crucian', 'carp', 'bream', 'grass_carp'], ['spring', 'summer', 'autumn'],
     SimpleTemperatureRange.create(10, 35), DosageRange.create(30, 100, 'g'),
-    '传统方法', 'safe', '酒香浓郁，经典配方', 5));
+    '传统方法', 'safe', '酒香浓郁，经典配�?, 5));
   list.push(makeFolkIng('musk', '麝香', 'medicine',
     FlavorProfile.create(0, 30, 60, 0, 0, 0, 0, 100, 0), PhysicalProperties.create(10, 1, 1, 10),
     ['crucian', 'carp', 'bream', 'grass_carp'], ['spring', 'summer', 'autumn', 'winter'],
@@ -836,7 +836,7 @@ function getFolkIngredients(): Ingredient[] {
     FlavorProfile.create(0, 0, 30, 0, 0, 0, 0, 95, 0), PhysicalProperties.create(10, 1, 1, 10),
     ['crucian', 'carp', 'bream'], ['summer', 'autumn'],
     SimpleTemperatureRange.create(15, 35), DosageRange.create(0.5, 2, 'g'),
-    '中药材', 'caution', '清凉香味，穿透力强', 50));
+    '中药�?, 'caution', '清凉香味，穿透力�?, 50));
   return list;
 }
 

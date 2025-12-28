@@ -47,7 +47,7 @@ const QWEATHER_HOST = 'mv2pg7eyad.re.qweatherapi.com';
 const QWEATHER_KEY = 'YOUR_QWEATHER_API_KEY';  // 请替换为你的和风天气API Key
 // ============================================================
 
-// 缓存的天气数据
+// 缓存的天气数�?
 let cachedWeather: WeatherData = {
   temperature: 0,
   weatherText: '--',
@@ -60,14 +60,14 @@ let cachedWeather: WeatherData = {
   isValid: false
 };
 
-// 等待定位完成（最多等待5秒）
+// 等待定位完成（最多等�?秒）
 async function waitForLocation(): Promise<boolean> {
   const TAG = 'WeatherService';
   let location = LocationService.currentLocation;
   
   // 如果已经有有效位置，直接返回
   if (location.isValid && location.latitude !== 30.5844) {
-    console.info(TAG, `位置已就绪: ${location.latitude}, ${location.longitude}`);
+    console.info(TAG, `位置已就�? ${location.latitude}, ${location.longitude}`);
     return true;
   }
   
@@ -76,14 +76,14 @@ async function waitForLocation(): Promise<boolean> {
   for (let i = 0; i < 10; i++) {
     await new Promise<void>((resolve) => setTimeout(resolve, 500));
     location = LocationService.currentLocation;
-    // 检查是否获取到真实位置（非默认武汉坐标）
+    // 检查是否获取到真实位置（非默认武汉坐标�?
     if (location.isValid && (location.latitude !== 30.5844 || location.longitude !== 114.2986)) {
       console.info(TAG, `定位成功: ${location.latitude}, ${location.longitude}`);
       return true;
     }
   }
   
-  console.warn(TAG, '定位超时，使用当前位置');
+  console.warn(TAG, '定位超时，使用当前位�?);
   return location.isValid;
 }
 
@@ -91,14 +91,14 @@ async function waitForLocation(): Promise<boolean> {
 export async function fetchWeather(): Promise<WeatherData> {
   const TAG = 'WeatherService';
   
-  // 先等待定位完成
+  // 先等待定位完�?
   const hasLocation = await waitForLocation();
   const location = LocationService.currentLocation;
 
   console.info(TAG, `fetchWeather: hasLocation=${hasLocation}, lat=${location.latitude}, lng=${location.longitude}`);
 
   if (!hasLocation || !location.isValid) {
-    console.error(TAG, '无法获取位置，使用模拟天气');
+    console.error(TAG, '无法获取位置，使用模拟天�?);
     return getMockWeather();
   }
 
@@ -165,9 +165,9 @@ async function fetchQWeather(lat: number, lng: number): Promise<WeatherData> {
         console.info(TAG, `天气: ${now.text}`);
         console.info(TAG, `湿度: ${now.humidity}%`);
         console.info(TAG, `风向: ${now.windDir}`);
-        console.info(TAG, `风速: ${now.windSpeed}km/h`);
+        console.info(TAG, `风�? ${now.windSpeed}km/h`);
         console.info(TAG, `气压: ${now.pressure}hPa`);
-        console.info(TAG, `能见度: ${now.vis}km`);
+        console.info(TAG, `能见�? ${now.vis}km`);
         console.info(TAG, `==========================================`);
         
         const result: WeatherData = {
@@ -212,12 +212,12 @@ function getMockWeather(): WeatherData {
   if (month === 12 || month === 1 || month === 2) {
     temp = 2 + (seed % 8);
     if (hour >= 12 && hour <= 15) temp += 3;
-    weatherText = (seed % 3 === 0) ? '阴' : '多云';
+    weatherText = (seed % 3 === 0) ? '�? : '多云';
     humidity = 65 + (seed % 20);
   } else if (month >= 6 && month <= 8) {
     temp = 28 + (seed % 10);
     if (hour >= 12 && hour <= 15) temp += 3;
-    weatherText = (seed % 2 === 0) ? '晴' : '多云';
+    weatherText = (seed % 2 === 0) ? '�? : '多云';
     humidity = 55 + (seed % 25);
   } else if (month >= 3 && month <= 5) {
     temp = 12 + (seed % 12);
@@ -225,11 +225,11 @@ function getMockWeather(): WeatherData {
     humidity = 50 + (seed % 25);
   } else {
     temp = 15 + (seed % 12);
-    weatherText = (seed % 3 === 0) ? '晴' : '多云';
+    weatherText = (seed % 3 === 0) ? '�? : '多云';
     humidity = 50 + (seed % 20);
   }
 
-  const windDirs: string[] = ['北风', '东北风', '东风', '东南风', '南风', '西南风', '西风', '西北风'];
+  const windDirs: string[] = ['北风', '东北�?, '东风', '东南�?, '南风', '西南�?, '西风', '西北�?];
 
   cachedWeather = {
     temperature: temp,
@@ -246,20 +246,20 @@ function getMockWeather(): WeatherData {
   return cachedWeather;
 }
 
-// 获取缓存的天气
+// 获取缓存的天�?
 export function getCachedWeather(): WeatherData {
   return cachedWeather;
 }
 
-// 强制刷新天气（先刷新位置，再获取天气）
+// 强制刷新天气（先刷新位置，再获取天气�?
 export async function refreshWeather(): Promise<WeatherData> {
   const TAG = 'WeatherService';
   console.info(TAG, '强制刷新天气数据...');
   
-  // 先刷新位置
+  // 先刷新位�?
   try {
     await LocationService.refreshLocation();
-    console.info(TAG, '位置已刷新');
+    console.info(TAG, '位置已刷�?);
   } catch (err) {
     console.warn(TAG, `刷新位置失败: ${err}`);
   }
@@ -277,31 +277,31 @@ export function calculateFishingIndex(weather: WeatherData): FishingIndex {
   let score = 100;
   const TAG = 'FishingIndex';
 
-  // 温度评分（最佳15-25°C）
+  // 温度评分（最�?5-25°C�?
   if (weather.temperature < 5 || weather.temperature > 35) {
     score -= 40;
   } else if (weather.temperature < 10 || weather.temperature > 30) {
     score -= 20;
   } else if (weather.temperature < 15 || weather.temperature > 25) {
-    score -= 5;  // 10-15°C 或 25-30°C 轻微扣分
+    score -= 5;  // 10-15°C �?25-30°C 轻微扣分
   } else {
-    score += 10;  // 15-25°C 最佳
+    score += 10;  // 15-25°C 最�?
   }
 
-  // 风速评分（最佳 < 8km/h）
+  // 风速评分（最�?< 8km/h�?
   if (weather.windSpeed > 25) {
     score -= 35;
   } else if (weather.windSpeed > 18) {
     score -= 25;
   } else if (weather.windSpeed > 12) {
-    score -= 15;  // 12-18km/h 中等风
+    score -= 15;  // 12-18km/h 中等�?
   } else if (weather.windSpeed > 8) {
     score -= 5;   // 8-12km/h 轻风
   } else {
-    score += 5;   // < 8km/h 微风最佳
+    score += 5;   // < 8km/h 微风最�?
   }
 
-  // 气压评分（最佳 1005-1025 hPa）
+  // 气压评分（最�?1005-1025 hPa�?
   if (weather.pressure >= 1005 && weather.pressure <= 1025) {
     score += 10;
   } else if (weather.pressure < 990 || weather.pressure > 1035) {
@@ -309,9 +309,9 @@ export function calculateFishingIndex(weather: WeatherData): FishingIndex {
   }
 
   // 天气状况评分
-  const badWeather: string[] = ['雨', '雪', '雷', '暴', '霾', '雾'];
-  const normalWeather: string[] = ['阴'];  // 阴天轻微扣分
-  const goodWeather: string[] = ['晴', '多云'];
+  const badWeather: string[] = ['�?, '�?, '�?, '�?, '�?, '�?];
+  const normalWeather: string[] = ['�?];  // 阴天轻微扣分
+  const goodWeather: string[] = ['�?, '多云'];
 
   if (badWeather.some((w: string) => weather.weatherText.includes(w))) {
     score -= 25;
@@ -321,7 +321,7 @@ export function calculateFishingIndex(weather: WeatherData): FishingIndex {
     score += 5;
   }
 
-  // 确保分数在合理范围
+  // 确保分数在合理范�?
   score = Math.max(0, Math.min(100, score));
 
   console.info(TAG, `Score=${score}, temp=${weather.temperature}, wind=${weather.windSpeed}, pressure=${weather.pressure}, weather=${weather.weatherText}`);
@@ -329,8 +329,8 @@ export function calculateFishingIndex(weather: WeatherData): FishingIndex {
   if (score >= 80) {
     return { level: '适宜', color: '#4CAF50', description: '天气条件非常适合钓鱼' };
   } else if (score >= 60) {
-    return { level: '一般', color: '#FF9800', description: '天气条件尚可，注意防护' };
+    return { level: '一�?, color: '#FF9800', description: '天气条件尚可，注意防�? };
   } else {
-    return { level: '不宜', color: '#F44336', description: '天气条件不佳，建议改日' };
+    return { level: '不宜', color: '#F44336', description: '天气条件不佳，建议改�? };
   }
 }

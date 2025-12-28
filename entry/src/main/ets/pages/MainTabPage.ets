@@ -1,6 +1,6 @@
 /**
- * 饵知道 - 主Tab页面
- * 底部5个Tab：首页、配方、+、日记、我的
+ * 饵知�?- 主Tab页面
+ * 底部5个Tab：首页、配方�?、日记、我�?
  */
 import { ThemeColors } from '../theme/ThemeColors';
 import { ThemeConstants } from '../theme/ThemeConstants';
@@ -75,19 +75,19 @@ struct MainTabPage {
 
       // 配方
       TabContent() {
-        this.PlaceholderPage('配方库', '浏览鱼饵配方')
+        this.PlaceholderPage('配方�?, '浏览鱼饵配方')
       }
       .tabBar(this.TabBarBuilder('配方', $r('app.media.Recipe'), $r('app.media.Recipes'), 1))
 
       // 中间+按钮
       TabContent() {
-        this.PlaceholderPage('智能生成', '一键生成配方')
+        this.PlaceholderPage('智能生成', '一键生成配�?)
       }
       .tabBar(this.CenterTabBuilder())
 
       // 日记
       TabContent() {
-        this.PlaceholderPage('渔获日记', '记录每一次收获')
+        this.PlaceholderPage('渔获日记', '记录每一次收�?)
       }
       .tabBar(this.TabBarBuilder('日记', $r('app.media.time'), $r('app.media.times'), 3))
 

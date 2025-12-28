@@ -1,5 +1,5 @@
 /**
- * 原料池
+ * 原料�?
  * 管理所有可用原料，支持多维度筛选和匹配
  */
 import { Ingredient, IngredientCategory, Season, getAllIngredients, getIngredientById } from '../../data/IngredientDatabase';
@@ -18,7 +18,7 @@ export class ScoredIngredient {
   }
 }
 
-// 原料池
+// 原料�?
 export class IngredientPool {
   private static instance: IngredientPool | null = null;
   private ingredients: Ingredient[] = [];
@@ -38,7 +38,7 @@ export class IngredientPool {
   }
 
   /**
-   * 初始化索引
+   * 初始化索�?
    */
   initialize(): void {
     if (this.initialized) return;
@@ -75,7 +75,7 @@ export class IngredientPool {
   }
 
   /**
-   * 按味型权重匹配原料
+   * 按味型权重匹配原�?
    */
   matchByFlavor(
     weights: FlavorWeights,
@@ -89,7 +89,7 @@ export class IngredientPool {
     for (let i = 0; i < candidateIds.length; i++) {
       const id = candidateIds[i];
 
-      // 排除已选原料
+      // 排除已选原�?
       let excluded = false;
       for (let j = 0; j < excludeIds.length; j++) {
         if (excludeIds[j] === id) {
@@ -115,7 +115,7 @@ export class IngredientPool {
         score += Math.min(fp.fishy, weights.fishy) * 0.3;
         if (fp.fishy > 70) reasons.push('腥味浓郁');
       } else if (weights.fishy < 30 && fp.fishy < 30) {
-        score += 20; // 都不需要腥味也是匹配
+        score += 20; // 都不需要腥味也是匹�?
       }
 
       // 香味匹配
@@ -142,10 +142,10 @@ export class IngredientPool {
         if (fp.stinky > 60) reasons.push('臭味独特');
       }
 
-      // 加入随机因子增加变化 (0-15分)
+      // 加入随机因子增加变化 (0-15�?
       score += Math.random() * 15;
 
-      // 应用用户偏好加成 (0-20分)
+      // 应用用户偏好加成 (0-20�?
       if (this.usePreference) {
         const prefLearner = getPreferenceLearner();
         if (prefLearner.isLoaded()) {
@@ -162,10 +162,10 @@ export class IngredientPool {
       scored.push(scoredIng);
     }
 
-    // 按分数排序
+    // 按分数排�?
     scored.sort((a: ScoredIngredient, b: ScoredIngredient): number => b.score - a.score);
 
-    // 返回前N个
+    // 返回前N�?
     const result: ScoredIngredient[] = [];
     const maxCount = Math.min(count, scored.length);
     for (let i = 0; i < maxCount; i++) {
@@ -176,7 +176,7 @@ export class IngredientPool {
 
 
   /**
-   * 按状态权重匹配原料
+   * 按状态权重匹配原�?
    */
   matchByState(
     weights: StateWeights,
@@ -191,7 +191,7 @@ export class IngredientPool {
     for (let i = 0; i < candidateIds.length; i++) {
       const id = candidateIds[i];
 
-      // 排除已选原料
+      // 排除已选原�?
       let excluded = false;
       for (let j = 0; j < excludeIds.length; j++) {
         if (excludeIds[j] === id) {
@@ -213,11 +213,11 @@ export class IngredientPool {
       if (weights.atomization > 60) {
         // 需要快雾化
         score += phys.atomization * 8;
-        if (phys.atomization > 7) reasons.push('雾化快');
+        if (phys.atomization > 7) reasons.push('雾化�?);
       } else if (weights.atomization < 40) {
         // 需要慢雾化
         score += (10 - phys.atomization) * 8;
-        if (phys.atomization < 4) reasons.push('雾化慢');
+        if (phys.atomization < 4) reasons.push('雾化�?);
       } else {
         score += 30; // 中等雾化
       }
@@ -233,10 +233,10 @@ export class IngredientPool {
       // 比重匹配
       if (weights.weight > 60) {
         score += phys.weight * 5;
-        if (phys.weight > 7) reasons.push('比重大');
+        if (phys.weight > 7) reasons.push('比重�?);
       } else if (weights.weight < 40) {
         score += (10 - phys.weight) * 5;
-        if (phys.weight < 4) reasons.push('比重轻');
+        if (phys.weight < 4) reasons.push('比重�?);
       }
 
       // 作钓方式特殊加分
@@ -314,7 +314,7 @@ export class IngredientPool {
       const ing = getIngredientById(id);
       if (ing === null) continue;
 
-      // 计算味型相似度
+      // 计算味型相似�?
       const scoredIng = new ScoredIngredient(ing);
       let similarity = 100;
 
@@ -348,7 +348,7 @@ export class IngredientPool {
     const original = getIngredientById(ingredientId);
     if (original === null) return [];
 
-    // 计算缺失的味型
+    // 计算缺失的味�?
     const missing = new FlavorWeights();
     missing.fishy = Math.max(0, targetWeights.fishy - original.flavorProfile.fishy);
     missing.fragrant = Math.max(0, targetWeights.fragrant - original.flavorProfile.fragrant);
@@ -356,18 +356,18 @@ export class IngredientPool {
     missing.sour = Math.max(0, targetWeights.sour - original.flavorProfile.sour);
     missing.stinky = Math.max(0, targetWeights.stinky - original.flavorProfile.stinky);
 
-    // 在所有原料中找能补充缺失味型的
+    // 在所有原料中找能补充缺失味型�?
     const complementary: ScoredIngredient[] = [];
 
     for (let i = 0; i < this.ingredients.length; i++) {
       const ing = this.ingredients[i];
       if (ing.id === ingredientId) continue;
-      if (ing.category === 'live' || ing.category === 'folk') continue; // 排除活饵和邪修
+      if (ing.category === 'live' || ing.category === 'folk') continue; // 排除活饵和邪�?
 
       const scoredIng = new ScoredIngredient(ing);
       let score = 0;
 
-      // 能补充缺失味型的得分高
+      // 能补充缺失味型的得分�?
       if (missing.fishy > 30 && ing.flavorProfile.fishy > 50) {
         score += ing.flavorProfile.fishy * 0.3;
       }
@@ -393,7 +393,7 @@ export class IngredientPool {
     const result: Ingredient[] = [];
     const maxCount = Math.min(count, complementary.length);
     for (let i = 0; i < maxCount; i++) {
-      if (complementary[i].score > 10) { // 只返回有意义的补充
+      if (complementary[i].score > 10) { // 只返回有意义的补�?
         result.push(complementary[i].ingredient);
       }
     }
@@ -409,7 +409,7 @@ export class IngredientPool {
   }
 
   /**
-   * 获取所有原料
+   * 获取所有原�?
    */
   getAllIngredients(): Ingredient[] {
     this.initialize();

@@ -1,6 +1,6 @@
 /**
- * 饵知道 - 鱼类新增页面
- * 用户自定义添加鱼种数据
+ * 饵知�?- 鱼类新增页面
+ * 用户自定义添加鱼种数�?
  */
 import { router } from '@kit.ArkUI';
 import { photoAccessHelper } from '@kit.MediaLibraryKit';
@@ -8,7 +8,7 @@ import { ThemeColors } from '../theme/ThemeColors';
 import { ThemeConstants } from '../theme/ThemeConstants';
 import { userDataService } from '../services/UserDataService';
 
-// 选项类
+// 选项�?
 class SelectOption {
   id: string = '';
   name: string = '';
@@ -47,16 +47,16 @@ struct FishAddPage {
   ];
 
   private feedingTypes: SelectOption[] = [
-    makeOption('herbivore', '草食性'),
-    makeOption('carnivore', '肉食性'),
-    makeOption('omnivore', '杂食性')
+    makeOption('herbivore', '草食�?),
+    makeOption('carnivore', '肉食�?),
+    makeOption('omnivore', '杂食�?)
   ];
 
   private waterLayers: SelectOption[] = [
     makeOption('surface', '上层'),
     makeOption('middle', '中层'),
     makeOption('bottom', '底层'),
-    makeOption('all', '全水层')
+    makeOption('all', '全水�?)
   ];
 
   private activityTimes: SelectOption[] = [
@@ -83,17 +83,17 @@ struct FishAddPage {
     makeOption('wheat', '小麦'),
     makeOption('pellet', '颗粒饲料'),
     makeOption('dough', '面饵'),
-    makeOption('shrimp', '虾'),
+    makeOption('shrimp', '�?),
     makeOption('snail', '螺蛳'),
     makeOption('grass', '水草'),
     makeOption('insect', '昆虫'),
     makeOption('fish', '小鱼'),
-    makeOption('commercial', '商品饵')
+    makeOption('commercial', '商品�?)
   ];
 
   build() {
     Column() {
-      // 顶部导航栏
+      // 顶部导航�?
       this.NavBar()
 
       // 表单内容
@@ -105,13 +105,13 @@ struct FishAddPage {
           // 鱼种名称
           this.FishNameSection()
 
-          // 英文名
+          // 英文�?
           this.FishNameEnSection()
 
           // 适合水域
           this.WaterTypeSection()
 
-          // 食性
+          // 食�?
           this.FeedingTypeSection()
 
           // 活动水层
@@ -126,7 +126,7 @@ struct FishAddPage {
           // 喜食饵料
           this.FavoriteFoodSection()
 
-          // 习性描述
+          // 习性描�?
           this.DescriptionSection()
 
           // 保存按钮
@@ -219,14 +219,14 @@ struct FishAddPage {
           .borderRadius(12)
           .border({ width: 1, color: ThemeColors.PRIMARY, style: BorderStyle.Dashed })
           .onClick(() => {
-            // 调用图片选择器
+            // 调用图片选择�?
             this.selectImageFromGallery();
           })
         }
 
         // 提示文字
         Column({ space: 4 }) {
-          Text('建议上传正方形图片')
+          Text('建议上传正方形图�?)
             .fontSize(12)
             .fontColor(ThemeColors.TEXT_MUTED)
 
@@ -251,7 +251,7 @@ struct FishAddPage {
   @Builder
   NavBar() {
     Row() {
-      Text('←')
+      Text('�?)
         .fontSize(24)
         .fontColor(ThemeColors.TEXT_PRIMARY)
         .onClick(() => router.back())
@@ -337,7 +337,7 @@ struct FishAddPage {
   @Builder
   FeedingTypeSection() {
     Column({ space: 8 }) {
-      Text('食性 *')
+      Text('食�?*')
         .fontSize(ThemeConstants.FONT_SIZE_SM)
         .fontColor(ThemeColors.TEXT_SECONDARY)
         .fontWeight(FontWeight.Medium)
@@ -456,7 +456,7 @@ struct FishAddPage {
   @Builder
   DescriptionSection() {
     Column({ space: 8 }) {
-      Text('习性描述')
+      Text('习性描�?)
         .fontSize(ThemeConstants.FONT_SIZE_SM)
         .fontColor(ThemeColors.TEXT_SECONDARY)
         .fontWeight(FontWeight.Medium)
@@ -583,12 +583,12 @@ struct FishAddPage {
     // 验证名称
     const trimmedName = this.fishName.trim();
     if (!trimmedName) {
-      this.showToastMessage('请输入鱼种名称');
+      this.showToastMessage('请输入鱼种名�?);
       return;
     }
 
     if (trimmedName.length < 2) {
-      this.showToastMessage('鱼种名称至少2个字符');
+      this.showToastMessage('鱼种名称至少2个字�?);
       return;
     }
 
@@ -601,7 +601,7 @@ struct FishAddPage {
     this.isSaving = true;
 
     try {
-      // 保存到 UserDataService（包含图片路径）
+      // 保存�?UserDataService（包含图片路径）
       await userDataService.addFish(
         trimmedName,
         this.fishNameEn.trim(),

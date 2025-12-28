@@ -1,6 +1,6 @@
 /**
- * 偏好学习器
- * 学习用户偏好，优化推荐结果
+ * 偏好学习�?
+ * 学习用户偏好，优化推荐结�?
  */
 import { preferences } from '@kit.ArkData';
 import { GeneratedRecipe, RecipeIngredient } from '../../common/types/RecipeTypes';
@@ -114,7 +114,7 @@ export class PreferenceStatistics {
   }
 }
 
-// 偏好学习器
+// 偏好学习�?
 export class PreferenceLearner {
   private static instance: PreferenceLearner | null = null;
   private preference: UserPreference = new UserPreference();
@@ -217,7 +217,7 @@ export class PreferenceLearner {
       await this.store.put('totalRecipesGenerated', this.preference.totalRecipesGenerated);
       await this.store.put('totalRecipesSaved', this.preference.totalRecipesSaved);
 
-      // 保存反馈历史 (只保留最近50条)
+      // 保存反馈历史 (只保留最�?0�?
       const recentFeedback = this.preference.feedbackHistory.slice(-50);
       const feedbackArr: Array<FeedbackSerializable> = [];
       for (let i = 0; i < recentFeedback.length; i++) {
@@ -267,7 +267,7 @@ export class PreferenceLearner {
   recordSave(recipe: GeneratedRecipe): void {
     this.preference.totalRecipesSaved++;
 
-    // 添加到保存列表
+    // 添加到保存列�?
     if (this.preference.savedRecipeIds.indexOf(recipe.id) < 0) {
       this.preference.savedRecipeIds.push(recipe.id);
       // 限制保存列表大小
@@ -280,7 +280,7 @@ export class PreferenceLearner {
     for (let i = 0; i < recipe.ingredients.length; i++) {
       const ing = recipe.ingredients[i];
       const count = this.preference.ingredientUsage.get(ing.id) || 0;
-      this.preference.ingredientUsage.set(ing.id, count + 2); // 保存的配方权重+2
+      this.preference.ingredientUsage.set(ing.id, count + 2); // 保存的配方权�?2
     }
 
     // 味型偏好权重更高
@@ -315,15 +315,15 @@ export class PreferenceLearner {
     this.preference.feedbackHistory.push(feedback);
 
     // 根据反馈调整偏好
-    // 好评增加权重，差评减少权重
-    // 这里简化处理，实际可以更复杂
+    // 好评增加权重，差评减少权�?
+    // 这里简化处理，实际可以更复�?
 
     this.save();
   }
 
   /**
    * 获取原料偏好加成
-   * 返回 0-20 的加成值
+   * 返回 0-20 的加成�?
    */
   getPreferenceBoost(ingredientId: string): number {
     const count = this.preference.ingredientUsage.get(ingredientId) || 0;
@@ -339,14 +339,14 @@ export class PreferenceLearner {
 
     let boost = 0;
 
-    // 使用频率加成 (最高10分)
+    // 使用频率加成 (最�?0�?
     if (count > 20) boost += 10;
     else if (count > 10) boost += 7;
     else if (count > 5) boost += 5;
     else if (count > 2) boost += 3;
     else if (count > 0) boost += 1;
 
-    // 常用原料加成 (额外10分)
+    // 常用原料加成 (额外10�?
     if (isFavorite) boost += 10;
 
     return Math.min(20, boost);
@@ -375,7 +375,7 @@ export class PreferenceLearner {
       entries.push(IngredientUsageEntry.create(id, count));
     });
 
-    // 按使用次数排序
+    // 按使用次数排�?
     entries.sort((a, b) => b.count - a.count);
 
     const result: string[] = [];
@@ -387,7 +387,7 @@ export class PreferenceLearner {
   }
 
   /**
-   * 获取偏好的味型
+   * 获取偏好的味�?
    */
   getPreferredFlavors(): string[] {
     const entries: Array<FlavorScoreEntry> = [];
@@ -409,7 +409,7 @@ export class PreferenceLearner {
    * 设置常用原料
    */
   setFavoriteIngredients(ingredientIds: string[]): void {
-    this.preference.favoriteIngredients = ingredientIds.slice(0, 20); // 最多20个
+    this.preference.favoriteIngredients = ingredientIds.slice(0, 20); // 最�?0�?
     this.save();
   }
 

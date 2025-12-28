@@ -1,6 +1,6 @@
 /**
- * 变体管理器
- * 管理配方变体，确保"换一换"功能能提供真正不同的配方
+ * 变体管理�?
+ * 管理配方变体，确�?换一�?功能能提供真正不同的配方
  */
 import { GeneratedRecipe, RecipeIngredient, GenerateRecipeInput } from '../../common/types/RecipeTypes';
 import { FlavorWeights, StateWeights, AnalysisResult } from './ContextAnalyzer';
@@ -9,16 +9,16 @@ import { FlavorWeights, StateWeights, AnalysisResult } from './ContextAnalyzer';
 export type VariantStrategy =
   'flavor_shift' |      // 味型偏移 (如腥香→香腥)
   'ingredient_swap' |   // 原料替换
-  'additive_change' |   // 添加剂更换
+  'additive_change' |   // 添加剂更�?
   'ratio_adjust' |      // 配比调整
-  'state_change';       // 状态改变
+  'state_change';       // 状态改�?
 
 // 配方变体
 export class RecipeVariant {
   id: string = '';
   strategy: VariantStrategy = 'ingredient_swap';
   baseRecipeId: string = '';
-  differenceScore: number = 0;  // 与基准配方的差异度 (0-100)
+  differenceScore: number = 0;  // 与基准配方的差异�?(0-100)
   description: string = '';     // 变体描述
 
   // 变体参数调整
@@ -33,8 +33,8 @@ export class RecipeVariant {
 
 // 味型偏移参数
 export class FlavorShiftParams {
-  primaryShift: string = '';    // 主味型变化方向
-  intensityChange: number = 0;  // 浓度变化 (-20 到 +20)
+  primaryShift: string = '';    // 主味型变化方�?
+  intensityChange: number = 0;  // 浓度变化 (-20 �?+20)
 
   constructor() {}
 
@@ -83,7 +83,7 @@ export class RatioAdjustment {
 // 变体生成配置
 export class VariantConfig {
   minDifference: number = 25;   // 最小差异度要求
-  maxAttempts: number = 10;     // 最大尝试次数
+  maxAttempts: number = 10;     // 最大尝试次�?
   strategies: VariantStrategy[] = ['ingredient_swap', 'flavor_shift', 'additive_change', 'ratio_adjust'];
 
   constructor() {}
@@ -108,7 +108,7 @@ export class RatioPattern {
   }
 }
 
-// 变体管理器
+// 变体管理�?
 export class VariantManager {
   private static instance: VariantManager | null = null;
 
@@ -118,7 +118,7 @@ export class VariantManager {
   // 变体缓存 (conditionHash -> RecipeVariant[])
   private variantCache: Map<string, RecipeVariant[]> = new Map();
 
-  // 当前会话的配方历史 (用于计算差异)
+  // 当前会话的配方历�?(用于计算差异)
   private sessionRecipes: GeneratedRecipe[] = [];
 
   // 配置
@@ -135,7 +135,7 @@ export class VariantManager {
 
   /**
    * 生成变体参数
-   * 返回用于生成不同配方的参数调整
+   * 返回用于生成不同配方的参数调�?
    */
   generateVariantParams(
     baseRecipe: GeneratedRecipe,
@@ -236,7 +236,7 @@ export class VariantManager {
   }
 
   /**
-   * 添加剂更换策略
+   * 添加剂更换策�?
    */
   private applyAdditiveChangeStrategy(variant: RecipeVariant, baseRecipe: GeneratedRecipe, index: number): void {
     // 专门针对添加剂的替换
@@ -246,12 +246,12 @@ export class VariantManager {
         const swap = new IngredientSwap();
         swap.originalId = ing.id;
         swap.replacementId = this.getAlternativeAdditiveId(ing.id, index);
-        swap.reason = '更换添加剂类型';
+        swap.reason = '更换添加剂类�?;
         variant.ingredientSwaps.push(swap);
       }
     }
 
-    variant.description = '更换添加剂配方';
+    variant.description = '更换添加剂配�?;
     variant.differenceScore = 25 + (index % 4) * 8;
   }
 
@@ -264,7 +264,7 @@ export class VariantManager {
       RatioPattern.create(5, -5, 0, 0),      // 增加主饵
       RatioPattern.create(-5, 5, 0, 0),      // 增加辅饵
       RatioPattern.create(0, -5, 5, 0),      // 增加状态饵
-      RatioPattern.create(-3, -2, 0, 5)      // 增加添加剂
+      RatioPattern.create(-3, -2, 0, 5)      // 增加添加�?
     ];
 
     const pattern = adjustmentPatterns[index % adjustmentPatterns.length];
@@ -298,7 +298,7 @@ export class VariantManager {
   }
 
   /**
-   * 状态改变策略
+   * 状态改变策�?
    */
   private applyStateChangeStrategy(variant: RecipeVariant, analysis: AnalysisResult, index: number): void {
     // 改变状态饵选择
@@ -367,13 +367,13 @@ export class VariantManager {
   private getAlternativeAdditiveId(originalId: string, index: number): string {
     const additiveGroups: string[][] = [
       ['dmpt', 'betaine', 'amino_acid'],           // 诱食剂组
-      ['vanilla_essence', 'strawberry_essence', 'banana_essence', 'honey_essence'],  // 甜香组
-      ['garlic_essence', 'anise_essence', 'fishy_essence'],  // 特殊香型组
-      ['white_sugar', 'brown_sugar', 'honey'],     // 甜味组
-      ['sesame_oil', 'peanut_oil', 'fish_oil']     // 油类组
+      ['vanilla_essence', 'strawberry_essence', 'banana_essence', 'honey_essence'],  // 甜香�?
+      ['garlic_essence', 'anise_essence', 'fishy_essence'],  // 特殊香型�?
+      ['white_sugar', 'brown_sugar', 'honey'],     // 甜味�?
+      ['sesame_oil', 'peanut_oil', 'fish_oil']     // 油类�?
     ];
 
-    // 找到原料所在的组
+    // 找到原料所在的�?
     let groupIndex = -1;
     let posInGroup = -1;
     for (let i = 0; i < additiveGroups.length; i++) {
@@ -388,13 +388,13 @@ export class VariantManager {
     }
 
     if (groupIndex >= 0) {
-      // 在同组内选择不同的
+      // 在同组内选择不同�?
       const group = additiveGroups[groupIndex];
       const newPos = (posInGroup + 1 + index) % group.length;
       return group[newPos];
     }
 
-    // 默认返回常用添加剂
+    // 默认返回常用添加�?
     const defaults = ['dmpt', 'honey_essence', 'garlic_essence', 'white_sugar'];
     return defaults[index % defaults.length];
   }
@@ -406,7 +406,7 @@ export class VariantManager {
     if (category === 'main') return '主饵';
     if (category === 'auxiliary') return '辅饵';
     if (category === 'state') return '状态饵';
-    if (category === 'additive') return '添加剂';
+    if (category === 'additive') return '添加�?;
     return '原料';
   }
 
@@ -422,7 +422,7 @@ export class VariantManager {
     }
     shown.add(recipe.id);
 
-    // 记录到会话历史
+    // 记录到会话历�?
     this.sessionRecipes.push(recipe);
 
     // 限制历史大小
@@ -469,7 +469,7 @@ export class VariantManager {
       ids2.add(recipe2.ingredients[i].id);
     }
 
-    // 计算不同的原料数量
+    // 计算不同的原料数�?
     let diffCount = 0;
     ids1.forEach((id) => {
       if (!ids2.has(id)) diffCount++;
@@ -478,7 +478,7 @@ export class VariantManager {
       if (!ids1.has(id)) diffCount++;
     });
 
-    ingredientDiff = diffCount * 15; // 每个不同原料15分
+    ingredientDiff = diffCount * 15; // 每个不同原料15�?
 
     // 2. 味型差异 (权重30%)
     const fp1 = recipe1.flavorProfile;
@@ -487,14 +487,14 @@ export class VariantManager {
     if (fp1.secondary !== fp2.secondary) flavorDiff += 10;
     flavorDiff += Math.abs(fp1.intensity - fp2.intensity) * 3;
 
-    // 3. 状态差异 (权重20%)
+    // 3. 状态差�?(权重20%)
     const sp1 = recipe1.stateProfile;
     const sp2 = recipe2.stateProfile;
     stateDiff += Math.abs(sp1.atomization - sp2.atomization) * 4;
     stateDiff += Math.abs(sp1.viscosity - sp2.viscosity) * 3;
     stateDiff += Math.abs(sp1.weight - sp2.weight) * 3;
 
-    // 综合差异度
+    // 综合差异�?
     const totalDiff = ingredientDiff * 0.5 + flavorDiff * 0.3 + stateDiff * 0.2;
     return Math.min(100, totalDiff);
   }
@@ -507,7 +507,7 @@ export class VariantManager {
   }
 
   /**
-   * 重置已展示历史
+   * 重置已展示历�?
    */
   resetShownHistory(): void {
     this.shownVariants.clear();
@@ -515,7 +515,7 @@ export class VariantManager {
   }
 
   /**
-   * 重置特定条件的历史
+   * 重置特定条件的历�?
    */
   resetConditionHistory(conditionHash: string): void {
     this.shownVariants.delete(conditionHash);

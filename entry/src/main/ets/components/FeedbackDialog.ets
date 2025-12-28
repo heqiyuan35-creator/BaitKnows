@@ -1,6 +1,6 @@
 /**
  * 换一换反馈对话框组件
- * 用于收集用户对配方不满意的原因
+ * 用于收集用户对配方不满意的原�?
  */
 import { ThemeColors } from '../theme/ThemeColors';
 import { FEEDBACK_OPTIONS, FeedbackOption, FeedbackType } from '../common/types/PreciseMatchTypes';
@@ -42,14 +42,14 @@ export struct FeedbackDialog {
   build() {
     if (this.visible) {
       Stack() {
-        // 遮罩层
+        // 遮罩�?
         Column()
           .width('100%')
           .height('100%')
           .backgroundColor('rgba(0,0,0,0.5)')
           .onClick(() => this.handleClose())
 
-        // 对话框内容
+        // 对话框内�?
         Column({ space: 20 }) {
           // 标题
           Row() {
@@ -58,7 +58,7 @@ export struct FeedbackDialog {
               .fontWeight(FontWeight.Bold)
               .fontColor('#1A1A1A')
             Blank()
-            Text('✕')
+            Text('�?)
               .fontSize(20)
               .fontColor('#999')
               .onClick(() => this.handleClose())
@@ -77,7 +77,7 @@ export struct FeedbackDialog {
 
                 if (this.selectedFeedbacks.includes(option.id)) {
                   Row() {
-                    Text('✓').fontSize(14).fontColor(Color.White)
+                    Text('�?).fontSize(14).fontColor(Color.White)
                   }
                   .width(22)
                   .height(22)

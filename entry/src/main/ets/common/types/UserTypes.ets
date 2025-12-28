@@ -1,5 +1,5 @@
 /**
- * 饵知道 - 用户相关类型定义
+ * 饵知�?- 用户相关类型定义
  */
 
 // 用户等级枚举
@@ -32,7 +32,7 @@ export class LevelConfig {
   }
 }
 
-// 等级配置表
+// 等级配置�?
 export const LEVEL_CONFIGS: LevelConfig[] = [
   LevelConfig.create(UserLevel.NOVICE, '新手钓友', 0, 100, '🎣'),
   LevelConfig.create(UserLevel.BEGINNER, '入门钓手', 100, 500, '🐟'),
@@ -44,15 +44,15 @@ export const LEVEL_CONFIGS: LevelConfig[] = [
 // 用户信息
 export class UserProfile {
   id: string = '';
-  nickname: string = '钓鱼佬';
+  nickname: string = '钓鱼�?;
   avatar: string = '';
   level: UserLevel = UserLevel.NOVICE;
   levelTitle: string = '新手钓友';
   experience: number = 0;
-  totalCatch: number = 0;        // 总渔获重量 (kg)
-  totalTrips: number = 0;        // 总出钓次数
-  totalFish: number = 0;         // 总钓获尾数
-  bestRecord: number = 0;        // 最佳单尾记录 (kg)
+  totalCatch: number = 0;        // 总渔获重�?(kg)
+  totalTrips: number = 0;        // 总出钓次�?
+  totalFish: number = 0;         // 总钓获尾�?
+  bestRecord: number = 0;        // 最佳单尾记�?(kg)
   activeDays: number = 0;        // 活跃天数
   favoriteCount: number = 0;     // 收藏数量
   recipeUseCount: number = 0;    // 配方使用次数
@@ -69,15 +69,15 @@ export class UserProfile {
 // 渔获记录
 export class FishingRecord {
   id: string = '';
-  date: number = 0;              // 时间戳
+  date: number = 0;              // 时间�?
   dateStr: string = '';          // 显示用日期字符串
   location: string = '';
   weather: string = '晴朗';
   fishName: string = '';
   fishIcon: string = '🐟';
-  weight: number = 0;            // 总重量 kg
+  weight: number = 0;            // 总重�?kg
   count: number = 0;             // 尾数
-  maxSingle: number = 0;         // 最大单尾 kg
+  maxSingle: number = 0;         // 最大单�?kg
   recipeId: string = '';
   recipeName: string = '';
   notes: string = '';

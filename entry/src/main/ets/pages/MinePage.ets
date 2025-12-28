@@ -1,6 +1,6 @@
 /**
- * 饵知道 - 我的页面
- * 用户信息、等级系统、功能入口
+ * 饵知�?- 我的页面
+ * 用户信息、等级系统、功能入�?
  */
 import { ThemeColors } from '../theme/ThemeColors';
 import { ThemeConstants } from '../theme/ThemeConstants';
@@ -12,7 +12,7 @@ import { userService } from '../services/UserService';
 import { userDataService } from '../services/UserDataService';
 import { fishingRecordService } from '../services/FishingRecordService';
 
-// 菜单项接口
+// 菜单项接�?
 interface MenuItem {
   icon: Resource;
   title: string;
@@ -30,7 +30,7 @@ export struct MinePage {
   @State cacheSize: string = '12.5 MB';
 
   private menuItems: MenuItem[] = [
-    { icon: $r('app.media.Recipe'), title: '我的收藏', subtitle: '收藏的配方', route: AppConstants.ROUTE_FAVORITE },
+    { icon: $r('app.media.Recipe'), title: '我的收藏', subtitle: '收藏的配�?, route: AppConstants.ROUTE_FAVORITE },
     { icon: $r('app.media.time'), title: '生成历史', subtitle: '配方生成记录', route: AppConstants.ROUTE_GENERATOR_HISTORY }
   ];
 
@@ -38,12 +38,12 @@ export struct MinePage {
     this.loadUserData();
   }
 
-  // 页面显示时刷新数据（从其他页面返回时）
+  // 页面显示时刷新数据（从其他页面返回时�?
   onPageShow(): void {
     this.loadUserData();
   }
 
-  // 监听刷新触发器变化
+  // 监听刷新触发器变�?
   onRefreshTriggerChange(): void {
     this.loadUserData();
   }
@@ -76,7 +76,7 @@ export struct MinePage {
 
   build() {
     Column() {
-      // 顶部用户信息区
+      // 顶部用户信息�?
       this.UserHeader()
 
       Scroll() {
@@ -131,7 +131,7 @@ export struct MinePage {
       Row({ space: 6 }) {
         Text(this.profile.levelTitle)
           .fontSize(ThemeConstants.FONT_SIZE_SM)
-          .fontColor(ThemeColors.PRIMARY)
+          .fontColor(ThemeColors.PRIMARY_DARK)
           .padding({ left: 8, right: 8, top: 2, bottom: 2 })
           .backgroundColor('rgba(232, 168, 73, 0.2)')
           .borderRadius(4)
@@ -162,11 +162,11 @@ export struct MinePage {
         Text(`${this.profile.experience}`)
           .fontSize(ThemeConstants.FONT_SIZE_2XL)
           .fontWeight(FontWeight.Bold)
-          .fontColor(ThemeColors.PRIMARY)
+          .fontColor(ThemeColors.PRIMARY_DARK)
       }
       .width('100%')
 
-      // 进度条
+      // 进度�?
       Stack({ alignContent: Alignment.Start }) {
         Row()
           .width('100%')
@@ -210,9 +210,9 @@ export struct MinePage {
   @Builder
   StatsRow() {
     Row({ space: ThemeConstants.SPACE_SM }) {
-      this.StatItem('总渔获', `${this.profile.totalCatch.toFixed(1)}`, 'kg')
-      this.StatItem('出钓次数', `${this.profile.totalTrips}`, '次')
-      this.StatItem('我的收藏', `${this.profile.favoriteCount}`, '个')
+      this.StatItem('总渔�?, `${this.profile.totalCatch.toFixed(1)}`, 'kg')
+      this.StatItem('出钓次数', `${this.profile.totalTrips}`, '�?)
+      this.StatItem('我的收藏', `${this.profile.favoriteCount}`, '�?)
     }
     .width('100%')
     .padding({ left: ThemeConstants.SPACE_MD, right: ThemeConstants.SPACE_MD })
@@ -225,7 +225,7 @@ export struct MinePage {
         Text(value)
           .fontSize(ThemeConstants.FONT_SIZE_2XL)
           .fontWeight(FontWeight.Bold)
-          .fontColor(ThemeColors.PRIMARY)
+          .fontColor(ThemeColors.PRIMARY_DARK)
         Text(unit)
           .fontSize(ThemeConstants.FONT_SIZE_SM)
           .fontColor(ThemeColors.TEXT_SECONDARY)
@@ -387,7 +387,7 @@ export struct MinePage {
 
         Text('清除')
           .fontSize(ThemeConstants.FONT_SIZE_SM)
-          .fontColor(ThemeColors.PRIMARY)
+          .fontColor(ThemeColors.PRIMARY_DARK)
       }
       .width('100%')
       .height(64)
@@ -395,7 +395,7 @@ export struct MinePage {
       .backgroundColor(ThemeColors.BG_CARD)
       .onClick(() => {
         this.cacheSize = '0 MB';
-        promptAction.showToast({ message: '缓存已清除' });
+        promptAction.showToast({ message: '缓存已清�? });
       })
 
       // 重置数据
@@ -404,7 +404,7 @@ export struct MinePage {
           Text('重置数据')
             .fontSize(ThemeConstants.FONT_SIZE_MD)
             .fontColor(ThemeColors.ERROR)
-          Text('清除所有本地数据')
+          Text('清除所有本地数�?)
             .fontSize(ThemeConstants.FONT_SIZE_XS)
             .fontColor(ThemeColors.TEXT_SECONDARY)
         }
@@ -430,7 +430,7 @@ export struct MinePage {
           ]
         }).then(async (result) => {
           if (result.index === 1) {
-            // 清除所有数据
+            // 清除所有数�?
             await userDataService.clearAllData();
             await fishingRecordService.clearAllRecords();
             await userService.resetProfile();
@@ -438,7 +438,7 @@ export struct MinePage {
             // 重新加载用户数据
             await this.loadUserData();
             
-            promptAction.showToast({ message: '数据已重置' });
+            promptAction.showToast({ message: '数据已重�? });
           }
         });
       })

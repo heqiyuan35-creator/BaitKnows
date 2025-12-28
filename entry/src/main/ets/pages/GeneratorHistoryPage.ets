@@ -1,5 +1,5 @@
 /**
- * 饵知道 - 配方生成历史页面
+ * 饵知�?- 配方生成历史页面
  */
 import { ThemeColors } from '../theme/ThemeColors';
 import { ThemeConstants } from '../theme/ThemeConstants';
@@ -32,7 +32,7 @@ struct GeneratorHistoryPage {
     const day = date.getDate();
     const hour = date.getHours().toString().padStart(2, '0');
     const minute = date.getMinutes().toString().padStart(2, '0');
-    return `${month}月${day}日 ${hour}:${minute}`;
+    return `${month}�?{day}�?${hour}:${minute}`;
   }
 
   private getWaterTypeName(type: string): string {
@@ -59,7 +59,7 @@ struct GeneratorHistoryPage {
     const names: Record<string, string> = {
       'conservative': '保守',
       'balanced': '均衡',
-      'aggressive': '激进'
+      'aggressive': '激�?
     };
     return names[mode] || '均衡';
   }
@@ -68,7 +68,7 @@ struct GeneratorHistoryPage {
     const success = await generatorHistoryService.deleteHistory(recipeId);
     if (success) {
       this.historyList = generatorHistoryService.history;
-      promptAction.showToast({ message: '已删除' });
+      promptAction.showToast({ message: '已删�? });
     }
   }
 
@@ -76,13 +76,13 @@ struct GeneratorHistoryPage {
     await generatorHistoryService.clearAll();
     this.historyList = [];
     this.showClearDialog = false;
-    promptAction.showToast({ message: '已清空历史记录' });
+    promptAction.showToast({ message: '已清空历史记�? });
   }
 
   build() {
     Stack() {
       Column() {
-        // 顶部导航栏
+        // 顶部导航�?
         this.HeaderBar()
 
         if (this.isLoading) {
@@ -145,7 +145,7 @@ struct GeneratorHistoryPage {
         .width(48)
         .height(48)
         .color(ThemeColors.PRIMARY)
-      Text('加载中...')
+      Text('加载�?..')
         .fontSize(ThemeConstants.FONT_SIZE_SM)
         .fontColor(ThemeColors.TEXT_SECONDARY)
         .margin({ top: 12 })
@@ -163,7 +163,7 @@ struct GeneratorHistoryPage {
       Text('暂无生成历史')
         .fontSize(ThemeConstants.FONT_SIZE_BASE)
         .fontColor(ThemeColors.TEXT_SECONDARY)
-      Text('生成配方后会自动保存到这里')
+      Text('生成配方后会自动保存到这�?)
         .fontSize(ThemeConstants.FONT_SIZE_SM)
         .fontColor(ThemeColors.TEXT_MUTED)
     }
@@ -189,7 +189,7 @@ struct GeneratorHistoryPage {
   @Builder
   HistoryCard(recipe: GeneratedRecipe) {
     Column({ space: 10 }) {
-      // 标题行
+      // 标题�?
       Row() {
         Column({ space: 4 }) {
           Text(recipe.name)
@@ -209,7 +209,7 @@ struct GeneratorHistoryPage {
         // 味型标签
         Text(`${recipe.flavorProfile.primary}${recipe.flavorProfile.secondary}`)
           .fontSize(ThemeConstants.FONT_SIZE_XS)
-          .fontColor(ThemeColors.PRIMARY)
+          .fontColor(ThemeColors.PRIMARY_DARK)
           .padding({ left: 8, right: 8, top: 4, bottom: 4 })
           .backgroundColor('rgba(232, 168, 73, 0.15)')
           .borderRadius(ThemeConstants.RADIUS_FULL)
@@ -218,14 +218,14 @@ struct GeneratorHistoryPage {
 
       // 条件标签
       Row({ space: 6 }) {
-        this.TagItem(`🌡️ ${recipe.conditions.temperature}°C`)
+        this.TagItem(`🌡�?${recipe.conditions.temperature}°C`)
         this.TagItem(`💧 ${this.getWaterTypeName(recipe.conditions.waterType)}`)
         this.TagItem(`🍂 ${this.getSeasonName(recipe.conditions.season)}`)
       }
 
       // 底部信息
       Row() {
-        Text(`${recipe.ingredients.length} 种原料 · ${recipe.totalWeight}g`)
+        Text(`${recipe.ingredients.length} 种原�?· ${recipe.totalWeight}g`)
           .fontSize(ThemeConstants.FONT_SIZE_SM)
           .fontColor(ThemeColors.TEXT_SECONDARY)
 
@@ -272,7 +272,7 @@ struct GeneratorHistoryPage {
           .fontWeight(FontWeight.Medium)
           .fontColor(ThemeColors.TEXT_PRIMARY)
 
-        Text('确定要清空所有生成历史吗？此操作不可恢复。')
+        Text('确定要清空所有生成历史吗？此操作不可恢复�?)
           .fontSize(ThemeConstants.FONT_SIZE_BASE)
           .fontColor(ThemeColors.TEXT_SECONDARY)
           .textAlign(TextAlign.Center)

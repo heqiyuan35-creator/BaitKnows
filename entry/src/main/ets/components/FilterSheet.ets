@@ -1,6 +1,6 @@
 /**
- * 饵知道 - 筛选面板组件
- * 用于渔获记录的筛选功能
+ * 饵知�?- 筛选面板组�?
+ * 用于渔获记录的筛选功�?
  */
 import { ThemeColors } from '../theme/ThemeColors';
 import { ThemeConstants } from '../theme/ThemeConstants';
@@ -26,7 +26,7 @@ export struct FilterSheet {
   build() {
     if (this.visible) {
       Stack() {
-        // 遮罩层
+        // 遮罩�?
         Column()
           .width('100%')
           .height('100%')
@@ -35,9 +35,9 @@ export struct FilterSheet {
             this.visible = false;
           })
 
-        // 筛选面板
+        // 筛选面�?
         Column() {
-          // 拖动条
+          // 拖动�?
           Row() {
             Column()
               .width(40)
@@ -49,9 +49,9 @@ export struct FilterSheet {
           .justifyContent(FlexAlign.Center)
           .padding({ top: 12, bottom: 16 })
 
-          // 标题栏
+          // 标题�?
           Row() {
-            Text('筛选')
+            Text('筛�?)
               .fontSize(ThemeConstants.FONT_SIZE_LG)
               .fontWeight(FontWeight.Bold)
               .fontColor(ThemeColors.TEXT_PRIMARY)
@@ -60,7 +60,7 @@ export struct FilterSheet {
 
             Text('重置')
               .fontSize(ThemeConstants.FONT_SIZE_SM)
-              .fontColor(ThemeColors.PRIMARY)
+              .fontColor(ThemeColors.PRIMARY_DARK)
               .onClick(() => {
                 this.tempFish = '';
                 this.tempLocation = '';
@@ -74,7 +74,7 @@ export struct FilterSheet {
           .width('100%')
           .padding({ left: ThemeConstants.SPACE_MD, right: ThemeConstants.SPACE_MD })
 
-          // 鱼种筛选
+          // 鱼种筛�?
           Column({ space: 8 }) {
             Text('🐟 鱼种')
               .fontSize(ThemeConstants.FONT_SIZE_SM)
@@ -168,7 +168,7 @@ export struct FilterSheet {
           .padding({ left: ThemeConstants.SPACE_MD, right: ThemeConstants.SPACE_MD, top: ThemeConstants.SPACE_MD })
 
           // 应用按钮
-          Button('应用筛选')
+          Button('应用筛�?)
             .fontSize(ThemeConstants.FONT_SIZE_MD)
             .fontColor(Color.White)
             .backgroundColor(ThemeColors.PRIMARY)

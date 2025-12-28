@@ -1,5 +1,5 @@
 /**
- * 饵知道 - 主页面（合并欢迎页和主Tab）
+ * 饵知�?- 主页面（合并欢迎页和主Tab�?
  * 添加动画效果
  */
 import { ThemeColors } from '../theme/ThemeColors';
@@ -23,7 +23,7 @@ struct WelcomePage {
   @State showWelcome: boolean = true;
   @State bgIndex: number = 0;
   @State loadingAngle: number = 0;
-  // 动画状态
+  // 动画状�?
   @State logoOpacity: number = 0;
   @State logoScale: number = 0.5;
   @State textOpacity: number = 0;
@@ -32,7 +32,7 @@ struct WelcomePage {
   @State recordRefreshTrigger: number = 0;
   // 我的页刷新触发器
   @State mineRefreshTrigger: number = 0;
-  // 加号菜单状态
+  // 加号菜单状�?
   @State showAddMenu: boolean = false;
 
   private backgrounds: Resource[] = [
@@ -47,10 +47,10 @@ struct WelcomePage {
     this.startLoadingAnimation();
     this.startEntranceAnimation();
 
-    // 初始化数据服务
+    // 初始化数据服�?
     this.initServices();
 
-    // 2.5秒后隐藏欢迎页
+    // 2.5秒后隐藏欢迎�?
     setTimeout(() => {
       this.showWelcome = false;
     }, 2500);
@@ -59,7 +59,7 @@ struct WelcomePage {
   // 页面显示时刷新当前Tab数据（从其他页面返回时）
   onPageShow(): void {
     if (!this.showWelcome) {
-      // 刷新记录页和我的页数据
+      // 刷新记录页和我的页数�?
       this.recordRefreshTrigger++;
       this.mineRefreshTrigger++;
     }
@@ -88,7 +88,7 @@ struct WelcomePage {
       });
     }, 500);
 
-    // 加载指示器淡入
+    // 加载指示器淡�?
     setTimeout(() => {
       animateTo({ duration: 300, curve: Curve.EaseOut }, () => {
         this.loadingOpacity = 1;
@@ -153,7 +153,7 @@ struct WelcomePage {
     this.showAddMenu = false;
   }
 
-  // 处理菜单项点击
+  // 处理菜单项点�?
   private onMenuItemClick(item: AddMenuItem): void {
     this.showAddMenu = false;
     router.pushUrl({ url: item.route }).catch((err: Error) => {
@@ -243,7 +243,7 @@ struct WelcomePage {
           .tabBar(this.TabBarBuilder('配方', $r('app.media.Recipe'), $r('app.media.Recipes'), 1))
 
           TabContent() {
-            // 中间Tab占位，点击加号按钮弹出菜单
+            // 中间Tab占位，点击加号按钮弹出菜�?
             Column() {
               Text('点击下方 + 按钮')
                 .fontSize(14)
@@ -275,11 +275,11 @@ struct WelcomePage {
             return;
           }
           this.currentIndex = index;
-          // 切换到记录Tab时触发刷新
+          // 切换到记录Tab时触发刷�?
           if (index === 3) {
             this.recordRefreshTrigger++;
           }
-          // 切换到我的Tab时触发刷新
+          // 切换到我的Tab时触发刷�?
           if (index === 4) {
             this.mineRefreshTrigger++;
           }
@@ -291,7 +291,7 @@ struct WelcomePage {
       .backgroundColor(ThemeColors.BG_PRIMARY)
       .padding({ bottom: 34 })
 
-      // 加号菜单弹出层
+      // 加号菜单弹出�?
       if (this.showAddMenu) {
         AddMenuSheet({
           visible: this.showAddMenu,

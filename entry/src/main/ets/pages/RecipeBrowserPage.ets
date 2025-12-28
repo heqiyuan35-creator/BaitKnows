@@ -1,6 +1,6 @@
-ï»¿/**
- * é¥µçŸ¥é“ - é…æ–¹åº“é¡µé¢
- * æ°´åŸŸTabã€é±¼ç§ç­›é€‰ã€é…æ–¹åˆ—è¡¨
+/**
+ * ¶üÖªµÀ - Åä·½¿âÒ³Ãæ
+ * Ë®ÓòTab¡¢ÓãÖÖÉ¸Ñ¡¡¢Åä·½ÁĞ±í
  */
 import { ThemeColors } from '../theme/ThemeColors';
 import { ThemeConstants } from '../theme/ThemeConstants';
@@ -8,7 +8,7 @@ import { Router } from '../router/Router';
 import { ALL_FISH_DATA, FishData, getFishByWaterType } from '../data/FishData';
 import { userDataService, CustomRecipe, CustomFish } from '../services/UserDataService';
 
-// æ°´åŸŸTabç±»
+// Ë®ÓòTabÀà
 class WaterTab {
   type: string = '';
   label: string = '';
@@ -19,12 +19,12 @@ class WaterTab {
   }
 }
 
-// é±¼ç§ç­›é€‰ç±»
+// ÓãÖÖÉ¸Ñ¡Àà
 class FishFilter {
   id: string = '';
   name: string = '';
   icon: Resource | string = $r('app.media.Fishs');
-  isCustom: boolean = false;  // æ˜¯å¦ä¸ºç”¨æˆ·è‡ªå®šä¹‰é±¼ç§
+  isCustom: boolean = false;  // ÊÇ·ñÎªÓÃ»§×Ô¶¨ÒåÓãÖÖ
 
   constructor(id: string = '', name: string = '', icon: Resource | string = $r('app.media.Fishs'), isCustom: boolean = false) {
     this.id = id;
@@ -34,7 +34,7 @@ class FishFilter {
   }
 }
 
-// é…æ–¹å¡ç‰‡ç±»
+// Åä·½¿¨Æ¬Àà
 class RecipeCard {
   id: string = '';
   name: string = '';
@@ -75,54 +75,54 @@ class RecipeCard {
 export struct RecipeBrowserPage {
   @State currentWaterTab: number = 0;
   @State selectedFishFilter: string = 'all';
-  @State allRecipes: RecipeCard[] = [];  // æ‰€æœ‰é…æ–¹
-  @State recipes: RecipeCard[] = [];     // ç­›é€‰åçš„é…æ–¹
-  @State fishFilters: FishFilter[] = []; // åŠ¨æ€é±¼ç§ç­›é€‰
+  @State allRecipes: RecipeCard[] = [];  // ËùÓĞÅä·½
+  @State recipes: RecipeCard[] = [];     // É¸Ñ¡ºóµÄÅä·½
+  @State fishFilters: FishFilter[] = []; // ¶¯Ì¬ÓãÖÖÉ¸Ñ¡
 
-  // æ°´åŸŸTabï¼ˆå››å¤§ç±»ï¼šæ± å¡˜ã€æ²³æµã€æ°´åº“ã€æ¹–æ³Šï¼‰
+  // Ë®ÓòTab£¨ËÄ´óÀà£º³ØÌÁ¡¢ºÓÁ÷¡¢Ë®¿â¡¢ºş²´£©
   private waterTabs: WaterTab[] = [
-    new WaterTab('pond', 'æ± å¡˜'),
-    new WaterTab('river', 'æ²³æµ'),
-    new WaterTab('reservoir', 'æ°´åº“'),
-    new WaterTab('lake', 'æ¹–æ³Š')
+    new WaterTab('pond', '³ØÌÁ'),
+    new WaterTab('river', 'ºÓÁ÷'),
+    new WaterTab('reservoir', 'Ë®¿â'),
+    new WaterTab('lake', 'ºş²´')
   ];
 
   aboutToAppear(): void {
     this.loadAllData(false);
   }
 
-  // é¡µé¢æ˜¾ç¤ºæ—¶åˆ·æ–°æ•°æ®ï¼ˆä»å…¶ä»–é¡µé¢è¿”å›æ—¶ï¼‰
+  // Ò³ÃæÏÔÊ¾Ê±Ë¢ĞÂÊı¾İ£¨´ÓÆäËûÒ³Ãæ·µ»ØÊ±£©
   onPageShow(): void {
     this.loadAllData(true);
   }
 
-  // åŠ è½½æ‰€æœ‰æ•°æ®
+  // ¼ÓÔØËùÓĞÊı¾İ
   private async loadAllData(forceReload: boolean = false): Promise<void> {
     await userDataService.load(forceReload);
     this.loadRecipes();
     this.updateFishFilters();
   }
 
-  // æ›´æ–°å½“å‰æ°´åŸŸå¯ç”¨çš„é±¼ç§ï¼ˆä½¿ç”¨ç»Ÿä¸€æ•°æ®æº + ç”¨æˆ·è‡ªå®šä¹‰é±¼ç§ï¼‰
+  // ¸üĞÂµ±Ç°Ë®Óò¿ÉÓÃµÄÓãÖÖ£¨Ê¹ÓÃÍ³Ò»Êı¾İÔ´ + ÓÃ»§×Ô¶¨ÒåÓãÖÖ£©
   private updateFishFilters(): void {
     const waterType = this.waterTabs[this.currentWaterTab].type;
 
-    // ä»ç»Ÿä¸€æ•°æ®æºè·å–è¯¥æ°´åŸŸçš„ç³»ç»Ÿé±¼ç§
+    // ´ÓÍ³Ò»Êı¾İÔ´»ñÈ¡¸ÃË®ÓòµÄÏµÍ³ÓãÖÖ
     const fishList = getFishByWaterType(waterType);
 
-    // æ„å»ºé±¼ç§ç­›é€‰åˆ—è¡¨
-    const filters: FishFilter[] = [new FishFilter('all', 'å…¨éƒ¨', $r('app.media.Fishs'), false)];
+    // ¹¹½¨ÓãÖÖÉ¸Ñ¡ÁĞ±í
+    const filters: FishFilter[] = [new FishFilter('all', 'È«²¿', $r('app.media.Fishs'), false)];
 
-    // æ·»åŠ ç³»ç»Ÿé±¼ç§
+    // Ìí¼ÓÏµÍ³ÓãÖÖ
     fishList.forEach((fish: FishData) => {
       filters.push(new FishFilter(fish.id, fish.name, fish.icon, false));
     });
 
-    // æ·»åŠ ç”¨æˆ·è‡ªå®šä¹‰é±¼ç§ï¼ˆç­›é€‰å‡ºé€‚åˆå½“å‰æ°´åŸŸçš„ï¼‰
+    // Ìí¼ÓÓÃ»§×Ô¶¨ÒåÓãÖÖ£¨É¸Ñ¡³öÊÊºÏµ±Ç°Ë®ÓòµÄ£©
     const customFishList = userDataService.getCustomFish();
     customFishList.forEach((fish: CustomFish) => {
       if (fish.waterTypes.includes(waterType)) {
-        // ç”¨æˆ·è‡ªå®šä¹‰é±¼ç§ä½¿ç”¨å›¾ç‰‡è·¯å¾„æˆ–é»˜è®¤å›¾æ ‡
+        // ÓÃ»§×Ô¶¨ÒåÓãÖÖÊ¹ÓÃÍ¼Æ¬Â·¾¶»òÄ¬ÈÏÍ¼±ê
         const iconPath = fish.icon || '';
         filters.push(new FishFilter(fish.id, fish.name, iconPath || $r('app.media.fishImage'), true));
       }
@@ -131,14 +131,14 @@ export struct RecipeBrowserPage {
     this.fishFilters = filters;
   }
 
-  // æ ¹æ®é±¼ç§IDè·å–ä¸­æ–‡åï¼ˆæ”¯æŒç³»ç»Ÿé±¼ç§å’Œç”¨æˆ·è‡ªå®šä¹‰é±¼ç§ï¼‰
+  // ¸ù¾İÓãÖÖID»ñÈ¡ÖĞÎÄÃû£¨Ö§³ÖÏµÍ³ÓãÖÖºÍÓÃ»§×Ô¶¨ÒåÓãÖÖ£©
   private getFishName(fishId: string): string {
-    // å…ˆä»ç³»ç»Ÿé±¼ç§æŸ¥æ‰¾
+    // ÏÈ´ÓÏµÍ³ÓãÖÖ²éÕÒ
     const fish = ALL_FISH_DATA.find((f: FishData) => f.id === fishId);
     if (fish) {
       return fish.name;
     }
-    // å†ä»ç”¨æˆ·è‡ªå®šä¹‰é±¼ç§æŸ¥æ‰¾
+    // ÔÙ´ÓÓÃ»§×Ô¶¨ÒåÓãÖÖ²éÕÒ
     const customFish = userDataService.getCustomFish().find((f: CustomFish) => f.id === fishId);
     if (customFish) {
       return customFish.name;
@@ -147,136 +147,136 @@ export struct RecipeBrowserPage {
   }
 
   private loadRecipes(): void {
-    // å„æ°´åŸŸé…æ–¹æ•°æ® - ä½¿ç”¨RecipeCard.create()åˆ›å»º
+    // ¸÷Ë®ÓòÅä·½Êı¾İ - Ê¹ÓÃRecipeCard.create()´´½¨
     this.allRecipes = [
-      // ==================== æ± å¡˜é…æ–¹ ====================
-      RecipeCard.create('r_001', 'æ± å¡˜é²«é±¼æ•£ç‚®', 'é²«é±¼', 'pond', ['æ˜¥å­£', 'æµ…æ°´'], ['éº¸çš®', 'é›ªèŠ±ç²‰', 'æ‹‰ä¸ç²‰'], 4.6, 88, true, false),
-      // é²¤é±¼
-      RecipeCard.create('r_002', 'é»‘å‘é²¤é±¼é¢—ç²’', 'é²¤é±¼', 'pond', ['å››å­£', 'é»‘å‘'], ['åŸå¡˜é¢—ç²’', 'å°è¯', 'çŠ¶æ€ç²‰'], 4.8, 92, false, true),
-      // è‰é±¼
-      RecipeCard.create('r_003', 'æ± å¡˜è‰é±¼é’è‰é¥µ', 'è‰é±¼', 'pond', ['å¤å­£', 'æµ®é’“'], ['å«©è‰', 'ç‰ç±³', 'éº¦éº¸'], 4.5, 85, true, false),
-      // é³™é±¼
-      RecipeCard.create('r_004', 'æ± å¡˜é³™é±¼é…¸è‡­é¥µ', 'é³™é±¼', 'pond', ['å¤å­£', 'æµ®é’“'], ['è‡­è±†è…æ±', 'è’œç²‰', 'é›ªèŠ±ç²‰'], 4.6, 86, false, false),
-      // é²¢é±¼
-      RecipeCard.create('r_005', 'æ± å¡˜é²¢é±¼é…¸é¥µ', 'é²¢é±¼', 'pond', ['å¤å­£', 'æµ®é’“'], ['æœé…¸', 'ç™½é†‹', 'é›ªèŠ±ç²‰'], 4.5, 84, false, false),
-      // ç½—éé±¼
-      RecipeCard.create('r_006', 'å—æ–¹ç½—éä¸“ç”¨é¥µ', 'ç½—éé±¼', 'pond', ['å¤å­£', 'åº•é’“'], ['ç½—éé¢—ç²’', 'è™¾ç²‰', 'èš¯èš“è†'], 4.4, 82, true, false),
-      // æ–‘ç‚¹å‰å°¾é®°
-      RecipeCard.create('r_007', 'é»‘å‘å‰å°¾ä¸“ç”¨é¥µ', 'æ–‘ç‚¹å‰å°¾é®°', 'pond', ['å¤œé’“', 'åº•é’“'], ['é²¶é±¼é¢—ç²’', 'é¸¡è‚ç²‰', 'è™¾ç²‰'], 4.5, 85, false, false),
-      // é²¶é±¼
-      RecipeCard.create('r_008', 'æ± å¡˜é²¶é±¼è…¥é¥µ', 'é²¶é±¼', 'pond', ['å¤œé’“', 'åº•é’“'], ['é¸¡è‚', 'èš¯èš“', 'è¡€ç²‰'], 4.6, 88, false, false),
-      // æ³¥é³…
-      RecipeCard.create('r_009', 'æ± å¡˜æ³¥é³…é¥µ', 'æ³¥é³…', 'pond', ['å¤å­£', 'åº•é’“'], ['èš¯èš“', 'çº¢è™«'], 4.2, 75, true, false),
-      // é»‘é±¼
-      RecipeCard.create('r_010', 'æ± å¡˜é»‘é±¼é›·è›™', 'é»‘é±¼', 'pond', ['å¤å­£', 'è·¯äºš'], ['é›·è›™', 'è½¯è™«', 'æ³¥é³…'], 4.7, 85, false, false),
-      // ç”²é±¼
-      RecipeCard.create('r_011', 'æ± å¡˜ç”²é±¼é¥µ', 'ç”²é±¼', 'pond', ['å¤œé’“', 'åº•é’“'], ['é¸¡è‚', 'çŒªè‚', 'èš¯èš“'], 4.4, 78, false, false),
+      // ==================== ³ØÌÁÅä·½ ====================
+      RecipeCard.create('r_001', '³ØÌÁöêÓãÉ¢ÅÚ', 'öêÓã', 'pond', ['´º¼¾', 'Ç³Ë®'], ['ôïÆ¤', 'Ñ©»¨·Û', 'À­Ë¿·Û'], 4.6, 88, true, false),
+      // ÀğÓã
+      RecipeCard.create('r_002', 'ºÚ¿ÓÀğÓã¿ÅÁ£', 'ÀğÓã', 'pond', ['ËÄ¼¾', 'ºÚ¿Ó'], ['Ô­ÌÁ¿ÅÁ£', 'Ğ¡Ò©', '×´Ì¬·Û'], 4.8, 92, false, true),
+      // ²İÓã
+      RecipeCard.create('r_003', '³ØÌÁ²İÓãÇà²İ¶ü', '²İÓã', 'pond', ['ÏÄ¼¾', '¸¡µö'], ['ÄÛ²İ', 'ÓñÃ×', 'Âóôï'], 4.5, 85, true, false),
+      // ÷«Óã
+      RecipeCard.create('r_004', '³ØÌÁ÷«ÓãËá³ô¶ü', '÷«Óã', 'pond', ['ÏÄ¼¾', '¸¡µö'], ['³ô¶¹¸¯Ö­', 'Ëâ·Û', 'Ñ©»¨·Û'], 4.6, 86, false, false),
+      // öãÓã
+      RecipeCard.create('r_005', '³ØÌÁöãÓãËá¶ü', 'öãÓã', 'pond', ['ÏÄ¼¾', '¸¡µö'], ['¹ûËá', '°×´×', 'Ñ©»¨·Û'], 4.5, 84, false, false),
+      // ÂŞ·ÇÓã
+      RecipeCard.create('r_006', 'ÄÏ·½ÂŞ·Ç×¨ÓÃ¶ü', 'ÂŞ·ÇÓã', 'pond', ['ÏÄ¼¾', 'µ×µö'], ['ÂŞ·Ç¿ÅÁ£', 'Ïº·Û', 'òÇò¾¸à'], 4.4, 82, true, false),
+      // °ßµã²æÎ²õt
+      RecipeCard.create('r_007', 'ºÚ¿Ó²æÎ²×¨ÓÃ¶ü', '°ßµã²æÎ²õt', 'pond', ['Ò¹µö', 'µ×µö'], ['öóÓã¿ÅÁ£', '¼¦¸Î·Û', 'Ïº·Û'], 4.5, 85, false, false),
+      // öóÓã
+      RecipeCard.create('r_008', '³ØÌÁöóÓãĞÈ¶ü', 'öóÓã', 'pond', ['Ò¹µö', 'µ×µö'], ['¼¦¸Î', 'òÇò¾', 'Ñª·Û'], 4.6, 88, false, false),
+      // Äàöú
+      RecipeCard.create('r_009', '³ØÌÁÄàöú¶ü', 'Äàöú', 'pond', ['ÏÄ¼¾', 'µ×µö'], ['òÇò¾', 'ºì³æ'], 4.2, 75, true, false),
+      // ºÚÓã
+      RecipeCard.create('r_010', '³ØÌÁºÚÓãÀ×ÍÜ', 'ºÚÓã', 'pond', ['ÏÄ¼¾', 'Â·ÑÇ'], ['À×ÍÜ', 'Èí³æ', 'Äàöú'], 4.7, 85, false, false),
+      // ¼×Óã
+      RecipeCard.create('r_011', '³ØÌÁ¼×Óã¶ü', '¼×Óã', 'pond', ['Ò¹µö', 'µ×µö'], ['¼¦¸Î', 'Öí¸Î', 'òÇò¾'], 4.4, 78, false, false),
 
-      // ==================== æ²³æµé…æ–¹ ====================
-      // é²«é±¼
-      RecipeCard.create('r_101', 'é‡æ²³é²«é±¼èš¯èš“ä¼´ä¾£', 'é²«é±¼', 'river', ['å››å­£', 'èµ°æ°´'], ['èš¯èš“ç²‰', 'çº¢è™«', 'é…’ç±³'], 4.7, 90, true, true),
-      // é²¤é±¼
-      RecipeCard.create('r_102', 'æ±Ÿæ²³é²¤é±¼ç‰ç±³é¥µ', 'é²¤é±¼', 'river', ['å¤ç§‹', 'æ·±æ°´'], ['å‘é…µç‰ç±³', 'èœ‚èœœ', 'éº¦ç²’'], 4.8, 95, false, false),
-      // è‰é±¼
-      RecipeCard.create('r_103', 'æ²³æµè‰é±¼å«©è‰é¥µ', 'è‰é±¼', 'river', ['å¤å­£', 'æµ®é’“'], ['å«©è‰', 'èŠ¦è‹‡èŠ¯', 'ç‰ç±³ç²’'], 4.6, 85, true, false),
-      // é²¶é±¼
-      RecipeCard.create('r_104', 'æ²³æµé²¶é±¼è…¥é¥µ', 'é²¶é±¼', 'river', ['å¤œé’“', 'æ·±æ½­'], ['é¸¡è‚', 'èš¯èš“', 'æ³¥é³…'], 4.6, 88, false, false),
-      // é»„é¢¡é±¼
-      RecipeCard.create('r_105', 'æ²³æµé»„é¢¡é±¼é¥µ', 'é»„é¢¡é±¼', 'river', ['å¤œé’“', 'çŸ³ç¼'], ['èš¯èš“', 'é¸¡è‚', 'çº¢è™«'], 4.5, 85, true, false),
-      // é³Šé±¼
-      RecipeCard.create('r_106', 'æ²³æµé³Šé±¼ç´ é¥µ', 'é³Šé±¼', 'river', ['æ˜¥å¤', 'ä¸­å±‚'], ['éº¸çš®', 'ç‰ç±³ç²‰', 'èœ‚èœœ'], 4.5, 82, true, false),
-      // ç¿˜å˜´
-      RecipeCard.create('r_107', 'æ²³æµç¿˜å˜´è·¯äºšé¥µ', 'ç¿˜å˜´', 'river', ['å¤ç§‹', 'è·¯äºš'], ['äº®ç‰‡', 'æ´»è™¾', 'å°é±¼'], 4.7, 82, false, false),
-      // é©¬å£
-      RecipeCard.create('r_108', 'æºªæµé©¬å£é¥µ', 'é©¬å£', 'river', ['å¤å­£', 'è·¯äºš'], ['èš‚èš±', 'èŸ‹èŸ€', 'äº®ç‰‡'], 4.6, 80, false, false),
-      // é²ƒé±¼
-      RecipeCard.create('r_109', 'æ€¥æµé²ƒé±¼é¥µ', 'é²ƒé±¼', 'river', ['å¤å­£', 'æ€¥æµ'], ['èš¯èš“', 'æ´»è™¾', 'èºè›³'], 4.4, 78, false, false),
-      // èµ¤çœ¼é³Ÿ
-      RecipeCard.create('r_110', 'æ²³é’“èµ¤çœ¼é³Ÿé¥µ', 'èµ¤çœ¼é³Ÿ', 'river', ['æ˜¥å¤', 'ä¸­å±‚'], ['èš¯èš“', 'ç‰ç±³ç²‰', 'é¢ç²‰'], 4.3, 76, true, false),
-      // æ³¥é³…
-      RecipeCard.create('r_111', 'æ²³æµæ³¥é³…é¥µ', 'æ³¥é³…', 'river', ['å¤å­£', 'æ³¥åº•'], ['èš¯èš“', 'çº¢è™«'], 4.2, 72, true, false),
-      // æ²³é³œ
-      RecipeCard.create('r_112', 'æ²³æµé³œé±¼æ´»é¥µ', 'æ²³é³œ', 'river', ['æ˜¥ç§‹', 'æ´»é¥µ'], ['æ´»æ³¥é³…', 'æ´»è™¾', 'å°é±¼'], 4.7, 85, false, false),
+      // ==================== ºÓÁ÷Åä·½ ====================
+      // öêÓã
+      RecipeCard.create('r_101', 'Ò°ºÓöêÓãòÇò¾°éÂÂ', 'öêÓã', 'river', ['ËÄ¼¾', '×ßË®'], ['òÇò¾·Û', 'ºì³æ', '¾ÆÃ×'], 4.7, 90, true, true),
+      // ÀğÓã
+      RecipeCard.create('r_102', '½­ºÓÀğÓãÓñÃ×¶ü', 'ÀğÓã', 'river', ['ÏÄÇï', 'ÉîË®'], ['·¢½ÍÓñÃ×', '·äÃÛ', 'ÂóÁ£'], 4.8, 95, false, false),
+      // ²İÓã
+      RecipeCard.create('r_103', 'ºÓÁ÷²İÓãÄÛ²İ¶ü', '²İÓã', 'river', ['ÏÄ¼¾', '¸¡µö'], ['ÄÛ²İ', 'Â«Î­Ğ¾', 'ÓñÃ×Á£'], 4.6, 85, true, false),
+      // öóÓã
+      RecipeCard.create('r_104', 'ºÓÁ÷öóÓãĞÈ¶ü', 'öóÓã', 'river', ['Ò¹µö', 'ÉîÌ¶'], ['¼¦¸Î', 'òÇò¾', 'Äàöú'], 4.6, 88, false, false),
+      // »ÆòªÓã
+      RecipeCard.create('r_105', 'ºÓÁ÷»ÆòªÓã¶ü', '»ÆòªÓã', 'river', ['Ò¹µö', 'Ê¯·ì'], ['òÇò¾', '¼¦¸Î', 'ºì³æ'], 4.5, 85, true, false),
+      // öıÓã
+      RecipeCard.create('r_106', 'ºÓÁ÷öıÓãËØ¶ü', 'öıÓã', 'river', ['´ºÏÄ', 'ÖĞ²ã'], ['ôïÆ¤', 'ÓñÃ×·Û', '·äÃÛ'], 4.5, 82, true, false),
+      // ÇÌ×ì
+      RecipeCard.create('r_107', 'ºÓÁ÷ÇÌ×ìÂ·ÑÇ¶ü', 'ÇÌ×ì', 'river', ['ÏÄÇï', 'Â·ÑÇ'], ['ÁÁÆ¬', '»îÏº', 'Ğ¡Óã'], 4.7, 82, false, false),
+      // Âí¿Ú
+      RecipeCard.create('r_108', 'ÏªÁ÷Âí¿Ú¶ü', 'Âí¿Ú', 'river', ['ÏÄ¼¾', 'Â·ÑÇ'], ['ÂìòÆ', 'ó¬ó°', 'ÁÁÆ¬'], 4.6, 80, false, false),
+      // ÷„Óã
+      RecipeCard.create('r_109', '¼±Á÷÷„Óã¶ü', '÷„Óã', 'river', ['ÏÄ¼¾', '¼±Á÷'], ['òÇò¾', '»îÏº', 'ÂİòÏ'], 4.4, 78, false, false),
+      // ³àÑÛ÷®
+      RecipeCard.create('r_110', 'ºÓµö³àÑÛ÷®¶ü', '³àÑÛ÷®', 'river', ['´ºÏÄ', 'ÖĞ²ã'], ['òÇò¾', 'ÓñÃ×·Û', 'Ãæ·Û'], 4.3, 76, true, false),
+      // Äàöú
+      RecipeCard.create('r_111', 'ºÓÁ÷Äàöú¶ü', 'Äàöú', 'river', ['ÏÄ¼¾', 'Äàµ×'], ['òÇò¾', 'ºì³æ'], 4.2, 72, true, false),
+      // ºÓ÷¬
+      RecipeCard.create('r_112', 'ºÓÁ÷÷¬Óã»î¶ü', 'ºÓ÷¬', 'river', ['´ºÇï', '»î¶ü'], ['»îÄàöú', '»îÏº', 'Ğ¡Óã'], 4.7, 85, false, false),
 
-      // ==================== æ°´åº“é…æ–¹ ====================
-      // é²¤é±¼
-      RecipeCard.create('r_201', 'æ°´åº“å¤§é²¤å®ˆé’“é¥µ', 'é²¤é±¼', 'reservoir', ['ç§‹å­£', 'å®ˆå¤§ç‰©'], ['å‘é…µç‰ç±³', 'çº¢è–¯', 'è¯é…’'], 4.9, 98, false, true),
-      // è‰é±¼
-      RecipeCard.create('r_202', 'æ°´åº“è‰é±¼æµ®é’“é¥µ', 'è‰é±¼', 'reservoir', ['å¤å­£', 'æµ®é’“'], ['å«©ç‰ç±³', 'é’è‰', 'éº¦éº¸'], 4.7, 90, true, false),
-      // é³™é±¼
-      RecipeCard.create('r_203', 'æ°´åº“é³™é±¼æµ®é’“é¥µ', 'é³™é±¼', 'reservoir', ['å¤å­£', 'æµ®é’“'], ['è—¿é¦™æ­£æ°”æ°´', 'è‡­è±†è…æ±', 'è½»éº¸'], 4.6, 88, false, false),
-      // é²¢é±¼
-      RecipeCard.create('r_204', 'æ°´åº“é²¢é±¼æ‰‹ç«¿é¥µ', 'é²¢é±¼', 'reservoir', ['å¤å­£', 'æµ®é’“'], ['æœé…¸', 'ç™½é†‹', 'é›ªèŠ±ç²‰'], 4.5, 85, true, false),
-      // é’é±¼
-      RecipeCard.create('r_205', 'æ°´åº“é’é±¼èºè›³é¥µ', 'é’é±¼', 'reservoir', ['å››å­£', 'åº•é’“'], ['ç”°èº', 'èºè›³ç²‰', 'èšŒè‚‰ç²‰'], 4.8, 92, false, false),
-      // é³œé±¼
-      RecipeCard.create('r_206', 'æ°´åº“é³œé±¼æ´»é¥µ', 'é³œé±¼', 'reservoir', ['æ˜¥ç§‹', 'æ´»é¥µ'], ['æ´»æ³¥é³…', 'æ´»è™¾', 'å°é±¼'], 4.9, 95, false, true),
-      // æ­¦æ˜Œé±¼
-      RecipeCard.create('r_207', 'æ°´åº“æ­¦æ˜Œé±¼ç´ é¥µ', 'æ­¦æ˜Œé±¼', 'reservoir', ['æ˜¥å¤', 'ä¸­å±‚'], ['éº¸çš®', 'ç‰ç±³ç²‰', 'èœ‚èœœ'], 4.5, 82, true, false),
-      // å·¨é²¤
-      RecipeCard.create('r_208', 'æ°´åº“å·¨é²¤é‡çªé¥µ', 'å·¨é²¤', 'reservoir', ['æ˜¥ç§‹', 'å®ˆå¤§ç‰©'], ['å‘é…µç‰ç±³', 'çº¢è–¯', 'è¯é…’'], 4.8, 90, false, false),
-      // é»„å°¾é²´
-      RecipeCard.create('r_209', 'æ°´åº“é»„å°¾é²´é¥µ', 'é»„å°¾é²´', 'reservoir', ['æ˜¥å¤', 'åº•é’“'], ['æ··åˆé¢—ç²’', 'éº¸çš®', 'èš¯èš“ç²‰'], 4.4, 78, true, false),
-      // é²®é±¼
-      RecipeCard.create('r_210', 'å—æ–¹é²®é±¼ä¸“ç”¨é¥µ', 'é²®é±¼', 'reservoir', ['å¤ç§‹', 'åº•é’“'], ['èŠ±ç”Ÿç²‰', 'éº¸çš®', 'ç‰ç±³ç²‰'], 4.6, 85, true, false),
-      // å¤§å£é»‘é²ˆ
-      RecipeCard.create('r_211', 'æ°´åº“é»‘é²ˆè·¯äºšé¥µ', 'å¤§å£é»‘é²ˆ', 'reservoir', ['æ˜¥å¤ç§‹', 'è·¯äºš'], ['è½¯è™«', 'æ´»è™¾', 'å°é±¼'], 4.8, 88, false, false),
-      // ç¿˜å˜´
-      RecipeCard.create('r_212', 'æ°´åº“ç¿˜å˜´è·¯äºšé¥µ', 'ç¿˜å˜´', 'reservoir', ['å¤ç§‹', 'è·¯äºš'], ['äº®ç‰‡', 'æ´»è™¾', 'å°é±¼'], 4.7, 85, false, false),
+      // ==================== Ë®¿âÅä·½ ====================
+      // ÀğÓã
+      RecipeCard.create('r_201', 'Ë®¿â´óÀğÊØµö¶ü', 'ÀğÓã', 'reservoir', ['Çï¼¾', 'ÊØ´óÎï'], ['·¢½ÍÓñÃ×', 'ºìÊí', 'Ò©¾Æ'], 4.9, 98, false, true),
+      // ²İÓã
+      RecipeCard.create('r_202', 'Ë®¿â²İÓã¸¡µö¶ü', '²İÓã', 'reservoir', ['ÏÄ¼¾', '¸¡µö'], ['ÄÛÓñÃ×', 'Çà²İ', 'Âóôï'], 4.7, 90, true, false),
+      // ÷«Óã
+      RecipeCard.create('r_203', 'Ë®¿â÷«Óã¸¡µö¶ü', '÷«Óã', 'reservoir', ['ÏÄ¼¾', '¸¡µö'], ['Ş½ÏãÕıÆøË®', '³ô¶¹¸¯Ö­', 'Çáôï'], 4.6, 88, false, false),
+      // öãÓã
+      RecipeCard.create('r_204', 'Ë®¿âöãÓãÊÖ¸Í¶ü', 'öãÓã', 'reservoir', ['ÏÄ¼¾', '¸¡µö'], ['¹ûËá', '°×´×', 'Ñ©»¨·Û'], 4.5, 85, true, false),
+      // ÇàÓã
+      RecipeCard.create('r_205', 'Ë®¿âÇàÓãÂİòÏ¶ü', 'ÇàÓã', 'reservoir', ['ËÄ¼¾', 'µ×µö'], ['ÌïÂİ', 'ÂİòÏ·Û', '°öÈâ·Û'], 4.8, 92, false, false),
+      // ÷¬Óã
+      RecipeCard.create('r_206', 'Ë®¿â÷¬Óã»î¶ü', '÷¬Óã', 'reservoir', ['´ºÇï', '»î¶ü'], ['»îÄàöú', '»îÏº', 'Ğ¡Óã'], 4.9, 95, false, true),
+      // Îä²ıÓã
+      RecipeCard.create('r_207', 'Ë®¿âÎä²ıÓãËØ¶ü', 'Îä²ıÓã', 'reservoir', ['´ºÏÄ', 'ÖĞ²ã'], ['ôïÆ¤', 'ÓñÃ×·Û', '·äÃÛ'], 4.5, 82, true, false),
+      // ¾ŞÀğ
+      RecipeCard.create('r_208', 'Ë®¿â¾ŞÀğÖØÎÑ¶ü', '¾ŞÀğ', 'reservoir', ['´ºÇï', 'ÊØ´óÎï'], ['·¢½ÍÓñÃ×', 'ºìÊí', 'Ò©¾Æ'], 4.8, 90, false, false),
+      // »ÆÎ²öñ
+      RecipeCard.create('r_209', 'Ë®¿â»ÆÎ²öñ¶ü', '»ÆÎ²öñ', 'reservoir', ['´ºÏÄ', 'µ×µö'], ['»ìºÏ¿ÅÁ£', 'ôïÆ¤', 'òÇò¾·Û'], 4.4, 78, true, false),
+      // öìÓã
+      RecipeCard.create('r_210', 'ÄÏ·½öìÓã×¨ÓÃ¶ü', 'öìÓã', 'reservoir', ['ÏÄÇï', 'µ×µö'], ['»¨Éú·Û', 'ôïÆ¤', 'ÓñÃ×·Û'], 4.6, 85, true, false),
+      // ´ó¿ÚºÚöÔ
+      RecipeCard.create('r_211', 'Ë®¿âºÚöÔÂ·ÑÇ¶ü', '´ó¿ÚºÚöÔ', 'reservoir', ['´ºÏÄÇï', 'Â·ÑÇ'], ['Èí³æ', '»îÏº', 'Ğ¡Óã'], 4.8, 88, false, false),
+      // ÇÌ×ì
+      RecipeCard.create('r_212', 'Ë®¿âÇÌ×ìÂ·ÑÇ¶ü', 'ÇÌ×ì', 'reservoir', ['ÏÄÇï', 'Â·ÑÇ'], ['ÁÁÆ¬', '»îÏº', 'Ğ¡Óã'], 4.7, 85, false, false),
 
-      // ==================== æ¹–æ³Šé…æ–¹ ====================
-      // é²«é±¼
-      RecipeCard.create('r_301', 'æ¹–æ³Šé²«é±¼ä¼ ç»Ÿé’“', 'é²«é±¼', 'lake', ['å››å­£', 'ä¼ ç»Ÿé’“'], ['é…’ç±³', 'èš¯èš“', 'çº¢è™«'], 4.7, 90, true, true),
-      // é²¤é±¼
-      RecipeCard.create('r_302', 'æ¹–æ³Šé²¤é±¼çˆ†ç‚¸é’©', 'é²¤é±¼', 'lake', ['å¤ç§‹', 'æµ·ç«¿'], ['ç³ é¥¼', 'ç‰ç±³', 'éº¦ç²’'], 4.8, 92, false, false),
-      // è‰é±¼
-      RecipeCard.create('r_303', 'æ¹–æ³Šè‰é±¼æµ®é’“é¥µ', 'è‰é±¼', 'lake', ['å¤å­£', 'æµ®é’“'], ['å«©è‰', 'èŠ¦è‹‡èŠ¯', 'ç‰ç±³ç²’'], 4.6, 85, true, false),
-      // é³œé±¼
-      RecipeCard.create('r_304', 'æ¹–æ³Šé³œé±¼æ´»é¥µ', 'é³œé±¼', 'lake', ['å¤ç§‹', 'æ´»é¥µ'], ['æ´»æ³¥é³…', 'æ´»è™¾', 'å°é±¼'], 4.9, 95, false, true),
-      // é’é±¼
-      RecipeCard.create('r_305', 'æ¹–æ³Šé’é±¼èºè›³é¥µ', 'é’é±¼', 'lake', ['å¤ç§‹', 'åº•é’“'], ['ç”°èº', 'èºè›³ç²‰', 'èšŒè‚‰'], 4.8, 90, false, false),
-      // é»‘é±¼
-      RecipeCard.create('r_306', 'æ¹–æ³Šé»‘é±¼é›·è›™', 'é»‘é±¼', 'lake', ['å¤å­£', 'è·¯äºš'], ['é›·è›™', 'è½¯è™«', 'æ³¥é³…'], 4.7, 85, false, false),
-      // ç‹—é±¼
-      RecipeCard.create('r_307', 'åŒ—æ–¹ç‹—é±¼é¥µ', 'ç‹—é±¼', 'lake', ['æ˜¥ç§‹å†¬', 'è·¯äºš'], ['å¤§å‹è½¯è™«', 'å°é±¼', 'äº®ç‰‡'], 4.6, 80, false, false),
-      // é²ˆé±¼
-      RecipeCard.create('r_308', 'æ¹–é’“é²ˆé±¼é¥µ', 'é²ˆé±¼', 'lake', ['æ˜¥ç§‹', 'æ´»é¥µ'], ['æ´»è™¾', 'å°é±¼', 'èš¯èš“'], 4.5, 82, false, false),
-      // é“¶é±¼
-      RecipeCard.create('r_309', 'é“¶é±¼ä¸“ç”¨é¥µ', 'é“¶é±¼', 'lake', ['æ˜¥ç§‹', 'ç»†çº¿'], ['çº¢è™«', 'å°è™«'], 4.2, 70, false, false),
-      // çº¢é³é²Œ
-      RecipeCard.create('r_310', 'çº¢é³é²Œè·¯äºšé¥µ', 'çº¢é³é²Œ', 'lake', ['å¤ç§‹', 'è·¯äºš'], ['äº®ç‰‡', 'æ´»è™¾', 'å°é±¼'], 4.5, 80, false, false),
-      // ç”²é±¼
-      RecipeCard.create('r_311', 'æ¹–æ³Šç”²é±¼é¥µ', 'ç”²é±¼', 'lake', ['å¤œé’“', 'åº•é’“'], ['é¸¡è‚', 'çŒªè‚', 'èš¯èš“'], 4.4, 75, false, false),
-      // é»„é³
-      RecipeCard.create('r_312', 'æ¹–æ³Šé»„é³é¥µ', 'é»„é³', 'lake', ['å¤œé’“', 'æ´ç©´'], ['èš¯èš“', 'å°é±¼'], 4.3, 72, false, false),
-      // æ²³èŸ¹
-      RecipeCard.create('r_313', 'ç§‹å­£æ²³èŸ¹é¥µ', 'æ²³èŸ¹', 'lake', ['ç§‹å­£', 'èŸ¹ç¬¼'], ['é¸¡è‚', 'é±¼è‚‰', 'ç‰ç±³'], 4.5, 85, true, false),
-      // æ²³è™¾
-      RecipeCard.create('r_314', 'æ¹–æ³Šæ²³è™¾é¥µ', 'æ²³è™¾', 'lake', ['å¤ç§‹', 'è™¾ç¬¼'], ['èš¯èš“', 'çº¢è™«', 'é¢ç²‰'], 4.2, 75, true, false),
-      // é³Šé±¼
-      RecipeCard.create('r_315', 'æ¹–æ³Šé³Šé±¼ç´ é¥µ', 'é³Šé±¼', 'lake', ['æ˜¥å¤', 'æµ®é’“'], ['éº¸çš®', 'ç‰ç±³ç²‰', 'æ‹‰ä¸ç²‰'], 4.5, 82, true, false),
-      // æ­¦æ˜Œé±¼
-      RecipeCard.create('r_318', 'æ¹–æ³Šæ­¦æ˜Œé±¼ç´ é¥µ', 'æ­¦æ˜Œé±¼', 'lake', ['æ˜¥å¤', 'ä¸­å±‚'], ['éº¸çš®', 'ç‰ç±³ç²‰', 'èœ‚èœœ'], 4.5, 82, true, false),
-      // å¤§å£é»‘é²ˆ
-      RecipeCard.create('r_316', 'æ¹–æ³Šé»‘é²ˆè·¯äºšé¥µ', 'å¤§å£é»‘é²ˆ', 'lake', ['æ˜¥å¤ç§‹', 'è·¯äºš'], ['è½¯è™«', 'æ´»è™¾', 'å°é±¼'], 4.8, 88, false, false),
-      // ç¿˜å˜´
-      RecipeCard.create('r_317', 'æ¹–æ³Šç¿˜å˜´è·¯äºšé¥µ', 'ç¿˜å˜´', 'lake', ['å¤ç§‹', 'è·¯äºš'], ['äº®ç‰‡', 'æ´»è™¾', 'å°é±¼'], 4.7, 85, false, false)
+      // ==================== ºş²´Åä·½ ====================
+      // öêÓã
+      RecipeCard.create('r_301', 'ºş²´öêÓã´«Í³µö', 'öêÓã', 'lake', ['ËÄ¼¾', '´«Í³µö'], ['¾ÆÃ×', 'òÇò¾', 'ºì³æ'], 4.7, 90, true, true),
+      // ÀğÓã
+      RecipeCard.create('r_302', 'ºş²´ÀğÓã±¬Õ¨¹³', 'ÀğÓã', 'lake', ['ÏÄÇï', 'º£¸Í'], ['¿·±ı', 'ÓñÃ×', 'ÂóÁ£'], 4.8, 92, false, false),
+      // ²İÓã
+      RecipeCard.create('r_303', 'ºş²´²İÓã¸¡µö¶ü', '²İÓã', 'lake', ['ÏÄ¼¾', '¸¡µö'], ['ÄÛ²İ', 'Â«Î­Ğ¾', 'ÓñÃ×Á£'], 4.6, 85, true, false),
+      // ÷¬Óã
+      RecipeCard.create('r_304', 'ºş²´÷¬Óã»î¶ü', '÷¬Óã', 'lake', ['ÏÄÇï', '»î¶ü'], ['»îÄàöú', '»îÏº', 'Ğ¡Óã'], 4.9, 95, false, true),
+      // ÇàÓã
+      RecipeCard.create('r_305', 'ºş²´ÇàÓãÂİòÏ¶ü', 'ÇàÓã', 'lake', ['ÏÄÇï', 'µ×µö'], ['ÌïÂİ', 'ÂİòÏ·Û', '°öÈâ'], 4.8, 90, false, false),
+      // ºÚÓã
+      RecipeCard.create('r_306', 'ºş²´ºÚÓãÀ×ÍÜ', 'ºÚÓã', 'lake', ['ÏÄ¼¾', 'Â·ÑÇ'], ['À×ÍÜ', 'Èí³æ', 'Äàöú'], 4.7, 85, false, false),
+      // ¹·Óã
+      RecipeCard.create('r_307', '±±·½¹·Óã¶ü', '¹·Óã', 'lake', ['´ºÇï¶¬', 'Â·ÑÇ'], ['´óĞÍÈí³æ', 'Ğ¡Óã', 'ÁÁÆ¬'], 4.6, 80, false, false),
+      // öÔÓã
+      RecipeCard.create('r_308', 'ºşµööÔÓã¶ü', 'öÔÓã', 'lake', ['´ºÇï', '»î¶ü'], ['»îÏº', 'Ğ¡Óã', 'òÇò¾'], 4.5, 82, false, false),
+      // ÒøÓã
+      RecipeCard.create('r_309', 'ÒøÓã×¨ÓÃ¶ü', 'ÒøÓã', 'lake', ['´ºÇï', 'Ï¸Ïß'], ['ºì³æ', 'Ğ¡³æ'], 4.2, 70, false, false),
+      // ºì÷¢÷ˆ
+      RecipeCard.create('r_310', 'ºì÷¢÷ˆÂ·ÑÇ¶ü', 'ºì÷¢÷ˆ', 'lake', ['ÏÄÇï', 'Â·ÑÇ'], ['ÁÁÆ¬', '»îÏº', 'Ğ¡Óã'], 4.5, 80, false, false),
+      // ¼×Óã
+      RecipeCard.create('r_311', 'ºş²´¼×Óã¶ü', '¼×Óã', 'lake', ['Ò¹µö', 'µ×µö'], ['¼¦¸Î', 'Öí¸Î', 'òÇò¾'], 4.4, 75, false, false),
+      // »Æ÷­
+      RecipeCard.create('r_312', 'ºş²´»Æ÷­¶ü', '»Æ÷­', 'lake', ['Ò¹µö', '¶´Ñ¨'], ['òÇò¾', 'Ğ¡Óã'], 4.3, 72, false, false),
+      // ºÓĞ·
+      RecipeCard.create('r_313', 'Çï¼¾ºÓĞ·¶ü', 'ºÓĞ·', 'lake', ['Çï¼¾', 'Ğ·Áı'], ['¼¦¸Î', 'ÓãÈâ', 'ÓñÃ×'], 4.5, 85, true, false),
+      // ºÓÏº
+      RecipeCard.create('r_314', 'ºş²´ºÓÏº¶ü', 'ºÓÏº', 'lake', ['ÏÄÇï', 'ÏºÁı'], ['òÇò¾', 'ºì³æ', 'Ãæ·Û'], 4.2, 75, true, false),
+      // öıÓã
+      RecipeCard.create('r_315', 'ºş²´öıÓãËØ¶ü', 'öıÓã', 'lake', ['´ºÏÄ', '¸¡µö'], ['ôïÆ¤', 'ÓñÃ×·Û', 'À­Ë¿·Û'], 4.5, 82, true, false),
+      // Îä²ıÓã
+      RecipeCard.create('r_318', 'ºş²´Îä²ıÓãËØ¶ü', 'Îä²ıÓã', 'lake', ['´ºÏÄ', 'ÖĞ²ã'], ['ôïÆ¤', 'ÓñÃ×·Û', '·äÃÛ'], 4.5, 82, true, false),
+      // ´ó¿ÚºÚöÔ
+      RecipeCard.create('r_316', 'ºş²´ºÚöÔÂ·ÑÇ¶ü', '´ó¿ÚºÚöÔ', 'lake', ['´ºÏÄÇï', 'Â·ÑÇ'], ['Èí³æ', '»îÏº', 'Ğ¡Óã'], 4.8, 88, false, false),
+      // ÇÌ×ì
+      RecipeCard.create('r_317', 'ºş²´ÇÌ×ìÂ·ÑÇ¶ü', 'ÇÌ×ì', 'lake', ['ÏÄÇï', 'Â·ÑÇ'], ['ÁÁÆ¬', '»îÏº', 'Ğ¡Óã'], 4.7, 85, false, false)
     ];
 
-    // åŠ è½½ç”¨æˆ·ä¿å­˜çš„é…æ–¹
+    // ¼ÓÔØÓÃ»§±£´æµÄÅä·½
     this.loadUserRecipes();
 
     this.filterRecipes();
   }
 
-  // åŠ è½½ç”¨æˆ·ä¿å­˜çš„é…æ–¹
+  // ¼ÓÔØÓÃ»§±£´æµÄÅä·½
   private loadUserRecipes(): void {
     const userRecipes = userDataService.getCustomRecipes();
 
     for (let i = 0; i < userRecipes.length; i++) {
       const ur = userRecipes[i];
 
-      // è½¬æ¢æ°´åŸŸç±»å‹
+      // ×ª»»Ë®ÓòÀàĞÍ
       let waterType = 'pond';
       if (ur.waterType === 'river' || ur.waterType === 'wild_pond') {
         waterType = 'river';
@@ -288,20 +288,20 @@ export struct RecipeBrowserPage {
         waterType = 'pond';
       }
 
-      // è·å–é±¼ç§åç§°
-      let targetFishName = 'é²«é±¼';
+      // »ñÈ¡ÓãÖÖÃû³Æ
+      let targetFishName = 'öêÓã';
       if (ur.targetFish.length > 0) {
         targetFishName = this.getFishName(ur.targetFish[0]);
       }
 
-      // è·å–å­£èŠ‚æ ‡ç­¾
-      let seasonTag = 'å››å­£';
-      if (ur.season === 'spring') seasonTag = 'æ˜¥å­£';
-      else if (ur.season === 'summer') seasonTag = 'å¤å­£';
-      else if (ur.season === 'autumn') seasonTag = 'ç§‹å­£';
-      else if (ur.season === 'winter') seasonTag = 'å†¬å­£';
+      // »ñÈ¡¼¾½Ú±êÇ©
+      let seasonTag = 'ËÄ¼¾';
+      if (ur.season === 'spring') seasonTag = '´º¼¾';
+      else if (ur.season === 'summer') seasonTag = 'ÏÄ¼¾';
+      else if (ur.season === 'autumn') seasonTag = 'Çï¼¾';
+      else if (ur.season === 'winter') seasonTag = '¶¬¼¾';
 
-      // è·å–é…æ–™åç§°åˆ—è¡¨
+      // »ñÈ¡ÅäÁÏÃû³ÆÁĞ±í
       const ingredientNames: string[] = [];
       for (let j = 0; j < Math.min(3, ur.ingredients.length); j++) {
         ingredientNames.push(ur.ingredients[j].name);
@@ -309,23 +309,23 @@ export struct RecipeBrowserPage {
 
       const card = RecipeCard.create(
         ur.id, ur.name, targetFishName, waterType,
-        [seasonTag, 'è‡ªå®šä¹‰'], ingredientNames,
+        [seasonTag, '×Ô¶¨Òå'], ingredientNames,
         4.5, 80, false, true, true
       );
 
-      this.allRecipes.unshift(card);  // ç”¨æˆ·é…æ–¹æ”¾åœ¨æœ€å‰é¢
+      this.allRecipes.unshift(card);  // ÓÃ»§Åä·½·ÅÔÚ×îÇ°Ãæ
     }
   }
 
-  // ç­›é€‰é…æ–¹
+  // É¸Ñ¡Åä·½
   private filterRecipes(): void {
     const waterType = this.waterTabs[this.currentWaterTab].type;
     const fishFilter = this.selectedFishFilter;
 
     this.recipes = this.allRecipes.filter((recipe: RecipeCard) => {
-      // æ°´åŸŸç­›é€‰
+      // Ë®ÓòÉ¸Ñ¡
       if (recipe.waterType !== waterType) return false;
-      // é±¼ç§ç­›é€‰
+      // ÓãÖÖÉ¸Ñ¡
       if (fishFilter !== 'all') {
         const targetFishName = this.getFishName(fishFilter);
         if (!recipe.targetFish.includes(targetFishName)) return false;
@@ -333,7 +333,7 @@ export struct RecipeBrowserPage {
       return true;
     });
 
-    // æ›´æ–°æ”¶è—çŠ¶æ€
+    // ¸üĞÂÊÕ²Ø×´Ì¬
     this.recipes.forEach((recipe: RecipeCard) => {
       recipe.isFavorite = userDataService.isFavorite(recipe.id) || recipe.isUserRecipe;
     });
@@ -341,23 +341,23 @@ export struct RecipeBrowserPage {
 
   build() {
     Column() {
-      // é¡¶éƒ¨æ ‡é¢˜æ 
+      // ¶¥²¿±êÌâÀ¸
       this.HeaderBar()
 
-      // æ°´åŸŸTab
+      // Ë®ÓòTab
       this.WaterTabBar()
 
-      // å†…å®¹åŒºåŸŸ
+      // ÄÚÈİÇøÓò
       Row() {
-        // å·¦ä¾§é±¼ç§ç­›é€‰
+        // ×ó²àÓãÖÖÉ¸Ñ¡
         this.FishFilterSidebar()
 
-        // å³ä¾§é…æ–¹åˆ—è¡¨
+        // ÓÒ²àÅä·½ÁĞ±í
         this.RecipeList()
       }
       .width('100%')
       .layoutWeight(1)
-      .alignItems(VerticalAlign.Top)  // é¡¶éƒ¨å¯¹é½
+      .alignItems(VerticalAlign.Top)  // ¶¥²¿¶ÔÆë
     }
     .width('100%')
     .height('100%')
@@ -367,7 +367,7 @@ export struct RecipeBrowserPage {
   @Builder
   HeaderBar() {
     Row() {
-      Text('é±¼é¥µé…æ–¹åº“')
+      Text('Óã¶üÅä·½¿â')
         .fontSize(ThemeConstants.FONT_SIZE_XL)
         .fontWeight(FontWeight.Bold)
         .fontColor(ThemeColors.TEXT_PRIMARY)
@@ -390,7 +390,7 @@ export struct RecipeBrowserPage {
             .fontWeight(this.currentWaterTab === index ? FontWeight.Medium : FontWeight.Normal)
             .padding({ left: 16, right: 16, top: 12, bottom: 8 })
 
-          // é€‰ä¸­æŒ‡ç¤ºæ¡
+          // Ñ¡ÖĞÖ¸Ê¾Ìõ
           Row()
             .width(24)
             .height(3)
@@ -399,8 +399,8 @@ export struct RecipeBrowserPage {
         }
         .onClick(() => {
           this.currentWaterTab = index;
-          this.selectedFishFilter = 'all';  // åˆ‡æ¢æ°´åŸŸæ—¶é‡ç½®é±¼ç§ç­›é€‰
-          this.updateFishFilters();  // æ›´æ–°å¯ç”¨é±¼ç§
+          this.selectedFishFilter = 'all';  // ÇĞ»»Ë®ÓòÊ±ÖØÖÃÓãÖÖÉ¸Ñ¡
+          this.updateFishFilters();  // ¸üĞÂ¿ÉÓÃÓãÖÖ
           this.filterRecipes();
         })
       })
@@ -462,20 +462,20 @@ export struct RecipeBrowserPage {
   RecipeList() {
     Scroll() {
       Column({ space: ThemeConstants.SPACE_MD }) {
-        // çƒ­é—¨æ¨èæ ‡é¢˜
+        // ÈÈÃÅÍÆ¼ö±êÌâ
         Row() {
-          Text('çƒ­é—¨æ¨è')
+          Text('ÈÈÃÅÍÆ¼ö')
             .fontSize(ThemeConstants.FONT_SIZE_MD)
             .fontWeight(FontWeight.Medium)
             .fontColor(ThemeColors.TEXT_PRIMARY)
           Blank()
-          Text(`å…± ${this.recipes.length} ä¸ªé…æ–¹`)
+          Text(`¹² ${this.recipes.length} ¸öÅä·½`)
             .fontSize(ThemeConstants.FONT_SIZE_SM)
             .fontColor(ThemeColors.TEXT_MUTED)
         }
         .width('100%')
 
-        // é…æ–¹å¡ç‰‡åˆ—è¡¨
+        // Åä·½¿¨Æ¬ÁĞ±í
         ForEach(this.recipes, (recipe: RecipeCard) => {
           this.RecipeCardBuilder(recipe)
         })
@@ -490,25 +490,25 @@ export struct RecipeBrowserPage {
   @Builder
   RecipeCardBuilder(recipe: RecipeCard) {
     Column({ space: ThemeConstants.SPACE_SM }) {
-      // ç”¨æˆ·é…æ–¹æ ‡è¯†
+      // ÓÃ»§Åä·½±êÊ¶
       if (recipe.isUserRecipe) {
         Row({ space: 4 }) {
-          Text('â­')
+          Text('?')
             .fontSize(12)
-          Text('æˆ‘çš„é…æ–¹')
+          Text('ÎÒµÄÅä·½')
             .fontSize(ThemeConstants.FONT_SIZE_XS)
-            .fontColor(ThemeColors.PRIMARY)
+            .fontColor(ThemeColors.PRIMARY_DARK)
         }
         .padding({ left: 8, right: 8, top: 4, bottom: 4 })
         .backgroundColor('rgba(232, 168, 73, 0.15)')
         .borderRadius(ThemeConstants.RADIUS_XS)
       }
-      // ä¸Šé±¼ç‡æ ‡ç­¾
+      // ÉÏÓãÂÊ±êÇ©
       else if (recipe.catchRate >= 90) {
         Row({ space: 4 }) {
-          Text('ğŸ”¥')
+          Text('??')
             .fontSize(12)
-          Text(`${recipe.catchRate}% ä¸Šé±¼ç‡`)
+          Text(`${recipe.catchRate}% ÉÏÓãÂÊ`)
             .fontSize(ThemeConstants.FONT_SIZE_XS)
             .fontColor(ThemeColors.SUCCESS)
         }
@@ -517,7 +517,7 @@ export struct RecipeBrowserPage {
         .borderRadius(ThemeConstants.RADIUS_XS)
       }
 
-      // é…æ–¹åç§°å’Œæ”¶è—
+      // Åä·½Ãû³ÆºÍÊÕ²Ø
       Row() {
         Text(recipe.name)
           .fontSize(ThemeConstants.FONT_SIZE_MD)
@@ -531,7 +531,7 @@ export struct RecipeBrowserPage {
       }
       .width('100%')
 
-      // æ ‡ç­¾
+      // ±êÇ©
       Row({ space: 6 }) {
         ForEach(recipe.tags, (tag: string) => {
           Text(tag)
@@ -543,7 +543,7 @@ export struct RecipeBrowserPage {
         })
       }
 
-      // é…æ–™
+      // ÅäÁÏ
       Row({ space: 6 }) {
         ForEach(recipe.ingredients, (ing: string) => {
           Row({ space: 4 }) {
@@ -558,12 +558,12 @@ export struct RecipeBrowserPage {
         })
       }
 
-      // æ–°æ‰‹å‹å¥½æ ‡ç­¾
+      // ĞÂÊÖÓÑºÃ±êÇ©
       if (recipe.isBeginnerFriendly) {
         Row({ space: 4 }) {
-          Text('ğŸ‘')
+          Text('??')
             .fontSize(10)
-          Text('æ–°æ‰‹å‹å¥½')
+          Text('ĞÂÊÖÓÑºÃ')
             .fontSize(ThemeConstants.FONT_SIZE_XS)
             .fontColor(ThemeColors.INFO)
         }
@@ -572,8 +572,8 @@ export struct RecipeBrowserPage {
         .borderRadius(ThemeConstants.RADIUS_XS)
       }
 
-      // æŸ¥çœ‹è¯¦æƒ…æŒ‰é’®
-      Button('æŸ¥çœ‹è¯¦æƒ… â†’')
+      // ²é¿´ÏêÇé°´Å¥
+      Button('²é¿´ÏêÇé ¡ú')
         .width('100%')
         .height(ThemeConstants.HEIGHT_BASE)
         .fontSize(ThemeConstants.FONT_SIZE_SM)

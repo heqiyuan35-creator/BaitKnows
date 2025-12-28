@@ -1,6 +1,6 @@
 /**
- * 饵知道 - 空状态组件
- * 用于列表无数据时的展示
+ * 饵知�?- 空状态组�?
+ * 用于列表无数据时的展�?
  */
 import { ThemeColors } from '../theme/ThemeColors';
 import { ThemeConstants } from '../theme/ThemeConstants';

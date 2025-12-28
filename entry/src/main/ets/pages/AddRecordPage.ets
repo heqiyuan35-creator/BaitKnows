@@ -1,5 +1,5 @@
 /**
- * 饵知道 - 添加渔获记录页
+ * 饵知�?- 添加渔获记录�?
  * 记录钓鱼成果
  */
 import { ThemeColors } from '../theme/ThemeColors';
@@ -15,7 +15,7 @@ import { fileIo } from '@kit.CoreFileKit';
 import { speechRecognizer } from '@kit.CoreSpeechKit';
 import { abilityAccessCtrl, Permissions, common } from '@kit.AbilityKit';
 
-// 预设配方简要信息（用于配方选择）
+// 预设配方简要信息（用于配方选择�?
 class PresetRecipeInfo {
   id: string = '';
   name: string = '';
@@ -28,41 +28,41 @@ class PresetRecipeInfo {
   }
 }
 
-// 预设配方数据库（简化版，用于配方选择）
+// 预设配方数据库（简化版，用于配方选择�?
 const PRESET_RECIPES: Map<string, PresetRecipeInfo> = new Map([
   // 池塘
   ['r_001', new PresetRecipeInfo('r_001', '池塘鲫鱼散炮', ['鲫鱼'])],
   ['r_002', new PresetRecipeInfo('r_002', '黑坑鲤鱼颗粒', ['鲤鱼'])],
-  ['r_003', new PresetRecipeInfo('r_003', '池塘草鱼青草饵', ['草鱼'])],
-  ['r_004', new PresetRecipeInfo('r_004', '池塘鳙鱼酸臭饵', ['鳙鱼'])],
+  ['r_003', new PresetRecipeInfo('r_003', '池塘草鱼青草�?, ['草鱼'])],
+  ['r_004', new PresetRecipeInfo('r_004', '池塘鳙鱼酸臭�?, ['鳙鱼'])],
   ['r_005', new PresetRecipeInfo('r_005', '池塘鲢鱼酸饵', ['鲢鱼'])],
-  ['r_006', new PresetRecipeInfo('r_006', '南方罗非专用饵', ['罗非鱼'])],
-  ['r_007', new PresetRecipeInfo('r_007', '黑坑叉尾专用饵', ['斑点叉尾鮰'])],
+  ['r_006', new PresetRecipeInfo('r_006', '南方罗非专用�?, ['罗非�?])],
+  ['r_007', new PresetRecipeInfo('r_007', '黑坑叉尾专用�?, ['斑点叉尾�?])],
   ['r_008', new PresetRecipeInfo('r_008', '池塘鲶鱼腥饵', ['鲶鱼'])],
   // 河流
   ['r_101', new PresetRecipeInfo('r_101', '野河鲫鱼蚯蚓伴侣', ['鲫鱼'])],
-  ['r_102', new PresetRecipeInfo('r_102', '江河鲤鱼玉米饵', ['鲤鱼'])],
-  ['r_103', new PresetRecipeInfo('r_103', '河流草鱼嫩草饵', ['草鱼'])],
-  ['r_105', new PresetRecipeInfo('r_105', '河流黄颡鱼饵', ['黄颡鱼'])],
+  ['r_102', new PresetRecipeInfo('r_102', '江河鲤鱼玉米�?, ['鲤鱼'])],
+  ['r_103', new PresetRecipeInfo('r_103', '河流草鱼嫩草�?, ['草鱼'])],
+  ['r_105', new PresetRecipeInfo('r_105', '河流黄颡鱼饵', ['黄颡�?])],
   ['r_106', new PresetRecipeInfo('r_106', '河流鳊鱼素饵', ['鳊鱼'])],
-  ['r_107', new PresetRecipeInfo('r_107', '河流翘嘴路亚饵', ['翘嘴'])],
+  ['r_107', new PresetRecipeInfo('r_107', '河流翘嘴路亚�?, ['翘嘴'])],
   // 水库
-  ['r_201', new PresetRecipeInfo('r_201', '水库大鲤守钓饵', ['鲤鱼'])],
-  ['r_202', new PresetRecipeInfo('r_202', '水库草鱼浮钓饵', ['草鱼'])],
-  ['r_205', new PresetRecipeInfo('r_205', '水库青鱼螺蛳饵', ['青鱼'])],
+  ['r_201', new PresetRecipeInfo('r_201', '水库大鲤守钓�?, ['鲤鱼'])],
+  ['r_202', new PresetRecipeInfo('r_202', '水库草鱼浮钓�?, ['草鱼'])],
+  ['r_205', new PresetRecipeInfo('r_205', '水库青鱼螺蛳�?, ['青鱼'])],
   ['r_206', new PresetRecipeInfo('r_206', '水库鳜鱼活饵', ['鳜鱼'])],
-  ['r_207', new PresetRecipeInfo('r_207', '水库武昌鱼素饵', ['武昌鱼'])],
-  ['r_210', new PresetRecipeInfo('r_210', '南方鲮鱼专用饵', ['鲮鱼'])],
+  ['r_207', new PresetRecipeInfo('r_207', '水库武昌鱼素�?, ['武昌�?])],
+  ['r_210', new PresetRecipeInfo('r_210', '南方鲮鱼专用�?, ['鲮鱼'])],
   // 湖泊
-  ['r_301', new PresetRecipeInfo('r_301', '湖泊鲫鱼传统钓', ['鲫鱼'])],
-  ['r_302', new PresetRecipeInfo('r_302', '湖泊鲤鱼爆炸钩', ['鲤鱼'])],
+  ['r_301', new PresetRecipeInfo('r_301', '湖泊鲫鱼传统�?, ['鲫鱼'])],
+  ['r_302', new PresetRecipeInfo('r_302', '湖泊鲤鱼爆炸�?, ['鲤鱼'])],
   ['r_304', new PresetRecipeInfo('r_304', '湖泊鳜鱼活饵', ['鳜鱼'])],
-  ['r_305', new PresetRecipeInfo('r_305', '湖泊青鱼螺蛳饵', ['青鱼'])],
+  ['r_305', new PresetRecipeInfo('r_305', '湖泊青鱼螺蛳�?, ['青鱼'])],
   ['r_306', new PresetRecipeInfo('r_306', '湖泊黑鱼雷蛙', ['黑鱼'])],
   ['r_315', new PresetRecipeInfo('r_315', '湖泊鳊鱼素饵', ['鳊鱼'])]
 ]);
 
-// 存储键
+// 存储�?
 const STORAGE_LAST_LOCATION = 'last_fishing_location';
 const STORAGE_LAST_WEATHER = 'last_fishing_weather';
 
@@ -86,7 +86,7 @@ interface RecipeOption {
 struct AddRecordPage {
   @State selectedDate: string = '';
   @State location: string = '';
-  @State selectedFishList: string[] = [];  // 改为数组支持多选
+  @State selectedFishList: string[] = [];  // 改为数组支持多�?
   @State weight: string = '';
   @State count: string = '1';
   @State selectedRecipeId: string = '';
@@ -94,7 +94,7 @@ struct AddRecordPage {
   @State weather: string = '晴朗';
   @State notes: string = '';
   @State isSaving: boolean = false;
-  @State hasSaved: boolean = false;  // 是否已保存过，防止重复保存
+  @State hasSaved: boolean = false;  // 是否已保存过，防止重复保�?
   @State showRecipeSelector: boolean = false;
   @State recipeOptions: RecipeOption[] = [];
   @State avgWeight: string = '';  // 平均单尾重量提示
@@ -186,30 +186,30 @@ struct AddRecordPage {
     // 获取收藏的配方ID
     const favoriteIds = userDataService.getFavoriteRecipes();
 
-    // 获取用户自定义配方
+    // 获取用户自定义配�?
     const userRecipes = userDataService.getCustomRecipes();
 
     const options: RecipeOption[] = [];
 
-    // 添加所有预设配方
+    // 添加所有预设配�?
     PRESET_RECIPES.forEach((preset: PresetRecipeInfo, id: string) => {
       const isFavorite = favoriteIds.includes(id);
       const opt: RecipeOption = {
         id: preset.id,
         name: preset.name,
-        targetFish: preset.targetFish.join('、'),
+        targetFish: preset.targetFish.join('�?),
         isUserRecipe: false,
         isFavorite: isFavorite
       };
       options.push(opt);
     });
 
-    // 添加用户自定义配方
+    // 添加用户自定义配�?
     for (const ur of userRecipes) {
       const opt: RecipeOption = {
         id: ur.id,
         name: ur.name,
-        targetFish: ur.targetFish.join('、'),
+        targetFish: ur.targetFish.join('�?),
         isUserRecipe: true,
         isFavorite: true
       };
@@ -229,7 +229,7 @@ struct AddRecordPage {
           this.FormItem('📅 日期', this.selectedDate)
 
           // 钓点位置
-          this.InputItem('📍 钓点位置', '请输入钓点名称', this.location, (value: string) => {
+          this.InputItem('📍 钓点位置', '请输入钓点名�?, this.location, (value: string) => {
             this.location = value;
           })
 
@@ -240,14 +240,14 @@ struct AddRecordPage {
           this.FishSelector()
 
           // 重量输入
-          this.InputItem('⚖️ 总重量 (kg)', '请输入重量', this.weight, (value: string) => {
+          this.InputItem('⚖️ 总重�?(kg)', '请输入重�?, this.weight, (value: string) => {
             this.weight = value;
             this.calculateAvgWeight();
           })
 
           // 数量输入
           Column({ space: 8 }) {
-            this.InputItem('🔢 数量 (尾)', '请输入数量', this.count, (value: string) => {
+            this.InputItem('🔢 数量 (�?', '请输入数�?, this.count, (value: string) => {
               this.count = value;
               this.calculateAvgWeight();
             })
@@ -256,7 +256,7 @@ struct AddRecordPage {
             if (this.avgWeight) {
               Text(this.avgWeight)
                 .fontSize(ThemeConstants.FONT_SIZE_XS)
-                .fontColor(ThemeColors.PRIMARY)
+                .fontColor(ThemeColors.PRIMARY_DARK)
                 .width('100%')
                 .textAlign(TextAlign.End)
             }
@@ -372,7 +372,7 @@ struct AddRecordPage {
   @Builder
   WeatherSelector() {
     Column({ space: 8 }) {
-      Text('🌤️ 天气')
+      Text('🌤�?天气')
         .fontSize(ThemeConstants.FONT_SIZE_SM)
         .fontColor(ThemeColors.TEXT_SECONDARY)
         .width('100%')
@@ -406,13 +406,13 @@ struct AddRecordPage {
 
   private getWeatherIcon(weather: string): string {
     const icons: Record<string, string> = {
-      '晴朗': '☀️',
-      '多云': '⛅',
+      '晴朗': '☀�?,
+      '多云': '�?,
       '阴天': '☁️',
-      '小雨': '🌧️',
+      '小雨': '🌧�?,
       '大风': '💨'
     };
-    return icons[weather] || '🌤️';
+    return icons[weather] || '🌤�?;
   }
 
   @Builder
@@ -424,9 +424,9 @@ struct AddRecordPage {
           .fontColor(ThemeColors.TEXT_SECONDARY)
         
         if (this.selectedFishList.length > 0) {
-          Text(`（已选${this.selectedFishList.length}种）`)
+          Text(`（已�?{this.selectedFishList.length}种）`)
             .fontSize(ThemeConstants.FONT_SIZE_XS)
-            .fontColor(ThemeColors.PRIMARY)
+            .fontColor(ThemeColors.PRIMARY_DARK)
             .margin({ left: 4 })
         }
       }
@@ -452,7 +452,7 @@ struct AddRecordPage {
 
             // 选中标记
             if (this.isFishSelected(option.name)) {
-              Text('✓')
+              Text('�?)
                 .fontSize(10)
                 .fontColor(Color.White)
                 .backgroundColor(ThemeColors.SUCCESS)
@@ -476,14 +476,14 @@ struct AddRecordPage {
   @Builder
   PhotoSelector() {
     Column({ space: 8 }) {
-      Text('📷 渔获图片 (可选)')
+      Text('📷 渔获图片 (可�?')
         .fontSize(ThemeConstants.FONT_SIZE_SM)
         .fontColor(ThemeColors.TEXT_SECONDARY)
         .width('100%')
 
       Scroll() {
         Row({ space: 8 }) {
-          // 已选图片
+          // 已选图�?
           ForEach(this.photos, (photo: string, index: number) => {
             Stack() {
               Image(photo)
@@ -510,7 +510,7 @@ struct AddRecordPage {
             .height(80)
           }, (photo: string, index: number) => `photo_${index}_${photo}`)
 
-          // 添加按钮（最多3张）
+          // 添加按钮（最�?张）
           if (this.photos.length < 3) {
             Column() {
               Text('📷')
@@ -577,7 +577,7 @@ struct AddRecordPage {
             Text(this.isRecording ? '🔴' : '🎤')
               .fontSize(16)
           }
-          Text(this.isAsrInitializing ? '初始化...' : (this.isRecording ? '录音中...' : '语音输入'))
+          Text(this.isAsrInitializing ? '初始�?..' : (this.isRecording ? '录音�?..' : '语音输入'))
             .fontSize(ThemeConstants.FONT_SIZE_XS)
             .fontColor(this.isRecording ? ThemeColors.ERROR : ThemeColors.PRIMARY)
         }
@@ -600,14 +600,14 @@ struct AddRecordPage {
       if (this.isRecording && this.recordingText) {
         Text(this.recordingText)
           .fontSize(ThemeConstants.FONT_SIZE_SM)
-          .fontColor(ThemeColors.PRIMARY)
+          .fontColor(ThemeColors.PRIMARY_DARK)
           .width('100%')
           .padding(8)
           .backgroundColor(ThemeColors.PRIMARY_LIGHT)
           .borderRadius(ThemeConstants.RADIUS_SM)
       }
 
-      TextArea({ placeholder: '记录一些心得体会...', text: this.notes })
+      TextArea({ placeholder: '记录一些心得体�?..', text: this.notes })
         .fontSize(ThemeConstants.FONT_SIZE_BASE)
         .fontColor(ThemeColors.TEXT_PRIMARY)
         .placeholderColor(ThemeColors.TEXT_HINT)
@@ -630,7 +630,7 @@ struct AddRecordPage {
     return grantStatus === abilityAccessCtrl.GrantStatus.PERMISSION_GRANTED;
   }
 
-  // 请求麦克风权限
+  // 请求麦克风权�?
   private async requestMicPermission(): Promise<boolean> {
     const permissions: Permissions[] = ['ohos.permission.MICROPHONE'];
     const atManager = abilityAccessCtrl.createAtManager();
@@ -639,7 +639,7 @@ struct AddRecordPage {
     return result.authResults[0] === abilityAccessCtrl.GrantStatus.PERMISSION_GRANTED;
   }
 
-  // 初始化语音识别引擎（异步，避免阻塞主线程）
+  // 初始化语音识别引擎（异步，避免阻塞主线程�?
   private async initAsrEngine(): Promise<boolean> {
     if (this.asrEngine) return true;
 
@@ -651,7 +651,7 @@ struct AddRecordPage {
           'recognizerMode': 'short'
         };
 
-        // 优先使用离线模式（更稳定，不依赖网络）
+        // 优先使用离线模式（更稳定，不依赖网络�?
         const initParams: speechRecognizer.CreateEngineParams = {
           language: 'zh-CN',
           online: 1,  // 1=离线模式
@@ -665,7 +665,7 @@ struct AddRecordPage {
             resolve(true);
           } else {
             console.error('离线语音识别引擎创建失败:', JSON.stringify(err));
-            // 离线失败，尝试在线模式
+            // 离线失败，尝试在线模�?
             const onlineParams: speechRecognizer.CreateEngineParams = {
               language: 'zh-CN',
               online: 0,  // 0=在线模式
@@ -677,7 +677,7 @@ struct AddRecordPage {
                 this.setupAsrListener();
                 resolve(true);
               } else {
-                console.error('在线语音识别引擎也失败:', JSON.stringify(err2));
+                console.error('在线语音识别引擎也失�?', JSON.stringify(err2));
                 resolve(false);
               }
             });
@@ -693,7 +693,7 @@ struct AddRecordPage {
 
     const listener: speechRecognizer.RecognitionListener = {
       onStart: (sessionId: string, eventMessage: string) => {
-        console.info('语音识别开始');
+        console.info('语音识别开�?);
       },
       onEvent: (sessionId: string, eventCode: number, eventMessage: string) => {
         console.info('语音识别事件:', eventCode);
@@ -722,12 +722,12 @@ struct AddRecordPage {
     this.asrEngine.setListener(listener);
   }
 
-  // 开始语音输入
+  // 开始语音输�?
   private async startVoiceInput(): Promise<void> {
     // 防止重复点击
     if (this.isAsrInitializing || this.isRecording) return;
 
-    // 检查权限
+    // 检查权�?
     const hasPermission = await this.checkMicPermission();
     if (!hasPermission) {
       const granted = await this.requestMicPermission();
@@ -737,19 +737,19 @@ struct AddRecordPage {
       }
     }
 
-    // 显示初始化状态
+    // 显示初始化状�?
     this.isAsrInitializing = true;
 
-    // 初始化引擎
+    // 初始化引�?
     const initialized = await this.initAsrEngine();
     this.isAsrInitializing = false;
 
     if (!initialized) {
-      promptAction.showToast({ message: '语音识别初始化失败，请检查设备是否支持' });
+      promptAction.showToast({ message: '语音识别初始化失败，请检查设备是否支�? });
       return;
     }
 
-    // 开始识别
+    // 开始识�?
     this.asrSessionId = `asr_${Date.now()}`;
     const audioParam: speechRecognizer.AudioInfo = {
       audioType: 'pcm',
@@ -787,7 +787,7 @@ struct AddRecordPage {
   @Builder
   RecipeSelector() {
     Column({ space: 8 }) {
-      Text('🧪 使用配方 (可选)')
+      Text('🧪 使用配方 (可�?')
         .fontSize(ThemeConstants.FONT_SIZE_SM)
         .fontColor(ThemeColors.TEXT_SECONDARY)
         .width('100%')
@@ -839,7 +839,7 @@ struct AddRecordPage {
 
       // 弹窗内容
       Column() {
-        // 标题栏
+        // 标题�?
         Row() {
           Text('选择配方')
             .fontSize(ThemeConstants.FONT_SIZE_LG)
@@ -860,7 +860,7 @@ struct AddRecordPage {
 
         // 手动输入
         Row({ space: 8 }) {
-          TextInput({ placeholder: '或手动输入配方名称', text: this.selectedRecipe })
+          TextInput({ placeholder: '或手动输入配方名�?, text: this.selectedRecipe })
             .fontSize(ThemeConstants.FONT_SIZE_BASE)
             .fontColor(ThemeColors.TEXT_PRIMARY)
             .placeholderColor(ThemeColors.TEXT_HINT)
@@ -889,7 +889,7 @@ struct AddRecordPage {
 
         // 配方列表
         if (this.recipeOptions.length > 0) {
-          Text('可选配方')
+          Text('可选配�?)
             .fontSize(ThemeConstants.FONT_SIZE_SM)
             .fontColor(ThemeColors.TEXT_SECONDARY)
             .width('100%')
@@ -914,7 +914,7 @@ struct AddRecordPage {
                       if (option.isUserRecipe) {
                         Text('自创')
                           .fontSize(ThemeConstants.FONT_SIZE_XS)
-                          .fontColor(ThemeColors.PRIMARY)
+                          .fontColor(ThemeColors.PRIMARY_DARK)
                           .padding({ left: 6, right: 6, top: 2, bottom: 2 })
                           .backgroundColor(ThemeColors.PRIMARY_LIGHT)
                           .borderRadius(4)
@@ -929,9 +929,9 @@ struct AddRecordPage {
                   .layoutWeight(1)
 
                   if (this.selectedRecipeId === option.id) {
-                    Text('✓')
+                    Text('�?)
                       .fontSize(18)
-                      .fontColor(ThemeColors.PRIMARY)
+                      .fontColor(ThemeColors.PRIMARY_DARK)
                   }
                 }
                 .width('100%')
@@ -953,7 +953,7 @@ struct AddRecordPage {
           Column() {
             Text('📭')
               .fontSize(40)
-            Text('暂无可选配方')
+            Text('暂无可选配�?)
               .fontSize(ThemeConstants.FONT_SIZE_SM)
               .fontColor(ThemeColors.TEXT_SECONDARY)
               .margin({ top: 8 })
@@ -985,13 +985,13 @@ struct AddRecordPage {
             .width(20)
             .height(20)
             .color(ThemeColors.TEXT_PRIMARY)
-          Text('保存中...')
+          Text('保存�?..')
             .fontSize(ThemeConstants.FONT_SIZE_MD)
             .fontColor(ThemeColors.TEXT_PRIMARY)
         }
       } else {
         Row({ space: 8 }) {
-          Text('✓')
+          Text('�?)
             .fontSize(18)
             .fontColor(ThemeColors.TEXT_PRIMARY)
           Text('保存记录')
@@ -1018,10 +1018,10 @@ struct AddRecordPage {
   private showVictoryDialog(record: FishingRecord): void {
     promptAction.showDialog({
       title: '🎉 记录保存成功',
-      message: '要生成一张精美的渔获分享图炫耀一下吗？',
+      message: '要生成一张精美的渔获分享图炫耀一下吗�?,
       buttons: [
         { text: '跳过', color: ThemeColors.TEXT_MUTED },
-        { text: '炫耀一下 🏆', color: ThemeColors.PRIMARY }
+        { text: '炫耀一�?🏆', color: ThemeColors.PRIMARY }
       ]
     }).then((result) => {
       if (result.index === 1) {
@@ -1043,7 +1043,7 @@ struct AddRecordPage {
     
     // 验证必填字段
     if (!this.location.trim()) {
-      promptAction.showToast({ message: '请输入钓点位置' });
+      promptAction.showToast({ message: '请输入钓点位�? });
       return;
     }
     if (this.selectedFishList.length === 0) {
@@ -1051,7 +1051,7 @@ struct AddRecordPage {
       return;
     }
     if (!this.weight || parseFloat(this.weight) <= 0) {
-      promptAction.showToast({ message: '请输入有效重量' });
+      promptAction.showToast({ message: '请输入有效重�? });
       return;
     }
 
@@ -1060,7 +1060,7 @@ struct AddRecordPage {
     // 创建记录
     const record = new FishingRecord();
     record.location = this.location.trim();
-    record.fishName = this.selectedFishList.join('、');  // 多鱼种用顿号连接
+    record.fishName = this.selectedFishList.join('�?);  // 多鱼种用顿号连接
     record.fishIcon = '🐟';
     record.weight = parseFloat(this.weight) || 0;
     record.count = parseInt(this.count) || 1;

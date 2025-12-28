@@ -1,6 +1,6 @@
 /**
  * 特殊场景规则
- * 定义各种特殊钓鱼场景的配方调整规则
+ * 定义各种特殊钓鱼场景的配方调整规�?
  */
 import { FlavorModifier, StateModifier } from '../common/types/RecipeTypes';
 
@@ -8,16 +8,16 @@ import { FlavorModifier, StateModifier } from '../common/types/RecipeTypes';
 export type ScenarioType =
   'extreme_cold' |      // 极寒 (<5°C)
   'very_cold' |         // 很冷 (5-10°C)
-  'cold' |              // 冷 (10-15°C)
+  'cold' |              // �?(10-15°C)
   'warm' |              // 温暖 (15-25°C)
-  'hot' |               // 热 (25-30°C)
+  'hot' |               // �?(25-30°C)
   'extreme_hot' |       // 极热 (>30°C)
-  'carnivore' |         // 肉食性鱼类
-  'herbivore' |         // 草食性鱼类
-  'omnivore' |          // 杂食性鱼类
-  'filter_feeder' |     // 滤食性鱼类 (鲢鳙)
-  'black_pit_new' |     // 黑坑新放鱼
-  'black_pit_old' |     // 黑坑老鱼/滑口鱼
+  'carnivore' |         // 肉食性鱼�?
+  'herbivore' |         // 草食性鱼�?
+  'omnivore' |          // 杂食性鱼�?
+  'filter_feeder' |     // 滤食性鱼�?(鲢鳙)
+  'black_pit_new' |     // 黑坑新放�?
+  'black_pit_old' |     // 黑坑老鱼/滑口�?
   'black_pit_competition' | // 黑坑竞技
   'wild_river_flow' |   // 野河流水
   'wild_river_still' |  // 野河静水
@@ -28,9 +28,9 @@ export type ScenarioType =
   'noon_fishing' |      // 午钓 (中午高温)
   'rainy' |             // 雨天
   'after_rain' |        // 雨后
-  'windy' |             // 大风天
-  'pressure_low' |      // 低气压
-  'pressure_high' |     // 高气压
+  'windy' |             // 大风�?
+  'pressure_low' |      // 低气�?
+  'pressure_high' |     // 高气�?
   'muddy_water' |       // 浑水
   'clear_water' |       // 清水
   'algae_bloom';        // 水华/藻类爆发
@@ -50,7 +50,7 @@ export class ScenarioRule {
   constructor() {}
 }
 
-// 创建场景规则的辅助函数
+// 创建场景规则的辅助函�?
 function createRule(
   type: ScenarioType,
   name: string,
@@ -88,7 +88,7 @@ function getTemperatureScenarios(): ScenarioRule[] {
     StateModifier.create(-30, 25, 20),
     ['bloodworm_powder', 'earthworm_powder', 'fish_meal', 'shrimp_powder', 'liver_powder'],
     ['citric_acid', 'lactic_acid', 'light_bran'],
-    ['使用活红虫效果最佳', '饵料状态要软粘', '小饵慢频率', '选择向阳背风钓位'],
+    ['使用活红虫效果最�?, '饵料状态要软粘', '小饵慢频�?, '选择向阳背风钓位'],
     100
   ));
 
@@ -96,7 +96,7 @@ function getTemperatureScenarios(): ScenarioRule[] {
   rules.push(createRule(
     'very_cold',
     '低温天气',
-    '水温较低，鱼开口慢，需要浓腥浓香',
+    '水温较低，鱼开口慢，需要浓腥浓�?,
     FlavorModifier.create(35, 15, 10, -10, 5),
     StateModifier.create(-20, 15, 15),
     ['bloodworm_powder', 'fish_meal', 'shrimp_powder', 'silkworm_pupa_powder'],
@@ -105,7 +105,7 @@ function getTemperatureScenarios(): ScenarioRule[] {
     90
   ));
 
-  // 冷场景 (10-15°C)
+  // 冷场�?(10-15°C)
   rules.push(createRule(
     'cold',
     '凉爽天气',
@@ -122,25 +122,25 @@ function getTemperatureScenarios(): ScenarioRule[] {
   rules.push(createRule(
     'warm',
     '适宜天气',
-    '水温适宜，鱼活性好，味型均衡',
+    '水温适宜，鱼活性好，味型均�?,
     FlavorModifier.create(0, 0, 0, 0, 0),
     StateModifier.create(0, 0, 0),
     [],
     [],
-    ['根据鱼种调整味型', '状态根据钓法调整'],
+    ['根据鱼种调整味型', '状态根据钓法调�?],
     50
   ));
 
-  // 热场景 (25-30°C)
+  // 热场�?(25-30°C)
   rules.push(createRule(
     'hot',
     '高温天气',
-    '水温较高，鱼食欲下降，需要清淡配方',
+    '水温较高，鱼食欲下降，需要清淡配�?,
     FlavorModifier.create(-25, 10, -15, 25, 0),
     StateModifier.create(15, -15, -10),
     ['citric_acid', 'lactic_acid', 'strawberry_essence', 'banana_essence'],
     ['fish_meal', 'blood_meal', 'liver_powder'],
-    ['清淡果酸为主', '早晚出钓效果好', '选择阴凉钓位'],
+    ['清淡果酸为主', '早晚出钓效果�?, '选择阴凉钓位'],
     85
   ));
 
@@ -153,7 +153,7 @@ function getTemperatureScenarios(): ScenarioRule[] {
     StateModifier.create(25, -25, -20),
     ['citric_acid', 'lactic_acid', 'acetic_acid', 'yogurt', 'cola'],
     ['fish_meal', 'blood_meal', 'shrimp_powder', 'earthworm_powder'],
-    ['果酸为主', '凌晨或傍晚出钓', '深水或阴凉处', '可尝试钓浮'],
+    ['果酸为主', '凌晨或傍晚出�?, '深水或阴凉处', '可尝试钓�?],
     95
   ));
 
@@ -161,27 +161,27 @@ function getTemperatureScenarios(): ScenarioRule[] {
 }
 
 
-// ==================== 鱼类食性场景 ====================
+// ==================== 鱼类食性场�?====================
 function getFishTypeScenarios(): ScenarioRule[] {
   const rules: ScenarioRule[] = [];
 
-  // 肉食性鱼类
+  // 肉食性鱼�?
   rules.push(createRule(
     'carnivore',
-    '肉食性鱼类',
-    '鲶鱼、黑鱼、鳜鱼等肉食性鱼类，需要浓腥配方',
+    '肉食性鱼�?,
+    '鲶鱼、黑鱼、鳜鱼等肉食性鱼类，需要浓腥配�?,
     FlavorModifier.create(40, -10, -20, 0, 30),
     StateModifier.create(-15, 15, 15),
     ['fish_meal', 'blood_meal', 'liver_powder', 'earthworm_powder', 'shrimp_powder', 'squid_powder'],
     ['corn_flour', 'sweet_potato_flour', 'vanilla_essence', 'strawberry_essence'],
-    ['活饵效果最佳', '腥臭味型为主', '饵料要有韧性', '夜钓效果好'],
+    ['活饵效果最�?, '腥臭味型为主', '饵料要有韧�?, '夜钓效果�?],
     70
   ));
 
-  // 草食性鱼类
+  // 草食性鱼�?
   rules.push(createRule(
     'herbivore',
-    '草食性鱼类',
+    '草食性鱼�?,
     '草鱼等草食性鱼类，需要香甜酸配方',
     FlavorModifier.create(-20, 25, 20, 20, 0),
     StateModifier.create(10, -10, -5),
@@ -191,29 +191,29 @@ function getFishTypeScenarios(): ScenarioRule[] {
     70
   ));
 
-  // 杂食性鱼类
+  // 杂食性鱼�?
   rules.push(createRule(
     'omnivore',
-    '杂食性鱼类',
+    '杂食性鱼�?,
     '鲫鱼、鲤鱼等杂食性鱼类，味型均衡',
     FlavorModifier.create(0, 0, 0, 0, 0),
     StateModifier.create(0, 0, 0),
     [],
     [],
-    ['根据季节调整味型', '腥香甜搭配'],
+    ['根据季节调整味型', '腥香甜搭�?],
     50
   ));
 
-  // 滤食性鱼类
+  // 滤食性鱼�?
   rules.push(createRule(
     'filter_feeder',
-    '滤食性鱼类',
-    '鲢鱼、鳙鱼等滤食性鱼类，需要酸臭雾化配方',
+    '滤食性鱼�?,
+    '鲢鱼、鳙鱼等滤食性鱼类，需要酸臭雾化配�?,
     FlavorModifier.create(-10, 0, -20, 50, 60),
     StateModifier.create(40, -30, -25),
     ['wheat_bran', 'rice_bran', 'citric_acid', 'lactic_acid', 'acetic_acid', 'stinky_tofu_juice', 'garlic_essence'],
     ['drawing_powder', 'sticky_powder', 'heavy_powder'],
-    ['酸臭味型为主', '极快雾化', '钓浮或钓半水', '大饵团抽窝'],
+    ['酸臭味型为主', '极快雾化', '钓浮或钓半水', '大饵团抽�?],
     75
   ));
 
@@ -224,29 +224,29 @@ function getFishTypeScenarios(): ScenarioRule[] {
 function getBlackPitScenarios(): ScenarioRule[] {
   const rules: ScenarioRule[] = [];
 
-  // 黑坑新放鱼
+  // 黑坑新放�?
   rules.push(createRule(
     'black_pit_new',
-    '黑坑新放鱼',
-    '刚放的生口鱼，抢鱼为主',
+    '黑坑新放�?,
+    '刚放的生口鱼，抢鱼为�?,
     FlavorModifier.create(15, 20, 10, 0, 0),
     StateModifier.create(25, -15, -10),
     ['dmpt', 'betaine', 'amino_acid', 'fishy_essence', 'honey_essence'],
     [],
-    ['快雾化抢鱼', '可适当加小药', '频率要快', '抢占好钓位'],
+    ['快雾化抢�?, '可适当加小�?, '频率要快', '抢占好钓�?],
     85
   ));
 
-  // 黑坑老鱼/滑口鱼
+  // 黑坑老鱼/滑口�?
   rules.push(createRule(
     'black_pit_old',
     '黑坑老鱼',
-    '被钓过多次的滑口鱼，需要本味配方',
+    '被钓过多次的滑口鱼，需要本味配�?,
     FlavorModifier.create(-20, -15, -10, 0, 0),
     StateModifier.create(-20, 15, 10),
     ['corn_flour', 'wheat_bran', 'soybean_flour', 'pellet_powder'],
     ['dmpt', 'fishy_essence', 'vanilla_essence'],
-    ['本味为主', '减少小药', '慢雾化', '细线小钩', '耐心守钓'],
+    ['本味为主', '减少小药', '慢雾�?, '细线小钩', '耐心守钓'],
     85
   ));
 
@@ -254,12 +254,12 @@ function getBlackPitScenarios(): ScenarioRule[] {
   rules.push(createRule(
     'black_pit_competition',
     '黑坑竞技',
-    '竞技比赛，需要快速诱鱼',
+    '竞技比赛，需要快速诱�?,
     FlavorModifier.create(20, 25, 15, 0, 0),
     StateModifier.create(30, -20, -15),
     ['dmpt', 'betaine', 'amino_acid', 'snowflake_powder', 'light_bran'],
     ['sticky_powder', 'heavy_powder'],
-    ['极快雾化', '高频率抽窝', '小药适量', '注意比赛规则'],
+    ['极快雾化', '高频率抽�?, '小药适量', '注意比赛规则'],
     90
   ));
 
@@ -279,7 +279,7 @@ function getWildFishingScenarios(): ScenarioRule[] {
     StateModifier.create(-25, 30, 25),
     ['sticky_powder', 'heavy_powder', 'glutinous_rice_flour', 'drawing_powder'],
     ['snowflake_powder', 'light_bran', 'puffed_corn'],
-    ['增加粘度防冲散', '重比重快到底', '选择回水湾', '走漂钓法'],
+    ['增加粘度防冲�?, '重比重快到底', '选择回水�?, '走漂钓法'],
     80
   ));
 
@@ -292,7 +292,7 @@ function getWildFishingScenarios(): ScenarioRule[] {
     StateModifier.create(0, 5, 5),
     [],
     [],
-    ['状态适中', '酒米打窝效果好', '选择水草边'],
+    ['状态适中', '酒米打窝效果�?, '选择水草�?],
     60
   ));
 
@@ -318,7 +318,7 @@ function getWildFishingScenarios(): ScenarioRule[] {
     StateModifier.create(-20, 20, 25),
     ['heavy_powder', 'sticky_powder', 'corn_kernel', 'wheat_kernel'],
     ['snowflake_powder', 'light_bran'],
-    ['重比重快到底', '大饵守钓', '打重窝', '耐心等待'],
+    ['重比重快到底', '大饵守钓', '打重�?, '耐心等待'],
     75
   ));
 
@@ -333,12 +333,12 @@ function getTimePeriodScenarios(): ScenarioRule[] {
   rules.push(createRule(
     'night_fishing',
     '夜钓',
-    '夜间钓鱼，鱼靠嗅觉觅食',
+    '夜间钓鱼，鱼靠嗅觉觅�?,
     FlavorModifier.create(15, 20, 10, 0, 10),
     StateModifier.create(-10, 10, 5),
     ['fishy_essence', 'garlic_essence', 'dmpt', 'earthworm', 'bloodworm'],
     [],
-    ['味型要浓', '活饵效果好', '注意安全', '带好照明'],
+    ['味型要浓', '活饵效果�?, '注意安全', '带好照明'],
     70
   ));
 
@@ -346,12 +346,12 @@ function getTimePeriodScenarios(): ScenarioRule[] {
   rules.push(createRule(
     'dawn_fishing',
     '早钓',
-    '天亮前后，鱼活性开始增加',
+    '天亮前后，鱼活性开始增�?,
     FlavorModifier.create(10, 10, 5, 0, 0),
     StateModifier.create(5, 0, 0),
     [],
     [],
-    ['黄金时段', '鱼开口积极', '抓紧时间'],
+    ['黄金时段', '鱼开口积�?, '抓紧时间'],
     65
   ));
 
@@ -359,12 +359,12 @@ function getTimePeriodScenarios(): ScenarioRule[] {
   rules.push(createRule(
     'noon_fishing',
     '午钓',
-    '中午高温时段，鱼活性下降',
+    '中午高温时段，鱼活性下�?,
     FlavorModifier.create(-15, 5, -10, 15, 0),
     StateModifier.create(10, -10, -5),
     ['citric_acid', 'lactic_acid'],
     ['fish_meal', 'blood_meal'],
-    ['清淡为主', '选择阴凉处', '可尝试钓浮', '耐心等待'],
+    ['清淡为主', '选择阴凉�?, '可尝试钓�?, '耐心等待'],
     70
   ));
 
@@ -379,7 +379,7 @@ function getWeatherScenarios(): ScenarioRule[] {
   rules.push(createRule(
     'rainy',
     '雨天',
-    '下雨天气，水中溶氧增加',
+    '下雨天气，水中溶氧增�?,
     FlavorModifier.create(5, 5, 0, 5, 0),
     StateModifier.create(5, 0, 0),
     [],
@@ -401,36 +401,36 @@ function getWeatherScenarios(): ScenarioRule[] {
     75
   ));
 
-  // 大风天
+  // 大风�?
   rules.push(createRule(
     'windy',
-    '大风天',
-    '风大浪大，需要增加比重',
+    '大风�?,
+    '风大浪大，需要增加比�?,
     FlavorModifier.create(5, 5, 0, 0, 0),
     StateModifier.create(-15, 15, 20),
     ['heavy_powder', 'sticky_powder'],
     ['snowflake_powder', 'light_bran'],
-    ['增加比重', '选择背风处', '注意安全'],
+    ['增加比重', '选择背风�?, '注意安全'],
     70
   ));
 
-  // 低气压
+  // 低气�?
   rules.push(createRule(
     'pressure_low',
-    '低气压',
+    '低气�?,
     '气压低，水中溶氧不足，鱼开口差',
     FlavorModifier.create(-10, -5, -5, 10, 0),
     StateModifier.create(10, -10, -10),
     ['citric_acid', 'lactic_acid'],
     ['fish_meal', 'blood_meal'],
-    ['鱼开口差', '清淡为主', '可尝试钓浮', '耐心等待'],
+    ['鱼开口差', '清淡为主', '可尝试钓�?, '耐心等待'],
     80
   ));
 
-  // 高气压
+  // 高气�?
   rules.push(createRule(
     'pressure_high',
-    '高气压',
+    '高气�?,
     '气压高，水中溶氧充足，鱼活性好',
     FlavorModifier.create(5, 5, 5, 0, 0),
     StateModifier.create(5, 0, 0),
@@ -451,12 +451,12 @@ function getWaterQualityScenarios(): ScenarioRule[] {
   rules.push(createRule(
     'muddy_water',
     '浑水',
-    '水质浑浊，鱼靠嗅觉觅食',
+    '水质浑浊，鱼靠嗅觉觅�?,
     FlavorModifier.create(20, 15, 10, 0, 10),
     StateModifier.create(-10, 10, 10),
     ['fishy_essence', 'garlic_essence', 'dmpt', 'fish_meal', 'shrimp_powder'],
     [],
-    ['味型要浓', '颜色鲜艳的饵料', '增加诱食剂'],
+    ['味型要浓', '颜色鲜艳的饵�?, '增加诱食�?],
     75
   ));
 
@@ -482,7 +482,7 @@ function getWaterQualityScenarios(): ScenarioRule[] {
     StateModifier.create(15, -15, -10),
     ['citric_acid', 'lactic_acid'],
     ['fish_meal', 'blood_meal'],
-    ['鱼可能缺氧', '清淡果酸', '选择进水口', '早晚出钓'],
+    ['鱼可能缺�?, '清淡果酸', '选择进水�?, '早晚出钓'],
     80
   ));
 
@@ -490,7 +490,7 @@ function getWaterQualityScenarios(): ScenarioRule[] {
 }
 
 
-// ==================== 场景规则数据库 ====================
+// ==================== 场景规则数据�?====================
 class ScenarioRulesDatabase {
   private static instance: ScenarioRulesDatabase | null = null;
   private rules: ScenarioRule[] = [];
@@ -509,7 +509,7 @@ class ScenarioRulesDatabase {
   initialize(): void {
     if (this.initialized) return;
 
-    // 加载所有场景规则
+    // 加载所有场景规�?
     const tempRules = getTemperatureScenarios();
     const fishRules = getFishTypeScenarios();
     const pitRules = getBlackPitScenarios();

@@ -17,7 +17,7 @@ export type ActiveTime = 'dawn' | 'morning' | 'noon' | 'afternoon' | 'dusk' | 'n
 // 觅食风格
 export type FeedingStyle = 'aggressive' | 'cautious' | 'opportunistic';
 
-// 食性类型
+// 食性类�?
 export type DietType = 'herbivore' | 'carnivore' | 'omnivore';
 
 // 味型
@@ -49,7 +49,7 @@ export class FlavorProfile {
   }
 }
 
-// 季节活跃度
+// 季节活跃�?
 export class SeasonActivity {
   spring: number = 5;
   summer: number = 5;
@@ -119,7 +119,7 @@ export class SeasonalFlavorAdjustment {
   }
 }
 
-// 鱼类习性
+// 鱼类习�?
 export class FishHabits {
   waterLayer: WaterLayer = 'bottom';
   temperatureRange: TemperatureRange = new TemperatureRange();
@@ -132,7 +132,7 @@ export class FishHabits {
   constructor() {}
 }
 
-// 食性偏好
+// 食性偏�?
 export class DietPreference {
   type: DietType = 'omnivore';
   flavorPreference: FlavorProfile = new FlavorProfile();

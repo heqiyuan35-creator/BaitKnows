@@ -33,7 +33,7 @@ struct HuaweiMapDemo {
         }
         this.mapEventManager.on("mapLoad", callback);
       } else {
-        console.error(`Failed to initialize the map, code is：${err.code}, message is ${err.message}`);
+        console.error(`Failed to initialize the map, code is�?{err.code}, message is ${err.message}`);
       }
     };
   }
@@ -56,7 +56,7 @@ struct HuaweiMapDemo {
 
   build() {
     Stack() {
-      // 调用MapComponent组件初始化地图
+      // 调用MapComponent组件初始化地�?
       MapComponent({ mapOptions: this.mapOptions, mapCallback: this.callback }).width('100%').height('100%');
     }.height('100%')
   }

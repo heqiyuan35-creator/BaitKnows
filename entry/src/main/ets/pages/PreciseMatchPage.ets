@@ -1,5 +1,5 @@
 /**
- * 精确匹配 - 参数输入页
+ * 精确匹配 - 参数输入�?
  * 提供专业级参数配置，与快速配方形成差异化
  */
 import { router } from '@kit.ArkUI';
@@ -55,7 +55,7 @@ struct PreciseMatchPage {
   @State selectedSeason: RecipeSeason = 'spring';
   @State temperature: number = 24;
 
-  // 高级选项展开状态
+  // 高级选项展开状�?
   @State showAdvanced: boolean = true;
 
   // 高级参数
@@ -200,7 +200,7 @@ struct PreciseMatchPage {
       isCustom: false
     }));
 
-    // 用户自定义鱼种
+    // 用户自定义鱼�?
     const customFishList = userDataService.getCustomFish().filter((fish: CustomFish) =>
       fish.waterTypes.includes(waterTypeKey)
     );
@@ -213,7 +213,7 @@ struct PreciseMatchPage {
       });
     });
 
-    // 如果当前选中的鱼不在新列表中，选择第一个
+    // 如果当前选中的鱼不在新列表中，选择第一�?
     const currentFishExists = this.fishList.some((f: FishItem) => f.id === this.selectedFish);
     if (!currentFishExists && this.fishList.length > 0) {
       this.selectedFish = this.fishList[0].id;
@@ -232,7 +232,7 @@ struct PreciseMatchPage {
     }
   }
 
-  // 开始精确分析
+  // 开始精确分�?
   private onStartAnalysis(): void {
     if (!this.selectedFish) return;
     this.isLoading = true;
@@ -263,14 +263,14 @@ struct PreciseMatchPage {
     });
   }
 
-  // 返回上一页
+  // 返回上一�?
   private onBack(): void {
     router.back();
   }
 
   build() {
     Column() {
-      // 顶部标题栏
+      // 顶部标题�?
       this.TitleBar()
 
       Scroll() {
@@ -281,7 +281,7 @@ struct PreciseMatchPage {
           // 水域环境
           this.WaterSection()
 
-          // 季节与天气
+          // 季节与天�?
           this.SeasonWeatherSection()
 
           // 高级选项
@@ -305,7 +305,7 @@ struct PreciseMatchPage {
   TitleBar() {
     Row() {
       Row() {
-        Text('←')
+        Text('�?)
           .fontSize(24)
           .fontColor('#1A1A1A')
       }
@@ -321,7 +321,7 @@ struct PreciseMatchPage {
         .layoutWeight(1)
         .textAlign(TextAlign.Center)
 
-      // 占位，保持标题居中
+      // 占位，保持标题居�?
       Row().width(40).height(40)
     }
     .width('100%')
@@ -339,7 +339,7 @@ struct PreciseMatchPage {
           .fontWeight(FontWeight.Bold)
           .fontColor('#1A1A1A')
         Blank()
-        Text(`已选${this.fishList.length}种`)
+        Text(`已�?{this.fishList.length}种`)
           .fontSize(14)
           .fontColor('#999')
       }
@@ -362,7 +362,7 @@ struct PreciseMatchPage {
 
                 if (this.selectedFish === fish.id) {
                   Row() {
-                    Text('✓').fontSize(11).fontColor(Color.White)
+                    Text('�?).fontSize(11).fontColor(Color.White)
                   }
                   .width(18)
                   .height(18)
@@ -433,7 +433,7 @@ struct PreciseMatchPage {
   @Builder
   SeasonWeatherSection() {
     Column({ space: 16 }) {
-      Text('季节与天气')
+      Text('季节与天�?)
         .fontSize(18)
         .fontWeight(FontWeight.Bold)
         .fontColor('#1A1A1A')
@@ -450,7 +450,7 @@ struct PreciseMatchPage {
           Text(`${this.temperature}°C`)
             .fontSize(18)
             .fontWeight(FontWeight.Bold)
-            .fontColor(ThemeColors.PRIMARY)
+            .fontColor(ThemeColors.PRIMARY_DARK)
         }
         .width('100%')
 
@@ -522,7 +522,7 @@ struct PreciseMatchPage {
     Column({ space: 12 }) {
       // 折叠标题
       Row() {
-        Text('⚙').fontSize(16).fontColor(ThemeColors.PRIMARY)
+        Text('�?).fontSize(16).fontColor(ThemeColors.PRIMARY_DARK)
         Text('高级选项')
           .fontSize(16)
           .fontWeight(FontWeight.Medium)
@@ -533,7 +533,7 @@ struct PreciseMatchPage {
           .fontColor('#999')
           .margin({ left: 4 })
         Blank()
-        Text(this.showAdvanced ? '∧' : '∨')
+        Text(this.showAdvanced ? '�? : '�?)
           .fontSize(16)
           .fontColor('#999')
       }
@@ -560,7 +560,7 @@ struct PreciseMatchPage {
           // 风力
           this.WindConditionRow()
 
-          // 饵料状态
+          // 饵料状�?
           this.BaitStateRow()
 
           // 味型强度
@@ -662,7 +662,7 @@ struct PreciseMatchPage {
   @Builder
   BaitStateRow() {
     Column({ space: 10 }) {
-      Text('饵料状态').fontSize(14).fontColor('#666')
+      Text('饵料状�?).fontSize(14).fontColor('#666')
       Flex({ wrap: FlexWrap.Wrap }) {
         ForEach(this.baitStateOptions, (opt: OptionItem) => {
           Text(opt.label)
@@ -727,9 +727,9 @@ struct PreciseMatchPage {
           if (this.isLoading) {
             LoadingProgress().width(20).height(20).color(Color.White)
           } else {
-            Text('✦').fontSize(16).fontColor(Color.White)
+            Text('�?).fontSize(16).fontColor(Color.White)
           }
-          Text(this.isLoading ? '分析中...' : '开始精确分析')
+          Text(this.isLoading ? '分析�?..' : '开始精确分�?)
             .fontSize(16)
             .fontColor(Color.White)
             .fontWeight(FontWeight.Medium)

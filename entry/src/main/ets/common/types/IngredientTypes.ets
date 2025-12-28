@@ -1,5 +1,5 @@
 /**
- * 原材料相关类型定义
+ * 原材料相关类型定�?
  */
 import { FlavorProfile } from './FishTypes';
 
@@ -9,7 +9,7 @@ export type IngredientCategory = 'base' | 'protein' | 'additive' | 'state' | 'bi
 // 季节
 export type Season = 'spring' | 'summer' | 'autumn' | 'winter';
 
-// 物理属性
+// 物理属�?
 export class PhysicalProperties {
   atomization: number = 5;
   viscosity: number = 5;
@@ -43,7 +43,7 @@ export class DosageRange {
   }
 }
 
-// 简单温度范围
+// 简单温度范�?
 export class SimpleTemperatureRange {
   min: number = 0;
   max: number = 40;
@@ -58,7 +58,7 @@ export class SimpleTemperatureRange {
   }
 }
 
-// 原材料
+// 原材�?
 export class Ingredient {
   id: string = '';
   name: string = '';

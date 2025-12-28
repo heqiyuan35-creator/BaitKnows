@@ -1,5 +1,5 @@
 /**
- * 智能配方生成规则表
+ * 智能配方生成规则�?
  * 基于确定性规则的配方生成数据
  */
 import {
@@ -24,12 +24,12 @@ function createCrucianRule(): FishRecipeRule {
   // 季节修正
   rule.seasonModifier.spring = FlavorModifier.create(20, -10, 0, 0, 0);   // 春：增腥
   rule.seasonModifier.summer = FlavorModifier.create(-30, 10, -10, 20, 0); // 夏：减腥增酸
-  rule.seasonModifier.autumn = FlavorModifier.create(0, 20, 10, 0, 0);    // 秋：增香甜
+  rule.seasonModifier.autumn = FlavorModifier.create(0, 20, 10, 0, 0);    // 秋：增香�?
   rule.seasonModifier.winter = FlavorModifier.create(40, 10, 10, -10, 0); // 冬：浓腥浓香
 
   // 水域修正
-  rule.waterModifier.river = StateModifier.create(-20, 20, -10);      // 野河：慢雾化高粘度
-  rule.waterModifier.pond = StateModifier.create(20, -10, 30);        // 黑坑：快雾化味型浓
+  rule.waterModifier.river = StateModifier.create(-20, 20, -10);      // 野河：慢雾化高粘�?
+  rule.waterModifier.pond = StateModifier.create(20, -10, 30);        // 黑坑：快雾化味型�?
   rule.waterModifier.reservoir = StateModifier.create(-10, 10, 0);    // 水库：适中
   rule.waterModifier.wild_pond = StateModifier.create(0, 10, 0);      // 野塘：适中
 
@@ -109,7 +109,7 @@ function createBlackRule(): FishRecipeRule {
   rule.fishId = 'black_carp';
   rule.fishName = '青鱼';
 
-  // 基础味型：腥香为主，大鱼偏重口
+  // 基础味型：腥香为主，大鱼偏重�?
   rule.baseFlavor = FlavorModifier.create(70, 50, 40, 20, 40);
 
   // 季节修正
@@ -139,7 +139,7 @@ function createSilverRule(): FishRecipeRule {
   rule.fishId = 'silver_carp';
   rule.fishName = '鲢鱼';
 
-  // 基础味型：酸臭为主
+  // 基础味型：酸臭为�?
   rule.baseFlavor = FlavorModifier.create(40, 50, 30, 90, 85);
 
   // 季节修正
@@ -230,7 +230,7 @@ function createBreamRule(): FishRecipeRule {
   rule.fishId = 'bream';
   rule.fishName = '鳊鱼';
 
-  // 基础味型：香甜为主
+  // 基础味型：香甜为�?
   rule.baseFlavor = FlavorModifier.create(45, 85, 75, 25, 15);
 
   // 季节修正
@@ -254,13 +254,13 @@ function createBreamRule(): FishRecipeRule {
   return rule;
 }
 
-// 创建黄颡鱼规则
+// 创建黄颡鱼规�?
 function createYellowCatfishRule(): FishRecipeRule {
   const rule = new FishRecipeRule();
   rule.fishId = 'yellow_catfish';
-  rule.fishName = '黄颡鱼';
+  rule.fishName = '黄颡�?;
 
-  // 基础味型：浓腥为主
+  // 基础味型：浓腥为�?
   rule.baseFlavor = FlavorModifier.create(95, 30, 15, 10, 60);
 
   rule.seasonModifier.spring = FlavorModifier.create(10, 5, 0, 0, 10);
@@ -308,11 +308,11 @@ function createCulterRule(): FishRecipeRule {
   return rule;
 }
 
-// 创建罗非鱼规则
+// 创建罗非鱼规�?
 function createTilapiaRule(): FishRecipeRule {
   const rule = new FishRecipeRule();
   rule.fishId = 'tilapia';
-  rule.fishName = '罗非鱼';
+  rule.fishName = '罗非�?;
 
   // 基础味型：腥香甜
   rule.baseFlavor = FlavorModifier.create(70, 60, 50, 20, 30);
@@ -362,11 +362,11 @@ function createMandarinFishRule(): FishRecipeRule {
   return rule;
 }
 
-// 创建武昌鱼规则
+// 创建武昌鱼规�?
 function createWuchangFishRule(): FishRecipeRule {
   const rule = new FishRecipeRule();
   rule.fishId = 'wuchang_fish';
-  rule.fishName = '武昌鱼';
+  rule.fishName = '武昌�?;
 
   // 基础味型：香甜为主，类似鳊鱼
   rule.baseFlavor = FlavorModifier.create(40, 80, 70, 20, 10);
@@ -395,7 +395,7 @@ function createSnakeheadRule(): FishRecipeRule {
   rule.fishId = 'snakehead';
   rule.fishName = '黑鱼';
 
-  // 基础味型：极浓腥，活饵/路亚为主
+  // 基础味型：极浓腥，活�?路亚为主
   rule.baseFlavor = FlavorModifier.create(100, 15, 5, 5, 50);
 
   rule.seasonModifier.spring = FlavorModifier.create(5, 5, 0, 0, 10);
@@ -470,11 +470,11 @@ function createBassRule(): FishRecipeRule {
   return rule;
 }
 
-// 创建斑点叉尾鮰规则
+// 创建斑点叉尾鮰规�?
 function createChannelCatfishRule(): FishRecipeRule {
   const rule = new FishRecipeRule();
   rule.fishId = 'channel_catfish';
-  rule.fishName = '斑点叉尾鮰';
+  rule.fishName = '斑点叉尾�?;
 
   // 基础味型：浓腥臭
   rule.baseFlavor = FlavorModifier.create(90, 25, 15, 15, 80);
@@ -705,11 +705,11 @@ function createBarbelRule(): FishRecipeRule {
   return rule;
 }
 
-// 创建赤眼鳟规则
+// 创建赤眼鳟规�?
 function createChubRule(): FishRecipeRule {
   const rule = new FishRecipeRule();
   rule.fishId = 'chub';
-  rule.fishName = '赤眼鳟';
+  rule.fishName = '赤眼�?;
 
   rule.baseFlavor = FlavorModifier.create(60, 60, 40, 20, 15);
 
@@ -757,11 +757,11 @@ function createRiverMandarinFishRule(): FishRecipeRule {
   return rule;
 }
 
-// 创建黄尾鲴规则
+// 创建黄尾鲴规�?
 function createYellowCheekRule(): FishRecipeRule {
   const rule = new FishRecipeRule();
   rule.fishId = 'yellow_cheek';
-  rule.fishName = '黄尾鲴';
+  rule.fishName = '黄尾�?;
 
   rule.baseFlavor = FlavorModifier.create(55, 70, 50, 25, 15);
 
@@ -809,11 +809,11 @@ function createWhitebaitRule(): FishRecipeRule {
   return rule;
 }
 
-// 创建红鳍鲌规则
+// 创建红鳍鲌规�?
 function createRedfinCulterRule(): FishRecipeRule {
   const rule = new FishRecipeRule();
   rule.fishId = 'redfin_culter';
-  rule.fishName = '红鳍鲌';
+  rule.fishName = '红鳍�?;
 
   rule.baseFlavor = FlavorModifier.create(80, 50, 30, 15, 20);
 
@@ -895,7 +895,7 @@ function createShrimpRule(): FishRecipeRule {
 function getTemperatureRules(): TemperatureRule[] {
   const rules: TemperatureRule[] = [];
 
-  // 极低温 0-10°C
+  // 极低�?0-10°C
   const rule1 = new TemperatureRule();
   rule1.minTemp = 0; rule1.maxTemp = 10;
   rule1.flavorModifier = FlavorModifier.create(40, 10, 10, -20, 0);
@@ -908,7 +908,7 @@ function getTemperatureRules(): TemperatureRule[] {
   rule2.minTemp = 10; rule2.maxTemp = 15;
   rule2.flavorModifier = FlavorModifier.create(20, 10, 0, 0, 0);
   rule2.stateModifier = StateModifier.create(-15, 10, 10);
-  rule2.description = '低温，适当增腥，雾化偏慢';
+  rule2.description = '低温，适当增腥，雾化偏�?;
   rules.push(rule2);
 
   // 适宜温度 15-25°C
@@ -916,7 +916,7 @@ function getTemperatureRules(): TemperatureRule[] {
   rule3.minTemp = 15; rule3.maxTemp = 25;
   rule3.flavorModifier = FlavorModifier.create(0, 0, 0, 0, 0);
   rule3.stateModifier = StateModifier.create(0, 0, 0);
-  rule3.description = '适宜温度，味型均衡';
+  rule3.description = '适宜温度，味型均�?;
   rules.push(rule3);
 
   // 高温 25-30°C
@@ -924,10 +924,10 @@ function getTemperatureRules(): TemperatureRule[] {
   rule4.minTemp = 25; rule4.maxTemp = 30;
   rule4.flavorModifier = FlavorModifier.create(-20, 10, -10, 20, 0);
   rule4.stateModifier = StateModifier.create(15, -10, -10);
-  rule4.description = '高温，减腥增酸，清淡为主，雾化加快';
+  rule4.description = '高温，减腥增酸，清淡为主，雾化加�?;
   rules.push(rule4);
 
-  // 极高温 30-40°C
+  // 极高�?30-40°C
   const rule5 = new TemperatureRule();
   rule5.minTemp = 30; rule5.maxTemp = 40;
   rule5.flavorModifier = FlavorModifier.create(-40, 0, -20, 30, 0);
@@ -942,36 +942,36 @@ function getTemperatureRules(): TemperatureRule[] {
 // 鱼情修正规则
 // ============================================================
 
-// 鱼密度修正
+// 鱼密度修�?
 export function getDensityModifier(density: string): StateModifier {
   if (density === 'high') {
-    return StateModifier.create(20, -10, -10);  // 高密度：快雾化抢鱼
+    return StateModifier.create(20, -10, -10);  // 高密度：快雾化抢�?
   } else if (density === 'low') {
-    return StateModifier.create(-20, 15, 10);   // 低密度：慢雾化留鱼
+    return StateModifier.create(-20, 15, 10);   // 低密度：慢雾化留�?
   }
   return StateModifier.create(0, 0, 0);         // 中等：不修正
 }
 
-// 开口情况修正
+// 开口情况修�?
 export function getActivityModifier(activity: string): StateModifier {
   if (activity === 'good') {
-    return StateModifier.create(5, 0, -10);     // 开口好：味型可淡
+    return StateModifier.create(5, 0, -10);     // 开口好：味型可�?
   } else if (activity === 'poor') {
-    return StateModifier.create(-5, -10, 20);   // 开口差：味型要浓，状态要软
+    return StateModifier.create(-5, -10, 20);   // 开口差：味型要浓，状态要�?
   }
-  return StateModifier.create(0, 0, 0);         // 一般：不修正
+  return StateModifier.create(0, 0, 0);         // 一般：不修�?
 }
 
 // 作钓方式修正
 export function getMethodModifier(method: string): StateModifier {
   if (method === 'pull') {
-    return StateModifier.create(10, 15, 0);     // 拉饵：需要拉丝
+    return StateModifier.create(10, 15, 0);     // 拉饵：需要拉�?
   } else if (method === 'scatter') {
-    return StateModifier.create(30, -20, 0);    // 散炮：极快雾化
+    return StateModifier.create(30, -20, 0);    // 散炮：极快雾�?
   } else if (method === 'wrap') {
     return StateModifier.create(-10, 10, 0);    // 包食：外雾化内粘
   }
-  return StateModifier.create(0, 5, 0);         // 搓饵：默认
+  return StateModifier.create(0, 5, 0);         // 搓饵：默�?
 }
 
 
@@ -998,11 +998,11 @@ export function getTempReasonTemplate(temp: number): ReasonTemplate {
   if (temp < 10) {
     return ReasonTemplate.create(`水温极低(${temp}°C)`, '浓腥浓香，慢雾化留鱼', '❄️');
   } else if (temp < 15) {
-    return ReasonTemplate.create(`水温偏低(${temp}°C)`, '增加腥味比例', '🌡️');
+    return ReasonTemplate.create(`水温偏低(${temp}°C)`, '增加腥味比例', '🌡�?);
   } else if (temp < 25) {
-    return ReasonTemplate.create(`水温适宜(${temp}°C)`, '味型均衡', '✅');
+    return ReasonTemplate.create(`水温适宜(${temp}°C)`, '味型均衡', '�?);
   } else if (temp < 30) {
-    return ReasonTemplate.create(`水温较高(${temp}°C)`, '减腥增酸，清淡为主', '☀️');
+    return ReasonTemplate.create(`水温较高(${temp}°C)`, '减腥增酸，清淡为�?, '☀�?);
   }
   return ReasonTemplate.create(`水温极高(${temp}°C)`, '极清淡，果酸为主', '🔥');
 }
@@ -1010,31 +1010,31 @@ export function getTempReasonTemplate(temp: number): ReasonTemplate {
 // 获取水域理由
 export function getWaterReasonTemplate(waterType: string): ReasonTemplate {
   if (waterType === 'river') {
-    return ReasonTemplate.create('野河流水环境', '降低雾化，增加粘度', '🌊');
+    return ReasonTemplate.create('野河流水环境', '降低雾化，增加粘�?, '🌊');
   } else if (waterType === 'pond') {
-    return ReasonTemplate.create('黑坑竞争激烈', '加快雾化，味型加重', '🏊');
+    return ReasonTemplate.create('黑坑竞争激�?, '加快雾化，味型加�?, '🏊');
   } else if (waterType === 'reservoir') {
-    return ReasonTemplate.create('水库深水区', '大颗粒，留鱼持久', '🏔️');
+    return ReasonTemplate.create('水库深水�?, '大颗粒，留鱼持久', '🏔�?);
   }
-  return ReasonTemplate.create('野塘自然环境', '味型适中，状态自然', '🌿');
+  return ReasonTemplate.create('野塘自然环境', '味型适中，状态自�?, '🌿');
 }
 
 // 获取鱼情理由
 export function getDensityReasonTemplate(density: string): ReasonTemplate | null {
   if (density === 'high') {
-    return ReasonTemplate.create('鱼密度较高', '快雾化抢鱼', '📈');
+    return ReasonTemplate.create('鱼密度较�?, '快雾化抢�?, '📈');
   } else if (density === 'low') {
-    return ReasonTemplate.create('鱼密度较低', '慢雾化留鱼，增加诱鱼成分', '📉');
+    return ReasonTemplate.create('鱼密度较�?, '慢雾化留鱼，增加诱鱼成分', '📉');
   }
   return null;
 }
 
-// 获取开口理由
+// 获取开口理�?
 export function getActivityReasonTemplate(activity: string): ReasonTemplate | null {
   if (activity === 'good') {
     return ReasonTemplate.create('鱼开口情况好', '味型可适当减淡', '😊');
   } else if (activity === 'poor') {
-    return ReasonTemplate.create('鱼开口情况差', '味型加重，状态要软', '😐');
+    return ReasonTemplate.create('鱼开口情况差', '味型加重，状态要�?, '😐');
   }
   return null;
 }
@@ -1042,9 +1042,9 @@ export function getActivityReasonTemplate(activity: string): ReasonTemplate | nu
 // 获取模式理由
 export function getModeReasonTemplate(mode: string): ReasonTemplate | null {
   if (mode === 'conservative') {
-    return ReasonTemplate.create('保守模式', '经典配方，稳定出鱼', '🛡️');
+    return ReasonTemplate.create('保守模式', '经典配方，稳定出�?, '🛡�?);
   } else if (mode === 'aggressive') {
-    return ReasonTemplate.create('激进模式', '味型浓烈，可能爆护', '⚡');
+    return ReasonTemplate.create('激进模�?, '味型浓烈，可能爆�?, '�?);
   }
   return null;
 }
@@ -1052,42 +1052,42 @@ export function getModeReasonTemplate(mode: string): ReasonTemplate | null {
 // 获取鱼种理由
 export function getFishReasonTemplate(fishId: string): ReasonTemplate {
   const fishReasons: Map<string, ReasonTemplate> = new Map();
-  fishReasons.set('crucian', ReasonTemplate.create('目标鲫鱼', '细颗粒、轻状态', '🐟'));
+  fishReasons.set('crucian', ReasonTemplate.create('目标鲫鱼', '细颗粒、轻状�?, '🐟'));
   fishReasons.set('carp', ReasonTemplate.create('目标鲤鱼', '甜香为主，大颗粒', '🐟'));
   fishReasons.set('grass_carp', ReasonTemplate.create('目标草鱼', '香甜酸味，发酵饵', '🐟'));
-  fishReasons.set('silver_carp', ReasonTemplate.create('目标鲢鱼', '酸臭味，快雾化', '🐟'));
+  fishReasons.set('silver_carp', ReasonTemplate.create('目标鲢鱼', '酸臭味，快雾�?, '🐟'));
   fishReasons.set('bighead', ReasonTemplate.create('目标鳙鱼', '臭味为主，雾化好', '🐟'));
   fishReasons.set('catfish', ReasonTemplate.create('目标鲶鱼', '浓腥臭味', '🐟'));
-  fishReasons.set('bream', ReasonTemplate.create('目标鳊鱼', '香甜味，中层钓', '🐟'));
-  fishReasons.set('black_carp', ReasonTemplate.create('目标青鱼', '腥香重口，大饵守钓', '🐟'));
-  fishReasons.set('yellow_catfish', ReasonTemplate.create('目标黄颡鱼', '浓腥味，蚯蚓鸡肝效果好', '🐟'));
-  fishReasons.set('culter', ReasonTemplate.create('目标翘嘴', '腥香味，路亚或活饵', '🐟'));
-  fishReasons.set('tilapia', ReasonTemplate.create('目标罗非鱼', '腥香甜，颗粒饵效果好', '🐟'));
+  fishReasons.set('bream', ReasonTemplate.create('目标鳊鱼', '香甜味，中层�?, '🐟'));
+  fishReasons.set('black_carp', ReasonTemplate.create('目标青鱼', '腥香重口，大饵守�?, '🐟'));
+  fishReasons.set('yellow_catfish', ReasonTemplate.create('目标黄颡�?, '浓腥味，蚯蚓鸡肝效果�?, '🐟'));
+  fishReasons.set('culter', ReasonTemplate.create('目标翘嘴', '腥香味，路亚或活�?, '🐟'));
+  fishReasons.set('tilapia', ReasonTemplate.create('目标罗非�?, '腥香甜，颗粒饵效果好', '🐟'));
   fishReasons.set('mandarin_fish', ReasonTemplate.create('目标鳜鱼', '浓腥味，活饵为主', '🐟'));
-  fishReasons.set('wuchang_fish', ReasonTemplate.create('目标武昌鱼', '香甜味，中层钓', '🐟'));
+  fishReasons.set('wuchang_fish', ReasonTemplate.create('目标武昌�?, '香甜味，中层�?, '🐟'));
   fishReasons.set('snakehead', ReasonTemplate.create('目标黑鱼', '极浓腥，活饵路亚', '🐟'));
   fishReasons.set('catla', ReasonTemplate.create('目标鲮鱼', '香甜味，花生粉效果好', '🐟'));
   fishReasons.set('bass', ReasonTemplate.create('目标大口黑鲈', '浓腥味，路亚为主', '🐟'));
-  fishReasons.set('channel_catfish', ReasonTemplate.create('目标斑点叉尾鮰', '浓腥臭味，夜钓效果好', '🐟'));
+  fishReasons.set('channel_catfish', ReasonTemplate.create('目标斑点叉尾�?, '浓腥臭味，夜钓效果好', '🐟'));
   fishReasons.set('topmouth_culter', ReasonTemplate.create('目标马口', '腥香味，溪流路亚', '🐟'));
   fishReasons.set('loach', ReasonTemplate.create('目标泥鳅', '浓腥味，蚯蚓红虫', '🐟'));
-  fishReasons.set('giant_carp', ReasonTemplate.create('目标巨鲤', '甜香重口，大饵守钓', '🐟'));
+  fishReasons.set('giant_carp', ReasonTemplate.create('目标巨鲤', '甜香重口，大饵守�?, '🐟'));
   fishReasons.set('pike', ReasonTemplate.create('目标狗鱼', '极浓腥，活饵路亚', '🐟'));
-  fishReasons.set('perch', ReasonTemplate.create('目标鲈鱼', '浓腥味，活饵效果好', '🐟'));
+  fishReasons.set('perch', ReasonTemplate.create('目标鲈鱼', '浓腥味，活饵效果�?, '🐟'));
   fishReasons.set('eel', ReasonTemplate.create('目标黄鳝', '浓腥臭味，蚯蚓效果好', '🐟'));
   fishReasons.set('softshell_turtle', ReasonTemplate.create('目标甲鱼', '浓腥味，鸡肝猪肝', '🐟'));
-  fishReasons.set('barbel', ReasonTemplate.create('目标鲃鱼', '腥香味，急流钓', '🐟'));
-  fishReasons.set('chub', ReasonTemplate.create('目标赤眼鳟', '香甜腥味，中层钓', '🐟'));
+  fishReasons.set('barbel', ReasonTemplate.create('目标鲃鱼', '腥香味，急流�?, '🐟'));
+  fishReasons.set('chub', ReasonTemplate.create('目标赤眼�?, '香甜腥味，中层钓', '🐟'));
   fishReasons.set('mandarin_fish_river', ReasonTemplate.create('目标河鳜', '浓腥味，活饵为主', '🐟'));
-  fishReasons.set('yellow_cheek', ReasonTemplate.create('目标黄尾鲴', '香甜味，底钓', '🐟'));
+  fishReasons.set('yellow_cheek', ReasonTemplate.create('目标黄尾�?, '香甜味，底钓', '🐟'));
   fishReasons.set('whitebait', ReasonTemplate.create('目标银鱼', '腥香味，细线小钩', '🐟'));
-  fishReasons.set('redfin_culter', ReasonTemplate.create('目标红鳍鲌', '腥香味，路亚或活饵', '🐟'));
+  fishReasons.set('redfin_culter', ReasonTemplate.create('目标红鳍�?, '腥香味，路亚或活�?, '🐟'));
   fishReasons.set('crab', ReasonTemplate.create('目标河蟹', '浓腥味，蟹笼诱捕', '🐟'));
   fishReasons.set('shrimp', ReasonTemplate.create('目标河虾', '腥香味，虾笼诱捕', '🐟'));
 
   const r = fishReasons.get(fishId);
   if (r) return r;
-  return ReasonTemplate.create('目标鱼', '通用配方', '🐟');
+  return ReasonTemplate.create('目标�?, '通用配方', '🐟');
 }
 
 // ============================================================
@@ -1099,7 +1099,7 @@ class RecipeRulesDatabase {
   private temperatureRules: TemperatureRule[] = [];
 
   constructor() {
-    // 初始化鱼种规则
+    // 初始化鱼种规�?
     const crucian = createCrucianRule();
     const carp = createCarpRule();
     const grass = createGrassRule();
@@ -1166,7 +1166,7 @@ class RecipeRulesDatabase {
     this.fishRules.set(crab.fishId, crab);
     this.fishRules.set(shrimp.fishId, shrimp);
 
-    // 初始化温度规则
+    // 初始化温度规�?
     this.temperatureRules = getTemperatureRules();
   }
 

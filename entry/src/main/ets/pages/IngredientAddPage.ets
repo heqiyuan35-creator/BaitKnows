@@ -1,6 +1,6 @@
 /**
- * 饵知道 - 原料新增页面
- * 用户自定义添加饵料原料
+ * 饵知�?- 原料新增页面
+ * 用户自定义添加饵料原�?
  */
 import { router } from '@kit.ArkUI';
 import { ThemeColors } from '../theme/ThemeColors';
@@ -8,7 +8,7 @@ import { ThemeConstants } from '../theme/ThemeConstants';
 import { userDataService, CustomFish } from '../services/UserDataService';
 import { ALL_FISH_DATA, FishData } from '../data/FishData';
 
-// 原料分类类
+// 原料分类�?
 class IngredientCategoryItem {
   id: string = '';
   name: string = '';
@@ -50,7 +50,7 @@ function makeSeason(id: string, name: string): SeasonItem {
   return s;
 }
 
-// 扩展数据类
+// 扩展数据�?
 class PhysicalData {
   atomization: number = 5;
   viscosity: number = 5;
@@ -83,7 +83,7 @@ struct IngredientAddPage {
   @State selectedFishIds: string[] = [];
   @State selectedSeasons: string[] = ['spring', 'summer', 'autumn', 'winter'];
 
-  // 物理特性
+  // 物理特�?
   @State atomization: number = 5;
   @State viscosity: number = 5;
   @State weight: number = 5;
@@ -93,20 +93,20 @@ struct IngredientAddPage {
   @State dosageMax: number = 50;
   @State dosageUnit: string = 'g';
 
-  // 弹窗状态
+  // 弹窗状�?
   @State showFishPicker: boolean = false;
   @State showToast: boolean = false;
   @State toastMessage: string = '';
   @State isSaving: boolean = false;
 
   private categories: IngredientCategoryItem[] = [
-    makeCategory('base', '基础饵', '🌾'),
-    makeCategory('protein', '蛋白饵', '🦐'),
-    makeCategory('additive', '添加剂', '💧'),
+    makeCategory('base', '基础�?, '🌾'),
+    makeCategory('protein', '蛋白�?, '🦐'),
+    makeCategory('additive', '添加�?, '💧'),
     makeCategory('state', '状态饵', '🧊'),
-    makeCategory('binder', '粘合剂', '🍯'),
-    makeCategory('natural', '天然饵', '🌿'),
-    makeCategory('pellet', '颗粒饵', '⚪'),
+    makeCategory('binder', '粘合�?, '🍯'),
+    makeCategory('natural', '天然�?, '🌿'),
+    makeCategory('pellet', '颗粒�?, '�?),
     makeCategory('live', '活饵', '🪱'),
     makeCategory('folk', '民间偏方', '🧪')
   ];
@@ -114,13 +114,13 @@ struct IngredientAddPage {
   private subCategories: Record<string, SubCategoryItem[]> = {
     'base': [makeSubCategory('grain', '谷物'), makeSubCategory('tuber', '薯类'), makeSubCategory('bean', '豆类')],
     'protein': [makeSubCategory('aquatic', '水产'), makeSubCategory('insect', '昆虫'), makeSubCategory('animal', '动物')],
-    'additive': [makeSubCategory('essence', '香精'), makeSubCategory('attractant', '诱食剂'), makeSubCategory('acid', '酸类'), makeSubCategory('condiment', '调味料'), makeSubCategory('oil', '油类')],
-    'state': [makeSubCategory('atomizer', '雾化类'), makeSubCategory('weight', '增重类')],
-    'binder': [makeSubCategory('grain', '谷物淀粉'), makeSubCategory('tuber', '薯类淀粉')],
+    'additive': [makeSubCategory('essence', '香精'), makeSubCategory('attractant', '诱食�?), makeSubCategory('acid', '酸类'), makeSubCategory('condiment', '调味�?), makeSubCategory('oil', '油类')],
+    'state': [makeSubCategory('atomizer', '雾化�?), makeSubCategory('weight', '增重�?)],
+    'binder': [makeSubCategory('grain', '谷物淀�?), makeSubCategory('tuber', '薯类淀�?)],
     'natural': [makeSubCategory('plant', '植物'), makeSubCategory('seed', '种子')],
     'pellet': [makeSubCategory('other', '颗粒')],
     'live': [makeSubCategory('worm', '蠕虫'), makeSubCategory('baitfish', '饵鱼')],
-    'folk': [makeSubCategory('medicine', '药材'), makeSubCategory('beverage', '饮品'), makeSubCategory('fermented', '发酵物'), makeSubCategory('other', '其他')]
+    'folk': [makeSubCategory('medicine', '药材'), makeSubCategory('beverage', '饮品'), makeSubCategory('fermented', '发酵�?), makeSubCategory('other', '其他')]
   };
 
   private seasons: SeasonItem[] = [
@@ -146,7 +146,7 @@ struct IngredientAddPage {
           // 原料分类
           this.CategorySection()
 
-          // 子分类
+          // 子分�?
           this.SubCategorySection()
 
           // 适用鱼种
@@ -155,7 +155,7 @@ struct IngredientAddPage {
           // 适用季节
           this.SeasonSection()
 
-          // 物理特性
+          // 物理特�?
           this.PhysicalSection()
 
           // 用量范围
@@ -209,7 +209,7 @@ struct IngredientAddPage {
   @Builder
   NavBar() {
     Row() {
-      Text('←')
+      Text('�?)
         .fontSize(24)
         .fontColor(ThemeColors.TEXT_PRIMARY)
         .onClick(() => router.back())
@@ -240,7 +240,7 @@ struct IngredientAddPage {
         .fontColor(ThemeColors.TEXT_SECONDARY)
         .fontWeight(FontWeight.Medium)
 
-      TextInput({ placeholder: '请输入原料名称', text: this.ingredientName })
+      TextInput({ placeholder: '请输入原料名�?, text: this.ingredientName })
         .width('100%')
         .height(48)
         .fontSize(ThemeConstants.FONT_SIZE_BASE)
@@ -310,7 +310,7 @@ struct IngredientAddPage {
     })
     .onClick(() => {
       this.selectedCategory = cat.id;
-      // 重置子分类
+      // 重置子分�?
       const subs = this.subCategories[cat.id];
       if (subs && subs.length > 0) {
         this.selectedSubCategory = subs[0].id;
@@ -326,7 +326,7 @@ struct IngredientAddPage {
   @Builder
   SubCategorySection() {
     Column({ space: 8 }) {
-      Text('子分类')
+      Text('子分�?)
         .fontSize(ThemeConstants.FONT_SIZE_SM)
         .fontColor(ThemeColors.TEXT_SECONDARY)
         .fontWeight(FontWeight.Medium)
@@ -415,7 +415,7 @@ struct IngredientAddPage {
             })
             .onClick(() => {
               if (this.selectedSeasons.includes(season.id)) {
-                // 至少保留一个季节
+                // 至少保留一个季�?
                 if (this.selectedSeasons.length > 1) {
                   const idx = this.selectedSeasons.indexOf(season.id);
                   this.selectedSeasons.splice(idx, 1);
@@ -437,21 +437,21 @@ struct IngredientAddPage {
   @Builder
   PhysicalSection() {
     Column({ space: 12 }) {
-      Text('物理特性')
+      Text('物理特�?)
         .fontSize(ThemeConstants.FONT_SIZE_SM)
         .fontColor(ThemeColors.TEXT_SECONDARY)
         .fontWeight(FontWeight.Medium)
 
-      // 雾化性
+      // 雾化�?
       Column({ space: 4 }) {
         Row() {
-          Text('雾化性')
+          Text('雾化�?)
             .fontSize(ThemeConstants.FONT_SIZE_SM)
             .fontColor(ThemeColors.TEXT_PRIMARY)
           Blank()
           Text(this.getPhysicalLabel(this.atomization))
             .fontSize(ThemeConstants.FONT_SIZE_SM)
-            .fontColor(ThemeColors.PRIMARY)
+            .fontColor(ThemeColors.PRIMARY_DARK)
         }
         .width('100%')
 
@@ -473,7 +473,7 @@ struct IngredientAddPage {
           Blank()
           Text(this.getPhysicalLabel(this.viscosity))
             .fontSize(ThemeConstants.FONT_SIZE_SM)
-            .fontColor(ThemeColors.PRIMARY)
+            .fontColor(ThemeColors.PRIMARY_DARK)
         }
         .width('100%')
 
@@ -495,7 +495,7 @@ struct IngredientAddPage {
           Blank()
           Text(this.getPhysicalLabel(this.weight))
             .fontSize(ThemeConstants.FONT_SIZE_SM)
-            .fontColor(ThemeColors.PRIMARY)
+            .fontColor(ThemeColors.PRIMARY_DARK)
         }
         .width('100%')
 
@@ -532,7 +532,7 @@ struct IngredientAddPage {
         .fontWeight(FontWeight.Medium)
 
       Row({ space: 8 }) {
-        TextInput({ placeholder: '最小', text: this.dosageMin.toString() })
+        TextInput({ placeholder: '最�?, text: this.dosageMin.toString() })
           .width(80)
           .height(40)
           .fontSize(ThemeConstants.FONT_SIZE_SM)
@@ -549,7 +549,7 @@ struct IngredientAddPage {
           .fontSize(ThemeConstants.FONT_SIZE_BASE)
           .fontColor(ThemeColors.TEXT_SECONDARY)
 
-        TextInput({ placeholder: '最大', text: this.dosageMax.toString() })
+        TextInput({ placeholder: '最�?, text: this.dosageMax.toString() })
           .width(80)
           .height(40)
           .fontSize(ThemeConstants.FONT_SIZE_SM)
@@ -562,7 +562,7 @@ struct IngredientAddPage {
             if (!isNaN(num) && num >= 0) this.dosageMax = num;
           })
 
-        Text('克')
+        Text('�?)
           .fontSize(ThemeConstants.FONT_SIZE_BASE)
           .fontColor(ThemeColors.TEXT_SECONDARY)
       }
@@ -613,7 +613,7 @@ struct IngredientAddPage {
           Blank()
           Text('完成')
             .fontSize(16)
-            .fontColor(ThemeColors.PRIMARY)
+            .fontColor(ThemeColors.PRIMARY_DARK)
             .onClick(() => { this.showFishPicker = false; })
         }
         .width('100%')
@@ -654,7 +654,7 @@ struct IngredientAddPage {
               .borderRadius(8)
             })
 
-            // 用户自定义鱼种
+            // 用户自定义鱼�?
             ForEach(userDataService.getCustomFish(), (fish: CustomFish) => {
               Row() {
                 Image(fish.icon || $r('app.media.fishImage'))
@@ -668,9 +668,9 @@ struct IngredientAddPage {
                     .fontSize(16)
                     .fontColor(ThemeColors.TEXT_PRIMARY)
 
-                  Text('自定义')
+                  Text('自定�?)
                     .fontSize(10)
-                    .fontColor(ThemeColors.PRIMARY)
+                    .fontColor(ThemeColors.PRIMARY_DARK)
                     .padding({ left: 4, right: 4, top: 2, bottom: 2 })
                     .backgroundColor('rgba(232, 168, 73, 0.15)')
                     .borderRadius(4)
@@ -718,7 +718,7 @@ struct IngredientAddPage {
         if (fish) {
           return fish.name;
         }
-        // 再从用户自定义鱼种查找
+        // 再从用户自定义鱼种查�?
         const customFish = userDataService.getCustomFish().find((f: CustomFish) => f.id === id);
         if (customFish) {
           return customFish.name;
@@ -726,7 +726,7 @@ struct IngredientAddPage {
         return '';
       })
       .filter((name: string) => name !== '')
-      .join('、');
+      .join('�?);
   }
 
   private showToastMessage(message: string): void {
@@ -742,17 +742,17 @@ struct IngredientAddPage {
     // 验证名称
     const trimmedName = this.ingredientName.trim();
     if (!trimmedName) {
-      this.showToastMessage('请输入原料名称');
+      this.showToastMessage('请输入原料名�?);
       return;
     }
 
     if (trimmedName.length < 2) {
-      this.showToastMessage('原料名称至少2个字符');
+      this.showToastMessage('原料名称至少2个字�?);
       return;
     }
 
     if (trimmedName.length > 20) {
-      this.showToastMessage('原料名称不能超过20个字符');
+      this.showToastMessage('原料名称不能超过20个字�?);
       return;
     }
 
@@ -764,7 +764,7 @@ struct IngredientAddPage {
 
     // 验证用量
     if (this.dosageMin > this.dosageMax) {
-      this.showToastMessage('最小用量不能大于最大用量');
+      this.showToastMessage('最小用量不能大于最大用�?);
       return;
     }
 
@@ -790,13 +790,13 @@ struct IngredientAddPage {
 
       const extendedData: string = JSON.stringify(extData);
 
-      // 保存到 UserDataService
+      // 保存�?UserDataService
       await userDataService.addIngredient(
         trimmedName,
         this.selectedCategory,
         this.description.trim(),
         this.selectedFishIds.slice(),
-        extendedData  // 将扩展数据存入 usage 字段
+        extendedData  // 将扩展数据存�?usage 字段
       );
 
       this.showToastMessage('原料保存成功');

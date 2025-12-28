@@ -1,5 +1,5 @@
 /**
- * 饵知道 - 设置页面
+ * 饵知�?- 设置页面
  */
 import { ThemeColors } from '../theme/ThemeColors';
 import { ThemeConstants } from '../theme/ThemeConstants';
@@ -85,7 +85,7 @@ struct SettingsPage {
 
           Text('清除')
             .fontSize(ThemeConstants.FONT_SIZE_SM)
-            .fontColor(ThemeColors.PRIMARY)
+            .fontColor(ThemeColors.PRIMARY_DARK)
         }
         .width('100%')
         .height(64)
@@ -101,7 +101,7 @@ struct SettingsPage {
             Text('导出数据')
               .fontSize(ThemeConstants.FONT_SIZE_MD)
               .fontColor(ThemeColors.TEXT_PRIMARY)
-            Text('导出配方和记录')
+            Text('导出配方和记�?)
               .fontSize(ThemeConstants.FONT_SIZE_XS)
               .fontColor(ThemeColors.TEXT_SECONDARY)
           }
@@ -124,7 +124,7 @@ struct SettingsPage {
             Text('重置数据')
               .fontSize(ThemeConstants.FONT_SIZE_MD)
               .fontColor(ThemeColors.ERROR)
-            Text('清除所有本地数据')
+            Text('清除所有本地数�?)
               .fontSize(ThemeConstants.FONT_SIZE_XS)
               .fontColor(ThemeColors.TEXT_SECONDARY)
           }

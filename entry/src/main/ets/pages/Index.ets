@@ -1,7 +1,5 @@
 /**
- * 启动页
- * BaitKnows - 饵知道
- */
+ * 启动�? * BaitKnows - 饵知�? */
 import { router } from '@kit.ArkUI';
 import { ThemeColors } from '../theme/ThemeColors';
 
@@ -17,7 +15,7 @@ struct Index {
     router.replaceUrl({
       url: 'pages/WelcomePage'
     }).catch((err: Error) => {
-      console.error(`跳转欢迎页失败: ${err.message}`);
+      console.error(`跳转欢迎页失�? ${err.message}`);
     });
   }
 
@@ -31,10 +29,10 @@ struct Index {
           .width(120)
           .height(120)
 
-        Text('饵知道')
+        Text('饵知�?)
           .fontSize(28)
           .fontWeight(FontWeight.Bold)
-          .fontColor(ThemeColors.PRIMARY)
+          .fontColor(ThemeColors.PRIMARY_DARK)
           .margin({ top: 16 })
 
         Text('BaitKnows')

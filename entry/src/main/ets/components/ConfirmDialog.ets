@@ -1,5 +1,5 @@
 /**
- * 饵知道 - 确认弹窗组件
+ * 饵知�?- 确认弹窗组件
  */
 import { ThemeColors } from '../theme/ThemeColors';
 import { ThemeConstants } from '../theme/ThemeConstants';

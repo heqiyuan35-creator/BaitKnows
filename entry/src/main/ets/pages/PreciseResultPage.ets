@@ -1,6 +1,6 @@
 /**
- * 精确匹配 - 结果展示页
- * 展示配方分析结果、图表、详情
+ * 精确匹配 - 结果展示�?
+ * 展示配方分析结果、图表、详�?
  */
 import { router, promptAction } from '@kit.ArkUI';
 import { ThemeColors } from '../theme/ThemeColors';
@@ -31,24 +31,24 @@ struct PreciseResultPage {
   @State selectedFeedbacks: FeedbackType[] = [];
   @State showAnalysisAnimation: boolean = true;
   @State currentStep: number = 0;
-  @State fishName: string = '目标鱼';
+  @State fishName: string = '目标�?;
   @State contentOpacity: number = 0;
   @State showIngredientSelect: boolean = false;  // 显示原料选择
-  @State excludedIngredients: string[] = [];     // 排除的原料名称
+  @State excludedIngredients: string[] = [];     // 排除的原料名�?
   @State showOtherReason: boolean = false;       // 显示其他原因提示
-  @State isSaved: boolean = false;               // 是否已保存到配方库
+  @State isSaved: boolean = false;               // 是否已保存到配方�?
 
   private input: PreciseMatchInput = new PreciseMatchInput();
   private animationTimer: number = -1;
   private recipeService: RecipeService = RecipeService.getInstance();
 
   aboutToAppear(): void {
-    // 获取传入的参数
+    // 获取传入的参�?
     const params = router.getParams() as Record<string, string>;
     if (params && params.input) {
       try {
         const inputData = JSON.parse(params.input) as PreciseMatchInput;
-        // 手动复制属性
+        // 手动复制属�?
         this.input.targetFish = inputData.targetFish;
         this.input.waterType = inputData.waterType;
         this.input.season = inputData.season;
@@ -70,7 +70,7 @@ struct PreciseResultPage {
       }
     }
 
-    // 开始分析动画
+    // 开始分析动�?
     this.startAnalysisAnimation();
   }
 
@@ -80,7 +80,7 @@ struct PreciseResultPage {
     }
   }
 
-  // 开始分析动画
+  // 开始分析动�?
   private startAnalysisAnimation(): void {
     this.showAnalysisAnimation = true;
     this.currentStep = 0;
@@ -99,7 +99,7 @@ struct PreciseResultPage {
           this.showAnalysisAnimation = false;
           this.isLoading = false;
 
-          // 保存到历史记录
+          // 保存到历史记�?
           this.saveToHistory();
 
           // 内容淡入动画
@@ -114,17 +114,17 @@ struct PreciseResultPage {
     }, 400);
   }
 
-  // 返回上一页
+  // 返回上一�?
   private onBack(): void {
     router.back();
   }
 
-  // 换一换
+  // 换一�?
   private onRefresh(): void {
     this.showFeedbackDialog = true;
   }
 
-  // 确认反馈并重新生成
+  // 确认反馈并重新生�?
   private onConfirmFeedback(): void {
     this.showFeedbackDialog = false;
     this.showIngredientSelect = false;
@@ -135,7 +135,7 @@ struct PreciseResultPage {
     this.saveFeedback();
 
     setTimeout(() => {
-      // 传递排除的原料给引擎
+      // 传递排除的原料给引�?
       this.result = preciseMatchEngine.adjustByFeedback(
         this.result,
         this.selectedFeedbacks,
@@ -147,7 +147,7 @@ struct PreciseResultPage {
     }, 500);
   }
 
-  // 保存到历史记录
+  // 保存到历史记�?
   private async saveToHistory(): Promise<void> {
     try {
       const fishData = getFishById(this.input.targetFish);
@@ -179,12 +179,12 @@ struct PreciseResultPage {
   // 保存配方到配方库
   private saveToRecipeLibrary(): void {
     if (this.isSaved) {
-      promptAction.showToast({ message: '配方已保存过了' });
+      promptAction.showToast({ message: '配方已保存过�? });
       return;
     }
 
     try {
-      // 将 GeneratedRecipe 转换为 Recipe 格式
+      // �?GeneratedRecipe 转换�?Recipe 格式
       const recipe: Recipe = {
         id: `precise_${Date.now()}`,
         name: this.result.recipe.name,
@@ -201,7 +201,7 @@ struct PreciseResultPage {
         steps: [
           `将所有原料按配比混合`,
           `加入${this.result.recipe.usage.waterRatio}的水`,
-          `搅拌均匀后${this.result.recipe.usage.restTime}`,
+          `搅拌均匀�?{this.result.recipe.usage.restTime}`,
           this.result.recipe.usage.firstCast
         ],
         tips: [
@@ -209,7 +209,7 @@ struct PreciseResultPage {
           `辅味型：${this.result.recipe.flavorProfile.secondary}`,
           this.result.recipe.usage.nestSuggestion
         ],
-        rating: this.result.matchScore / 20,  // 转换为5分制
+        rating: this.result.matchScore / 20,  // 转换�?分制
         usageCount: 0,
         isGenerated: true,
         createTime: Date.now()
@@ -218,7 +218,7 @@ struct PreciseResultPage {
       // 添加到配方库
       this.recipeService.addRecipe(recipe);
       this.isSaved = true;
-      promptAction.showToast({ message: '✅ 已保存到配方库' });
+      promptAction.showToast({ message: '�?已保存到配方�? });
     } catch (e) {
       console.error('Save to recipe library failed:', e);
       promptAction.showToast({ message: '保存失败，请重试' });
@@ -240,7 +240,7 @@ struct PreciseResultPage {
   build() {
     Stack() {
       Column() {
-        // 顶部标题栏
+        // 顶部标题�?
         this.TitleBar()
 
         if (this.showAnalysisAnimation) {
@@ -251,7 +251,7 @@ struct PreciseResultPage {
           })
             .layoutWeight(1)
         } else if (this.isLoading) {
-          // 加载中
+          // 加载�?
           Column() {
             LoadingProgress().width(48).height(48).color(ThemeColors.PRIMARY)
             Text('正在生成配方...').fontSize(14).fontColor('#666').margin({ top: 16 })
@@ -263,10 +263,10 @@ struct PreciseResultPage {
           // 结果内容
           Scroll() {
             Column({ space: 20 }) {
-              // 匹配度评分卡片
+              // 匹配度评分卡�?
               this.ScoreCard()
 
-              // 分析图表区
+              // 分析图表�?
               this.ChartSection()
 
               // 配方详情
@@ -275,7 +275,7 @@ struct PreciseResultPage {
               // 使用建议
               this.UsageSuggestionCard()
 
-              // 备选方案
+              // 备选方�?
               this.AlternativesSection()
             }
             .width('100%')
@@ -290,7 +290,7 @@ struct PreciseResultPage {
       .height('100%')
       .backgroundColor('#FFFBF5')
 
-      // 反馈对话框
+      // 反馈对话�?
       if (this.showFeedbackDialog) {
         this.FeedbackDialogView()
       }
@@ -303,7 +303,7 @@ struct PreciseResultPage {
   TitleBar() {
     Row() {
       Row() {
-        Text('←').fontSize(24).fontColor('#1A1A1A')
+        Text('�?).fontSize(24).fontColor('#1A1A1A')
       }
       .width(40)
       .height(40)
@@ -317,7 +317,7 @@ struct PreciseResultPage {
         .layoutWeight(1)
         .textAlign(TextAlign.Center)
 
-      // 换一换按钮
+      // 换一换按�?
       Row() {
         Text('🔄')
           .fontSize(18)
@@ -337,12 +337,12 @@ struct PreciseResultPage {
   ScoreCard() {
     Column({ space: 12 }) {
       Row({ space: 16 }) {
-        // 大分数
+        // 大分�?
         Column() {
           Text(`${this.result.matchScore}`)
             .fontSize(48)
             .fontWeight(FontWeight.Bold)
-            .fontColor(ThemeColors.PRIMARY)
+            .fontColor(ThemeColors.PRIMARY_DARK)
           Text('/100')
             .fontSize(16)
             .fontColor('#999')
@@ -350,7 +350,7 @@ struct PreciseResultPage {
 
         // 评分说明
         Column({ space: 8 }) {
-          Text('匹配度评分')
+          Text('匹配度评�?)
             .fontSize(16)
             .fontWeight(FontWeight.Medium)
             .fontColor('#1A1A1A')
@@ -358,7 +358,7 @@ struct PreciseResultPage {
             .fontSize(14)
             .fontColor('#666')
 
-          // 评分条
+          // 评分�?
           Row() {
             Row()
               .width(`${this.result.matchScore}%`)
@@ -405,7 +405,7 @@ struct PreciseResultPage {
             Text(`${this.result.matchScore}`)
               .fontSize(24)
               .fontWeight(FontWeight.Bold)
-              .fontColor(ThemeColors.PRIMARY)
+              .fontColor(ThemeColors.PRIMARY_DARK)
             Text('综合')
               .fontSize(11)
               .fontColor('#999')
@@ -416,11 +416,11 @@ struct PreciseResultPage {
 
         // 右侧：五维数值条
         Column({ space: 8 }) {
-          this.DimensionBar('诱鱼性', this.result.dimensionScores.attraction, '#E6A23C')
-          this.DimensionBar('适口性', this.result.dimensionScores.palatability, '#67C23A')
-          this.DimensionBar('状态', this.result.dimensionScores.state, '#409EFF')
-          this.DimensionBar('留鱼性', this.result.dimensionScores.retention, '#F56C6C')
-          this.DimensionBar('性价比', this.result.dimensionScores.costEffective, '#909399')
+          this.DimensionBar('诱鱼�?, this.result.dimensionScores.attraction, '#E6A23C')
+          this.DimensionBar('适口�?, this.result.dimensionScores.palatability, '#67C23A')
+          this.DimensionBar('状�?, this.result.dimensionScores.state, '#409EFF')
+          this.DimensionBar('留鱼�?, this.result.dimensionScores.retention, '#F56C6C')
+          this.DimensionBar('性价�?, this.result.dimensionScores.costEffective, '#909399')
         }
         .layoutWeight(1)
       }
@@ -476,7 +476,7 @@ struct PreciseResultPage {
   @Builder
   RecipeDetailCard() {
     Column({ space: 16 }) {
-      // 配方名称和保存按钮
+      // 配方名称和保存按�?
       Row() {
         Text(this.result.recipe.name)
           .fontSize(18)
@@ -486,9 +486,9 @@ struct PreciseResultPage {
         
         // 保存到配方库按钮
         Row({ space: 4 }) {
-          Text(this.isSaved ? '✅' : '💾')
+          Text(this.isSaved ? '�? : '💾')
             .fontSize(14)
-          Text(this.isSaved ? '已保存' : '保存')
+          Text(this.isSaved ? '已保�? : '保存')
             .fontSize(12)
             .fontColor(this.isSaved ? '#67C23A' : ThemeColors.PRIMARY)
         }
@@ -524,7 +524,7 @@ struct PreciseResultPage {
             Text(`${ing.percentage}%`)
               .fontSize(14)
               .fontWeight(FontWeight.Medium)
-              .fontColor(ThemeColors.PRIMARY)
+              .fontColor(ThemeColors.PRIMARY_DARK)
               .width(40)
               .textAlign(TextAlign.End)
           }
@@ -539,7 +539,7 @@ struct PreciseResultPage {
       // 味型说明
       Row({ space: 16 }) {
         Column({ space: 4 }) {
-          Text('主味型').fontSize(12).fontColor('#999')
+          Text('主味�?).fontSize(12).fontColor('#999')
           Text(this.result.recipe.flavorProfile.primary)
             .fontSize(14)
             .fontWeight(FontWeight.Medium)
@@ -547,7 +547,7 @@ struct PreciseResultPage {
         }
 
         Column({ space: 4 }) {
-          Text('辅味型').fontSize(12).fontColor('#999')
+          Text('辅味�?).fontSize(12).fontColor('#999')
           Text(this.result.recipe.flavorProfile.secondary)
             .fontSize(14)
             .fontWeight(FontWeight.Medium)
@@ -559,7 +559,7 @@ struct PreciseResultPage {
           Text(`${this.result.recipe.flavorProfile.intensity}/10`)
             .fontSize(14)
             .fontWeight(FontWeight.Medium)
-            .fontColor(ThemeColors.PRIMARY)
+            .fontColor(ThemeColors.PRIMARY_DARK)
         }
       }
       .width('100%')
@@ -617,7 +617,7 @@ struct PreciseResultPage {
   @Builder
   AlternativesSection() {
     Column({ space: 12 }) {
-      Text('备选方案')
+      Text('备选方�?)
         .fontSize(16)
         .fontWeight(FontWeight.Bold)
         .fontColor('#1A1A1A')
@@ -637,7 +637,7 @@ struct PreciseResultPage {
 
               Text(`浓度 ${alt.flavorProfile.intensity}/10`)
                 .fontSize(12)
-                .fontColor(ThemeColors.PRIMARY)
+                .fontColor(ThemeColors.PRIMARY_DARK)
             }
             .width(140)
             .padding(12)
@@ -672,7 +672,7 @@ struct PreciseResultPage {
     .height('100%')
     .position({ x: 0, y: 0 })
 
-    // 对话框
+    // 对话�?
     Scroll() {
       Column({ space: 16 }) {
         Text('不满意的地方')
@@ -681,20 +681,20 @@ struct PreciseResultPage {
           .fontColor('#1A1A1A')
 
         // 选项1：味型不喜欢
-        this.FeedbackOptionItem('👃', '味型不喜欢', 'flavor_dislike')
+        this.FeedbackOptionItem('👃', '味型不喜�?, 'flavor_dislike')
 
-        // 选项2：提香（想要更香）
+        // 选项2：提香（想要更香�?
         this.FeedbackOptionItem('🌸', '想要提香', 'want_more_fragrant')
 
         // 选项3：原料难获取
         Column({ space: 8 }) {
           Row({ space: 12 }) {
             Text('🛒').fontSize(20)
-            Text('原料难获取')
+            Text('原料难获�?)
               .fontSize(15)
               .fontColor('#1A1A1A')
               .layoutWeight(1)
-            Text(this.showIngredientSelect ? '▲' : '▼')
+            Text(this.showIngredientSelect ? '�? : '�?)
               .fontSize(12)
               .fontColor('#999')
           }
@@ -713,7 +713,7 @@ struct PreciseResultPage {
           // 原料列表（展开时显示）
           if (this.showIngredientSelect) {
             Column({ space: 8 }) {
-              Text('选择难买到的原料：')
+              Text('选择难买到的原料�?)
                 .fontSize(13)
                 .fontColor('#666')
                 .margin({ bottom: 4 })
@@ -756,7 +756,7 @@ struct PreciseResultPage {
         }
         .width('100%')
 
-        // 选项4：其他原因
+        // 选项4：其他原�?
         Column({ space: 8 }) {
           Row({ space: 12 }) {
             Text('💬').fontSize(20)
@@ -764,7 +764,7 @@ struct PreciseResultPage {
               .fontSize(15)
               .fontColor('#1A1A1A')
               .layoutWeight(1)
-            Text(this.showOtherReason ? '▲' : '▼')
+            Text(this.showOtherReason ? '�? : '�?)
               .fontSize(12)
               .fontColor('#999')
           }
@@ -783,7 +783,7 @@ struct PreciseResultPage {
           // 邮箱提示（展开时显示）
           if (this.showOtherReason) {
             Column({ space: 8 }) {
-              Text('如有其他问题，请联系：')
+              Text('如有其他问题，请联系�?)
                 .fontSize(13)
                 .fontColor('#666')
 
@@ -792,7 +792,7 @@ struct PreciseResultPage {
                   .fontSize(16)
                 Text('2770113524@qq.com')
                   .fontSize(14)
-                  .fontColor(ThemeColors.PRIMARY)
+                  .fontColor(ThemeColors.PRIMARY_DARK)
                   .fontWeight(FontWeight.Medium)
               }
 
@@ -856,9 +856,9 @@ struct PreciseResultPage {
         .layoutWeight(1)
 
       if (this.selectedFeedbacks.includes(type)) {
-        Text('✓')
+        Text('�?)
           .fontSize(16)
-          .fontColor(ThemeColors.PRIMARY)
+          .fontColor(ThemeColors.PRIMARY_DARK)
       }
     }
     .width('100%')

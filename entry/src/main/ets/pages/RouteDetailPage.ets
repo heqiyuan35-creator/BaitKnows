@@ -1,5 +1,5 @@
 /**
- * 路线详情页 - 显示到钓点的路线规划
+ * 路线详情�?- 显示到钓点的路线规划
  */
 import { MapComponent, mapCommon, map, navi } from '@kit.MapKit';
 import { AsyncCallback, BusinessError } from '@kit.BasicServicesKit';
@@ -123,14 +123,14 @@ struct RouteDetailPage {
     this.isLoading = true;
     const userLocation = LocationService.currentLocation;
     
-    // 检查位置有效性
+    // 检查位置有效�?
     if (!userLocation.isValid) {
       console.error(this.TAG, 'User location is invalid');
       this.isLoading = false;
       return;
     }
 
-    // 清除旧路线
+    // 清除旧路�?
     if (this.currentPolyline) {
       this.currentPolyline.remove();
       this.currentPolyline = undefined;
@@ -170,7 +170,7 @@ struct RouteDetailPage {
         const route = result.routes[0];
         console.info(this.TAG, `First route: ${JSON.stringify(route)}`);
 
-        // 从路线中提取路线点
+        // 从路线中提取路线�?
         await this.parseRouteAndDraw(result);
       } else {
         console.warn(this.TAG, 'No routes found');
@@ -185,14 +185,14 @@ struct RouteDetailPage {
     }
   }
 
-  // 解析路线结果并绘制
+  // 解析路线结果并绘�?
   async parseRouteAndDraw(result: navi.RouteResult): Promise<void> {
     const routePoints: mapCommon.LatLng[] = [];
 
     try {
       const resultStr = JSON.stringify(result);
 
-      // 从 polyline 数组中提取点
+      // �?polyline 数组中提取点
       // 结构: routes[].steps[].roads[].polyline[{latitude, longitude}]
       const polylinePattern = /"polyline"\s*:\s*\[([\s\S]*?)\]/g;
       let polylineMatch: RegExpExecArray | null;
@@ -200,7 +200,7 @@ struct RouteDetailPage {
       while ((polylineMatch = polylinePattern.exec(resultStr)) !== null) {
         const polylineContent = polylineMatch[1];
 
-        // 从每个 polyline 中提取经纬度
+        // 从每�?polyline 中提取经纬度
         const pointPattern = /\{\s*"longitude"\s*:\s*([\d.]+)\s*,\s*"latitude"\s*:\s*([\d.]+)\s*\}/g;
         let pointMatch: RegExpExecArray | null;
 
@@ -209,7 +209,7 @@ struct RouteDetailPage {
           const lat = parseFloat(pointMatch[2]);
 
           if (lat > 0 && lng > 0) {
-            // 避免连续重复点
+            // 避免连续重复�?
             const lastPoint = routePoints.length > 0 ? routePoints[routePoints.length - 1] : null;
             if (!lastPoint ||
               Math.abs(lastPoint.latitude - lat) > 0.000001 ||
@@ -239,11 +239,11 @@ struct RouteDetailPage {
         totalDuration += parseInt(durMatch[1]);
       }
 
-      // 距离可能重复计算了，取合理值
+      // 距离可能重复计算了，取合理�?
       this.routeDistance = totalDistance > 0 ? Math.round(totalDistance / 2) : (this.spot?.distance || 0);
       this.routeDuration = totalDuration > 0 ? Math.round(totalDuration / 2) : this.estimateDuration(this.routeDistance);
 
-      // 如果距离太大，使用直线距离
+      // 如果距离太大，使用直线距�?
       if (this.routeDistance > (this.spot?.distance || 0) * 3) {
         this.routeDistance = this.spot?.distance || 0;
         this.routeDuration = this.estimateDuration(this.routeDistance);
@@ -288,7 +288,7 @@ struct RouteDetailPage {
     if (!this.mapController || points.length < 2) return;
 
     try {
-      // 清除旧路线
+      // 清除旧路�?
       if (this.currentPolyline) {
         this.currentPolyline.remove();
       }
@@ -310,7 +310,7 @@ struct RouteDetailPage {
     }
   }
 
-  // 绘制简单直线
+  // 绘制简单直�?
   async drawSimpleLine(): Promise<void> {
     if (!this.mapController || !this.spot) return;
 
@@ -355,7 +355,7 @@ struct RouteDetailPage {
     this.mapController.animateCamera(cameraUpdate, 500);
   }
 
-  // 根据出行方式估算时间（秒）
+  // 根据出行方式估算时间（秒�?
   estimateDuration(distanceMeters: number): number {
     let speedMps: number;
     if (this.selectedRouteType === 'driving') {
@@ -404,7 +404,7 @@ struct RouteDetailPage {
 
   build() {
     Column() {
-      // 顶部导航栏（添加状态栏高度）
+      // 顶部导航栏（添加状态栏高度�?
       Row() {
         Image($r('app.media.Left'))
           .width(24)
@@ -466,8 +466,8 @@ struct RouteDetailPage {
             Text(this.formatDistance(this.routeInfo.distance))
               .fontSize(20)
               .fontWeight(FontWeight.Bold)
-              .fontColor(ThemeColors.PRIMARY)
-            Text('总距离')
+              .fontColor(ThemeColors.PRIMARY_DARK)
+            Text('总距�?)
               .fontSize(12)
               .fontColor(ThemeColors.TEXT_SECONDARY)
           }
@@ -477,7 +477,7 @@ struct RouteDetailPage {
             Text(this.formatDuration(this.routeInfo.duration))
               .fontSize(20)
               .fontWeight(FontWeight.Bold)
-              .fontColor(ThemeColors.PRIMARY)
+              .fontColor(ThemeColors.PRIMARY_DARK)
             Text('预计时间')
               .fontSize(12)
               .fontColor(ThemeColors.TEXT_SECONDARY)
@@ -502,7 +502,7 @@ struct RouteDetailPage {
         if (this.isLoading) {
           Column() {
             LoadingProgress().width(48).height(48).color(ThemeColors.PRIMARY)
-            Text('计算路线中...').fontSize(14).fontColor(ThemeColors.TEXT_SECONDARY).margin({ top: 12 })
+            Text('计算路线�?..').fontSize(14).fontColor(ThemeColors.TEXT_SECONDARY).margin({ top: 12 })
           }
           .width('100%')
           .height('100%')

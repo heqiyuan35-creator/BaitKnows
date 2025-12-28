@@ -1,5 +1,5 @@
 /**
- * 饵知道 - 胜利结算图页面
+ * 饵知�?- 胜利结算图页�?
  * 生成精美的渔获分享图
  * 
  * 使用 SaveButton 安全控件保存图片到相册，无需申请权限
@@ -32,7 +32,7 @@ interface CardStyle {
 @Component
 struct VictorySharePage {
   @State record: FishingRecord | null = null;
-  // 实时位置和天气数据
+  // 实时位置和天气数�?
   @State currentLocation: string = '';
   @State currentWeather: string = '';
   @State selectedPhoto: string = '';
@@ -55,28 +55,28 @@ struct VictorySharePage {
       accentColor: '#E8A849'
     },
     {
-      name: '海洋蓝',
+      name: '海洋�?,
       bgColor: '#0a1628',
       gradientColors: [['rgba(64,169,255,0.7)', 0], ['rgba(24,144,255,0.2)', 1]],
       textColor: '#FFFFFF',
       accentColor: '#40A9FF'
     },
     {
-      name: '森林绿',
+      name: '森林�?,
       bgColor: '#0d1f0d',
       gradientColors: [['rgba(82,196,26,0.7)', 0], ['rgba(115,209,61,0.2)', 1]],
       textColor: '#FFFFFF',
       accentColor: '#52C41A'
     },
     {
-      name: '晚霞紫',
+      name: '晚霞�?,
       bgColor: '#1a0a28',
       gradientColors: [['rgba(177,130,255,0.7)', 0], ['rgba(114,46,209,0.2)', 1]],
       textColor: '#FFFFFF',
       accentColor: '#B182FF'
     },
     {
-      name: '自定义',
+      name: '自定�?,
       bgColor: '#1a1a2e',
       gradientColors: [['rgba(0,0,0,0.5)', 0], ['rgba(0,0,0,0.3)', 1]],
       textColor: '#FFFFFF',
@@ -88,21 +88,21 @@ struct VictorySharePage {
     const params = Router.getParams() as Record<string, Object>;
     if (params && params.record) {
       this.record = params.record as FishingRecord;
-      // 默认选择第一张图片
+      // 默认选择第一张图�?
       if (this.record.photos && this.record.photos.length > 0) {
         this.selectedPhoto = this.record.photos[0];
       }
     }
-    // 初始化随机内容
+    // 初始化随机内�?
     this.refreshRandomContent();
     
-    // 获取实时位置和天气数据
+    // 获取实时位置和天气数�?
     this.loadCurrentLocationAndWeather();
   }
 
-  // 加载当前位置和天气
+  // 加载当前位置和天�?
   private async loadCurrentLocationAndWeather(): Promise<void> {
-    // 获取缓存的天气数据
+    // 获取缓存的天气数�?
     const weather = getCachedWeather();
     if (weather.isValid) {
       this.currentWeather = weather.weatherText;
@@ -118,12 +118,12 @@ struct VictorySharePage {
             longitude: location.longitude
           },
           language: 'zh',
-          radius: 50  // 小半径获取更精确的位置
+          radius: 50  // 小半径获取更精确的位�?
         };
         const result = await site.reverseGeocode(params);
         if (result && result.addressComponent) {
           const addr = result.addressComponent;
-          // 拼接地址：区 + 街道/道路，获取更精确的位置
+          // 拼接地址：区 + 街道/道路，获取更精确的位�?
           const parts: string[] = [];
           if (addr.adminLevel3) {
             parts.push(addr.adminLevel3);
@@ -155,7 +155,7 @@ struct VictorySharePage {
 
   build() {
     Stack() {
-      // 主内容
+      // 主内�?
       Column() {
         this.HeaderBar()
 
@@ -164,7 +164,7 @@ struct VictorySharePage {
             // 预览卡片
             this.PreviewCard()
 
-            // 图片选择（如果有多张）
+            // 图片选择（如果有多张�?
             if (this.record?.photos && this.record.photos.length > 1) {
               this.PhotoSelector()
             }
@@ -207,7 +207,7 @@ struct VictorySharePage {
 
         Blank()
 
-        Text('生成分享图')
+        Text('生成分享�?)
           .fontSize(ThemeConstants.FONT_SIZE_LG)
           .fontWeight(FontWeight.Medium)
           .fontColor(ThemeColors.TEXT_PRIMARY)
@@ -228,59 +228,59 @@ struct VictorySharePage {
     const weight = this.record?.weight || 0;
     const count = this.record?.count || 0;
 
-    // 超级大丰收 (10kg+)
+    // 超级大丰�?(10kg+)
     if (weight >= 10) {
       const comments = [
         '🏆 今天我就是钓神！不接受反驳！',
-        '👑 封神之战！这鱼塘我承包了！',
+        '👑 封神之战！这鱼塘我承包了�?,
         '🔥 爆护警告！其他钓友已羡慕哭！',
-        '💎 王者归来！鱼儿排队上钩！',
+        '💎 王者归来！鱼儿排队上钩�?,
         '🚀 起飞！今天的鱼都是我的！'
       ];
       return comments[Math.floor(Math.random() * comments.length)];
     }
 
-    // 大丰收 (5kg+)
+    // 大丰�?(5kg+)
     if (weight >= 5) {
       const comments = [
         '💪 666！今天状态拉满！',
         '😎 就这？轻轻松松拿下！',
         '🎯 精准出击，弹无虚发！',
-        '⚡ 开挂了属于是！太强了！',
-        '🌟 闪耀全场！MVP非我莫属！'
+        '�?开挂了属于是！太强了！',
+        '🌟 闪耀全场！MVP非我莫属�?
       ];
       return comments[Math.floor(Math.random() * comments.length)];
     }
 
-    // 连竿 (10尾+)
+    // 连竿 (10�?)
     if (count >= 10) {
       const comments = [
-        '🔥 连竿到手软！停不下来！',
-        '💥 爆护模式开启！鱼儿疯狂咬钩！',
+        '🔥 连竿到手软！停不下来�?,
+        '💥 爆护模式开启！鱼儿疯狂咬钩�?,
         '🎪 今天的鱼都想认识我！',
-        '⭐ 数量即正义！量大管饱！',
-        '🎰 中奖了！今天运气爆棚！'
+        '�?数量即正义！量大管饱�?,
+        '🎰 中奖了！今天运气爆棚�?
       ];
       return comments[Math.floor(Math.random() * comments.length)];
     }
 
-    // 不错的收获 (2kg+ 或 3尾+)
+    // 不错的收�?(2kg+ �?3�?)
     if (weight >= 2 || count >= 3) {
       const comments = [
         '👍 稳如老狗！这波不亏！',
-        '😏 小意思，下次更猛！',
-        '✨ 今日份的快乐已到账！',
-        '🎣 技术在线，渔获满满！',
+        '😏 小意思，下次更猛�?,
+        '�?今日份的快乐已到账！',
+        '🎣 技术在线，渔获满满�?,
         '💯 完美收官！明天继续！'
       ];
       return comments[Math.floor(Math.random() * comments.length)];
     }
 
-    // 开张
+    // 开�?
     const comments = [
       '🎉 开张大吉！好运开始！',
-      '🌈 万事开头难，后面全是鱼！',
-      '🍀 今天的幸运已签到！',
+      '🌈 万事开头难，后面全是鱼�?,
+      '🍀 今天的幸运已签到�?,
       '😄 重在参与，快乐钓鱼！',
       '🎈 小试牛刀，大的还在后面！'
     ];
@@ -295,16 +295,16 @@ struct VictorySharePage {
 
     // 根据重量添加标签
     if (weight >= 10) {
-      const heavyTags = ['钓神下凡', '鱼塘终结者', '今日MVP', '渔获之王'];
+      const heavyTags = ['钓神下凡', '鱼塘终结�?, '今日MVP', '渔获之王'];
       tags.push(heavyTags[Math.floor(Math.random() * heavyTags.length)]);
     } else if (weight >= 5) {
-      const goodTags = ['钓鱼大师', '技术流', '稳定发挥', '实力派'];
+      const goodTags = ['钓鱼大师', '技术流', '稳定发挥', '实力�?];
       tags.push(goodTags[Math.floor(Math.random() * goodTags.length)]);
     }
 
     // 根据数量添加标签
     if (count >= 10) {
-      const manyTags = ['连竿王', '爆护达人', '数量担当', '效率之星'];
+      const manyTags = ['连竿�?, '爆护达人', '数量担当', '效率之星'];
       tags.push(manyTags[Math.floor(Math.random() * manyTags.length)]);
     } else if (count >= 5) {
       const someTags = ['小有斩获', '渔获满满', '收获颇丰'];
@@ -322,17 +322,17 @@ struct VictorySharePage {
     }
 
     // 随机趣味标签
-    const funTags = ['快乐垂钓', '佛系钓鱼', '享受过程', '钓鱼使我快乐', '今日宜钓鱼'];
+    const funTags = ['快乐垂钓', '佛系钓鱼', '享受过程', '钓鱼使我快乐', '今日宜钓�?];
     if (tags.length < 2) {
       tags.push(funTags[Math.floor(Math.random() * funTags.length)]);
     }
 
-    return tags.slice(0, 3); // 最多3个标签
+    return tags.slice(0, 3); // 最�?个标�?
   }
 
-  // 获取装饰性背景文字
+  // 获取装饰性背景文�?
   private generateDecorationText(): string {
-    const texts = ['666', 'NICE', '牛!', '6!', '赢!', 'WIN', 'YES'];
+    const texts = ['666', 'NICE', '�?', '6!', '�?', 'WIN', 'YES'];
     return texts[Math.floor(Math.random() * texts.length)];
   }
 
@@ -347,7 +347,7 @@ struct VictorySharePage {
 
       // 分享卡片预览
       Column() {
-        // 顶部标题栏
+        // 顶部标题�?
         Row() {
           Row({ space: 6 }) {
             Text('🎣')
@@ -387,7 +387,7 @@ struct VictorySharePage {
               .objectFit(ImageFit.Contain)
               .borderRadius(10)
           } else {
-            // 无图片占位
+            // 无图片占�?
             Column() {
               Text('🐟')
                 .fontSize(40)
@@ -439,7 +439,7 @@ struct VictorySharePage {
           .layoutWeight(1)
           .alignItems(HorizontalAlign.Center)
 
-          // 分隔线
+          // 分隔�?
           Column()
             .width(1)
             .height(30)
@@ -460,7 +460,7 @@ struct VictorySharePage {
           .layoutWeight(1)
           .alignItems(HorizontalAlign.Center)
 
-          // 分隔线
+          // 分隔�?
           Column()
             .width(1)
             .height(30)
@@ -484,7 +484,7 @@ struct VictorySharePage {
         .width('100%')
         .padding({ left: 14, right: 14, top: 12 })
 
-        // 钓点和天气
+        // 钓点和天�?
         Row() {
           Row({ space: 4 }) {
             Text('📍')
@@ -512,7 +512,7 @@ struct VictorySharePage {
 
         // 底部水印
         Row() {
-          Text('— 饵知道 · 智能钓鱼助手 —')
+          Text('�?饵知�?· 智能钓鱼助手 �?)
             .fontSize(9)
             .fontColor(this.cardStyles[this.selectedStyle].textColor)
             .opacity(0.4)
@@ -555,7 +555,7 @@ struct VictorySharePage {
         this.selectedStyle = this.cardStyles.length - 1;
       }
     } catch (error) {
-      console.error('选择背景图失败:', JSON.stringify(error));
+      console.error('选择背景图失�?', JSON.stringify(error));
     }
   }
 
@@ -587,7 +587,7 @@ struct VictorySharePage {
           .textAlign(TextAlign.Center)
 
         Column({ space: 4 }) {
-          Text('✅ 保存成功')
+          Text('�?保存成功')
             .fontSize(12)
             .fontColor(ThemeColors.SUCCESS)
           Text('可在相册中查看和分享')
@@ -661,7 +661,7 @@ struct VictorySharePage {
                 .borderRadius(8)
                 .border({ width: 3, color: ThemeColors.PRIMARY })
 
-              Text('✓')
+              Text('�?)
                 .fontSize(16)
                 .fontColor(Color.White)
                 .backgroundColor(ThemeColors.PRIMARY)
@@ -690,13 +690,13 @@ struct VictorySharePage {
 
         Blank()
 
-        // 换一换按钮
+        // 换一换按�?
         Row({ space: 4 }) {
           Text('🎲')
             .fontSize(14)
-          Text('换一换文案')
+          Text('换一换文�?)
             .fontSize(ThemeConstants.FONT_SIZE_XS)
-            .fontColor(ThemeColors.PRIMARY)
+            .fontColor(ThemeColors.PRIMARY_DARK)
         }
         .padding({ left: 10, right: 10, top: 4, bottom: 4 })
         .backgroundColor(ThemeColors.PRIMARY_LIGHT)
@@ -713,7 +713,7 @@ struct VictorySharePage {
             Column({ space: 6 }) {
               // 样式预览色块
               Stack() {
-                // 自定义样式显示背景图或添加图标
+                // 自定义样式显示背景图或添加图�?
                 if (index === this.cardStyles.length - 1) {
                   if (this.customBgImage) {
                     Image(this.customBgImage)
@@ -748,7 +748,7 @@ struct VictorySharePage {
                 }
 
                 if (this.selectedStyle === index) {
-                  Text('✓')
+                  Text('�?)
                     .fontSize(14)
                     .fontColor(Color.White)
                 }
@@ -764,7 +764,7 @@ struct VictorySharePage {
             }
             .onClick(() => {
               if (index === this.cardStyles.length - 1) {
-                // 自定义样式，选择背景图
+                // 自定义样式，选择背景�?
                 this.selectCustomBgImage();
               } else {
                 this.selectedStyle = index;
@@ -782,13 +782,13 @@ struct VictorySharePage {
   @Builder
   ActionButtons() {
     Column({ space: 12 }) {
-      // 使用 SaveButton 安全控件保存到相册
+      // 使用 SaveButton 安全控件保存到相�?
       SaveButton()
         .onClick(async (event: ClickEvent, result: SaveButtonOnClickResult) => {
           if (result === SaveButtonOnClickResult.SUCCESS) {
             await this.saveToGallery();
           } else {
-            promptAction.showToast({ message: '需要授权才能保存图片' });
+            promptAction.showToast({ message: '需要授权才能保存图�? });
           }
         })
 
@@ -807,7 +807,7 @@ struct VictorySharePage {
     .margin({ top: 16 })
   }
 
-  // 保存图片到相册 - 使用 SaveButton 获取临时权限
+  // 保存图片到相�?- 使用 SaveButton 获取临时权限
   private async saveToGallery(): Promise<void> {
     if (this.isGenerating) return;
 
@@ -817,7 +817,7 @@ struct VictorySharePage {
       const context = getContext(this) as common.UIAbilityContext;
       const helper = photoAccessHelper.getPhotoAccessHelper(context);
 
-      // onClick 触发后 5 秒内通过 createAsset 接口创建图片文件
+      // onClick 触发�?5 秒内通过 createAsset 接口创建图片文件
       const uri = await helper.createAsset(photoAccessHelper.PhotoType.IMAGE, 'jpg');
 
       // 使用 uri 打开文件
@@ -830,7 +830,7 @@ struct VictorySharePage {
       const pixelMap = await componentSnapshot.get('victoryCard', snapshotOptions);
 
       if (pixelMap) {
-        // 编码并写入文件
+        // 编码并写入文�?
         const packOpts: image.PackingOption = { format: 'image/jpeg', quality: 95 };
         const imagePacker = image.createImagePacker();
 
@@ -857,12 +857,12 @@ struct VictorySharePage {
 
   private getWeatherIcon(weather: string): string {
     const icons: Record<string, string> = {
-      '晴朗': '☀️',
-      '多云': '⛅',
+      '晴朗': '☀�?,
+      '多云': '�?,
       '阴天': '☁️',
-      '小雨': '🌧️',
+      '小雨': '🌧�?,
       '大风': '💨'
     };
-    return icons[weather] || '🌤️';
+    return icons[weather] || '🌤�?;
   }
 }

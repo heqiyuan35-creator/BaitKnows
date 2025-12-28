@@ -10,7 +10,7 @@ export class AMapConstants {
   static readonly AMAP_API_KEY: string = "6f356712f041528b048e8e12d23043bd";
 
   /**
-   * 默认地图中心点（武汉）
+   * 默认地图中心点（武汉�?
    */
   static readonly DEFAULT_CENTER_LAT: number = 30.5928;
   static readonly DEFAULT_CENTER_LNG: number = 114.3055;
@@ -26,7 +26,7 @@ export class AMapConstants {
   static readonly MAP_VIEW_NAME: string = 'BaitKnowsMap';
 
   /**
-   * POI搜索半径（米）
+   * POI搜索半径（米�?
    */
   static readonly SEARCH_RADIUS: number = 5000;
 }

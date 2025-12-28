@@ -1,5 +1,5 @@
 /**
- * 钓点数据 - 水域类型和钓点信息
+ * 钓点数据 - 水域类型和钓点信�?
  */
 
 // 水域类型
@@ -10,7 +10,7 @@ export enum WaterType {
   LAKE = 'lake'            // 湖泊
 }
 
-// 水域类型中文名
+// 水域类型中文�?
 export const WaterTypeNames: Record<string, string> = {
   [WaterType.POND]: '池塘',
   [WaterType.RESERVOIR]: '水库',
@@ -39,7 +39,7 @@ export interface FishingSpot {
   longitude: number;
   waterType: WaterType;
   description: string;
-  distance?: number; // 距离用户的米数
+  distance?: number; // 距离用户的米�?
 }
 
 // 饵料信息
@@ -51,34 +51,34 @@ export interface BaitInfo {
   icon: string;
 }
 
-// 各水域类型的饵料库
+// 各水域类型的饵料�?
 export const BaitDatabase: Record<string, BaitInfo[]> = {
   [WaterType.POND]: [
-    { name: '蚯蚓', description: '万能饵，适合池塘小型鱼', targetFish: ['鲫鱼', '鲤鱼', '草鱼'], season: '四季', icon: '🪱' },
-    { name: '玉米粒', description: '天然谷物饵，鲤鱼最爱', targetFish: ['鲤鱼', '草鱼'], season: '夏秋', icon: '🌽' },
+    { name: '蚯蚓', description: '万能饵，适合池塘小型�?, targetFish: ['鲫鱼', '鲤鱼', '草鱼'], season: '四季', icon: '🪱' },
+    { name: '玉米�?, description: '天然谷物饵，鲤鱼最�?, targetFish: ['鲤鱼', '草鱼'], season: '夏秋', icon: '🌽' },
     { name: '红虫', description: '冬季首选，腥味浓郁', targetFish: ['鲫鱼', '鳊鱼'], season: '冬春', icon: '🔴' },
-    { name: '商品饵(腥香)', description: '池塘通用配方', targetFish: ['鲫鱼', '鲤鱼'], season: '四季', icon: '🎣' },
-    { name: '麦粒', description: '经济实惠，草鱼喜欢', targetFish: ['草鱼', '鳊鱼'], season: '夏秋', icon: '🌾' },
+    { name: '商品�?腥香)', description: '池塘通用配方', targetFish: ['鲫鱼', '鲤鱼'], season: '四季', icon: '🎣' },
+    { name: '麦粒', description: '经济实惠，草鱼喜�?, targetFish: ['草鱼', '鳊鱼'], season: '夏秋', icon: '🌾' },
   ],
   [WaterType.RESERVOIR]: [
-    { name: '活虾', description: '大型鱼类首选', targetFish: ['鲈鱼', '翘嘴', '鳜鱼'], season: '四季', icon: '🦐' },
-    { name: '泥鳅', description: '钓大鱼神器', targetFish: ['鲶鱼', '黑鱼', '鳜鱼'], season: '夏秋', icon: '🐟' },
-    { name: '螺蛳', description: '青鱼专用饵', targetFish: ['青鱼', '鲤鱼'], season: '夏秋', icon: '🐚' },
-    { name: '商品饵(本味)', description: '水库大物配方', targetFish: ['鲤鱼', '草鱼', '鲢鳙'], season: '四季', icon: '🎣' },
-    { name: '玉米发酵饵', description: '守大物必备', targetFish: ['鲤鱼', '草鱼'], season: '夏秋', icon: '🌽' },
+    { name: '活虾', description: '大型鱼类首�?, targetFish: ['鲈鱼', '翘嘴', '鳜鱼'], season: '四季', icon: '🦐' },
+    { name: '泥鳅', description: '钓大鱼神�?, targetFish: ['鲶鱼', '黑鱼', '鳜鱼'], season: '夏秋', icon: '🐟' },
+    { name: '螺蛳', description: '青鱼专用�?, targetFish: ['青鱼', '鲤鱼'], season: '夏秋', icon: '🐚' },
+    { name: '商品�?本味)', description: '水库大物配方', targetFish: ['鲤鱼', '草鱼', '鲢鳙'], season: '四季', icon: '🎣' },
+    { name: '玉米发酵�?, description: '守大物必�?, targetFish: ['鲤鱼', '草鱼'], season: '夏秋', icon: '🌽' },
   ],
   [WaterType.RIVER]: [
-    { name: '蚯蚓', description: '河流万能饵', targetFish: ['鲫鱼', '鲶鱼', '黄颡鱼'], season: '四季', icon: '🪱' },
-    { name: '河虾', description: '本地河虾效果最佳', targetFish: ['鲈鱼', '翘嘴', '鳜鱼'], season: '夏秋', icon: '🦐' },
+    { name: '蚯蚓', description: '河流万能�?, targetFish: ['鲫鱼', '鲶鱼', '黄颡�?], season: '四季', icon: '🪱' },
+    { name: '河虾', description: '本地河虾效果最�?, targetFish: ['鲈鱼', '翘嘴', '鳜鱼'], season: '夏秋', icon: '🦐' },
     { name: '蛆虫', description: '流水钓效果好', targetFish: ['马口', '白条', '鲫鱼'], season: '夏秋', icon: '🐛' },
-    { name: '商品饵(浓腥)', description: '河流走水专用', targetFish: ['鲫鱼', '鲤鱼'], season: '四季', icon: '🎣' },
+    { name: '商品�?浓腥)', description: '河流走水专用', targetFish: ['鲫鱼', '鲤鱼'], season: '四季', icon: '🎣' },
     { name: '面饵', description: '传统钓法常用', targetFish: ['鲫鱼', '鲤鱼'], season: '四季', icon: '🍞' },
   ],
   [WaterType.LAKE]: [
-    { name: '活虾', description: '湖泊大鱼首选', targetFish: ['鲈鱼', '翘嘴', '鳜鱼'], season: '四季', icon: '🦐' },
-    { name: '泥鳅', description: '钓大鱼神器', targetFish: ['鲶鱼', '黑鱼', '鳜鱼'], season: '夏秋', icon: '🐟' },
-    { name: '玉米粒', description: '天然谷物饵', targetFish: ['鲤鱼', '草鱼'], season: '夏秋', icon: '🌽' },
-    { name: '商品饵(本味)', description: '湖泊通用配方', targetFish: ['鲤鱼', '草鱼', '鲢鳙'], season: '四季', icon: '🎣' },
+    { name: '活虾', description: '湖泊大鱼首�?, targetFish: ['鲈鱼', '翘嘴', '鳜鱼'], season: '四季', icon: '🦐' },
+    { name: '泥鳅', description: '钓大鱼神�?, targetFish: ['鲶鱼', '黑鱼', '鳜鱼'], season: '夏秋', icon: '🐟' },
+    { name: '玉米�?, description: '天然谷物�?, targetFish: ['鲤鱼', '草鱼'], season: '夏秋', icon: '🌽' },
+    { name: '商品�?本味)', description: '湖泊通用配方', targetFish: ['鲤鱼', '草鱼', '鲢鳙'], season: '四季', icon: '🎣' },
     { name: '蚯蚓', description: '万能饵料', targetFish: ['鲫鱼', '鲤鱼'], season: '四季', icon: '🪱' },
   ]
 };

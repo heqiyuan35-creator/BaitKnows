@@ -1,10 +1,10 @@
 /**
- * 饵知道 - 用户自定义数据服务
- * 管理用户自定义的原料、鱼种、配方数据
+ * 饵知�?- 用户自定义数据服�?
+ * 管理用户自定义的原料、鱼种、配方数�?
  */
 import { storageService } from './StorageService';
 
-// 用户自定义原料
+// 用户自定义原�?
 export class CustomIngredient {
   id: string = '';
   name: string = '';
@@ -15,7 +15,7 @@ export class CustomIngredient {
   createdAt: number = 0;
 }
 
-// 用户自定义鱼种
+// 用户自定义鱼�?
 export class CustomFish {
   id: string = '';
   name: string = '';
@@ -41,7 +41,7 @@ export class CustomRecipeIngredient {
   category: string = '';
 }
 
-// 配方状态特性
+// 配方状态特�?
 export class RecipeStateProfile {
   atomization: number = 3;
   viscosity: number = 3;
@@ -49,7 +49,7 @@ export class RecipeStateProfile {
   weight: number = 3;
 }
 
-// 配方味型特性
+// 配方味型特�?
 export class RecipeFlavorProfile {
   primary: string = '';
   secondary: string = '';
@@ -57,7 +57,7 @@ export class RecipeFlavorProfile {
   suitableTemp: string = '15-25°C';
 }
 
-// 用户自定义配方
+// 用户自定义配�?
 export class CustomRecipe {
   id: string = '';
   name: string = '';
@@ -72,11 +72,11 @@ export class CustomRecipe {
   difficulty: string = 'medium';
   // 准备时间
   prepTime: string = '15分钟';
-  // 扩展字段：状态特性
+  // 扩展字段：状态特�?
   stateProfile: RecipeStateProfile = new RecipeStateProfile();
-  // 扩展字段：味型特性
+  // 扩展字段：味型特�?
   flavorProfile: RecipeFlavorProfile = new RecipeFlavorProfile();
-  // 扩展字段：总重量
+  // 扩展字段：总重�?
   totalWeight: number = 500;
 }
 
@@ -87,7 +87,7 @@ export class UserDataStats {
   recipes: number = 0;
 }
 
-// 存储键
+// 存储�?
 const STORAGE_KEY_INGREDIENTS = 'user_custom_ingredients';
 const STORAGE_KEY_FISH = 'user_custom_fish';
 const STORAGE_KEY_RECIPES = 'user_custom_recipes';
@@ -115,7 +115,7 @@ export class PreciseMatchHistoryItem {
   targetFish: string = '';
   matchScore: number = 0;
   createdAt: number = 0;
-  inputParams: string = '';  // JSON字符串存储输入参数
+  inputParams: string = '';  // JSON字符串存储输入参�?
 }
 
 // 用户反馈记录
@@ -127,7 +127,7 @@ export class FeedbackHistoryItem {
   createdAt: number = 0;
 }
 
-// 创建原料的辅助函数
+// 创建原料的辅助函�?
 function createIngredient(
   name: string,
   category: string,
@@ -146,7 +146,7 @@ function createIngredient(
   return ing;
 }
 
-// 创建鱼种的辅助函数
+// 创建鱼种的辅助函�?
 function createFish(
   name: string,
   nameEn: string,
@@ -175,7 +175,7 @@ function createFish(
   return fish;
 }
 
-// 创建配方的辅助函数
+// 创建配方的辅助函�?
 function createRecipe(
   name: string,
   targetFish: string[],
@@ -234,7 +234,7 @@ class UserDataServiceClass {
     return UserDataServiceClass.instance;
   }
 
-  // 加载所有用户数据
+  // 加载所有用户数�?
   async load(forceReload: boolean = false): Promise<void> {
     if (this.isLoaded && !forceReload) return;
 
@@ -409,7 +409,7 @@ class UserDataServiceClass {
   async removeFavorite(recipeId: string): Promise<boolean> {
     const index = this.favoriteRecipes.indexOf(recipeId);
     if (index === -1) {
-      return false;  // 没有收藏过
+      return false;  // 没有收藏�?
     }
     this.favoriteRecipes.splice(index, 1);
     await this.saveFavorites();
@@ -417,14 +417,14 @@ class UserDataServiceClass {
     return true;
   }
 
-  // 切换收藏状态
+  // 切换收藏状�?
   async toggleFavorite(recipeId: string): Promise<boolean> {
     if (this.isFavorite(recipeId)) {
       await this.removeFavorite(recipeId);
-      return false;  // 返回新的收藏状态
+      return false;  // 返回新的收藏状�?
     } else {
       await this.addFavorite(recipeId);
-      return true;  // 返回新的收藏状态
+      return true;  // 返回新的收藏状�?
     }
   }
 
@@ -457,7 +457,7 @@ class UserDataServiceClass {
     console.info('[UserDataService] Saved precise preferences');
   }
 
-  // 更新单个偏好项
+  // 更新单个偏好�?
   async updatePrecisePreference(key: string, value: string): Promise<void> {
     // 根据key更新对应的偏好项
     switch (key) {
@@ -513,7 +513,7 @@ class UserDataServiceClass {
 
     this.preciseHistory.unshift(item);
 
-    // 只保留最近50条记录
+    // 只保留最�?0条记�?
     if (this.preciseHistory.length > 50) {
       this.preciseHistory = this.preciseHistory.slice(0, 50);
     }
@@ -551,7 +551,7 @@ class UserDataServiceClass {
 
     this.feedbackHistory.unshift(item);
 
-    // 只保留最近100条反馈
+    // 只保留最�?00条反�?
     if (this.feedbackHistory.length > 100) {
       this.feedbackHistory = this.feedbackHistory.slice(0, 100);
     }
@@ -561,7 +561,7 @@ class UserDataServiceClass {
     return item;
   }
 
-  // 获取某个配方的反馈统计
+  // 获取某个配方的反馈统�?
   getFeedbackStats(recipeId: string): Record<string, number> {
     const stats: Record<string, number> = {};
     for (const item of this.feedbackHistory) {
@@ -574,9 +574,9 @@ class UserDataServiceClass {
     return stats;
   }
 
-  // ==================== 重置所有数据 ====================
+  // ==================== 重置所有数�?====================
 
-  // 清除所有用户数据
+  // 清除所有用户数�?
   async clearAllData(): Promise<void> {
     // 清空内存数据
     this.customIngredients = [];

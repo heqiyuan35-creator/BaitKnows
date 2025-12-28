@@ -1,5 +1,5 @@
 /**
- * 饵知道 - 应用入口
+ * 饵知�?- 应用入口
  */
 import { AbilityConstant, UIAbility, Want } from '@kit.AbilityKit';
 import { hilog } from '@kit.PerformanceAnalysisKit';
@@ -21,7 +21,7 @@ export default class EntryAbility extends UIAbility {
     // 初始化高德地图SDK
     this.initAMapSDK();
 
-    // 初始化存储服务
+    // 初始化存储服�?
     try {
       await storageService.init(this.context);
       hilog.info(DOMAIN, TAG, 'StorageService initialized');
@@ -29,7 +29,7 @@ export default class EntryAbility extends UIAbility {
       hilog.error(DOMAIN, TAG, 'Failed to init StorageService: %{public}s', JSON.stringify(err));
     }
 
-    // 初始化定位服务（提前获取位置）
+    // 初始化定位服务（提前获取位置�?
     try {
       await LocationService.init(this.context);
       hilog.info(DOMAIN, TAG, 'LocationService initialized');
@@ -54,7 +54,7 @@ export default class EntryAbility extends UIAbility {
       // 2. 设置API Key
       MapsInitializer.setApiKey(AMapConstants.AMAP_API_KEY);
 
-      // 3. 启用3D地形图（需要在MapView创建之前调用）
+      // 3. 启用3D地形图（需要在MapView创建之前调用�?
       MapsInitializer.setTerrainEnable(true);
 
       // 4. 开启调试模式（发布时建议关闭）
@@ -83,7 +83,7 @@ export default class EntryAbility extends UIAbility {
       win.setWindowLayoutFullScreen(true);
     });
 
-    // 加载欢迎页
+    // 加载欢迎�?
     windowStage.loadContent('pages/WelcomePage', (err) => {
       if (err.code) {
         hilog.error(DOMAIN, TAG, 'Failed to load content: %{public}s', JSON.stringify(err));

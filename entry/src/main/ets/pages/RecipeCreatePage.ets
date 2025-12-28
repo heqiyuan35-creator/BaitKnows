@@ -1,6 +1,6 @@
 /**
- * 饵知道 - 配方创作页面
- * 用户自定义创建鱼饵配方
+ * 饵知�?- 配方创作页面
+ * 用户自定义创建鱼饵配�?
  */
 import { router } from '@kit.ArkUI';
 import { ThemeColors } from '../theme/ThemeColors';
@@ -9,7 +9,7 @@ import { ALL_FISH_DATA, FishData } from '../data/FishData';
 import { getAllIngredients, Ingredient } from '../data/IngredientDatabase';
 import { userDataService, CustomRecipeIngredient, RecipeStateProfile, RecipeFlavorProfile, CustomIngredient, CustomFish } from '../services/UserDataService';
 
-// 配方原料项
+// 配方原料�?
 class RecipeIngredientItem {
   ingredientId: string = '';
   name: string = '';
@@ -18,7 +18,7 @@ class RecipeIngredientItem {
   category: string = '';
 }
 
-// 统一原料显示项（用于选择弹窗）
+// 统一原料显示项（用于选择弹窗�?
 class IngredientDisplayItem {
   id: string = '';
   name: string = '';
@@ -26,7 +26,7 @@ class IngredientDisplayItem {
   isCustom: boolean = false;
 }
 
-// 统一鱼种显示项（用于选择弹窗）
+// 统一鱼种显示项（用于选择弹窗�?
 class FishDisplayItem {
   id: string = '';
   name: string = '';
@@ -35,7 +35,7 @@ class FishDisplayItem {
   isCustom: boolean = false;
 }
 
-// 选项类
+// 选项�?
 class SelectOption {
   id: string = '';
   name: string = '';
@@ -67,13 +67,13 @@ struct RecipeCreatePage {
   @State prepTime: string = '15分钟';
   @State totalWeight: number = 500;
 
-  // 状态特性
+  // 状态特�?
   @State atomization: number = 3;
   @State viscosity: number = 3;
   @State hookHolding: number = 3;
   @State baitWeight: number = 3;
 
-  // 味型特性
+  // 味型特�?
   @State primaryFlavor: string = 'fishy';
   @State secondaryFlavor: string = '';
   @State flavorIntensity: number = 3;
@@ -98,28 +98,28 @@ struct RecipeCreatePage {
   ];
 
   private difficulties: SelectOption[] = [
-    makeOption('easy', '简单'),
+    makeOption('easy', '简�?),
     makeOption('medium', '中等'),
     makeOption('hard', '困难')
   ];
 
   private flavors: SelectOption[] = [
-    makeOption('fishy', '腥'),
-    makeOption('fragrant', '香'),
-    makeOption('sweet', '甜'),
-    makeOption('sour', '酸'),
-    makeOption('smelly', '臭'),
+    makeOption('fishy', '�?),
+    makeOption('fragrant', '�?),
+    makeOption('sweet', '�?),
+    makeOption('sour', '�?),
+    makeOption('smelly', '�?),
     makeOption('plain', '本味')
   ];
 
   async aboutToAppear(): Promise<void> {
-    // 确保用户数据服务已加载
+    // 确保用户数据服务已加�?
     await userDataService.load();
   }
 
   build() {
     Column() {
-      // 顶部导航栏
+      // 顶部导航�?
       this.NavBar()
 
       // 表单内容
@@ -137,25 +137,25 @@ struct RecipeCreatePage {
           // 适合季节
           this.SeasonSection()
 
-          // 难度和准备时间
+          // 难度和准备时�?
           this.DifficultySection()
 
-          // 总重量
+          // 总重�?
           this.TotalWeightSection()
 
           // 原料配比
           this.IngredientSection()
 
-          // 状态特性
+          // 状态特�?
           this.StateProfileSection()
 
-          // 味型特性
+          // 味型特�?
           this.FlavorProfileSection()
 
           // 制作步骤
           this.StepsSection()
 
-          // 使用技巧
+          // 使用技�?
           this.TipsSection()
 
           // 保存按钮
@@ -207,7 +207,7 @@ struct RecipeCreatePage {
   @Builder
   NavBar() {
     Row() {
-      Text('←')
+      Text('�?)
         .fontSize(24)
         .fontColor(ThemeColors.TEXT_PRIMARY)
         .onClick(() => router.back())
@@ -238,7 +238,7 @@ struct RecipeCreatePage {
         .fontColor(ThemeColors.TEXT_SECONDARY)
         .fontWeight(FontWeight.Medium)
 
-      TextInput({ placeholder: '请输入配方名称', text: this.recipeName })
+      TextInput({ placeholder: '请输入配方名�?, text: this.recipeName })
         .width('100%')
         .height(44)
         .fontSize(ThemeConstants.FONT_SIZE_BASE)
@@ -356,18 +356,18 @@ struct RecipeCreatePage {
       return true; // 没选鱼种时所有水域都可用
     }
 
-    // 获取所有选中鱼种的水域交集
+    // 获取所有选中鱼种的水域交�?
     const availableWaterTypes = this.getAvailableWaterTypes();
     return availableWaterTypes.includes(waterTypeId);
   }
 
-  // 获取选中鱼种的可用水域（支持系统鱼种和用户自定义鱼种）
+  // 获取选中鱼种的可用水域（支持系统鱼种和用户自定义鱼种�?
   private getAvailableWaterTypes(): string[] {
     if (this.selectedFishIds.length === 0) {
       return ['pond', 'river', 'reservoir', 'lake'];
     }
 
-    // 收集所有选中鱼种的水域
+    // 收集所有选中鱼种的水�?
     const allWaterTypes: Set<string> = new Set();
     for (const fishId of this.selectedFishIds) {
       // 先从系统鱼种查找
@@ -377,7 +377,7 @@ struct RecipeCreatePage {
           allWaterTypes.add(wt);
         }
       } else {
-        // 再从用户自定义鱼种查找
+        // 再从用户自定义鱼种查�?
         const customFish = userDataService.getCustomFish().find((f: CustomFish) => f.id === fishId);
         if (customFish) {
           for (const wt of customFish.waterTypes) {
@@ -405,7 +405,7 @@ struct RecipeCreatePage {
       items.push(item);
     }
 
-    // 添加用户自定义鱼种
+    // 添加用户自定义鱼�?
     const customFishList = userDataService.getCustomFish();
     for (const fish of customFishList) {
       const item = new FishDisplayItem();
@@ -507,7 +507,7 @@ struct RecipeCreatePage {
   @Builder
   TotalWeightSection() {
     Column({ space: 8 }) {
-      Text('配方总重量')
+      Text('配方总重�?)
         .fontSize(ThemeConstants.FONT_SIZE_SM)
         .fontColor(ThemeColors.TEXT_SECONDARY)
         .fontWeight(FontWeight.Medium)
@@ -528,7 +528,7 @@ struct RecipeCreatePage {
             }
           })
 
-        Text('克')
+        Text('�?)
           .fontSize(ThemeConstants.FONT_SIZE_BASE)
           .fontColor(ThemeColors.TEXT_SECONDARY)
           .margin({ left: 8 })
@@ -579,7 +579,7 @@ struct RecipeCreatePage {
         Row() {
           Text('+ 添加原料')
             .fontSize(ThemeConstants.FONT_SIZE_BASE)
-            .fontColor(ThemeColors.PRIMARY)
+            .fontColor(ThemeColors.PRIMARY_DARK)
         }
         .width('100%')
         .height(44)
@@ -610,7 +610,7 @@ struct RecipeCreatePage {
           Row() {
             Text(`${index + 1}.`)
               .fontSize(ThemeConstants.FONT_SIZE_BASE)
-              .fontColor(ThemeColors.PRIMARY)
+              .fontColor(ThemeColors.PRIMARY_DARK)
               .fontWeight(FontWeight.Bold)
               .margin({ right: 8 })
 
@@ -644,7 +644,7 @@ struct RecipeCreatePage {
         Row() {
           Text('+ 添加步骤')
             .fontSize(ThemeConstants.FONT_SIZE_BASE)
-            .fontColor(ThemeColors.PRIMARY)
+            .fontColor(ThemeColors.PRIMARY_DARK)
         }
         .width('100%')
         .height(44)
@@ -666,7 +666,7 @@ struct RecipeCreatePage {
   @Builder
   TipsSection() {
     Column({ space: 8 }) {
-      Text('使用技巧')
+      Text('使用技�?)
         .fontSize(ThemeConstants.FONT_SIZE_SM)
         .fontColor(ThemeColors.TEXT_SECONDARY)
         .fontWeight(FontWeight.Medium)
@@ -689,21 +689,21 @@ struct RecipeCreatePage {
   @Builder
   StateProfileSection() {
     Column({ space: 12 }) {
-      Text('状态特性')
+      Text('状态特�?)
         .fontSize(ThemeConstants.FONT_SIZE_SM)
         .fontColor(ThemeColors.TEXT_SECONDARY)
         .fontWeight(FontWeight.Medium)
 
-      // 雾化性
+      // 雾化�?
       Column({ space: 4 }) {
         Row() {
-          Text('雾化性')
+          Text('雾化�?)
             .fontSize(ThemeConstants.FONT_SIZE_SM)
             .fontColor(ThemeColors.TEXT_PRIMARY)
           Blank()
           Text(this.getStateLabel(this.atomization))
             .fontSize(ThemeConstants.FONT_SIZE_SM)
-            .fontColor(ThemeColors.PRIMARY)
+            .fontColor(ThemeColors.PRIMARY_DARK)
         }
         .width('100%')
 
@@ -733,7 +733,7 @@ struct RecipeCreatePage {
           Blank()
           Text(this.getStateLabel(this.viscosity))
             .fontSize(ThemeConstants.FONT_SIZE_SM)
-            .fontColor(ThemeColors.PRIMARY)
+            .fontColor(ThemeColors.PRIMARY_DARK)
         }
         .width('100%')
 
@@ -754,16 +754,16 @@ struct RecipeCreatePage {
       }
       .width('100%')
 
-      // 附钩性
+      // 附钩�?
       Column({ space: 4 }) {
         Row() {
-          Text('附钩性')
+          Text('附钩�?)
             .fontSize(ThemeConstants.FONT_SIZE_SM)
             .fontColor(ThemeColors.TEXT_PRIMARY)
           Blank()
           Text(this.getStateLabel(this.hookHolding))
             .fontSize(ThemeConstants.FONT_SIZE_SM)
-            .fontColor(ThemeColors.PRIMARY)
+            .fontColor(ThemeColors.PRIMARY_DARK)
         }
         .width('100%')
 
@@ -793,7 +793,7 @@ struct RecipeCreatePage {
           Blank()
           Text(this.getStateLabel(this.baitWeight))
             .fontSize(ThemeConstants.FONT_SIZE_SM)
-            .fontColor(ThemeColors.PRIMARY)
+            .fontColor(ThemeColors.PRIMARY_DARK)
         }
         .width('100%')
 
@@ -833,7 +833,7 @@ struct RecipeCreatePage {
 
         Text(this.getStateLabel(value))
           .fontSize(ThemeConstants.FONT_SIZE_SM)
-          .fontColor(ThemeColors.PRIMARY)
+          .fontColor(ThemeColors.PRIMARY_DARK)
       }
       .width('100%')
 
@@ -863,14 +863,14 @@ struct RecipeCreatePage {
   @Builder
   FlavorProfileSection() {
     Column({ space: 12 }) {
-      Text('味型特性')
+      Text('味型特�?)
         .fontSize(ThemeConstants.FONT_SIZE_SM)
         .fontColor(ThemeColors.TEXT_SECONDARY)
         .fontWeight(FontWeight.Medium)
 
-      // 主味型
+      // 主味�?
       Column({ space: 8 }) {
-        Text('主味型')
+        Text('主味�?)
           .fontSize(ThemeConstants.FONT_SIZE_SM)
           .fontColor(ThemeColors.TEXT_PRIMARY)
 
@@ -895,14 +895,14 @@ struct RecipeCreatePage {
         .width('100%')
       }
 
-      // 副味型
+      // 副味�?
       Column({ space: 8 }) {
         Text('副味型（可选）')
           .fontSize(ThemeConstants.FONT_SIZE_SM)
           .fontColor(ThemeColors.TEXT_PRIMARY)
 
         Flex({ wrap: FlexWrap.Wrap }) {
-          Text('无')
+          Text('�?)
             .fontSize(ThemeConstants.FONT_SIZE_SM)
             .fontColor(this.secondaryFlavor === '' ? ThemeColors.PRIMARY : ThemeColors.TEXT_SECONDARY)
             .padding({ left: 12, right: 12, top: 6, bottom: 6 })
@@ -946,7 +946,7 @@ struct RecipeCreatePage {
           Blank()
           Text(this.getStateLabel(this.flavorIntensity))
             .fontSize(ThemeConstants.FONT_SIZE_SM)
-            .fontColor(ThemeColors.PRIMARY)
+            .fontColor(ThemeColors.PRIMARY_DARK)
         }
         .width('100%')
 
@@ -994,7 +994,7 @@ struct RecipeCreatePage {
           Blank()
           Text('完成')
             .fontSize(16)
-            .fontColor(ThemeColors.PRIMARY)
+            .fontColor(ThemeColors.PRIMARY_DARK)
             .onClick(() => {
               this.showFishPicker = false;
             })
@@ -1020,9 +1020,9 @@ struct RecipeCreatePage {
                       .fontColor(ThemeColors.TEXT_PRIMARY)
 
                     if (fish.isCustom) {
-                      Text('自定义')
+                      Text('自定�?)
                         .fontSize(10)
-                        .fontColor(ThemeColors.PRIMARY)
+                        .fontColor(ThemeColors.PRIMARY_DARK)
                         .padding({ left: 4, right: 4, top: 2, bottom: 2 })
                         .backgroundColor('rgba(232, 168, 73, 0.15)')
                         .borderRadius(4)
@@ -1093,7 +1093,7 @@ struct RecipeCreatePage {
             .fontWeight(FontWeight.Bold)
             .fontColor(ThemeColors.TEXT_PRIMARY)
           Blank()
-          Text('✕')
+          Text('�?)
             .fontSize(20)
             .fontColor(ThemeColors.TEXT_SECONDARY)
             .onClick(() => {
@@ -1114,7 +1114,7 @@ struct RecipeCreatePage {
                       .fontSize(16)
                       .fontColor(ThemeColors.TEXT_PRIMARY)
 
-                    Text('自定义')
+                    Text('自定�?)
                       .fontSize(10)
                       .fontColor(Color.White)
                       .padding({ left: 4, right: 4, top: 2, bottom: 2 })
@@ -1132,7 +1132,7 @@ struct RecipeCreatePage {
 
                 Text('+')
                   .fontSize(20)
-                  .fontColor(ThemeColors.PRIMARY)
+                  .fontColor(ThemeColors.PRIMARY_DARK)
                   .padding(8)
                   .onClick(() => {
                     this.addIngredientToRecipe(item);
@@ -1162,7 +1162,7 @@ struct RecipeCreatePage {
 
                 Text('+')
                   .fontSize(20)
-                  .fontColor(ThemeColors.PRIMARY)
+                  .fontColor(ThemeColors.PRIMARY_DARK)
                   .padding(8)
                   .onClick(() => {
                     this.addIngredientToRecipe(item);
@@ -1188,7 +1188,7 @@ struct RecipeCreatePage {
     .position({ x: 0, y: 0 })
   }
 
-  // 获取用户自定义原料列表
+  // 获取用户自定义原料列�?
   private getCustomIngredientItems(): IngredientDisplayItem[] {
     const customList = userDataService.getCustomIngredients();
     const result: IngredientDisplayItem[] = [];
@@ -1220,7 +1220,7 @@ struct RecipeCreatePage {
     return result;
   }
 
-  // 添加原料到配方
+  // 添加原料到配�?
   private addIngredientToRecipe(item: IngredientDisplayItem): void {
     // 检查是否已添加
     const exists = this.ingredients.some((ing: RecipeIngredientItem) => ing.ingredientId === item.id);
@@ -1241,11 +1241,11 @@ struct RecipeCreatePage {
     const categoryNames: Record<string, string> = {
       'base': '基础饵料',
       'protein': '蛋白质类',
-      'additive': '添加剂',
-      'state': '状态调节',
-      'binder': '粘合剂',
+      'additive': '添加�?,
+      'state': '状态调�?,
+      'binder': '粘合�?,
       'natural': '天然原料',
-      'pellet': '颗粒饵',
+      'pellet': '颗粒�?,
       'live': '活饵',
       'folk': '民间偏方'
     };
@@ -1260,7 +1260,7 @@ struct RecipeCreatePage {
         if (fish) {
           return fish.name;
         }
-        // 再从用户自定义鱼种查找
+        // 再从用户自定义鱼种查�?
         const customFish = userDataService.getCustomFish().find((f: CustomFish) => f.id === id);
         if (customFish) {
           return customFish.name;
@@ -1268,7 +1268,7 @@ struct RecipeCreatePage {
         return '';
       })
       .filter((name: string) => name !== '')
-      .join('、');
+      .join('�?);
   }
 
   private async saveRecipe(): Promise<void> {
@@ -1280,23 +1280,23 @@ struct RecipeCreatePage {
     // 验证配方名称
     const trimmedName = this.recipeName.trim();
     if (!trimmedName) {
-      this.showToastMessage('请输入配方名称');
+      this.showToastMessage('请输入配方名�?);
       return;
     }
 
     if (trimmedName.length < 2) {
-      this.showToastMessage('配方名称至少2个字符');
+      this.showToastMessage('配方名称至少2个字�?);
       return;
     }
 
     if (trimmedName.length > 20) {
-      this.showToastMessage('配方名称不能超过20个字符');
+      this.showToastMessage('配方名称不能超过20个字�?);
       return;
     }
 
-    // 检查配方名称是否重复
+    // 检查配方名称是否重�?
     if (userDataService.isRecipeNameExists(trimmedName)) {
-      this.showToastMessage('配方名称已存在，请换一个名称');
+      this.showToastMessage('配方名称已存在，请换一个名�?);
       return;
     }
 
@@ -1308,7 +1308,7 @@ struct RecipeCreatePage {
 
     // 验证原料
     if (this.ingredients.length === 0) {
-      this.showToastMessage('请至少添加一种原料');
+      this.showToastMessage('请至少添加一种原�?);
       return;
     }
 
@@ -1321,11 +1321,11 @@ struct RecipeCreatePage {
     // 验证制作步骤
     const validSteps = this.steps.filter((s: string) => s.trim().length > 0);
     if (validSteps.length === 0) {
-      this.showToastMessage('请至少添加一个制作步骤');
+      this.showToastMessage('请至少添加一个制作步�?);
       return;
     }
 
-    // 开始保存
+    // 开始保�?
     this.isSaving = true;
 
     try {
@@ -1342,20 +1342,20 @@ struct RecipeCreatePage {
         recipeIngredients.push(ri);
       }
 
-      // 构建状态特性
+      // 构建状态特�?
       const stateProfile = new RecipeStateProfile();
       stateProfile.atomization = this.atomization;
       stateProfile.viscosity = this.viscosity;
       stateProfile.hookHolding = this.hookHolding;
       stateProfile.weight = this.baitWeight;
 
-      // 构建味型特性
+      // 构建味型特�?
       const flavorProfile = new RecipeFlavorProfile();
       flavorProfile.primary = this.primaryFlavor;
       flavorProfile.secondary = this.secondaryFlavor;
       flavorProfile.intensity = this.flavorIntensity;
 
-      // 保存到 UserDataService
+      // 保存�?UserDataService
       await userDataService.addRecipe(
         trimmedName,
         this.selectedFishIds.slice(),
@@ -1373,7 +1373,7 @@ struct RecipeCreatePage {
 
       console.info('配方保存成功:', trimmedName);
 
-      // 显示成功提示后跳转
+      // 显示成功提示后跳�?
       this.showToastMessage('配方保存成功');
 
       // 延迟跳转，让用户看到提示

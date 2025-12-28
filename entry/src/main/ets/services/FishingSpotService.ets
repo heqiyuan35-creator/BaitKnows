@@ -1,5 +1,5 @@
 /**
- * 钓点服务 - 支持华为地图和高德地图搜索
+ * 钓点服务 - 支持华为地图和高德地图搜�?
  */
 import { site } from '@kit.MapKit';
 import { BusinessError } from '@kit.BasicServicesKit';
@@ -91,26 +91,26 @@ class FishingSpotServiceClass {
     return spots.slice(0, 20);
   }
 
-  // 获取预设的真实钓点数据（武汉地区）
+  // 获取预设的真实钓点数据（武汉地区�?
   private getPresetSpots(userLat: number, userLng: number): FishingSpot[] {
     const realSpots: FishingSpot[] = [
       // 东湖区域
-      { id: 'preset_1', name: '东湖落雁景区', latitude: 30.5547, longitude: 114.4283, waterType: WaterType.RESERVOIR, description: '东湖最大的湖汊，水质好，鱼种丰富', distance: 0 },
+      { id: 'preset_1', name: '东湖落雁景区', latitude: 30.5547, longitude: 114.4283, waterType: WaterType.RESERVOIR, description: '东湖最大的湖汊，水质好，鱼种丰�?, distance: 0 },
       { id: 'preset_2', name: '东湖磨山景区', latitude: 30.5489, longitude: 114.4089, waterType: WaterType.RESERVOIR, description: '风景优美，适合休闲垂钓', distance: 0 },
-      { id: 'preset_3', name: '东湖听涛景区', latitude: 30.5612, longitude: 114.3856, waterType: WaterType.RESERVOIR, description: '交通便利，岸边钓位多', distance: 0 },
+      { id: 'preset_3', name: '东湖听涛景区', latitude: 30.5612, longitude: 114.3856, waterType: WaterType.RESERVOIR, description: '交通便利，岸边钓位�?, distance: 0 },
       // 沙湖区域
       { id: 'preset_4', name: '沙湖公园', latitude: 30.5734, longitude: 114.3412, waterType: WaterType.POND, description: '市区内钓场，适合休闲', distance: 0 },
       // 汤逊湖区域
-      { id: 'preset_5', name: '汤逊湖', latitude: 30.4523, longitude: 114.3678, waterType: WaterType.RESERVOIR, description: '武汉最大城中湖，大物频出', distance: 0 },
+      { id: 'preset_5', name: '汤逊湖', latitude: 30.4523, longitude: 114.3678, waterType: WaterType.RESERVOIR, description: '武汉最大城中湖，大物频�?, distance: 0 },
       // 长江区域
-      { id: 'preset_6', name: '汉口江滩', latitude: 30.5912, longitude: 114.2934, waterType: WaterType.RIVER, description: '长江钓场，鱼口活跃', distance: 0 },
-      { id: 'preset_7', name: '武昌江滩', latitude: 30.5523, longitude: 114.3123, waterType: WaterType.RIVER, description: '江边钓位，注意安全', distance: 0 },
+      { id: 'preset_6', name: '汉口江滩', latitude: 30.5912, longitude: 114.2934, waterType: WaterType.RIVER, description: '长江钓场，鱼口活�?, distance: 0 },
+      { id: 'preset_7', name: '武昌江滩', latitude: 30.5523, longitude: 114.3123, waterType: WaterType.RIVER, description: '江边钓位，注意安�?, distance: 0 },
       // 其他湖泊
-      { id: 'preset_8', name: '墨水湖', latitude: 30.5234, longitude: 114.2156, waterType: WaterType.POND, description: '汉阳区钓场，鲫鱼多', distance: 0 },
+      { id: 'preset_8', name: '墨水�?, latitude: 30.5234, longitude: 114.2156, waterType: WaterType.POND, description: '汉阳区钓场，鲫鱼�?, distance: 0 },
       { id: 'preset_9', name: '南湖', latitude: 30.5089, longitude: 114.3534, waterType: WaterType.POND, description: '洪山区湖泊，环境优美', distance: 0 },
-      { id: 'preset_10', name: '后官湖', latitude: 30.4912, longitude: 114.1234, waterType: WaterType.RESERVOIR, description: '蔡甸区大型水库，鱼种多', distance: 0 },
-      { id: 'preset_11', name: '严西湖', latitude: 30.5234, longitude: 114.4789, waterType: WaterType.RESERVOIR, description: '光谷附近，水质清澈', distance: 0 },
-      { id: 'preset_12', name: '梁子湖', latitude: 30.2567, longitude: 114.5234, waterType: WaterType.RESERVOIR, description: '武汉最大淡水湖，野钓圣地', distance: 0 }
+      { id: 'preset_10', name: '后官�?, latitude: 30.4912, longitude: 114.1234, waterType: WaterType.RESERVOIR, description: '蔡甸区大型水库，鱼种�?, distance: 0 },
+      { id: 'preset_11', name: '严西�?, latitude: 30.5234, longitude: 114.4789, waterType: WaterType.RESERVOIR, description: '光谷附近，水质清�?, distance: 0 },
+      { id: 'preset_12', name: '梁子�?, latitude: 30.2567, longitude: 114.5234, waterType: WaterType.RESERVOIR, description: '武汉最大淡水湖，野钓圣�?, distance: 0 }
     ];
 
     // 计算每个钓点到用户的距离
@@ -118,7 +118,7 @@ class FishingSpotServiceClass {
       spot.distance = Math.round(this.calculateDistance(userLat, userLng, spot.latitude, spot.longitude));
     });
 
-    // 按距离排序，取最近的10个
+    // 按距离排序，取最近的10�?
     realSpots.sort((a, b) => (a.distance || 0) - (b.distance || 0));
     return realSpots.slice(0, 10);
   }
@@ -127,7 +127,7 @@ class FishingSpotServiceClass {
     // 第一步：严格排除非钓点（优先级最高）
     const strictExcludeKeywords = [
       // 公共设施
-      '厕所', '卫生间', '洗手间', '公厕', '公共厕所',
+      '厕所', '卫生�?, '洗手�?, '公厕', '公共厕所',
       // 美容美发
       '护肤', '美肤', '美容', '美发', '理发', 'SPA', 'spa', '造型', '时尚',
       // 餐饮（包括各种店铺形式）
@@ -137,52 +137,52 @@ class FishingSpotServiceClass {
       // 商业服务
       '超市', '商场', '购物', '专卖', '批发', '零售', '银行', '药店',
       // 教育医疗
-      '医院', '诊所', '学校', '幼儿园', '学院', '大学', '培训',
-      // 停车交通
-      '停车场', '停车', '加油站', '充电站',
-      // 运动娱乐（非钓鱼）
-      '跳伞', '蹦极', 'KTV', '网吧', '游戏', '电影', '健身', '游泳池',
-      '划船', '皮划艇', '赛艇', '训练基地', '俱乐部',
+      '医院', '诊所', '学校', '幼儿�?, '学院', '大学', '培训',
+      // 停车交�?
+      '停车�?, '停车', '加油�?, '充电�?,
+      // 运动娱乐（非钓鱼�?
+      '跳伞', '蹦极', 'KTV', '网吧', '游戏', '电影', '健身', '游泳�?,
+      '划船', '皮划�?, '赛艇', '训练基地', '俱乐�?,
       // 企业行政
-      '公司', '集团', '大厦', '广场', '写字楼', '办公', '营销', '中心',
+      '公司', '集团', '大厦', '广场', '写字�?, '办公', '营销', '中心',
       // 住宅
-      '小区', '花园', '家园', '苑', '府', '公寓', '民宿'
+      '小区', '花园', '家园', '�?, '�?, '公寓', '民宿'
     ];
 
     for (const exclude of strictExcludeKeywords) {
       if (name.includes(exclude)) return false;
     }
 
-    // 第二步：排除带"店"字的（基本都是商铺）
-    if (name.includes('店')) return false;
+    // 第二步：排除�?�?字的（基本都是商铺）
+    if (name.includes('�?)) return false;
 
-    // 第三步：必须包含真正的钓鱼/水域关键词
+    // 第三步：必须包含真正的钓�?水域关键�?
     const realFishingKeywords = [
-      // 钓鱼专用（最可靠）
+      // 钓鱼专用（最可靠�?
       '垂钓', '钓场', '钓鱼', '渔场', '鱼塘', '鱼池', '钓园', '渔具',
       // 自然水域
       '江滩', '河滩', '湖滩', '水库',
       '湿地公园', '湿地',
-      // 带"塘"但不是其他用途的
+      // �?�?但不是其他用途的
       '鱼塘', '荷塘', '莲塘'
     ];
 
-    // 优先匹配钓鱼专用关键词
+    // 优先匹配钓鱼专用关键�?
     for (const keyword of realFishingKeywords) {
       if (name.includes(keyword)) return true;
     }
 
     // 第四步：对于通用水域词（湖、河、江等），需要更严格判断
-    // 必须是"XX湖"、"XX河"这种地名形式
+    // 必须�?XX�?�?XX�?这种地名形式
     const waterBodyPatterns = [
-      /湖$/,      // 以"湖"结尾：东湖、南湖
-      /河$/,      // 以"河"结尾
-      /江$/,      // 以"江"结尾
-      /潭$/,      // 以"潭"结尾
-      /塘$/,      // 以"塘"结尾：垂柳塘
-      /溪$/,      // 以"溪"结尾
-      /港$/,      // 以"港"结尾（内陆河港）
-      /渡口$/     // 以"渡口"结尾
+      /�?/,      // �?�?结尾：东湖、南�?
+      /�?/,      // �?�?结尾
+      /�?/,      // �?�?结尾
+      /�?/,      // �?�?结尾
+      /�?/,      // �?�?结尾：垂柳塘
+      /�?/,      // �?�?结尾
+      /�?/,      // �?�?结尾（内陆河港）
+      /渡口$/     // �?渡口"结尾
     ];
 
     for (const pattern of waterBodyPatterns) {
@@ -196,13 +196,13 @@ class FishingSpotServiceClass {
     const nameAndTypes = name + poiTypes.join(',');
 
     // 湖泊
-    if (nameAndTypes.includes('湖') || nameAndTypes.includes('潭')) {
+    if (nameAndTypes.includes('�?) || nameAndTypes.includes('�?)) {
       return WaterType.LAKE;
     }
 
-    // 河流：江、河、溪、港（内陆港口属于河流）、码头
-    if (nameAndTypes.includes('江') || nameAndTypes.includes('河') ||
-        nameAndTypes.includes('溪') || nameAndTypes.includes('港') ||
+    // 河流：江、河、溪、港（内陆港口属于河流）、码�?
+    if (nameAndTypes.includes('�?) || nameAndTypes.includes('�?) ||
+        nameAndTypes.includes('�?) || nameAndTypes.includes('�?) ||
         nameAndTypes.includes('码头') || nameAndTypes.includes('渡口')) {
       return WaterType.RIVER;
     }
@@ -231,8 +231,8 @@ class FishingSpotServiceClass {
     const descriptions: Record<string, string> = {
       [WaterType.POND]: '适合休闲垂钓',
       [WaterType.RESERVOIR]: '水域开阔，适合守钓',
-      [WaterType.RIVER]: '流水钓场，鱼口活跃',
-      [WaterType.LAKE]: '湖泊钓场，鱼种丰富'
+      [WaterType.RIVER]: '流水钓场，鱼口活�?,
+      [WaterType.LAKE]: '湖泊钓场，鱼种丰�?
     };
     return descriptions[type] || '钓点环境良好';
   }

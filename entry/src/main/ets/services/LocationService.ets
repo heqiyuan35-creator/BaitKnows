@@ -1,6 +1,6 @@
 /**
  * 全局定位服务 - 单例模式
- * 在 App 启动时获取位置，供各页面使用
+ * �?App 启动时获取位置，供各页面使用
  */
 import { geoLocationManager } from '@kit.LocationKit';
 import { abilityAccessCtrl, bundleManager, common, Permissions } from '@kit.AbilityKit';
@@ -46,16 +46,16 @@ class LocationServiceClass {
     return this._isLocating;
   }
 
-  // 初始化定位（在 EntryAbility 中调用）
+  // 初始化定位（�?EntryAbility 中调用）
   async init(context: common.UIAbilityContext): Promise<void> {
     console.info(this.TAG, 'Initializing location service...');
     this._context = context;
     
-    // 先检查定位服务是否开启
+    // 先检查定位服务是否开�?
     const isEnabled = await this.checkLocationEnabled();
     if (!isEnabled) {
       console.warn(this.TAG, 'Location service is disabled');
-      this._currentLocation.errorMsg = '定位服务未开启';
+      this._currentLocation.errorMsg = '定位服务未开�?;
       // 使用默认位置，但标记为有效以便地图能显示
       this._currentLocation.isValid = true;
       return;
@@ -64,7 +64,7 @@ class LocationServiceClass {
     await this.checkAndRequestPermission(context);
   }
 
-  // 检查定位服务是否开启
+  // 检查定位服务是否开�?
   private async checkLocationEnabled(): Promise<boolean> {
     try {
       return geoLocationManager.isLocationEnabled();
@@ -97,7 +97,7 @@ class LocationServiceClass {
       console.error(this.TAG, `Permission check failed: ${error}`);
       // 权限检查失败，使用默认位置
       this._currentLocation.isValid = true;
-      this._currentLocation.errorMsg = '权限检查失败';
+      this._currentLocation.errorMsg = '权限检查失�?;
     }
   }
 
@@ -124,11 +124,11 @@ class LocationServiceClass {
         console.warn(this.TAG, 'Location permission denied');
         // 权限被拒绝，使用默认位置
         this._currentLocation.isValid = true;
-        this._currentLocation.errorMsg = '定位权限被拒绝';
+        this._currentLocation.errorMsg = '定位权限被拒�?;
       }
     } catch (error) {
       console.error(this.TAG, `Request permission failed: ${error}`);
-      // 请求权限失败，使用默认位置
+      // 请求权限失败，使用默认位�?
       this._currentLocation.isValid = true;
       this._currentLocation.errorMsg = '请求权限失败';
     }
@@ -144,12 +144,12 @@ class LocationServiceClass {
     console.info(this.TAG, 'Fetching current location...');
 
     try {
-      // 先检查定位服务
+      // 先检查定位服�?
       const isEnabled = geoLocationManager.isLocationEnabled();
       if (!isEnabled) {
         console.warn(this.TAG, 'Location service is disabled');
         this._currentLocation.isValid = true;  // 使用默认位置
-        this._currentLocation.errorMsg = '定位服务未开启';
+        this._currentLocation.errorMsg = '定位服务未开�?;
         return this._currentLocation;
       }
 
@@ -157,7 +157,7 @@ class LocationServiceClass {
         priority: geoLocationManager.LocationRequestPriority.FIRST_FIX,
         scenario: geoLocationManager.LocationRequestScenario.UNSET,
         maxAccuracy: 100,
-        timeoutMs: 10000  // 10秒超时
+        timeoutMs: 10000  // 10秒超�?
       };
 
       console.info(this.TAG, 'Calling getCurrentLocation...');
@@ -174,7 +174,7 @@ class LocationServiceClass {
       const err = error as Error;
       console.error(this.TAG, `Get location failed: ${err.message || error}`);
       
-      // 定位失败，使用默认位置但标记为有效
+      // 定位失败，使用默认位置但标记为有�?
       this._currentLocation.isValid = true;
       this._currentLocation.errorMsg = `定位失败: ${err.message || '未知错误'}`;
     } finally {
@@ -184,9 +184,9 @@ class LocationServiceClass {
     return this._currentLocation;
   }
 
-  // 手动刷新位置（供页面调用）
+  // 手动刷新位置（供页面调用�?
   async refreshLocation(): Promise<LocationInfo> {
-    // 如果没有权限，尝试重新请求
+    // 如果没有权限，尝试重新请�?
     if (!this._hasPermission && this._context) {
       await this.requestPermissions(this._context);
     }

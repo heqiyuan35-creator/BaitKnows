@@ -1,6 +1,6 @@
 /**
- * 饵知道 - 渔获记录服务
- * 管理渔获记录的增删改查
+ * 饵知�?- 渔获记录服务
+ * 管理渔获记录的增删改�?
  */
 import { FishingRecord } from '../common/types/UserTypes';
 import { storageService } from './StorageService';
@@ -20,7 +20,7 @@ class FishingRecordServiceClass {
   }
 
   /**
-   * 加载所有记录
+   * 加载所有记�?
    */
   async load(): Promise<FishingRecord[]> {
     if (this._isLoaded) {
@@ -41,7 +41,7 @@ class FishingRecordServiceClass {
   }
 
   /**
-   * 保存所有记录
+   * 保存所有记�?
    */
   private async save(): Promise<void> {
     await storageService.save(AppConstants.STORAGE_RECORDS, this._records);
@@ -58,7 +58,7 @@ class FishingRecordServiceClass {
     record.createTime = Date.now();
     record.updateTime = Date.now();
 
-    // 计算最大单尾（如果未设置，默认为总重量/数量）
+    // 计算最大单尾（如果未设置，默认为总重�?数量�?
     if (record.maxSingle <= 0 && record.count > 0) {
       record.maxSingle = Math.round((record.weight / record.count) * 100) / 100;
     }
@@ -166,14 +166,14 @@ class FishingRecordServiceClass {
   }
 
   /**
-   * 获取最近N条记录
+   * 获取最近N条记�?
    */
   getRecentRecords(limit: number = 10): FishingRecord[] {
     return this._records.slice(0, limit);
   }
 
   /**
-   * 按鱼种筛选
+   * 按鱼种筛�?
    */
   filterByFish(fishName: string): FishingRecord[] {
     if (!fishName) {
@@ -183,14 +183,14 @@ class FishingRecordServiceClass {
   }
 
   /**
-   * 按日期范围筛选
+   * 按日期范围筛�?
    */
   filterByDateRange(startDate: number, endDate: number): FishingRecord[] {
     return this._records.filter(r => r.date >= startDate && r.date <= endDate);
   }
 
   /**
-   * 按钓点搜索
+   * 按钓点搜�?
    */
   searchByLocation(keyword: string): FishingRecord[] {
     if (!keyword || !keyword.trim()) {
@@ -203,7 +203,7 @@ class FishingRecordServiceClass {
   }
 
   /**
-   * 获取所有钓点列表（去重）
+   * 获取所有钓点列表（去重�?
    */
   getAllLocations(): string[] {
     const locations = new Set<string>();
@@ -216,7 +216,7 @@ class FishingRecordServiceClass {
   }
 
   /**
-   * 获取所有鱼种列表（去重）
+   * 获取所有鱼种列表（去重�?
    */
   getAllFishNames(): string[] {
     const fishNames = new Set<string>();
@@ -229,7 +229,7 @@ class FishingRecordServiceClass {
   }
 
   /**
-   * 组合筛选（鱼种 + 日期范围 + 钓点）
+   * 组合筛选（鱼种 + 日期范围 + 钓点�?
    */
   filterRecords(fishName?: string, startDate?: number, endDate?: number, location?: string): FishingRecord[] {
     let result = this._records;
@@ -265,7 +265,7 @@ class FishingRecordServiceClass {
   }
 
   /**
-   * 清除所有记录
+   * 清除所有记�?
    */
   async clearAllRecords(): Promise<void> {
     this._records = [];
@@ -275,7 +275,7 @@ class FishingRecordServiceClass {
   }
 }
 
-// 统计数据类
+// 统计数据�?
 export class RecordStatistics {
   totalWeight: number = 0;
   totalCount: number = 0;

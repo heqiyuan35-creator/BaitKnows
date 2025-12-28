@@ -1,5 +1,5 @@
 /**
- * 鱼种数据库
+ * 鱼种数据�?
  * 包含常见淡水鱼和海水鱼的详细数据
  */
 import {
@@ -58,7 +58,7 @@ function createCarp(): Fish {
 function createGrass(): Fish {
   const f = new Fish();
   f.id = 'grass'; f.name = '草鱼'; f.scientificName = 'Ctenopharyngodon idella';
-  f.category = 'freshwater'; f.description = '草食性鱼类，喜食嫩草和发酵饵料'; f.difficulty = 3;
+  f.category = 'freshwater'; f.description = '草食性鱼类，喜食嫩草和发酵饵�?; f.difficulty = 3;
   f.waterType.push('pond'); f.waterType.push('river'); f.waterType.push('reservoir');
   f.habits.waterLayer = 'middle';
   f.habits.temperatureRange = TemperatureRange.create(10, 25, 35);
@@ -70,9 +70,9 @@ function createGrass(): Fish {
   f.dietPreference.seasonalFlavorAdjust = SeasonalFlavorAdjustment.create(
     SeasonFlavorAdjust.create('fragrant', 'sour'), SeasonFlavorAdjust.create('sour', 'fragrant'),
     SeasonFlavorAdjust.create('sweet', 'fragrant'), SeasonFlavorAdjust.create('fishy', 'fragrant'));
-  f.dietPreference.naturalFood.push('嫩草'); f.dietPreference.naturalFood.push('芦苇芯');
+  f.dietPreference.naturalFood.push('嫩草'); f.dietPreference.naturalFood.push('芦苇�?);
   f.dietPreference.naturalFood.push('玉米'); f.dietPreference.naturalFood.push('麦粒');
-  f.dietPreference.naturalFood.push('桑葚'); f.dietPreference.naturalFood.push('构树果');
+  f.dietPreference.naturalFood.push('桑葚'); f.dietPreference.naturalFood.push('构树�?);
   return f;
 }
 
@@ -99,7 +99,7 @@ function createSilver(): Fish {
 function createBighead(): Fish {
   const f = new Fish();
   f.id = 'bighead'; f.name = '鳙鱼'; f.scientificName = 'Hypophthalmichthys nobilis';
-  f.category = 'freshwater'; f.description = '又称花鲢、胖头鱼，滤食性，喜臭味'; f.difficulty = 2;
+  f.category = 'freshwater'; f.description = '又称花鲢、胖头鱼，滤食性，喜臭�?; f.difficulty = 2;
   f.waterType.push('river'); f.waterType.push('reservoir');
   f.habits.waterLayer = 'middle';
   f.habits.temperatureRange = TemperatureRange.create(15, 26, 33);
@@ -112,7 +112,7 @@ function createBighead(): Fish {
     SeasonFlavorAdjust.create('stinky', 'sour'), SeasonFlavorAdjust.create('stinky', 'garlic'),
     SeasonFlavorAdjust.create('sour', 'stinky'), SeasonFlavorAdjust.create('fishy', 'stinky'));
   f.dietPreference.naturalFood.push('浮游动物'); f.dietPreference.naturalFood.push('有机碎屑');
-  f.dietPreference.naturalFood.push('轮虫'); f.dietPreference.naturalFood.push('枝角类');
+  f.dietPreference.naturalFood.push('轮虫'); f.dietPreference.naturalFood.push('枝角�?);
   return f;
 }
 
@@ -132,7 +132,7 @@ function createCatfish(): Fish {
   f.dietPreference.seasonalFlavorAdjust = SeasonalFlavorAdjustment.create(
     SeasonFlavorAdjust.create('fishy', 'stinky'), SeasonFlavorAdjust.create('stinky', 'fishy'),
     SeasonFlavorAdjust.create('fishy', 'stinky'), SeasonFlavorAdjust.create('fishy', 'stinky'));
-  f.dietPreference.naturalFood.push('小鱼'); f.dietPreference.naturalFood.push('虾');
+  f.dietPreference.naturalFood.push('小鱼'); f.dietPreference.naturalFood.push('�?);
   f.dietPreference.naturalFood.push('蚯蚓'); f.dietPreference.naturalFood.push('泥鳅');
   f.dietPreference.naturalFood.push('蛙类'); f.dietPreference.naturalFood.push('动物内脏');
   return f;
@@ -141,7 +141,7 @@ function createCatfish(): Fish {
 function createBlack(): Fish {
   const f = new Fish();
   f.id = 'black'; f.name = '青鱼'; f.scientificName = 'Mylopharyngodon piceus';
-  f.category = 'freshwater'; f.description = '四大家鱼之首，体型大，喜食螺蛳'; f.difficulty = 5;
+  f.category = 'freshwater'; f.description = '四大家鱼之首，体型大，喜食螺�?; f.difficulty = 5;
   f.waterType.push('reservoir'); f.waterType.push('river');
   f.habits.waterLayer = 'bottom';
   f.habits.temperatureRange = TemperatureRange.create(12, 24, 30);
@@ -154,15 +154,15 @@ function createBlack(): Fish {
     SeasonFlavorAdjust.create('fishy', 'fragrant'), SeasonFlavorAdjust.create('fragrant', 'fishy'),
     SeasonFlavorAdjust.create('sweet', 'fishy'), SeasonFlavorAdjust.create('fishy', 'sweet'));
   f.dietPreference.naturalFood.push('螺蛳'); f.dietPreference.naturalFood.push('河蚌');
-  f.dietPreference.naturalFood.push('蚬子'); f.dietPreference.naturalFood.push('虾');
-  f.dietPreference.naturalFood.push('蟹');
+  f.dietPreference.naturalFood.push('蚬子'); f.dietPreference.naturalFood.push('�?);
+  f.dietPreference.naturalFood.push('�?);
   return f;
 }
 
 function createBream(): Fish {
   const f = new Fish();
   f.id = 'bream'; f.name = '鳊鱼'; f.scientificName = 'Parabramis pekinensis';
-  f.category = 'freshwater'; f.description = '又称武昌鱼，中层鱼类，喜香甜味'; f.difficulty = 3;
+  f.category = 'freshwater'; f.description = '又称武昌鱼，中层鱼类，喜香甜�?; f.difficulty = 3;
   f.waterType.push('pond'); f.waterType.push('river'); f.waterType.push('reservoir');
   f.habits.waterLayer = 'middle';
   f.habits.temperatureRange = TemperatureRange.create(10, 22, 30);
@@ -182,8 +182,8 @@ function createBream(): Fish {
 
 function createTilapia(): Fish {
   const f = new Fish();
-  f.id = 'tilapia'; f.name = '罗非鱼'; f.scientificName = 'Oreochromis niloticus';
-  f.category = 'freshwater'; f.description = '热带鱼种，适应性强，容易钓获'; f.difficulty = 1;
+  f.id = 'tilapia'; f.name = '罗非�?; f.scientificName = 'Oreochromis niloticus';
+  f.category = 'freshwater'; f.description = '热带鱼种，适应性强，容易钓�?; f.difficulty = 1;
   f.waterType.push('pond');
   f.habits.waterLayer = 'all';
   f.habits.temperatureRange = TemperatureRange.create(18, 28, 38);
@@ -203,7 +203,7 @@ function createTilapia(): Fish {
 
 function createYellowhead(): Fish {
   const f = new Fish();
-  f.id = 'yellowhead'; f.name = '黄颡鱼'; f.scientificName = 'Pelteobagrus fulvidraco';
+  f.id = 'yellowhead'; f.name = '黄颡�?; f.scientificName = 'Pelteobagrus fulvidraco';
   f.category = 'freshwater'; f.description = '又称黄辣丁，肉食性，夜间活动'; f.difficulty = 2;
   f.waterType.push('pond'); f.waterType.push('river');
   f.habits.waterLayer = 'bottom';

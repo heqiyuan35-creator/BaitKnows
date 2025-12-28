@@ -1,6 +1,6 @@
 /**
- * 饵知道 - 渔获记录列表页
- * 展示统计数据和渔获记录列表
+ * 饵知�?- 渔获记录列表�?
+ * 展示统计数据和渔获记录列�?
  */
 import { ThemeColors } from '../theme/ThemeColors';
 import { ThemeConstants } from '../theme/ThemeConstants';
@@ -27,17 +27,17 @@ export struct FishingRecordPage {
   @State groupedRecords: MonthGroup[] = [];
 
   aboutToAppear(): void {
-    // 每次组件出现时强制重新加载数据
+    // 每次组件出现时强制重新加载数�?
     this.loadData(true);
   }
 
-  // 监听刷新触发器变化
+  // 监听刷新触发器变�?
   onRefreshTriggerChange(): void {
     this.loadData(true);
   }
 
   onPageShow(): void {
-    // 页面显示时也刷新（作为独立页面时）
+    // 页面显示时也刷新（作为独立页面时�?
     this.loadData(true);
   }
 
@@ -58,13 +58,13 @@ export struct FishingRecordPage {
     this.isLoading = false;
   }
 
-  // 按月份分组记录
+  // 按月份分组记�?
   private groupRecordsByMonth(): void {
     const groups: Map<string, FishingRecord[]> = new Map();
 
     for (const record of this.records) {
       const date = new Date(record.date);
-      const monthKey = `${date.getFullYear()}年${date.getMonth() + 1}月`;
+      const monthKey = `${date.getFullYear()}�?{date.getMonth() + 1}月`;
 
       if (!groups.has(monthKey)) {
         groups.set(monthKey, []);
@@ -85,26 +85,26 @@ export struct FishingRecordPage {
     const day = date.getDate();
     const weekDays = ['周日', '周一', '周二', '周三', '周四', '周五', '周六'];
     const weekDay = weekDays[date.getDay()];
-    return `${month}月${day}日 ${weekDay}`;
+    return `${month}�?{day}�?${weekDay}`;
   }
 
   private getWeatherIcon(weather: string): string {
     const icons: Record<string, string> = {
-      '晴朗': '☀️',
-      '多云': '⛅',
+      '晴朗': '☀�?,
+      '多云': '�?,
       '阴天': '☁️',
-      '小雨': '🌧️',
+      '小雨': '🌧�?,
       '大风': '💨'
     };
-    return icons[weather] || '🌤️';
+    return icons[weather] || '🌤�?;
   }
 
-  // 截断鱼种名称，最多显示2种鱼
+  // 截断鱼种名称，最多显�?种鱼
   private formatFishName(name: string): string {
     if (!name) return '未知鱼种';
-    const fishList = name.split('、');
+    const fishList = name.split('�?);
     if (fishList.length <= 2) return name;
-    return fishList.slice(0, 2).join('、') + '等';
+    return fishList.slice(0, 2).join('�?) + '�?;
   }
 
   build() {
@@ -120,7 +120,7 @@ export struct FishingRecordPage {
               .width('100%')
               .height(36)
 
-            // 顶部标题栏
+            // 顶部标题�?
             this.HeaderBar()
 
             // 统计卡片区域
@@ -175,7 +175,7 @@ export struct FishingRecordPage {
         .width(48)
         .height(48)
         .color(ThemeColors.PRIMARY)
-      Text('加载中...')
+      Text('加载�?..')
         .fontSize(ThemeConstants.FONT_SIZE_SM)
         .fontColor(ThemeColors.TEXT_SECONDARY)
         .margin({ top: 12 })
@@ -188,7 +188,7 @@ export struct FishingRecordPage {
   @Builder
   AnalysisEntryCard() {
     Row() {
-      // 左侧图标和文字
+      // 左侧图标和文�?
       Row({ space: 12 }) {
         Column() {
           Text('📊')
@@ -208,7 +208,7 @@ export struct FishingRecordPage {
             .fontSize(ThemeConstants.FONT_SIZE_MD)
             .fontWeight(FontWeight.Bold)
             .fontColor(ThemeColors.TEXT_PRIMARY)
-          Text('查看成就、画像、趣味数据')
+          Text('查看成就、画像、趣味数�?)
             .fontSize(ThemeConstants.FONT_SIZE_XS)
             .fontColor(ThemeColors.TEXT_SECONDARY)
         }
@@ -219,9 +219,9 @@ export struct FishingRecordPage {
 
       // 右侧箭头
       Row() {
-        Text('→')
+        Text('�?)
           .fontSize(18)
-          .fontColor(ThemeColors.PRIMARY)
+          .fontColor(ThemeColors.PRIMARY_DARK)
       }
       .width(36)
       .height(36)
@@ -242,17 +242,17 @@ export struct FishingRecordPage {
   @Builder
   StatisticsSection() {
     Column({ space: ThemeConstants.SPACE_SM }) {
-      // 第一行：总渔获、最大单尾
+      // 第一行：总渔获、最大单�?
       Row({ space: ThemeConstants.SPACE_SM }) {
         StatCard({
-          label: '总渔获',
+          label: '总渔�?,
           value: this.statistics.totalWeight.toFixed(1),
           unit: 'kg',
           valueColor: ThemeColors.PRIMARY
         })
 
         StatCard({
-          label: '最大单尾',
+          label: '最大单�?,
           value: this.statistics.maxSingle.toFixed(1),
           unit: 'kg',
           valueColor: ThemeColors.SUCCESS
@@ -260,26 +260,26 @@ export struct FishingRecordPage {
       }
       .width('100%')
 
-      // 第二行：本月出钓、总出钓、总尾数
+      // 第二行：本月出钓、总出钓、总尾�?
       Row({ space: ThemeConstants.SPACE_SM }) {
         StatCard({
           label: '本月出钓',
           value: this.statistics.monthTrips.toString(),
-          unit: '次',
+          unit: '�?,
           valueColor: ThemeColors.INFO
         })
 
         StatCard({
-          label: '总出钓',
+          label: '总出�?,
           value: this.statistics.totalTrips.toString(),
-          unit: '次',
+          unit: '�?,
           valueColor: ThemeColors.WARNING
         })
 
         StatCard({
-          label: '总尾数',
+          label: '总尾�?,
           value: this.statistics.totalCount.toString(),
-          unit: '尾',
+          unit: '�?,
           valueColor: ThemeColors.PRIMARY
         })
       }
@@ -293,7 +293,7 @@ export struct FishingRecordPage {
     EmptyState({
       icon: '🎣',
       title: '暂无渔获记录',
-      subtitle: '记录每一次钓鱼的收获，见证你的成长'
+      subtitle: '记录每一次钓鱼的收获，见证你的成�?
     })
   }
 
@@ -310,7 +310,7 @@ export struct FishingRecordPage {
             .width('100%')
             .padding({ left: ThemeConstants.SPACE_MD })
 
-          // 该月的记录
+          // 该月的记�?
           ForEach(group.records, (record: FishingRecord) => {
             this.RecordItem(record)
           }, (record: FishingRecord) => record.id)
@@ -323,7 +323,7 @@ export struct FishingRecordPage {
   @Builder
   RecordItem(record: FishingRecord) {
     Column({ space: 10 }) {
-      // 第一行：日期和天气
+      // 第一行：日期和天�?
       Row() {
         Row({ space: 6 }) {
           Text('📅')
@@ -352,7 +352,7 @@ export struct FishingRecordPage {
       Row({ space: 6 }) {
         Text('📍')
           .fontSize(14)
-        Text(record.location || '未填写钓点')
+        Text(record.location || '未填写钓�?)
           .fontSize(ThemeConstants.FONT_SIZE_BASE)
           .fontColor(ThemeColors.TEXT_PRIMARY)
           .maxLines(1)
@@ -360,7 +360,7 @@ export struct FishingRecordPage {
       }
       .width('100%')
 
-      // 第三行：鱼种、数量、重量
+      // 第三行：鱼种、数量、重�?
       Row() {
         Row({ space: 6 }) {
           Text('🐟')
@@ -386,7 +386,7 @@ export struct FishingRecordPage {
           Text(`${record.weight}`)
             .fontSize(ThemeConstants.FONT_SIZE_XL)
             .fontWeight(FontWeight.Bold)
-            .fontColor(ThemeColors.PRIMARY)
+            .fontColor(ThemeColors.PRIMARY_DARK)
           Text('kg')
             .fontSize(ThemeConstants.FONT_SIZE_SM)
             .fontColor(ThemeColors.TEXT_SECONDARY)

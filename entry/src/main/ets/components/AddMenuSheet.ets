@@ -1,11 +1,11 @@
 /**
- * 饵知道 - 加号菜单底部弹出组件
- * 提供四个功能入口：精确匹配、个人创作、原料新增、鱼类新增
+ * 饵知�?- 加号菜单底部弹出组件
+ * 提供四个功能入口：精确匹配、个人创作、原料新增、鱼类新�?
  */
 import { ThemeColors } from '../theme/ThemeColors';
 import { ThemeConstants } from '../theme/ThemeConstants';
 
-// 菜单项数据接口
+// 菜单项数据接�?
 export interface AddMenuItem {
   id: string;
   icon: Resource;
@@ -15,7 +15,7 @@ export interface AddMenuItem {
   route: string;
 }
 
-// 菜单项配置
+// 菜单项配�?
 export const ADD_MENU_ITEMS: AddMenuItem[] = [
   {
     id: 'precise_match',
@@ -30,7 +30,7 @@ export const ADD_MENU_ITEMS: AddMenuItem[] = [
     icon: $r('app.media.Creation'),
     iconBg: '#E8F5E9',
     title: '个人创作',
-    description: '创建自定义配方',
+    description: '创建自定义配�?,
     route: 'pages/RecipeCreatePage'
   },
   {
@@ -38,7 +38,7 @@ export const ADD_MENU_ITEMS: AddMenuItem[] = [
     icon: $r('app.media.Raw_material'),
     iconBg: '#E0F7FA',
     title: '原料新增',
-    description: '添加自定义原料',
+    description: '添加自定义原�?,
     route: 'pages/IngredientAddPage'
   },
   {
@@ -46,7 +46,7 @@ export const ADD_MENU_ITEMS: AddMenuItem[] = [
     icon: $r('app.media.FishLei'),
     iconBg: '#FFF3E0',
     title: '鱼类新增',
-    description: '添加自定义鱼种',
+    description: '添加自定义鱼�?,
     route: 'pages/FishAddPage'
   }
 ];
@@ -101,7 +101,7 @@ export struct AddMenuSheet {
     }
   }
 
-  // 处理菜单项点击
+  // 处理菜单项点�?
   private handleItemClick(item: AddMenuItem): void {
     if (this.onItemClick) {
       this.onItemClick(item);
@@ -111,7 +111,7 @@ export struct AddMenuSheet {
   build() {
     if (this.visible) {
       Stack() {
-        // 遮罩层
+        // 遮罩�?
         Column()
           .width('100%')
           .height('100%')
@@ -121,7 +121,7 @@ export struct AddMenuSheet {
 
         // 底部弹出卡片
         Column() {
-          // 顶部拖拽指示条
+          // 顶部拖拽指示�?
           Row() {
             Column()
               .width(40)
@@ -134,7 +134,7 @@ export struct AddMenuSheet {
           .padding({ top: 12, bottom: 8 })
 
           // 标题
-          Text('快速操作')
+          Text('快速操�?)
             .fontSize(ThemeConstants.FONT_SIZE_LG)
             .fontWeight(FontWeight.Bold)
             .fontColor(ThemeColors.TEXT_PRIMARY)
@@ -142,14 +142,14 @@ export struct AddMenuSheet {
 
           // 2x2 网格布局
           Column({ space: 12 }) {
-            // 第一行
+            // 第一�?
             Row({ space: 12 }) {
               this.MenuItemCard(ADD_MENU_ITEMS[0])
               this.MenuItemCard(ADD_MENU_ITEMS[1])
             }
             .width('100%')
 
-            // 第二行
+            // 第二�?
             Row({ space: 12 }) {
               this.MenuItemCard(ADD_MENU_ITEMS[2])
               this.MenuItemCard(ADD_MENU_ITEMS[3])
